@@ -10,7 +10,7 @@ public class ProductCotroller {
     private ProductService productService;
 
 
-    public int hihello(){
+    public int hi(){
 
 
         return 0;
