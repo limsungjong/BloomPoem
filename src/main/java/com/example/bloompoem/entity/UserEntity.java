@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @Table(name = "BP_USER")
 @NoArgsConstructor
-public class  BpUserEntity{
+public class UserEntity {
     @Id
     String userEmail;
 

@@ -101,21 +101,21 @@ header {
   position: absolute;
   display: grid;
   align-items: center;
-  color: black;
+  color: var(--color-black);
   font-weight: 400;
-  flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: space-around;
   grid-template-columns: 300px 1fr 240px;
   justify-items: center;
   border-bottom: 2px solid var(--color-light-gray);
+  box-sizing: content-box;
+}
+.logo {
+  height: 80px;
+  width: 254px;
+  margin-left: 200px;
 }
 .logoBox {
   width: 15%;
-}
-.logo {
-  margin-left: 50px;
-  height: 80px;
-  width: 254px;
 }
 nav {
   width: 100%;
