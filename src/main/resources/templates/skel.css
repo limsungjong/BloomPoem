@@ -1,0 +1,172 @@
+/*      Root         */
+:root {
+  /*    Color    */
+  --color-true-black: #000000;
+  --color-black: #181818;
+  --color-light-gray: #6d6d6d;
+  --color-gray: #565656;
+  --color-dark-gray: #424242;
+  --color-white: #f5f5f5;
+  --color-true-white: #ffffff;
+  --color-red: #ea3323;
+  --color-blue: #3ea4f8;
+  --color-sky-blue: #5ca4f8;
+  --color-sun-gray: #d6d6d6;
+  --color-cream-melon: #dcf8e4;
+  --color-light-sky-blue: #b9eeff;
+  --color-banana: #ffe062;
+  --color-ivory: #fff3d4;
+  --color-light-purple: #cc94c4;
+  --color-violet: #a8b3d8;
+  --color-light-white: #ebebeb;
+  --color-cherry-blossom: #f8d1d1;
+
+  /*  Size    */
+  --size-border-radius: 4px;
+  /*    Font  Size     */
+  --font-large: 48px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+  --font-micro: 14px;
+  /*    Font Weight    */
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+  /*    Animation    */
+  --animation-duration: 300ms;
+}
+
+/* reset.css */
+html, body, div, span, applet, object, iframe, /**/
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, /**/
+a, abbr, acronym, address, big, cite, code, /**/
+del, dfn, em, img, ins, kbd, q, s, samp, /**/
+small, strike, strong, sub, sup, tt, var, /**/
+b, u, i, center, /**/
+dl, dt, dd, ol, ul, li, /**/
+fieldset, form, label, legend, /**/
+table, caption, tbody, tfoot, thead, tr, th, td, /**/
+article, aside, canvas, details, embed, /**/
+figure, figcaption, footer, header, hgroup, /**/
+menu, nav, output, ruby, section, summary, /**/
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, /**/
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* page css */
+* {
+  box-sizing: border-box;
+  font-size: 1.5rem;
+  user-select: none;
+}
+body {
+  line-height: 1;
+  font-family: "나눔스퀘어 네오";
+  overflow: hidden;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before, blockquote:after, /**/
+q:before, q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* style css start */
+header {
+  background-color: var(--color-true-white);
+  height: 100px;
+  width: 100vw;
+  position: absolute;
+  display: grid;
+  align-items: center;
+  color: black;
+  font-weight: 400;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  grid-template-columns: 300px 1fr 240px;
+  justify-items: center;
+  border-bottom: 2px solid var(--color-light-gray);
+}
+.logoBox {
+  width: 15%;
+}
+.logo {
+  margin-left: 50px;
+  height: 80px;
+  width: 254px;
+}
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+}
+span {
+  font-size: 1.5rem;
+  color: #000;
+  display: inline-block;
+  margin: 0;
+  text-transform: uppercase;
+}
+menu {
+  font-weight: 400;
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+}
+nav span {
+  color: #000;
+  display: inline-block;
+  margin: 0;
+  text-transform: uppercase;
+}
+nav span:after {
+  margin-top: 5px;
+  display: block;
+  content: "";
+  border-bottom: solid 3px var(--color-dark-gray);
+  transform: scaleX(0);
+  transition: transform 250ms ease-in-out;
+}
+nav span:hover:after {
+  transform: scaleX(1);
+}
+nav .fromRight:after {
+  transform-origin: 100% 50%;
+}
+nav .fromLeft:after {
+  transform-origin: 0% 50%;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  height: 100px;
+  width: 100vw;
+  font-weight: 400;
+  background-color: var(--color-true-white);
+  border-top: 2px solid var(--color-light-gray);
+}
