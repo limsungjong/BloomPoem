@@ -9,4 +9,10 @@ public class ProductCotroller {
     @Autowired
     private ProductService productService;
 
+
+    public int hi(){
+
+
+        return 0;
+    }
 }
