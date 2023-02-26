@@ -10,9 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-
+    protected void configure(HttpSecurity http) throws Exception{
 
     }
 }
