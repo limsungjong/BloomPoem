@@ -593,8 +593,7 @@ header {
 .logo {
   width: 254px;
   height: 84px;
-
-  margin-left: 200px;
+  margin-left: 20px;
 }
 nav {
   width: 100%;
