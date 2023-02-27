@@ -6,19 +6,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Entity
+@Entity(name = "product")
 public class ProductEntity {
     @Id
-    private Integer productNumber;
-    private Integer productCategory;
+    private int productNumber;
+    private char productCategory;
     private String productName;
-    private Integer productPrice;
-    private Integer productQuantity;
+    private int productPrice;
+    private int productQuantity;
     private String productMainImage;
-    private String subImag1;
-    private String subImage2;
+    private String productSubImage1;
+    private String productSubImage2;
 }
