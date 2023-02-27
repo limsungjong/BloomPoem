@@ -21,5 +21,5 @@ public class ProductEntity {
     private int productQuantity;
     private String productMainImage;
     private String productSubImage1;
-    private String productSubImage2;
+
 }
