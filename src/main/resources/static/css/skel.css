@@ -98,7 +98,6 @@ header {
   background-color: var(--color-true-white);
   height: 100px;
   width: 100vw;
-  position: absolute;
   display: grid;
   align-items: center;
   color: var(--color-black);
