@@ -276,3 +276,10 @@ var _a;
 (_a = document.querySelector(".moreBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (e) => {
     window.scrollBy({ top: window.innerHeight });
 });
+document.querySelector(`.card`).addEventListener('click', (e => {
+    fetch('/user', {}).then(data => {
+        console.log(data);
+    }).catch((err => {
+        console.log(err);
+    }));
+}));

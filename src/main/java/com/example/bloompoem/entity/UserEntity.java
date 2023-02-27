@@ -30,6 +30,7 @@ public class UserEntity {
     private String userName;
 
     @Column
+    @Temporal(TemporalType.TIMESTAMP)
     private Date userRegDate;
 
     @Column(length = 1)
