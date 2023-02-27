@@ -112,7 +112,7 @@ header {
 .logo {
   height: 80px;
   width: 254px;
-  margin-left: 200px;
+  margin-left: 20px;
 }
 .logoBox {
   width: 15%;
@@ -162,8 +162,6 @@ nav .fromLeft:after {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
   height: 100px;
   width: 100vw;
   font-weight: 400;

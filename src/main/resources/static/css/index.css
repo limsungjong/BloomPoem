@@ -229,7 +229,7 @@ main {
   min-width: 800px;
 }
 .backGroundImage {
-  background-image: url("image/mainBackImg1.jpg");
+  background-image: url("../image/mainBackImg1.jpg");
   opacity: 80%;
   width: 100vw;
   height: 80vh;
