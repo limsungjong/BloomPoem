@@ -160,6 +160,15 @@ nav .fromLeft:after {
   transform-origin: 0% 50%;
 }
 
+footer {
+  height: 100px;
+  width: 100vw;
+  font-weight: 400;
+  position: absolute;
+  background-color: var(--color-true-white);
+  border-top: 2px solid var(--color-light-gray);
+}
+
 li {
   display: flex;
   list-style: none;
@@ -182,13 +191,4 @@ li {
 .FAQ_toggle_A {
   display: none;
   height: 50px;
-}
-
-footer {
-  height: 100px;
-  width: 100vw;
-  font-weight: 400;
-  position: absolute;
-  background-color: var(--color-true-white);
-  border-top: 2px solid var(--color-light-gray);
 }

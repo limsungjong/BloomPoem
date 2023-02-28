@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script srd="/build/FAQ.js"></script>
+    <script src="/build/FAQ.js"></script>
     <title>구조 잡기</title>
     <link rel="stylesheet" type="text/css" href="../static/css/FAQ.css" />
     <script src="../static/build/FAQ.js" defer></script>
@@ -24,7 +24,9 @@
       </nav>
     </header>
     <main>
+      <!-- 바디 레이아웃 시작 -->
       <div class="body_layout">
+        <!-- 좌측 메뉴바 시작 -->
         <div class="left_menu">
           <h2>고객센터</h2>
           <br />
@@ -34,41 +36,57 @@
           <br />
           <li>나의 문의 내역</li>
         </div>
-        <div class="body_Contents">
+        <!-- 좌측 메뉴바 종료 -->
+        <!-- 바디 컨텐츠 시작 -->
+        <div class="body_contents">
           <h2>자주 묻는 질문</h2>
+          <!-- FAQ 리스트 시작 -->
           <div class="FAQ_list">
+            <!-- FAQ 개별 항목 시작 -->
+            <li class="FAQ_contents">
+              <!-- FAQ 토글(질문) 시작 -->
+              <p class="FAQ_toggle_Q">
+                <span> 토글 테스트 </span>
+              </p>
+              <!-- FAQ 토글(질문) 종료 -->
+              <!-- FAQ 토글(답변) 시작 -->
+              <p class="FAQ_toggle_A">
+                <span> 테스트 성공! </span>
+              </p>
+              <!-- FAQ 토글(답변) 종료 -->
+            </li>
+            <!-- FAQ 개별 항목 끝 -->
+            <br />
             <li>
-              <p class="FAQ_toggle_Q">토글 테스트</p>
-              <p class="FAQ_toggle_A">테스트 성공!</p>
+              <p class="FAQ_toggle_Q"><span>Q1.</span></p>
+              <p class="FAQ_toggle_A"><span>A1.</span></p>
             </li>
             <br />
             <li>
-              <p class="FAQ_toggle_Q">Q1.</p>
-              <p class="FAQ_toggle_A">A1.</p>
+              <p class="FAQ_toggle_Q"><span>Q2.</span></p>
+              <p class="FAQ_toggle_A"><span>A2.</span></p>
             </li>
             <br />
             <li>
-              <p class="FAQ_toggle_Q">Q2.</p>
-              <p class="FAQ_toggle_A">A2.</p>
+              <p class="FAQ_toggle_Q"><span>Q3.</span></p>
+              <p class="FAQ_toggle_A"><span>A3.</span></p>
             </li>
             <br />
             <li>
-              <p class="FAQ_toggle_Q">Q3.</p>
-              <p class="FAQ_toggle_A">A3.</p>
+              <p class="FAQ_toggle_Q"><span>Q4.</span></p>
+              <p class="FAQ_toggle_A"><span>A4.</span></p>
             </li>
             <br />
             <li>
-              <p class="FAQ_toggle_Q">Q4.</p>
-              <p class="FAQ_toggle_A">A4.</p>
-            </li>
-            <br />
-            <li>
-              <p class="FAQ_toggle_Q">Q5.</p>
-              <p class="FAQ_toggle_A">A5.</p>
+              <p class="FAQ_toggle_Q"><span>Q5.</span></p>
+              <p class="FAQ_toggle_A"><span>A5.</span></p>
             </li>
           </div>
+          <!-- FAQ 리스트 종료 -->
         </div>
+        <!-- 바디 컨텐츠 종료 -->
       </div>
+      <!-- 바디 레이아웃 끝 -->
     </main>
     <footer></footer>
   </body>
