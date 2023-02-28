@@ -16,5 +16,10 @@ public class ShoppingCotroller {
 
         return "/shop/shopMain";
     }
+    @GetMapping("/shopping/category")
+    public String shoppingCategory (){
+
+        return "/shop/shopCategory";
+    }
 
 }
