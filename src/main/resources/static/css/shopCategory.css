@@ -1,0 +1,265 @@
+:root {
+    /*    Color    */
+    --color-true-black: #000000;
+    --color-black: #181818;
+    --color-light-gray: #6d6d6d;
+    --color-gray: #565656;
+    --color-dark-gray: #424242;
+    --color-white: #f5f5f5;
+    --color-true-white: #ffffff;
+    --color-red: #ea3323;
+    --color-blue: #3ea4f8;
+    --color-sky-blue: #5ca4f8;
+    --color-sun-gray: #d6d6d6;
+    --color-cream-melon: #dcf8e4;
+    --color-light-sky-blue: #b9eeff;
+    --color-banana: #ffe062;
+    --color-ivory: #fff3d4;
+    --color-light-purple: #cc94c4;
+    --color-violet: #a8b3d8;
+    --color-light-white: #ebebeb;
+    --color-cherry-blossom: #f8d1d1;
+
+    /*  Size    */
+    --size-border-radius: 4px;
+    /*    Font  Size     */
+    --font-large: 48px;
+    --font-medium: 28px;
+    --font-regular: 18px;
+    --font-small: 16px;
+    --font-micro: 14px;
+    /*    Font Weight    */
+    --weight-bold: 700;
+    --weight-semi-bold: 600;
+    --weight-regular: 400;
+    /*    Animation    */
+    --animation-duration: 300ms;
+}
+
+/* reset.css */
+html, body, div, span, applet, object, iframe, /**/
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, /**/
+a, abbr, acronym, address, big, cite, code, /**/
+del, dfn, em, img, ins, kbd, q, s, samp, /**/
+small, strike, strong, sub, sup, tt, var, /**/
+b, u, i, center, /**/
+dl, dt, dd, ol, ul, li, /**/
+fieldset, form, label, legend, /**/
+table, caption, tbody, tfoot, thead, tr, th, td, /**/
+article, aside, canvas, details, embed, /**/
+figure, figcaption, footer, header, hgroup, /**/
+menu, nav, output, ruby, section, summary, /**/
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, /**/
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+/* page css */
+* {
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    user-select: none;
+}
+body {
+    line-height: 1;
+    font-family: "나눔스퀘어 네오";
+
+}
+ol,
+ul {
+    list-style: none;
+}
+blockquote,
+q {
+    quotes: none;
+}
+blockquote:before, blockquote:after, /**/
+q:before, q:after {
+    content: "";
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* style css start */
+header {
+    background-color: var(--color-true-white);
+    height: 100px;
+    width: 100vw;
+    display: grid;
+    align-items: center;
+    color: var(--color-black);
+    font-weight: 400;
+    justify-content: space-around;
+    grid-template-columns: 300px 1fr 240px;
+    justify-items: center;
+    border-bottom: 2px solid var(--color-light-gray);
+    box-sizing: content-box;
+}
+.logo {
+    height: 80px;
+    width: 254px;
+    margin-left: 20px;
+}
+.logoBox {
+    width: 15%;
+}
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+}
+span {
+    font-size: 1.5rem;
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+menu {
+    font-weight: 400;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+nav span {
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+nav span:after {
+    margin-top: 5px;
+    display: block;
+    content: "";
+    border-bottom: solid 3px var(--color-dark-gray);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+nav span:hover:after {
+    transform: scaleX(1);
+}
+nav .fromRight:after {
+    transform-origin: 100% 50%;
+}
+nav .fromLeft:after {
+    transform-origin: 0% 50%;
+}
+
+footer {
+    height: 100px;
+    width: 100vw;
+    font-weight: 400;
+    background-color: var(--color-true-white);
+    border-top: 2px solid var(--color-light-gray);
+}
+.searchBox {
+    width: 25vw;
+    height: 7vh;
+    position: relative;
+    display: flex;
+    padding: 15px 0 15px 0;
+    background-color: rgba(128, 128, 128, 0.302);
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    opacity: 85%;
+}
+.searchButton {
+    width: 40px;
+    height: 45px;
+    border: 1px solid #ffffff;
+    background: #ffffff;
+    text-align: center;
+    color: #000000;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 25px;
+}
+.searchTerm {
+    width: 20vw;
+    border: 3px solid #ffffff;
+    border-right: none;
+    padding: 5px;
+    height: 45px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #000000;
+    font-size: 15px;
+}
+
+.searchTerm:focus {
+    color: #000000;
+}
+footer{
+    background-color: #000000;
+
+}
+.menuBar{
+    height: 70px;
+    width: 100%;
+    background-color: #3ea4f8;
+    margin-top : 20px;
+}
+.menuBar ul{
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    align-items: center;
+}
+.mainContent{
+    height: auto;
+    width: 1260px;
+    background-color: #d6d6d6;
+}
+main{
+    width: 100vw;
+    height: auto;
+    justify-content: center;
+    display: flex;
+}
+.subMenu{
+    position: relative;
+    top :60px;
+    background-color: #cc94c4;
+    display: none;
+}
+.categoryBar{
+    background-color: var(--color-banana);
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 20px;
+}
+.categoryBar option{
+    font-size: medium;
+}
+.productContent{
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 350px);
+    grid-template-rows: repeat(5,300px);
+    grid-gap: 30px;
+    justify-content: center;
+    background-color: tan;
+}
+.pagingButton{
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+.pagingButton button{
+    margin-left: 10px;
+}
