@@ -19,11 +19,11 @@ public class FAQService {
     // FAQ 리스트 가져오기
     public List<FAQDTO> findAll(){
         List<FAQEntity> qnaEntityList = faqRepository.findAll();
-        List<FAQDTO> qnaDTOList = new ArrayList<FAQDTO>();
-        for (FAQEntity qnaEntity : qnaEntityList){
-            FAQDTO qnaDTO = FAQDTO.toDTO(FAQEntity);
-            FAQDTOList.add(FAQDTO);
+        List<FAQDTO> faqDTOList = new ArrayList<>();
+        for (FAQEntity faqEntity : qnaEntityList){
+            FAQDTO faqDTO = FAQDTO.toDTO(faqEntity);
+            faqDTOList.add(faqDTO);
         }
-        return FAQDTOList;
+        return faqDTOList;
     }
 }
