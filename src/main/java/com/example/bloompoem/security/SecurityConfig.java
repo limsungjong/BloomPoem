@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 <<<<<<< HEAD
+<<<<<<< HEAD
 //    @Override
 //    public void configure(WebSecurity web) throws Exception {
 //        web.ignoring()
@@ -32,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and().formLogin().loginPage("/login")
 //                .permitAll();
 =======
+=======
+>>>>>>> sungjong
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
@@ -48,17 +51,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http
                 .authorizeRequests()
+<<<<<<< HEAD
                 .antMatchers("/","/shopping","/shopping/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
                 .permitAll();
 >>>>>>> origin/Beomsu
+=======
+                .antMatchers("/","/shopping/**","/shopCategory","/api/**","/sign/**")
+                .permitAll()
+                .anyRequest().authenticated()
+                .and().formLogin().loginPage("/signIn")
+                .permitAll();
+>>>>>>> sungjong
 //        http.authorizeRequests().antMatchers("/","/test").permitAll();
 //        http
 //                .cors().and().csrf().disable().authorizeRequests();
 //                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
-//    }
+    }
 
 //    @Bean
 //    public CorsConfigurationSource corsConfiguration () {

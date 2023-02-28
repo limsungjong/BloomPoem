@@ -21,10 +21,6 @@ import java.util.Map;
 @Controller()
 @CrossOrigin(origins = "http://192.168.45.148:5500/")
 public class UserController {
-    @GetMapping("/user")
-    public String user() {
-        return "user";
-    }
 
     @PostMapping("/user/image")
     public ResponseEntity<Resource> userImage(@RequestParam Map<String, String> param) {

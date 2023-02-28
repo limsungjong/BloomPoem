@@ -1,0 +1,91 @@
+.line {
+    border: 0 solid var(--color-light-gray);
+    flex: 1 1 0%;
+    margin: 30px;
+    border-top-width: 1px;
+    border-color: var(--color-light-gray);
+}
+.authNum {
+    border-radius: 0.25rem;
+}
+.margin-2 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.margin-3 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.inputWd-2 {
+    width: 360px;
+}
+.inputWd-4 {
+    width: 70px;
+}
+.mainBox-1 {
+    width: 100%;
+    height: 79vh;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+.loginBox {
+    width: 500px;
+    margin: 0 auto;
+    background-color: var(--color-white);
+    border-radius: 20px;
+}
+.loginTitle {
+    font-size: 1.7em;
+    text-align: center;
+    padding: 20px;
+    height: 90px;
+}
+/* .retryBox {
+  display: none;
+} */
+
+.submitBox {
+    margin-top: 45px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.tag {
+    font-size: 1.5rem;
+}
+.tag::after {
+    content: "*";
+    color: red;
+}
+.emailInput {
+    border-radius: 0.25rem;
+    border: 3px solid var(--color-light-gray);
+    border-right: none;
+    border-top: none;
+    border-left: none;
+    padding: 8px;
+    height: 100%;
+    font-size: 1.5rem;
+    outline: none;
+    color: #000000;
+}
+.inputWD {
+    width: 360px;
+}
+.btn {
+    width: 40%;
+    background-color: var(--color-sun-gray);
+    border-radius: 10px;
+    padding: 10px;
+    border: 0;
+    border-color: whitesmoke;
+}
+.retryBox {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.orBox {
+    display: flex;
+    align-items: center;
+}
