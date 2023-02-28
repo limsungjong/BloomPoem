@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+    <title>구조 잡기</title>
+    <link rel="stylesheet" href="/css/shopCategory.css" />
+
+</head>
+<body>
+<header class="header">
+    <img src="/image/logo최종.png" alt="logo" class="logo" />
+    <menu>
+
+        <div class="searchBox">
+            <input
+                    type="text"
+                    class="searchTerm"
+                    placeholder="상품을 찾아보세요."
+            />
+            <button type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </menu>
+    <nav class="userBox">
+        <span class="signin">SignIn</span>
+        <span class="signup">SignUp</span>
+    </nav>
+</header>
+<main>
+    <div class="mainContent">
+        <div class="menuBar">
+            <ul>
+                <li>화환<div class="subMenu 1"><div>축하화환</div><div>근조화환</div></div></li>
+                <li>꽃 바구니<div class="subMenu 2"><div>꽃상자</div><div>꽃바구니</div></div></li>
+                <li>식물<div class="subMenu 3"><div>동양란</div><div>서양란</div></div></li>
+                <li>흙, 식물 영양제<div class="subMenu 4"></div></li>
+                <li>화병, 화분<div class="subMenu 5"></div></li>
+            </ul>
+        </div>
+        <div class="categoryBar">
+            <div class="sortSelect">
+                <select name="sort" id="sort" class="form-select form-select-sm">
+                    <option value="">기본</option>
+                    <option value="">가격 낮은 순</option>
+                    <option value="">가격 높은 순</option>
+                    <option value="">평점 높은 순</option>
+                </select>
+            </div>
+        </div>
+        <div class="productContent">
+            <!--3x5 그리드 시작-->
+            <div>
+                <img src="#" alter="product" class="productImage">
+                <span>상품이름</span>
+                <span>상품가격</span>
+            </div>
+        </div>
+        <div class="pagingButton">
+            <button class="btn btn-outline-dark"><</button>
+            <button class="btn btn-outline-dark">1</button>
+            <button class="btn btn-outline-dark">2</button>
+            <button class="btn btn-outline-dark">3</button>
+            <button class="btn btn-outline-dark">4</button>
+            <button class="btn btn-outline-dark">5</button>
+            <button class="btn btn-outline-dark">></button>
+        </div>
+
+    </div>
+</main>
+<footer>
+</footer>
+</body>
+</html>

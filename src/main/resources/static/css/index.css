@@ -735,3 +735,6 @@ span.fromLeft:after {
   padding: 20px;
   background-color: var(--color-sun-gray);
 }
+menu span{
+  cursor: pointer;
+}
