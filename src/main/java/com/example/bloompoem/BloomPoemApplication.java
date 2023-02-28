@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 
-@SpringBootApplication()
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class BloomPoemApplication {
 
     public static void main(String[] args) {
