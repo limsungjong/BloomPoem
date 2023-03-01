@@ -8,9 +8,33 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+
     <title>구조 잡기</title>
     <link rel="stylesheet" href="/css/shopCategory.css" />
+    <script>
+        $(document).ready(function (){
+            viewCart();
 
+
+        })
+        const viewCart = function (){
+            // const category = ("#category").val();
+            $.ajax({
+                url : "/productListView",
+                data : {category},
+            }).then(suc => {
+                $.forEach(suc, function (i, m){
+                    const msg  = `                <img src="${m.productMainImage}" alter="product" class="productImage" >
+                <div>${m.product_name}</div>
+                <div>${m.product_price}</div>
+                <button class="btn btn-outline-primary productBasket" data-no="${m.product_number}">장바구니</button>
+                <button class="btn btn-outline-success productBuy" data-no="${m.product_number}">구매하기</button>`
+                $(".productContent").append(msg)
+                })
+            }).catch(err => console.log(err))
+        }
+    </script>
 </head>
 <body>
 <header class="header">
@@ -37,11 +61,11 @@
     <div class="mainContent">
         <div class="menuBar">
             <ul>
-                <li>화환<div class="subMenu 1"><div>축하화환</div><div>근조화환</div></div></li>
-                <li>꽃 바구니<div class="subMenu 2"><div>꽃상자</div><div>꽃바구니</div></div></li>
-                <li>식물<div class="subMenu 3"><div>동양란</div><div>서양란</div></div></li>
-                <li>흙, 식물 영양제<div class="subMenu 4"></div></li>
-                <li>화병, 화분<div class="subMenu 5"></div></li>
+                <li>식물</li>
+                <li>꽃 바구니</li>
+                <li>화환</li>
+                <li>흙, 식물 영양제</li>
+                <li>화병, 화분</li>
             </ul>
         </div>
         <div class="categoryBar">
@@ -54,13 +78,14 @@
                 </select>
             </div>
         </div>
+        <hr/>
         <div class="productContent">
             <!--3x5 그리드 시작-->
-            <div>
-                <img src="#" alter="product" class="productImage">
-                <span>상품이름</span>
-                <span>상품가격</span>
-            </div>
+<!--            <div class="product">-->
+<!--                <img src="#" alter="product" class="productImage">-->
+<!--                <div>상품이름</div>-->
+<!--                <div>상품가격</div>-->
+<!--            </div>-->
         </div>
         <div class="pagingButton">
             <button class="btn btn-outline-dark"><</button>

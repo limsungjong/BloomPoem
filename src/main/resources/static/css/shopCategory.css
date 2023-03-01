@@ -94,7 +94,7 @@ table {
 
 /* style css start */
 header {
-    background-color: var(--color-true-white);
+    background-color: #fff3d4 ;
     height: 100px;
     width: 100vw;
     display: grid;
@@ -211,8 +211,9 @@ footer{
 .menuBar{
     height: 70px;
     width: 100%;
-    background-color: #3ea4f8;
     margin-top : 20px;
+    background-color: rgba(112, 128, 144, 0.42);
+
 }
 .menuBar ul{
     display: flex;
@@ -223,7 +224,7 @@ footer{
 .mainContent{
     height: auto;
     width: 1260px;
-    background-color: #d6d6d6;
+
 }
 main{
     width: 100vw;
@@ -238,7 +239,7 @@ main{
     display: none;
 }
 .categoryBar{
-    background-color: var(--color-banana);
+
     display: flex;
     flex-direction: row-reverse;
     margin-top: 20px;
@@ -253,7 +254,7 @@ main{
     grid-template-rows: repeat(5,300px);
     grid-gap: 30px;
     justify-content: center;
-    background-color: tan;
+
 }
 .pagingButton{
     margin: 20px;
@@ -262,4 +263,15 @@ main{
 }
 .pagingButton button{
     margin-left: 10px;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+.productImage{
+    width: 350px;
+    height: 200px;
+}
+.product{
+    display: flex;
+    flex-direction: column;
 }
