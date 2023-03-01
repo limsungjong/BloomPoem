@@ -25,4 +25,13 @@ public class ProductService {
         }
         return product;
     }
+    public List<ProductEntity> productView(){
+        List<ProductEntity> product=null;
+        try{
+            product = dao.findAll();
+        }catch(Exception e){
+            logger.error("[ProductService] ProductView Exception ", e);
+        }
+        return product;
+    }
 }
