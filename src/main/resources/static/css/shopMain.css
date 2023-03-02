@@ -306,3 +306,38 @@ main{
     bottom: 300px;
 
 }
+.subMenu{
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+
+}
+.subMenu div{
+    padding: 10px;
+    font-size: medium;
+    background-color: white;
+    cursor: pointer;
+
+}
+.subMenu div :hover{
+    background-color: pink;
+    font-weight: bold;
+}
+.subMenu .plant{
+    display: none;
+    position: absolute;
+    left: 181px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.subMenu .wreath{
+    display: none;
+    position: absolute;
+    left: 355px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.subMenu .flowerBasket{
+    display: none;
+    position: absolute;
+    left: 553px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
