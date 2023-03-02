@@ -5,6 +5,8 @@ import com.example.bloompoem.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,20 +17,20 @@ public class ProductService {
     private ProductRepository dao;
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-    public List<ProductEntity> categoryProductView (char category){
+    public List<ProductEntity> categoryProductView (int category){
         List<ProductEntity> product = null;
 
         try{
-            product = dao.findByProductCategory(category);
+            product = dao.findAllByProductCategory(category);
         }catch(Exception e){
             logger.error("[ProductService] categoryProductView Exception ", e);
         }
         return product;
     }
-    public List<ProductEntity> productView(){
-        List<ProductEntity> product=null;
+    public Page<ProductEntity> productView(Pageable pageable){
+        Page<ProductEntity> product=null;
         try{
-            product = dao.findAll();
+            product = dao.findAll(pageable);
         }catch(Exception e){
             logger.error("[ProductService] ProductView Exception ", e);
         }

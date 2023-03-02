@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -14,24 +14,32 @@
     <link rel="stylesheet" href="/css/shopCategory.css" />
     <script>
         $(document).ready(function (){
+
             viewCart();
 
 
         })
         const viewCart = function (){
-            // const category = ("#category").val();
+            const category = $("#category").val();
+            console.log(category)
             $.ajax({
-                url : "/productListView",
+                url : "/shopping/productListView",
                 data : {category},
             }).then(suc => {
-                $.forEach(suc, function (i, m){
-                    const msg  = `                <img src="${m.productMainImage}" alter="product" class="productImage" >
-                <div>${m.product_name}</div>
-                <div>${m.product_price}</div>
-                <button class="btn btn-outline-primary productBasket" data-no="${m.product_number}">장바구니</button>
-                <button class="btn btn-outline-success productBuy" data-no="${m.product_number}">구매하기</button>`
-                $(".productContent").append(msg)
-                })
+                console.log(suc);
+                if(suc == null){
+                    alert("상품이 없습니다.");
+                    location.href="/shopping";
+                    return;
+                }else{
+                    $.each(suc, function (i, m){
+                        const msg  = `              <div>  <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" >
+                    <div>${m.productName}</div>
+                    <div>${m.productPrice}</div>
+                    <button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button> </div>`
+                    $(".productContent").append(msg)
+                    })}
             }).catch(err => console.log(err))
         }
     </script>
@@ -39,6 +47,7 @@
 <body>
 <header class="header">
     <img src="/image/logo최종.png" alt="logo" class="logo" />
+    <input type="hidden" name="category" id="category" th:value="${category}">
     <menu>
 
         <div class="searchBox">
@@ -80,7 +89,7 @@
         </div>
         <hr/>
         <div class="productContent">
-            <!--3x5 그리드 시작-->
+            <!--3x2 그리드 시작-->
 <!--            <div class="product">-->
 <!--                <img src="#" alter="product" class="productImage">-->
 <!--                <div>상품이름</div>-->
@@ -88,13 +97,11 @@
 <!--            </div>-->
         </div>
         <div class="pagingButton">
-            <button class="btn btn-outline-dark"><</button>
             <button class="btn btn-outline-dark">1</button>
             <button class="btn btn-outline-dark">2</button>
             <button class="btn btn-outline-dark">3</button>
             <button class="btn btn-outline-dark">4</button>
             <button class="btn btn-outline-dark">5</button>
-            <button class="btn btn-outline-dark">></button>
         </div>
 
     </div>
