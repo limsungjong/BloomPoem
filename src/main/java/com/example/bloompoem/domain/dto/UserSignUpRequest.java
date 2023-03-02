@@ -1,4 +1,4 @@
-package com.example.bloompoem.domain;
+package com.example.bloompoem.domain.dto;
 
 import lombok.Getter;
 

@@ -14,7 +14,6 @@ public class MailHandler {
     private final JavaMailSender sender;
     private final MimeMessage message;
     private final MimeMessageHelper messageHelper;
-
     // 생성자
     public MailHandler(JavaMailSender javaMailSender) throws MessagingException {
         this.sender = javaMailSender;

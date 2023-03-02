@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class MailCheckRequest {
     String userEmail;
-    String password;
+    String OTP;
 }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @AllArgsConstructor
 @Data
@@ -15,7 +14,7 @@ import javax.persistence.Table;
 public class ProductEntity {
     @Id
     private int productNumber;
-    private char productCategory;
+    private int productCategory;
     private String productName;
     private int productPrice;
     private int productQuantity;
