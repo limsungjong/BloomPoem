@@ -1,5 +1,5 @@
-const qList = document.querySelectorAll("p.FAQ_toggle_Q");
-const aList = document.querySelectorAll("p.FAQ_toggle_A");
+const qList = document.querySelectorAll("span.FAQ_toggle_Q");
+const aList = document.querySelectorAll("span.FAQ_toggle_A");
 for (let index = 0; index < qList.length; index++) {
   const question = qList[index];
 
