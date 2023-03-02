@@ -1,9 +1,6 @@
 .submitBox input {
     border-radius: 0.25rem;
     border: 3px solid var(--color-light-gray);
-    border-right: none;
-    border-top: none;
-    border-left: none;
     padding: 8px;
     height: 100%;
     font-size: 1.2rem;
@@ -15,4 +12,11 @@
 }
 #addressInput {
     user-select: none;
+}
+.emailTestFail {
+    font-size: 0.8rem;
+    margin: 10px 0;
+    color: red;
+    text-transform: initial;
+    display: none;
 }

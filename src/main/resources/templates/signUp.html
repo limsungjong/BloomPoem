@@ -5,9 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sign up</title>
-  <link rel="stylesheet" type="text/css" href="/css/skel.css" />
+  <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
   <link rel="stylesheet" type="text/css" href="/css/signIn.css" />
   <link rel="stylesheet" type="text/css" href="/css/signUp.css" />
+  <script src="/build/daumPostCode.js" defer></script>
   <script src="/build/signUp.js" defer></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -25,14 +26,17 @@
         <input
                 class="margin-2 inputWD"
                 type="email"
-                placeholder="Email"
+                placeholder="이메일"
                 id="emailInput"
         />
+        <span class="emailTestFail">
+              이메일 주소의 형식이 올바르지 않습니다. 예시) bloomPoem@naver.com
+            </span>
         <label for="nameInput" class="tag">이름</label>
         <input
                 class="margin-2 inputWD"
                 type="text"
-                placeholder="name"
+                placeholder="이름"
                 id="nameInput"
         />
         <label for="addressInput" class="tag">주소</label>
@@ -51,7 +55,7 @@
                 id="addressDetailInput"
         />
         <label for="inputPhoneBox" class="tag">연락처</label>
-        <div class="inputPhoneBox" id="inputPhoneBox">
+        <div id="inputPhoneBox">
           <input
                   class="margin-2 inputWd-4"
                   type="tel"
