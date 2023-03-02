@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -28,12 +28,13 @@ public class TestUserEntity {
     @Column(length = 20)
     private String userName;
 
-    @Column
-    private Date userRegDate;
+    @Column(nullable=false, columnDefinition = "date default sysdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date userRegDate = new Date();
 
     @Column(length = 1)
-    private char userStatus;
+    private char userStatus = 'Y';
 
-    @Column(length = 10)
-    private int userCouponNumber;
+    @Column(length = 12)
+    private long userCouponNumber;
 }
