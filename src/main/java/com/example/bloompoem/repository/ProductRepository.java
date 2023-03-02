@@ -3,6 +3,7 @@ package com.example.bloompoem.repository;
 
 import com.example.bloompoem.entity.ProductEntity;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -14,6 +15,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity,Integer> {
 
-    List<ProductEntity> findAllByProductCategory(int category);
+    List<ProductEntity> findAllByProductCategory(int category, Pageable pageable);
+
+    ProductEntity findByProductNumber(int productNumber);
 
 }

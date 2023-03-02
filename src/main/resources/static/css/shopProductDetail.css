@@ -185,7 +185,7 @@ footer {
     width: 90%;
     height: 90%;
     grid-area: a;
-    object-fit: cover;
+    object-fit: contain;
 
 }
 .ProductName{

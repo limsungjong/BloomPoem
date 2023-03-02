@@ -251,7 +251,7 @@ main{
     margin-top: 30px;
     display: grid;
     grid-template-columns: repeat(3, 350px);
-    grid-template-rows: repeat(2,232px);
+    grid-template-rows: repeat(2,400px);
     grid-gap: 30px;
     justify-content: center;
 
@@ -269,9 +269,26 @@ main{
 }
 .productImage{
     width: 350px;
-    height: 180px;
+    height: 300px;
+    object-fit: contain;
+    cursor: pointer;
 }
 .product{
     display: flex;
     flex-direction: column;
+}
+.productView{
+    font-size: large;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.productView span{
+    font-size: medium;
+}
+.text{
+    margin: 5px;
+}
+.productNameText{
+    font-weight: bold;
 }

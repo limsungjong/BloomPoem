@@ -14,40 +14,55 @@
     <link rel="stylesheet" href="/css/shopCategory.css" />
     <script>
         $(document).ready(function (){
-
             viewCart();
 
 
         })
         const viewCart = function (){
             const category = $("#category").val();
-            console.log(category)
             $.ajax({
                 url : "/shopping/productListView",
                 data : {category},
             }).then(suc => {
-                console.log(suc);
                 if(suc == null){
                     alert("상품이 없습니다.");
                     location.href="/shopping";
                     return;
                 }else{
                     $.each(suc, function (i, m){
-                        const msg  = `              <div>  <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" >
-                    <div>${m.productName}</div>
-                    <div>${m.productPrice}</div>
-                    <button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
-                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button> </div>`
-                    $(".productContent").append(msg)
+                        const msg  = `              <div class="productView">  <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                    <div class="text productNameText">${m.productName}</div>
+                    <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
+                    <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div> </div>`
+                    $(".productContent").append(msg);
+
                     })}
+
             }).catch(err => console.log(err))
+
+            $(".productContent").on("click",".productImage" ,function (e){
+                const productNumber = parseInt(e.target.dataset.no);
+                const curPage = 1;
+                $("#curPage").val(curPage);
+                $("#productNumber").val(productNumber);
+                document.detailForm.submit();
+            })
+        }
+        function comma(str) {
+            str = String(str);
+            return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
         }
     </script>
 </head>
 <body>
 <header class="header">
     <img src="/image/logo최종.png" alt="logo" class="logo" />
-    <input type="hidden" name="category" id="category" th:value="${category}">
+    <form name="detailForm" action="/shopping/product_detail">
+        <input type="hidden" name="category" id="category" th:value="${category}">
+        <input type="hidden" name="curPage" id="curPage" value="">
+        <input type="hidden" name="productNumber" id="productNumber" value="">
+    </form>
     <menu>
 
         <div class="searchBox">
@@ -97,11 +112,9 @@
 <!--            </div>-->
         </div>
         <div class="pagingButton">
-            <button class="btn btn-outline-dark">1</button>
-            <button class="btn btn-outline-dark">2</button>
-            <button class="btn btn-outline-dark">3</button>
-            <button class="btn btn-outline-dark">4</button>
-            <button class="btn btn-outline-dark">5</button>
+            <button class="btn btn-outline-dark" style="background-color: #3ea4f8">1</button>
+<!--            <button class="btn btn-outline-dark">2</button>-->
+
         </div>
 
     </div>

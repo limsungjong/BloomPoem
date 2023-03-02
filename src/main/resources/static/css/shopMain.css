@@ -326,18 +326,18 @@ main{
 .subMenu .plant{
     display: none;
     position: absolute;
-    left: 181px;
+    left: 279px;
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .subMenu .wreath{
     display: none;
     position: absolute;
-    left: 355px;
+    left: 556px;
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .subMenu .flowerBasket{
     display: none;
     position: absolute;
-    left: 553px;
+    left: 840px;
     border: 1px solid rgba(0, 0, 0, 0.2);
 }

@@ -17,11 +17,11 @@ public class ProductService {
     private ProductRepository dao;
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-    public List<ProductEntity> categoryProductView (int category){
+    public List<ProductEntity> categoryProductView (int category ,Pageable pageable){
         List<ProductEntity> product = null;
 
         try{
-            product = dao.findAllByProductCategory(category);
+            product = dao.findAllByProductCategory(category, pageable);
         }catch(Exception e){
             logger.error("[ProductService] categoryProductView Exception ", e);
         }
@@ -34,6 +34,10 @@ public class ProductService {
         }catch(Exception e){
             logger.error("[ProductService] ProductView Exception ", e);
         }
+        return product;
+    }
+    public ProductEntity viewOne (int productNumber){
+        ProductEntity product = dao.findByProductNumber(productNumber);
         return product;
     }
 }

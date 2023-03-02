@@ -10,9 +10,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <title>구조 잡기</title>
   <link rel="stylesheet" href="/css/shopProductDetail.css" />
+  <script>
 
+  </script>
 </head>
 <body>
+<input type="hidden" name="category" id="category" th:value="${category}">
+<input type="hidden" name="curPage" id="curPage" th:value="${curPage}">
+<input type="hidden" name="productNumber" id="productNumber" th:value="${productNumber}">
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
   <menu>
@@ -25,18 +30,25 @@
 </header>
 <main>
   <div class="mainArea">
-    <img  class ="productMainImage" src = "/pexels-louis-2101187.jpg" >
-    <div class="ProductName">
-      ProductName
+    <img  class ="productMainImage" th:src="@{/image/product/}+${product.productMainImage}" >
+    <div class="ProductName" th:text="${product.productName}">
     </div>
-    <div class="productQuantity">quantity </div>
-    <div class="productPrice">Price</div>
-    <button class="btn btn-outline-primary productBasket">장바구니</button>
-    <button class="btn btn-outline-success productBuy">구매하기</button>
+    <div class="productQuantity"> 수량 :
+      </div><div><select class="form-select form-select-sm">
+    <option>수량</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+  </select></div>
+    <div class="productPrice">가격 :<span th:text="${product.productPrice}"></span>원</div>
+    <button class="btn btn-outline-primary productBasket" th:data-no="${productNumber}">장바구니</button>
+    <button class="btn btn-outline-success productBuy" th:data-no="${productNumber}">구매하기</button>
   </div>
   <hr/>
   <div class="subImageBox">
-    <img src="#" class="subImage" alt="subImage" />
+    <img th:src="@{/image/product/}+${product.productSubImage1}" class="subImage" alt="subImage" />
   </div>
   <div class="footStickyArea">
     <div class="footStickyBox">
@@ -50,8 +62,8 @@
       </select></div></div>
     <div>Price</div>
     <div>
-      <button class="btn btn-outline-primary ">Basket</button>
-      <button class="btn btn-outline-success ">Buy</button>
+      <button class="btn btn-outline-primary " th:data-no="${productNumber}">Basket</button>
+      <button class="btn btn-outline-success " th:data-no="${productNumber}">Buy</button>
     </div>
   </div>
   </div>

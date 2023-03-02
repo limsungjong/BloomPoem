@@ -36,4 +36,5 @@ public class TestUserEntity {
 
     @Column(length = 10)
     private int userCouponNumber;
+    private String userOtp;
 }
