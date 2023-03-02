@@ -10,18 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@Controller
+
 @RequiredArgsConstructor
+@Controller
 public class FAQController {
 
     @Autowired
-    private FAQService faqService;
+    FAQService faqService;
 
     // FAQ
     @GetMapping("/FAQ")
     public String findAll(Model model){
         List<FAQDTO> faqDTOList = faqService.findAll();
         model.addAttribute("FAQList", faqDTOList);
-        return "list";
+        return "faq";
     }
 }

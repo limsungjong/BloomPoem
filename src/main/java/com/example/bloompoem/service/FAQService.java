@@ -5,23 +5,28 @@ import com.example.bloompoem.entity.FAQEntity;
 import com.example.bloompoem.repository.FAQRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+
+@Component
 @RequiredArgsConstructor
+@Service
 public class FAQService {
     @Autowired
-    private FAQRepository faqRepository;
+    FAQRepository faqRepository;
 
     // FAQ 리스트 가져오기
     public List<FAQDTO> findAll(){
-        List<FAQEntity> qnaEntityList = faqRepository.findAll();
+        List<FAQEntity> faqEntityList = faqRepository.findAll();
         List<FAQDTO> faqDTOList = new ArrayList<>();
-        for (FAQEntity faqEntity : qnaEntityList){
+        for (FAQEntity faqEntity : faqEntityList){
+
             FAQDTO faqDTO = FAQDTO.toDTO(faqEntity);
+
             faqDTOList.add(faqDTO);
         }
         return faqDTOList;

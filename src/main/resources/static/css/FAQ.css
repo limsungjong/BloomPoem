@@ -173,8 +173,8 @@ li {
 }
 
 .FAQ_list {
-  margin-left: 470px;
-  padding: 10px;
+  margin-left: 30vw;
+  padding: 50px auto;
 }
 
 .left_menu {
@@ -199,8 +199,11 @@ li {
 }
 
 .toggle_Abox {
-  display: none;
   width: 800px;
   height: 50px;
   background-color: var(--color-cherry-blossom);
+}
+
+.FAQ_toggle_A {
+  display: none;
 }

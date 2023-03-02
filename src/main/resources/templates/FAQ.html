@@ -5,14 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="/src/main/resources/static/build/FAQ.js"></script>
-    <title>구조 잡기</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/FAQ.css" />
-    <script src="../static/build/FAQ.js" defer></script>
+    <title>자주 묻는 질문</title>
+    <link rel="stylesheet" type="text/css" href="/css/FAQ.css" />
+    <script src="/build/FAQ.js" defer></script>
   </head>
   <body>
     <header class="header">
-      <img src="../static/image/logo최종.png" alt="logo" class="logo" />
+      <img src="/image/logo최종.png" alt="logo" class="logo" />
       <menu>
         <span class="fromLeft">Pick Up</span>
         <span class="fromLeft">Shop</span>
@@ -43,17 +42,17 @@
           <!-- FAQ 리스트 시작 -->
           <div class="FAQ_list">
             <!-- FAQ 개별 항목 시작 -->
-            <li th:each="faq : ${faqNumber}" class="FAQ_contents">
+            <li th:each="faq:${FAQList}" class="FAQ_contents">
               <!-- FAQ 토글(질문) 시작 -->
               <p class="toggle_Qbox">
-                <span th:text="${faq.faqTitle}" class="FAQ_toggle_Q">
+                <span class="FAQ_toggle_Q" th:text="${faq.faqTitle}">
                   토글 테스트
                 </span>
               </p>
               <!-- FAQ 토글(질문) 종료 -->
               <!-- FAQ 토글(답변) 시작 -->
               <p class="toggle_Abox">
-                <span th:text="${faq.faqContent}" class="FAQ_toggle_A">
+                <span class="FAQ_toggle_A" th:text="${faq.faqContent}">
                   테스트 성공!
                 </span>
               </p>

@@ -14,7 +14,10 @@ public class FAQDTO {
     private String faqContent;
 
     public static FAQDTO toDTO(FAQEntity faqEntity){
-        FAQDTO faqdto = new FAQDTO();
-        return faqdto;
+        FAQDTO faqDTO = new FAQDTO();
+        faqDTO.setFaqNumber(faqEntity.getFaqNumber());
+        faqDTO.setFaqTitle(faqEntity.getFaqTitle());
+        faqDTO.setFaqContent(faqEntity.getFaqContent());
+        return faqDTO;
     }
 }
