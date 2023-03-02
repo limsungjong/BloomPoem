@@ -251,7 +251,7 @@ main{
     margin-top: 30px;
     display: grid;
     grid-template-columns: repeat(3, 350px);
-    grid-template-rows: repeat(5,300px);
+    grid-template-rows: repeat(2,232px);
     grid-gap: 30px;
     justify-content: center;
 
@@ -269,7 +269,7 @@ main{
 }
 .productImage{
     width: 350px;
-    height: 200px;
+    height: 180px;
 }
 .product{
     display: flex;
