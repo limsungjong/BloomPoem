@@ -28,7 +28,8 @@
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
-.loginBox {
+.loginBox,
+.signUpBox {
     width: 500px;
     margin: 0 auto;
     background-color: var(--color-white);
@@ -82,4 +83,22 @@
 .orBox {
     display: flex;
     align-items: center;
+}
+
+.loginBox {
+    width: 500px;
+    margin: 0 auto;
+    background-color: var(--color-white);
+    border-radius: 20px;
+}
+
+.signUpBox {
+    display: flex;
+    height: 6vh;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: center;
+}
+.signUpText {
+    font-size: 1rem;
 }
