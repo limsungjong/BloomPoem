@@ -3,6 +3,8 @@ package com.example.bloompoem.dto;
 import com.example.bloompoem.entity.QnAEntity;
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @ToString
@@ -13,7 +15,7 @@ public class QnADTO {
 
     private String userEmail;
 
-    private String qnaDate;
+    private Date qnaDate;
 
     private char qnaStatus;
 
@@ -36,7 +38,7 @@ public class QnADTO {
     private String qnaContent;
 
     // 1:1 문의 목록에 띄울 문의번호, 상태, 제목, 등록일만 가져오기
-    public static QnADTO toDTO(QnAEntity qnaEntity){
+    public static QnADTO getQnAListToDTO(QnAEntity qnaEntity){
         QnADTO qnaDTO = new QnADTO();
         qnaDTO.setQnaNumber(qnaEntity.getQnaNumber());
         qnaDTO.setQnaStatus(qnaEntity.getQnaStatus());

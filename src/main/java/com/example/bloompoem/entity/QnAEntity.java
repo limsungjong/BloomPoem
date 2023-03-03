@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class QnAEntity {
     private String userEmail;
 
     @Column(length = 40, nullable = false)
-    private String qnaDate;
+    private Date qnaDate;
 
     @Column(nullable = false)
     private char qnaStatus;
@@ -56,7 +57,7 @@ public class QnAEntity {
     private String qnaContent;
 
     // 1:1 문의 목록에 띄울 문의번호, 상태, 제목, 등록일만 가져오기
-    public static QnAEntity toEntity(QnADTO qnaDTO){
+    public static QnAEntity getQnAListToEntity(QnADTO qnaDTO){
         QnAEntity qnaEntity = new QnAEntity();
         qnaEntity.setQnaNumber(qnaDTO.getQnaNumber());
         qnaEntity.setQnaStatus(qnaDTO.getQnaStatus());

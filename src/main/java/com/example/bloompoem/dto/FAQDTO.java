@@ -13,7 +13,7 @@ public class FAQDTO {
     private String faqTitle;
     private String faqContent;
 
-    public static FAQDTO toDTO(FAQEntity faqEntity){
+    public static FAQDTO getFAQListToDTO(FAQEntity faqEntity){
         FAQDTO faqDTO = new FAQDTO();
         faqDTO.setFaqNumber(faqEntity.getFaqNumber());
         faqDTO.setFaqTitle(faqEntity.getFaqTitle());

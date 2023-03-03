@@ -1,10 +1,11 @@
 package com.example.bloompoem.service;
 
-import com.example.bloompoem.dto.FAQDTO;
 import com.example.bloompoem.entity.FAQEntity;
 import com.example.bloompoem.repository.FAQRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +21,8 @@ public class FAQService {
     FAQRepository faqRepository;
 
     // FAQ 리스트 가져오기
-    public List<FAQDTO> findAll(){
-        List<FAQEntity> faqEntityList = faqRepository.findAll();
-        List<FAQDTO> faqDTOList = new ArrayList<>();
-        for (FAQEntity faqEntity : faqEntityList){
-
-            FAQDTO faqDTO = FAQDTO.toDTO(faqEntity);
-
-            faqDTOList.add(faqDTO);
-        }
-        return faqDTOList;
+    public Page<FAQEntity> getFAQList(Pageable pageable){
+        Page<FAQEntity> faqEntityPage = faqRepository.findAll(pageable);
+        return faqEntityPage;
     }
 }

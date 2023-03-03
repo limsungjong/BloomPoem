@@ -22,7 +22,7 @@ public class FAQEntity {
     @Column(length = 300, nullable = false)
     private String faqContent;
 
-    public static FAQEntity toEntity(FAQDTO faqDTO){
+    public static FAQEntity getFAQListToEntity(FAQDTO faqDTO){
         FAQEntity faqEntity = new FAQEntity();
         faqEntity.setFaqNumber(faqDTO.getFaqNumber());
         faqEntity.setFaqTitle(faqDTO.getFaqTitle());
