@@ -340,3 +340,6 @@ main{
 .menuBar li{
     cursor: pointer;
 }
+.logo{
+    cursor: pointer;
+}

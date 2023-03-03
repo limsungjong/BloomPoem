@@ -82,13 +82,29 @@
         $("#category").val(8);
         document.categorySelect.submit();
       })
-
+      $(".searchButton").on("click" ,function () {
+        $("#category").val(0);
+        $("#searchValue").val($(".searchTerm").val());
+        document.categorySelect.submit();
+      })
+      $(".searchTerm").on("keyup", key =>{
+        if(key.keyCode ==13) {
+          $("#category").val(0);
+          $("#searchValue").val($(".searchTerm").val());
+          document.categorySelect.submit();
+        }
+      })
+    $(".logo").on("click" ,()=>{
+      location.href="/shopping"
     })
+    })
+
+
   </script>
 </head>
 <body>
 <header class="header">
-  <img src="./image/logo최종.png" alt="logo" class="logo" />
+  <img src="/image/logo최종.png" alt="logo" class="logo"/>
   <menu>
     <div class="searchBox">
       <input
@@ -123,16 +139,17 @@
   </div>
   <form name="categorySelect" action="/shopping/category">
     <input type="hidden" name="category" id="category" value="">
+    <input type="hidden" name="searchValue" id="searchValue" value="">
   </form>
   <br/>
   <div class="mainImageBox">
-    <div>
-      <div  class="mainImg" >
-
+      <div class="mainImgDiv" >
+      <img src="#" alter="mainImage" class="mainImage">
+      <img src="#" alter="mainImage" class="mainImage">
+      <img src="#" alter="mainImage" class="mainImage">
       </div>
       <span class="material-symbols-outlined left">chevron_left</span>
       <span class="material-symbols-outlined right">chevron_right</span>
-    </div>
   </div>
   <div class="mainText">
     많이 팔리는 상품들을 아래에서 확인해보세요.

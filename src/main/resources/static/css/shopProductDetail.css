@@ -235,3 +235,6 @@ footer {
 .form-select option{
     font-size: medium;
 }
+.logo{
+    cursor: pointer;
+}

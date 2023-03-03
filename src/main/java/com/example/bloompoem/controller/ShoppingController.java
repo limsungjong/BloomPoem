@@ -33,9 +33,10 @@ public class ShoppingController {
     }
 
     @GetMapping("/shopping/category")
-    public String shoppingCategory (Model model, int category){
+    public String shoppingCategory (Model model, int category,String searchValue){
         model.addAttribute("category", category);
         model.addAttribute("page" , 1);
+        model.addAttribute("searchValue", searchValue);
         if(category > 8 && category<0){
             return  "/shopping";
         }

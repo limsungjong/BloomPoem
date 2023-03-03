@@ -13,6 +13,39 @@
     <title>구조 잡기</title>
     <link rel="stylesheet" href="/css/shopCategory.css" />
     <script>
+        //검색하는 스크립트 시작
+        const search = function (){
+            const searchValue = $(".searchValue").val();
+            $("#category").val(0);
+            $.ajax({
+                url : "/shopping/search",
+                data  : {searchValue}
+            }).then(r =>{
+                    $(".productContent").empty();
+                    $.each(r.content, (i,m)=>{
+                        const msg =
+                            `<div class="productView">
+                                <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                                <div class="text productNameText">${m.productName}</div>
+                                <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
+                                <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
+                                </div>`
+                        $(".productContent").append(msg);
+                    })
+                    if(r.totalPages>1){
+                        const page = $("#page").val();
+                        $(".pagingButton").empty();
+                        for(let i=1;r.totalPages>=i; i++){
+                            const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                            $(".pagingButton").append(msg);
+                        }
+                    }
+                }
+            ).catch(err =>console.log(err));
+        }
+
+        //검색하는 스크립트 끝
         $(document).ready(function (){
             viewCart();
 
@@ -85,30 +118,43 @@
                     $(".category").val(8);
                     document.categorySelect.submit();
                 })
-
+                $(".logo").on("click" ,()=>{
+                    location.href="/shopping"
+                })
+                $(".searchButton").on("click",() =>{
+                    $(".searchValue").val($(".searchTerm").val());
+                    search();
+                })
+                $(".searchTerm").on("keyup",key=>{
+                    if(key.keyCode == 13) {
+                        $(".searchValue").val($(".searchTerm").val());
+                        search();
+                    }
+                })
 
         })
         const viewCart = function (page, sort){
             const category = $("#category").val();
-            $.ajax({
-                url : "/shopping/productListView",
-                data : {category},
-            }).then(suc => {
-                if(suc == null){
-                    alert("상품이 없습니다.");
-                    location.href="/shopping";
-                    return;
-                }else{
-                    $.each(suc.content, function (i, m){
-                        const msg  = `<div class="productView">
+            if(category != 0){
+                $.ajax({
+                    url : "/shopping/productListView",
+                    data : {category},
+                }).then(suc => {
+                    if(suc == null){
+                        alert("상품이 없습니다.");
+                        location.href="/shopping";
+                        return;
+                    }else{
+                        $.each(suc.content, function (i, m){
+                            const msg  = `<div class="productView">
                             <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
                             <div class="text productNameText">${m.productName}</div>
                             <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
                             <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
                                 <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
                             </div>`
-                    $(".productContent").append(msg);
-                    })}
+                            $(".productContent").append(msg);
+                        })}
                     if(suc.totalPages>1){
                         const page = $("#page").val();
                         for(let i=1;suc.totalPages>=i; i++){
@@ -117,7 +163,11 @@
                         }
                     }
 
-            }).catch(err => console.log(err))
+                }).catch(err => console.log(err))
+            }else{
+                search();
+            }
+
             //viewCart 끝
             //상세정보로 넘기는 스크립트
             $(".productContent").on("click",".productImage" ,function (e){
@@ -236,38 +286,7 @@
 
             })
             //sort하는 스크립트 끝
-            //검색하는 스크립트 시작
-            $(".searchButton").on("click",() =>{
-                const searchValue = $(".searchTerm").val();
-                $("#category").val(0);
-                $.ajax({
-                    url : "/shopping/search",
-                    data  : {searchValue}
-                }).then(r =>{
-                    $(".productContent").empty();
-                    $.each(r.content, (i,m)=>{
-                        const msg =
-                            `<div class="productView">
-                                <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
-                                <div class="text productNameText">${m.productName}</div>
-                                <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
-                                <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
-                                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
-                                </div>`
-                        $(".productContent").append(msg);
-                    })
-                        if(r.totalPages>1){
-                            const page = $("#page").val();
-                            $(".pagingButton").empty();
-                            for(let i=1;r.totalPages>=i; i++){
-                                const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
-                                $(".pagingButton").append(msg);
-                            }
-                        }
-                }
-                ).catch(err =>console.log(err));
-            })
-            //검색하는 스크립트 끝
+
         }
         function comma(str) {
             str = String(str);
@@ -307,6 +326,7 @@
         <input type="hidden" name="category" class="category" value="">
     </form>
     <input type="hidden" name="sort" class="sort" value="">
+    <input type="hidden" name="searchValue" class="searchValue" th:value="${searchValue}">
     <div class="mainContent">
         <div class="menuBar">
             <ul>
