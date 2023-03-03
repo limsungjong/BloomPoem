@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MailDTO {
-    private String emailAddress;
+    private String userEmail;
     private String title;
     private String userName;
     private String OTP;

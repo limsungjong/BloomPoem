@@ -16,7 +16,7 @@ public class MailService {
         try {
             MailHandler mailHandler = new MailHandler(javaMailSender);
             // 받는 사람
-            mailHandler.setTo(mailDTO.getEmailAddress());
+            mailHandler.setTo(mailDTO.getUserEmail());
             // 보내는 사람
             mailHandler.setFrom(MailService.FROM_ADDRESS);
             // 제목
