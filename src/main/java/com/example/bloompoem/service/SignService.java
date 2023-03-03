@@ -1,6 +1,7 @@
 package com.example.bloompoem.service;
 
 
+import com.example.bloompoem.domain.dto.MailCheckRequest;
 import com.example.bloompoem.domain.dto.MailDTO;
 import com.example.bloompoem.domain.dto.UserSignUpRequest;
 import com.example.bloompoem.entity.TestUserEntity;
@@ -43,8 +44,21 @@ public class SignService {
     }
 
     public int userCheck(UserSignUpRequest dto) {
-        if (dto.getUserAddress().isEmpty()) {
+        if (dto.getUserAddress().isEmpty() || dto.getUserAddress().isBlank()) {
             System.out.println("addressEmpty");
+            return 400;
+        }
+        if (dto.getUserName().isEmpty() || dto.getUserName().isBlank()) {
+            System.out.println("nameEmpty");
+            return 400;
+        }
+        if (dto.getUserPhoneNumber().isEmpty() || dto.getUserPhoneNumber().isBlank()) {
+            System.out.println("phoneNumEmpty");
+            return 400;
+        }
+        if (dto.getUserEmail().isEmpty() || dto.getUserEmail().isBlank()) {
+            System.out.println("userEmailEmpty");
+            return 400;
         }
 
         if (!duplicateEmailCheck(dto.getUserEmail()).isPresent()) {
@@ -88,7 +102,7 @@ public class SignService {
         Optional<TestUserEntity> testUserEntity = testUserRepository.findByUserEmail(dto.getUserEmail());
         if (testUserEntity.isPresent()) {
             String OTP = userUpdateOTP(testUserEntity.get().getUserEmail());
-            mailDTO.setEmailAddress(dto.getUserEmail());
+            mailDTO.setUserEmail(dto.getUserEmail());
             mailDTO.setUserName(dto.getUserName());
             mailDTO.setOTP(OTP);
             mailDTO.setTitle("블룸포엠에서 보내드리는 인증번호입니다.");
@@ -107,5 +121,20 @@ public class SignService {
         user.setUserAddressDetail(dto.getUserAddressDetail());
         user.setUserPhoneNumber(dto.getUserPhoneNumber());
         return testUserRepository.save(user).getUserEmail();
+    }
+
+    public String login(MailCheckRequest dto) throws RuntimeException{
+        Optional<TestUserEntity> user =  testUserRepository.findByUserEmail(dto.getUserEmail());
+        if(user.isPresent() && user.get().getUserEmail().equals(dto.getUserEmail())) {
+            if(user.get().getUserOtp().equals(dto.getOtp())) {
+                return "login토큰 발행";
+            } else {
+        // otp 틀림
+                throw new RuntimeException("OTP 일치하지 않음");
+            }
+        } else {
+        // 유저 이메일 없음
+            throw new RuntimeException(dto.getUserEmail()+"회원 정보 없음");
+        }
     }
 }

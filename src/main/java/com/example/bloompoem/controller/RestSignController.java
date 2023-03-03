@@ -1,6 +1,8 @@
 package com.example.bloompoem.controller;
 
 import com.example.bloompoem.domain.dto.MailCheckRequest;
+import com.example.bloompoem.domain.dto.MailDTO;
+import com.example.bloompoem.domain.dto.UserSignResponse;
 import com.example.bloompoem.domain.dto.UserSignUpRequest;
 import com.example.bloompoem.service.SignService;
 import com.example.bloompoem.service.UserService;
@@ -27,28 +29,42 @@ public class RestSignController {
 //     "userName":"임성종"
 
     @PostMapping("/sign_up")
-    public ResponseEntity<String> singUp(@RequestBody @Valid UserSignUpRequest dto) {
+    public ResponseEntity<UserSignResponse> singUp(@RequestBody @Valid UserSignUpRequest dto) {
         int result = signService.userCheck(dto);
-
+        UserSignResponse res = new UserSignResponse();
         if (result == 0) {
             signService.userCheckMailSend(dto);
-            return ResponseEntity.ok().body("success");
+            return ResponseEntity.ok().body(res);
         } else if (result == -1) {
-            return ResponseEntity.ok().body("이메일이 중복 됩니다.");
+            res.setStatus(-1);
+            res.setReason("이메일이 중복됩니다.");
         } else if (result == -10) {
-            return ResponseEntity.ok().body("입력한 이메일 형식이 잘못된 요청입니다.");
+            res.setStatus(-10);
+            res.setReason("이메일이 형식에 맞지 않습니다.");
         } else {
-            return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+            res.setStatus(400);
+            res.setReason("잘못된 요청입니다.");
         }
+        return ResponseEntity.ok().body(res);
     }
 
 
-    @PostMapping("/sign_up_otp_check")
-    public String signUpOtpCheck(@RequestBody MailCheckRequest dto) {
-        System.out.println(dto.getUserEmail());
-        System.out.println(dto.getOTP());
+    @PostMapping("/sign_otp_check")
+    public ResponseEntity<UserSignResponse> signUpOtpCheck(@RequestBody MailCheckRequest dto) {
 
-        return "여기는 이메일 체크";
+        String token = signService.login(dto);
+        UserSignResponse res = new UserSignResponse();
+        System.out.println(dto.getOtp());
+        System.out.println(token);
+        if (token.isEmpty()) {
+            System.out.println(token);
+            res.setStatus(-1);
+            res.setReason("retry");
+        } else {
+            res.setStatus(0);
+            res.setReason("success");
+        }
+        return ResponseEntity.ok().body(res);
     }
 
     @PostMapping("/sign_in")
