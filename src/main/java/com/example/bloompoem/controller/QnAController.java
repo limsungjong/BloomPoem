@@ -1,5 +1,7 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.dto.QnADTO;
+import com.example.bloompoem.service.QnAService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +15,8 @@ public class QnAController {
     QnAService qnaService;
 
     @GetMapping("/QnA")
-    public String findAllQnAList(Model model){
-        List<QnADTO> qnaDTOList = qnaService.findAllQnAList();
+    public String findAll(Model model){
+        List<QnADTO> qnaDTOList = qnaService.findAll();
         model.addAttribute("QnAList", qnaDTOList);
         return "qna";
     }
