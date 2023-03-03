@@ -48,6 +48,11 @@
                     $(".plant").css("display","none");
                     $(".wreath").css("display","none")
                 })
+                $(".header").on("mouseenter", ()=>{
+                    $(".flowerBasket").css("display", "none");
+                    $(".plant").css("display","none");
+                    $(".wreath").css("display","none")
+                })
                 $(".orientalOrchid").on("click", ()=>{
                     $(".category").val(1);
                     document.categorySelect.submit();
@@ -164,41 +169,104 @@
             //sort하는 스크립트
             $("#sort").change(function (){
                 const sort = $("#sort option:selected").val();
-                $.ajax({
-                    url : "/shopping/productListView",
-                    data : {category, sort},
-                }).then(suc => {
-                    if (suc == null) {
-                        alert("상품이 없습니다.");
-                        location.href = "/shopping";
-                        return;
-                    } else {
-                        $(".productContent").empty();
-                        $.each(suc.content, function (i, m) {
-                            const msg = `<div class="productView">
+                const category =$("#category").val();
+                if(category != 0){
+                    $.ajax({
+                        url : "/shopping/productListView",
+                        data : {category, sort},
+                    }).then(suc => {
+                        if (suc == null) {
+                            alert("상품이 없습니다.");
+                            location.href = "/shopping";
+                            return;
+                        } else {
+                            $(".productContent").empty();
+                            $.each(suc.content, function (i, m) {
+                                const msg = `<div class="productView">
                             <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
                             <div class="text productNameText">${m.productName}</div>
                             <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
                             <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
                                 <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
                             </div>`
-                            $(".productContent").append(msg);
-                        })
-                        if(suc.totalPages>1){
+                                $(".productContent").append(msg);
+                            })
+                            if(suc.totalPages>1){
+                                const page = $("#page").val();
+                                $(".pagingButton").empty();
+                                for(let i=1;suc.totalPages>=i; i++){
+                                    const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                                    $(".pagingButton").append(msg);
+                                }
+                            }
+                        }
+
+                    })
+                }else{
+                    const searchValue = $(".searchTerm").val();
+                    $("#category").val(0);
+                    $.ajax({
+                        url : "/shopping/search",
+                        data  : {searchValue, sort}
+                    }).then(r =>{
+                            $(".productContent").empty();
+                            $.each(r.content, (i,m)=>{
+                                const msg =
+                                    `<div class="productView">
+                                <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                                <div class="text productNameText">${m.productName}</div>
+                                <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
+                                <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
+                                </div>`
+                                $(".productContent").append(msg);
+                            })
+                            if(r.totalPages>1){
+                                const page = $("#page").val();
+                                $(".pagingButton").empty();
+                                for(let i=1;r.totalPages>=i; i++){
+                                    const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                                    $(".pagingButton").append(msg);
+                                }
+                            }
+                        }
+                    ).catch(err =>console.log(err));
+                }
+
+
+            })
+            //sort하는 스크립트 끝
+            //검색하는 스크립트 시작
+            $(".searchButton").on("click",() =>{
+                const searchValue = $(".searchTerm").val();
+                $("#category").val(0);
+                $.ajax({
+                    url : "/shopping/search",
+                    data  : {searchValue}
+                }).then(r =>{
+                    $(".productContent").empty();
+                    $.each(r.content, (i,m)=>{
+                        const msg =
+                            `<div class="productView">
+                                <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                                <div class="text productNameText">${m.productName}</div>
+                                <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
+                                <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
+                                </div>`
+                        $(".productContent").append(msg);
+                    })
+                        if(r.totalPages>1){
                             const page = $("#page").val();
                             $(".pagingButton").empty();
-                            for(let i=1;suc.totalPages>=i; i++){
+                            for(let i=1;r.totalPages>=i; i++){
                                 const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
                                 $(".pagingButton").append(msg);
                             }
                         }
-                    }
-
-                })
+                }
+                ).catch(err =>console.log(err));
             })
-            //sort하는 스크립트 끝
-            //검색하는 스크립트 시작
-
             //검색하는 스크립트 끝
         }
         function comma(str) {

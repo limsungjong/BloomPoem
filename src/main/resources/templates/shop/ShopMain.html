@@ -45,6 +45,11 @@
         $(".plant").css("display","none");
         $(".wreath").css("display","none")
       })
+      $(".header").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
       $(".orientalOrchid").on("click", ()=>{
           $("#category").val(1);
           document.categorySelect.submit();
@@ -77,6 +82,7 @@
         $("#category").val(8);
         document.categorySelect.submit();
       })
+
     })
   </script>
 </head>

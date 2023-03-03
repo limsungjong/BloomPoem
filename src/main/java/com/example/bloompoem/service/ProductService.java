@@ -40,4 +40,11 @@ public class ProductService {
         ProductEntity product = dao.findByProductNumber(productNumber);
         return product;
     }
+    public Page<ProductEntity> searchProduct(String searchValue, Pageable pageable){
+        Page<ProductEntity> product = dao.findByProductNameContaining(searchValue, pageable);
+        if(product == null){
+            product= null;
+        }
+        return product;
+    }
 }

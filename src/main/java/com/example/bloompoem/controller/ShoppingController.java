@@ -33,9 +33,12 @@ public class ShoppingController {
     }
 
     @GetMapping("/shopping/category")
-    public String shoppingCategory (Model model, char category){
+    public String shoppingCategory (Model model, int category){
         model.addAttribute("category", category);
         model.addAttribute("page" , 1);
+        if(category > 8 && category<0){
+            return  "/shopping";
+        }
         return "/shop/shopCategory";
     }
 
@@ -67,5 +70,11 @@ public class ShoppingController {
         } else {
             return "/shop/shopMain";
         }
+    }
+    @GetMapping("/shopping/search")
+    public ResponseEntity<Page<ProductEntity>> searchProduct (String searchValue, @PageableDefault(size = 6)Pageable pageable){
+
+        Page<ProductEntity> product = productService.searchProduct(searchValue, pageable);
+        return ResponseEntity.ok(product);
     }
 }
