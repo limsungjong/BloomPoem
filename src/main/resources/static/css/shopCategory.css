@@ -220,6 +220,7 @@ footer{
     justify-content: space-around;
     height: 100%;
     align-items: center;
+
 }
 .mainContent{
     height: auto;
@@ -291,4 +292,51 @@ main{
 }
 .productNameText{
     font-weight: bold;
+}
+.subMenu{
+    width: 1260px;
+    display: flex;
+    justify-content: space-around;
+
+}
+.subMenu div{
+    padding: 10px;
+    font-size: medium;
+    background-color: white;
+    cursor: pointer;
+
+}
+.subMenu div :hover{
+    background-color: pink;
+    font-weight: bold;
+}
+.subMenu .plant{
+    display: none;
+    position: absolute;
+    left: 61px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    bottom: -33px;
+
+}
+.subMenu .wreath{
+    display: none;
+    position: absolute;
+    left: 255px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    bottom: -33px;
+
+}
+.subMenu .flowerBasket{
+    display: none;
+    position: absolute;
+    left: 492px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    bottom: -33px;
+}
+.menuBar li:hover{
+    background-color: pink;
+    font-weight: bold;
+}
+.menuBar li{
+    cursor: pointer;
 }

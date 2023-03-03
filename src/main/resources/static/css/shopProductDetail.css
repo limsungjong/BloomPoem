@@ -212,22 +212,26 @@ footer {
     height: auto;
     display: flex;
     justify-content: center;
+    object-fit: cover;
 }
 .subImage{
     width: 1000px;
-    height: 5005px;
+    height: auto;
 }
-.footStickyArea{
+.sideStickyArea{
     position: fixed;
     top: 750px;
     right: 30px;
 }
-.footStickyBox {
+.sideStickyBox {
     font-size: medium;
 }
-.footStickyBox option{
+.sideStickyBox option{
     font-size: medium;
 }
 ::-webkit-scrollbar {
     display: none;
+}
+.form-select option{
+    font-size: medium;
 }

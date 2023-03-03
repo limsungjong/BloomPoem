@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -15,9 +15,10 @@
   </script>
 </head>
 <body>
-<input type="hidden" name="category" id="category" th:value="${category}">
-<input type="hidden" name="curPage" id="curPage" th:value="${curPage}">
-<input type="hidden" name="productNumber" id="productNumber" th:value="${productNumber}">
+  <input type="hidden" name="category" id="category" th:value="${category}">
+  <input type="hidden" name="curPage" id="curPage" th:value="${curPage}">
+  <input type="hidden" name="productNumber" id="productNumber" th:value="${productNumber}">
+
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
   <menu>
@@ -50,23 +51,25 @@
   <div class="subImageBox">
     <img th:src="@{/image/product/}+${product.productSubImage1}" class="subImage" alt="subImage" />
   </div>
-  <div class="footStickyArea">
-    <div class="footStickyBox">
-      <div>Quantity<select class="form-select form-select-sm">
-        <option>수량</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </select></div></div>
-    <div>Price</div>
+  <div class="sideStickyArea">
+    <div class="sideStickyBox">
+      <div>수량<select class="form-select form-select-sm">
+          <option>수량</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </div>
+    <div>가격<span th:text="${product.productPrice}"></span></div>
     <div>
       <button class="btn btn-outline-primary " th:data-no="${productNumber}">Basket</button>
       <button class="btn btn-outline-success " th:data-no="${productNumber}">Buy</button>
     </div>
   </div>
-  </div>
+</div>
 </main>
 <footer>
 </footer>
