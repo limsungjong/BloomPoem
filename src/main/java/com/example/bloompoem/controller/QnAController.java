@@ -23,9 +23,15 @@ public class QnAController {
     }
 
     // 문의 글쓰기
-    //@GetMapping("/QnA/write")
+    @GetMapping("/QnA/write")
+    public String write(Model model){
+        return "/QnA/write";
+    }
 
 
     // 문의 글 보기
-    //@GetMapping("/QnA/view")
+    @GetMapping("/QnA/view")
+    public String view(Model model){
+        return "/QnA/view";
+    }
 }
