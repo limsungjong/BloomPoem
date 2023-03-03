@@ -14,11 +14,18 @@ public class QnAController {
     @Autowired
     QnAService qnaService;
 
+    // 나의 문의 내역 리스트
     @GetMapping("/QnA")
     public String getQnAList(Model model, Pageable pageable){
         Page<QnAEntity> qnAEntityPage = qnaService.getQnAList(pageable);
         model.addAttribute("QnAList", qnAEntityPage);
-        return "qna";
+        return "/QnA";
     }
 
+    // 문의 글쓰기
+    //@GetMapping("/QnA/write")
+
+
+    // 문의 글 보기
+    //@GetMapping("/QnA/view")
 }
