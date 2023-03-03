@@ -173,10 +173,10 @@ footer {
     grid-template-rows: 70px 70px 70px 90px ;
 
     grid-template-areas:
-  "a b b"
-  "a c ."
-  "a d d"
-  "a e f";
+      "a b b"
+      "a c ."
+      "a d d"
+      "a e f";
 
     align-items: center;
     justify-content: center;

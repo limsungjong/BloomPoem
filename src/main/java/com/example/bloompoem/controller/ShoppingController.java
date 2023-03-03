@@ -7,6 +7,7 @@ import jdk.jfr.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -34,15 +35,16 @@ public class ShoppingController {
     @GetMapping("/shopping/category")
     public String shoppingCategory (Model model, char category){
         model.addAttribute("category", category);
+        model.addAttribute("page" , 1);
         return "/shop/shopCategory";
     }
 
     //카테고리별 물건 불러오기
     @GetMapping("/shopping/productListView")
-    public ResponseEntity<List<ProductEntity>> view (int category ,@PageableDefault(size = 6) Pageable pageable) {
+    public ResponseEntity<Page<ProductEntity>> view (int category , @PageableDefault(size = 6) Pageable pageable) {
 
         if(category != '\u0000'){
-            List<ProductEntity> product = productService.categoryProductView(category, pageable);
+            Page<ProductEntity> product = productService.categoryProductView(category, pageable);
             if(product != null){
                 return ResponseEntity.ok(product);
             }else {

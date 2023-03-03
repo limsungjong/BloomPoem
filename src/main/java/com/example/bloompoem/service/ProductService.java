@@ -17,8 +17,8 @@ public class ProductService {
     private ProductRepository dao;
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-    public List<ProductEntity> categoryProductView (int category ,Pageable pageable){
-        List<ProductEntity> product = null;
+    public Page<ProductEntity> categoryProductView (int category ,Pageable pageable){
+        Page<ProductEntity> product = null;
 
         try{
             product = dao.findAllByProductCategory(category, pageable);

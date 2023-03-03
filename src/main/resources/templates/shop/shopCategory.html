@@ -83,7 +83,7 @@
 
 
         })
-        const viewCart = function (){
+        const viewCart = function (page, sort){
             const category = $("#category").val();
             $.ajax({
                 url : "/shopping/productListView",
@@ -94,25 +94,112 @@
                     location.href="/shopping";
                     return;
                 }else{
-                    $.each(suc, function (i, m){
-                        const msg  = `              <div class="productView">  <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
-                    <div class="text productNameText">${m.productName}</div>
-                    <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
-                    <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
-                    <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div> </div>`
+                    $.each(suc.content, function (i, m){
+                        const msg  = `<div class="productView">
+                            <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                            <div class="text productNameText">${m.productName}</div>
+                            <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
+                            <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                                <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
+                            </div>`
                     $(".productContent").append(msg);
-
                     })}
+                    if(suc.totalPages>1){
+                        const page = $("#page").val();
+                        for(let i=1;suc.totalPages>=i; i++){
+                            const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                            $(".pagingButton").append(msg);
+                        }
+                    }
 
             }).catch(err => console.log(err))
-
+            //viewCart 끝
+            //상세정보로 넘기는 스크립트
             $(".productContent").on("click",".productImage" ,function (e){
                 const productNumber = parseInt(e.target.dataset.no);
-                const curPage = 1;
-                $("#curPage").val(curPage);
+                const Page = $("#page").val();
+                $("#curPage").val(Page);
                 $("#productNumber").val(productNumber);
                 document.detailForm.submit();
             })
+            //상세정보로 넘기는 스크립트 끝
+            //page 넘기는 스크립트
+            $(".pagingButton").on("click","button", function (e){
+                const page = parseInt(e.target.textContent)-1;
+                $("#page").val(e.target.textContent);
+                const category = $("#category").val();
+                $.ajax({
+                    url : "/shopping/productListView",
+                    data : {category, page},
+                }).then(suc => {
+                    if (suc == null) {
+                        alert("상품이 없습니다.");
+                        location.href = "/shopping";
+                        return;
+                    } else {
+                        $(".productContent").empty();
+                        $.each(suc.content, function (i, m) {
+                            const msg = `<div class="productView">
+                            <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                            <div class="text productNameText">${m.productName}</div>
+                            <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
+                            <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                                <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
+                            </div>`
+                            $(".productContent").append(msg);
+                        })
+                        if(suc.totalPages>1){
+                            const page = $("#page").val();
+                            $(".pagingButton").empty();
+                            for(let i=1;suc.totalPages>=i; i++){
+                                const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                                $(".pagingButton").append(msg);
+                            }
+                        }
+                    }
+
+                })
+            })
+            //page넘기는 스크립트 끝
+            //sort하는 스크립트
+            $("#sort").change(function (){
+                const sort = $("#sort option:selected").val();
+                $.ajax({
+                    url : "/shopping/productListView",
+                    data : {category, sort},
+                }).then(suc => {
+                    if (suc == null) {
+                        alert("상품이 없습니다.");
+                        location.href = "/shopping";
+                        return;
+                    } else {
+                        $(".productContent").empty();
+                        $.each(suc.content, function (i, m) {
+                            const msg = `<div class="productView">
+                            <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                            <div class="text productNameText">${m.productName}</div>
+                            <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span></div>
+                            <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                                <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
+                            </div>`
+                            $(".productContent").append(msg);
+                        })
+                        if(suc.totalPages>1){
+                            const page = $("#page").val();
+                            $(".pagingButton").empty();
+                            for(let i=1;suc.totalPages>=i; i++){
+                                const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                                $(".pagingButton").append(msg);
+                            }
+                        }
+                    }
+
+                })
+            })
+            //sort하는 스크립트 끝
+            //검색하는 스크립트 시작
+
+            //검색하는 스크립트 끝
         }
         function comma(str) {
             str = String(str);
@@ -145,12 +232,13 @@
 <main>
     <form name="detailForm" action="/shopping/product_detail">
         <input type="hidden" name="category" id="category" th:value="${category}">
-        <input type="hidden" name="curPage" id="curPage" value="">
+        <input type="hidden" name="page" id="page" th:value="${page}">
         <input type="hidden" name="productNumber" id="productNumber" value="">
     </form>
     <form name="categorySelect" action="/shopping/category">
         <input type="hidden" name="category" class="category" value="">
     </form>
+    <input type="hidden" name="sort" class="sort" value="">
     <div class="mainContent">
         <div class="menuBar">
             <ul>
@@ -171,9 +259,8 @@
             <div class="sortSelect">
                 <select name="sort" id="sort" class="form-select form-select-sm">
                     <option value="">기본</option>
-                    <option value="">가격 낮은 순</option>
-                    <option value="">가격 높은 순</option>
-                    <option value="">평점 높은 순</option>
+                    <option value="productPrice,asc">가격 낮은 순</option>
+                    <option value="productPrice,desc">가격 높은 순</option>
                 </select>
             </div>
         </div>
@@ -187,8 +274,7 @@
 <!--            </div>-->
         </div>
         <div class="pagingButton">
-            <button class="btn btn-outline-dark" style="background-color: #3ea4f8">1</button>
-<!--            <button class="btn btn-outline-dark">2</button>-->
+
 
         </div>
 
