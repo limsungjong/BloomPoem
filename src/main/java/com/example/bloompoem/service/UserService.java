@@ -1,7 +1,7 @@
 package com.example.bloompoem.service;
 
-import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.MailDTO;
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.UserSignUpRequest;
 import com.example.bloompoem.entity.TestUserEntity;
 import com.example.bloompoem.exception.CustomException;
@@ -10,7 +10,6 @@ import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
