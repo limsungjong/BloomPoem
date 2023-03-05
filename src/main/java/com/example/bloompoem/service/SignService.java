@@ -1,12 +1,15 @@
 package com.example.bloompoem.service;
 
 
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.UserSignInRequest;
 import com.example.bloompoem.entity.TestUserEntity;
+import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.TestUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,18 +31,20 @@ public class SignService {
     // 2. 핸드폰 번호 형식 체크
     // 3. 이메일 db 중복 체크 duplicateEmailCheck
 
-    public String login(UserSignInRequest dto) throws RuntimeException{
-        Optional<TestUserEntity> user =  testUserRepository.findByUserEmail(dto.getUserEmail());
-        if(user.isPresent() && user.get().getUserEmail().equals(dto.getUserEmail())) {
-            if(user.get().getUserOtp().equals(dto.getUserOtp())) {
-                return "login토큰 발행";
+    public void login(UserSignInRequest dto) throws RuntimeException{
+        Optional<TestUserEntity> user = testUserRepository.findByUserEmail(dto.getUserEmail());
+        if(user.isPresent()) {
+
+            if(user.get().getUserEmail().equals(dto.getUserEmail())) {
+
+
             } else {
-        // otp 틀림
-                throw new RuntimeException("OTP 일치하지 않음");
+
+                throw new CustomException(ResponseCode.ACCOUNT_MISMATCH);
             }
+
         } else {
-        // 유저 이메일 없음
-            throw new RuntimeException(dto.getUserEmail()+"회원 정보 없음");
+            throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
         }
     }
 }

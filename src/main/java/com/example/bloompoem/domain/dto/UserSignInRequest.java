@@ -7,6 +7,5 @@ import lombok.Setter;
 @Setter
 public class UserSignInRequest {
     private String userEmail;
-
     private String userOtp;
 }
