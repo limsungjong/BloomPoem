@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>sign in</title>
     <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/signUp.css"/>
     <link rel="stylesheet" type="text/css" href="/css/signIn.css"/>
+    <script src="/build/singIn.js" defer></script>
 </head>
 <body>
 <header class="header">
@@ -28,6 +30,9 @@
                         id="emailInput"
                         autocomplete="off"
                 />
+                <span class="emailTestFail">
+                  이메일 주소의 형식이 올바르지 않습니다. 예시) bloomPoem@naver.com
+                </span>
                 <button id="emailSubmit" class="btn margin-3">Submit</button>
             </div>
             <h2 class="orBox">

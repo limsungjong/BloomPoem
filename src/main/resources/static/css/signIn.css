@@ -62,9 +62,7 @@
     height: 100%;
     font-size: 1.5rem;
     outline: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    color: #000000;
 }
 .inputWD {
     width: 360px;
@@ -103,4 +101,25 @@
 }
 .signUpText {
     font-size: 1rem;
+}
+
+.inputOtpBox {
+    height: 10vh;
+    display: flex;
+}
+.inputOtp {
+    text-align: center;
+    font-size: 3rem;
+    height: 80px;
+    width: 5vw;
+    margin: 0 10px;
+}
+.userText span {
+    font-size: 1.5rem;
+}
+
+.modal-window {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

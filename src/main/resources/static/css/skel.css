@@ -291,3 +291,11 @@ footer {
   padding: 0px 10px;
   color: var(--color-black);
 }
+
+.emailTestFail {
+  font-size: 0.8rem;
+  margin: 10px 0;
+  color: red;
+  text-transform: math-auto;
+  display: none;
+}
