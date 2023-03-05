@@ -9,12 +9,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
 import static com.example.bloompoem.domain.dto.ResponseCode.DUPLICATE_RESOURCE;
 
 @RestControllerAdvice
 public class ExceptionManager extends ResponseEntityExceptionHandler {
     Logger logger = LoggerFactory.getLogger(ExceptionManager.class);
+
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex){
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors()
+//                .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
+//        return ResponseEntity.badRequest().body(errors);
+//    }
 
     // handleDataException : hibernate 관련 에러 처리
     @ExceptionHandler(value = { ConstraintViolationException.class, DataIntegrityViolationException.class })
@@ -24,9 +31,10 @@ public class ExceptionManager extends ResponseEntityExceptionHandler {
     }
 
     // handleCustomException : customException 관련 에러 처리
-    @ExceptionHandler(value = { CustomException.class })
+    @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         logger.error("handleCustomException throw CustomException : {}", e.getResponseCode());
         return ErrorResponse.toResponseEntity(e.getResponseCode());
     }
+
 }
