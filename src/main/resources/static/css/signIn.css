@@ -62,7 +62,9 @@
     height: 100%;
     font-size: 1.5rem;
     outline: none;
-    color: #000000;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 .inputWD {
     width: 360px;

@@ -110,10 +110,10 @@ const reg = new RegExp(emailTest);
         fetch("http://localhost:9000/api/v1/sign/sign_up", requestOptions)
             .then((data) => data.json())
             .then((data) => {
-                {
-                    if (data.status == 0) {
-                        const modal = document.createElement("div");
-                        const modalElement = `
+            {
+                if (data.status == 0) {
+                    const modal = document.createElement("div");
+                    const modalElement = `
         <div id="modal" class="modal-overlay">
         <div class="modal-window">
           <div class="title">
@@ -137,144 +137,120 @@ const reg = new RegExp(emailTest);
                 id="inpit1"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit2"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit3"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit4"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit5"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit6"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
             </div>
           </div>
         </div>
       </div>
         `;
-                        modal.innerHTML = modalElement;
-                        body === null || body === void 0 ? void 0 : body.append(modal);
-                        const closeBtn = modal.querySelector(".close-area");
-                        const modalOver = modal.querySelector(".modal-overlay");
-                        closeBtn.addEventListener("click", (e) => {
-                            if (confirm("아직 회원 가입이 진행중입니다. 정말로 닫으실건가요?")) {
-                                modalOver.style.display = "none";
+                    modal.innerHTML = modalElement;
+                    body === null || body === void 0 ? void 0 : body.append(modal);
+                    const closeBtn = modal.querySelector(".close-area");
+                    const modalOver = modal.querySelector(".modal-overlay");
+                    closeBtn.addEventListener("click", (e) => {
+                        if (confirm("아직 회원 가입이 진행중입니다. 정말로 닫으실건가요?")) {
+                            modalOver.style.display = "none";
+                        }
+                    });
+                    const retryBtn = modal.querySelector(".retry");
+                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => { });
+                    const iList = modal.querySelectorAll(".inputOtp");
+                    iList.forEach((v, k) => {
+                        v.addEventListener("keyup", () => {
+                            var _a;
+                            if (v.value.length == 1) {
+                                if (iList[k + 1] == undefined) {
+                                    const ioBox = modal.querySelector(".inputOtpBox");
+                                    ioBox.style.display = "none";
+                                    (_a = modal.querySelector(".content")) === null || _a === void 0 ? void 0 : _a.append(loadingSpinner);
+                                    let otp = "";
+                                    iList.forEach((v) => (otp += v.value));
+                                    const body = JSON.stringify({
+                                        userEmail: userEmail.value,
+                                        otp,
+                                    });
+                                    const requestOptions = {
+                                        method: "POST",
+                                        headers: myHeaders,
+                                        body: body,
+                                        redirect: "follow",
+                                    };
+                                    fetch("http://localhost:9000/api/v1/sign/sign_otp_check", requestOptions)
+                                        .then((data) => data.json())
+                                        .then((data) => {
+                                        var _a;
+                                        if (data.status == 0) {
+                                            alert("회원가입에 성공하였습니다.");
+                                            location.href = "http://localhost:9000/sign/sign_in";
+                                        }
+                                        else {
+                                            (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
+                                            ioBox.style.display = "flex";
+                                            alert("인증 번호를 다시 확인해주세요.");
+                                        }
+                                    })
+                                        .catch((err) => {
+                                        console.log(err);
+                                    });
+                                }
+                                iList[k + 1].focus();
                             }
                         });
-                        const retryBtn = modal.querySelector(".retry");
-                        retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => { });
-                        const iList = modal.querySelectorAll(".inputOtp");
-                        iList.forEach((v, k) => {
-                            v.addEventListener("keyup", () => {
-                                var _a;
-                                if (v.value.length == 1) {
-                                    if (iList[k + 1] == undefined) {
-                                        const ioBox = modal.querySelector(".inputOtpBox");
-                                        ioBox.style.display = "none";
-                                        (_a = modal.querySelector(".content")) === null || _a === void 0 ? void 0 : _a.append(loadingSpinner);
-                                        let otp = "";
-                                        iList.forEach((v) => (otp += v.value));
-                                        const body = JSON.stringify({
-                                            userEmail: userEmail.value,
-                                            otp,
-                                        });
-                                        const requestOptions = {
-                                            method: "POST",
-                                            headers: myHeaders,
-                                            body: body,
-                                            redirect: "follow",
-                                        };
-                                        fetch("http://localhost:9000/api/v1/sign/sign_otp_check", requestOptions)
-                                            .then((data) => data.json())
-                                            .then((data) => {
-                                                var _a;
-                                                if (data.status == 0) {
-                                                    alert("회원가입에 성공하였습니다.");
-                                                    location.href = "http://localhost:9000/sign/sign_in";
-                                                }
-                                                else {
-                                                    (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
-                                                    ioBox.style.display = "flex";
-                                                    alert("인증 번호를 다시 확인해주세요.");
-                                                }
-                                            })
-                                            .catch((err) => {
-                                                console.log(err);
-                                            });
-                                    }
-                                    iList[k + 1].focus();
-                                }
-                            });
-                        });
-                        return;
-                    }
-                    else if (data.status == -1) {
-                        alert(data.reason);
-                    }
-                    else if (data.status == -10) {
-                        alert(data.reason);
-                    }
-                    else if (data.status == 400) {
-                        alert(data.reason);
-                    }
-                    else if (data.status == 404) {
-                        alert(data.reason);
-                    }
-                    else {
-                    }
+                    });
+                    return;
                 }
-            })
+                else if (data.status == -1) {
+                    alert(data.reason);
+                }
+                else if (data.status == -10) {
+                    alert(data.reason);
+                }
+                else if (data.status == 400) {
+                    alert(data.reason);
+                }
+                else if (data.status == 404) {
+                    alert(data.reason);
+                }
+                else {
+                }
+            }
+        })
             .catch((err) => console.log(err));
     });
 }
-// (document.querySelector("#submit") as HTMLButtonElement).addEventListener(
-//   "click",
-//   (e) => {
-//     const inputData = JSON.stringify({
-//       userEmail: userEmail.value,
-//       userAddress: userAddress.value,
-//       userAddressDetail: userAddressDetail.value,
-//       userPhoneNumber: `${p1Num.value}-${p2Num.value}-${p3Num.value}`,
-//       userName: userName.value,
-//     });
-//     const myHeaders = new Headers();
-//     const requestOptions: RequestInit = {
-//       method: "POST",
-//       headers: myHeaders,
-//       body: inputData,
-//       redirect: "follow",
-//     };
-//     myHeaders.append("Content-Type", "application/json");
-//     console.log(requestOptions);
-//     fetch("http://localhost:9000/api/v1/sign/sign_up", requestOptions)
-//       .then((data) => data.json())
-//       .then((data) => {
-//         if (data.status == 0) {
-//         }
-//         console.log(data.status);
-//         console.log(data.reason);
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// );
