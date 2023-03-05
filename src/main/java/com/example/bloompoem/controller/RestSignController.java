@@ -1,9 +1,6 @@
 package com.example.bloompoem.controller;
 
-import com.example.bloompoem.domain.dto.MailCheckRequest;
-import com.example.bloompoem.domain.dto.MailDTO;
-import com.example.bloompoem.domain.dto.UserSignResponse;
-import com.example.bloompoem.domain.dto.UserSignUpRequest;
+import com.example.bloompoem.domain.dto.*;
 import com.example.bloompoem.service.SignService;
 import com.example.bloompoem.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +26,35 @@ public class RestSignController {
 //     "userName":"임성종"
 
     @PostMapping("/sign_up")
-    public ResponseEntity<UserSignResponse> singUp(@RequestBody @Valid UserSignUpRequest dto) {
-        int result = signService.userCheck(dto);
+    public ResponseEntity<UserSignResponse> singUp(@RequestBody @Valid UserSignUpRequest request) {
+
         UserSignResponse res = new UserSignResponse();
+        if (request.getUserEmail().isEmpty() || request.getUserEmail().isBlank()) {
+            System.out.println("addressEmpty");
+            res.setStatus(-400);
+            res.setReason("주소 입력 형식이 맞지 않습니다.");
+        }
+        if (request.getUserName().isEmpty() || request.getUserName().isBlank()) {
+            System.out.println("nameEmpty");
+            res.setStatus(-400);
+            res.setReason("이름 입력 형식이 맞지 않습니다.");
+        }
+        if (request.getUserPhoneNumber().isEmpty() || request.getUserPhoneNumber().isBlank()) {
+            System.out.println("phoneNumEmpty");
+            res.setStatus(-400);
+            res.setReason("연락처 입력 형식이 맞지 않습니다.");
+        }
+        if (request.getUserEmail().isEmpty() || request.getUserEmail().isBlank()) {
+            System.out.println("userEmailEmpty");
+            res.setStatus(-400);
+            res.setReason("이메일 입력 형식이 맞지 않습니다.");
+        }
+
+        int result = userService.createUser(request);
         if (result == 0) {
-            signService.userCheckMailSend(dto);
-            return ResponseEntity.ok().body(res);
+            userService.userOtpMailSend(request);
+            res.setStatus(0);
+            res.setReason("Otp메일 전송");
         } else if (result == -1) {
             res.setStatus(-1);
             res.setReason("이메일이 중복됩니다.");
@@ -49,15 +69,15 @@ public class RestSignController {
     }
 
 
-    @PostMapping("/sign_otp_check")
-    public ResponseEntity<UserSignResponse> signUpOtpCheck(@RequestBody MailCheckRequest dto) {
-
-        String token = signService.login(dto);
+    @PostMapping("/otp_check")
+    public ResponseEntity<UserSignResponse> signUpOtpCheck(@RequestBody UserSignInRequest request) {
+        String token = signService.login(request);
         UserSignResponse res = new UserSignResponse();
-        System.out.println(dto.getOtp());
+        System.out.println(request.getUserOtp());
+        System.out.println(request.getUserEmail());
         System.out.println(token);
         if (token.isEmpty()) {
-            System.out.println(token);
+            System.out.println("is empty"+token);
             res.setStatus(-1);
             res.setReason("retry");
         } else {

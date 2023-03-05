@@ -1,17 +1,16 @@
 package com.example.bloompoem.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Getter
-@Setter
-@Table(name = "TEST_USER")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "TEST_USER")
 public class TestUserEntity {
     @Id
     private String userEmail;
@@ -39,5 +38,6 @@ public class TestUserEntity {
     private long userCouponNumber;
 
     @Column
+    @Setter
     private String userOtp;
 }
