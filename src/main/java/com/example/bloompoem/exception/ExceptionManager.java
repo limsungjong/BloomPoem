@@ -1,30 +1,32 @@
 package com.example.bloompoem.exception;
 
-import com.example.bloompoem.domain.dto.UserSignResponse;
+import org.hibernate.exception.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+
+import static com.example.bloompoem.domain.dto.ErrorCode.DUPLICATE_RESOURCE;
 
 @RestControllerAdvice
-public class ExceptionManager {
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> runtimeExceptionHandler(RuntimeException ex) {
-        UserSignResponse res = new UserSignResponse();
-        res.setReason(ex.getMessage());
-        return ResponseEntity.badRequest().body(res);
+public class ExceptionManager extends ResponseEntityExceptionHandler {
+    Logger logger = LoggerFactory.getLogger(ExceptionManager.class);
+
+    // handleDataException : hibernate 관련 에러 처리
+    @ExceptionHandler(value = { ConstraintViolationException.class, DataIntegrityViolationException.class })
+    protected ResponseEntity<ErrorResponse> handleDataException() {
+        logger.error("handleDataException throw Exception : {}", DUPLICATE_RESOURCE);
+        return ErrorResponse.toResponseEntity(DUPLICATE_RESOURCE);
     }
 
-    // UserSignRequest Exception
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<UserSignResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        UserSignResponse res = new UserSignResponse();
-        ex.getBindingResult().getAllErrors().forEach(
-                c -> {
-                    res.setStatus(c.getCode());
-                    res.setReason(c.getDefaultMessage());
-                }
-        );
-        return ResponseEntity.badRequest().body(res);
+    // handleCustomException : customException 관련 에러 처리
+    @ExceptionHandler(value = { CustomException.class })
+    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+        logger.error("handleCustomException throw CustomException : {}", e.getErrorCode());
+        return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
 }
