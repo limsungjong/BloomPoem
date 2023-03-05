@@ -1,6 +1,6 @@
 package com.example.bloompoem.exception;
 
-import com.example.bloompoem.domain.dto.ErrorCode;
+import com.example.bloompoem.domain.dto.ResponseCode;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,14 @@ public class ErrorResponse {
     private final String code;
     private final String message;
 
-    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
+    public static ResponseEntity<ErrorResponse> toResponseEntity(ResponseCode responseCode) {
         return ResponseEntity
-                .status(errorCode.getHttpStatus())
+                .status(responseCode.getHttpStatus())
                 .body(ErrorResponse.builder()
-                        .status(errorCode.getHttpStatus().value())
-                        .error(errorCode.getHttpStatus().name())
-                        .code(errorCode.name())
-                        .message(errorCode.getDetail())
+                        .status(responseCode.getHttpStatus().value())
+                        .error(responseCode.getHttpStatus().name())
+                        .code(responseCode.name())
+                        .message(responseCode.getDetail())
                         .build()
                 );
     }

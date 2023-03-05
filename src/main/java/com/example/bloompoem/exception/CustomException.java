@@ -1,9 +1,8 @@
 package com.example.bloompoem.exception;
 
-import com.example.bloompoem.domain.dto.ErrorCode;
+import com.example.bloompoem.domain.dto.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -11,5 +10,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CustomException extends RuntimeException implements Serializable {
 
-    private final ErrorCode errorCode;
+    private final ResponseCode responseCode;
 }

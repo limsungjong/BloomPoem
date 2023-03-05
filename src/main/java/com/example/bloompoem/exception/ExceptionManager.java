@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
-import static com.example.bloompoem.domain.dto.ErrorCode.DUPLICATE_RESOURCE;
+import static com.example.bloompoem.domain.dto.ResponseCode.DUPLICATE_RESOURCE;
 
 @RestControllerAdvice
 public class ExceptionManager extends ResponseEntityExceptionHandler {
@@ -26,7 +26,7 @@ public class ExceptionManager extends ResponseEntityExceptionHandler {
     // handleCustomException : customException 관련 에러 처리
     @ExceptionHandler(value = { CustomException.class })
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-        logger.error("handleCustomException throw CustomException : {}", e.getErrorCode());
-        return ErrorResponse.toResponseEntity(e.getErrorCode());
+        logger.error("handleCustomException throw CustomException : {}", e.getResponseCode());
+        return ErrorResponse.toResponseEntity(e.getResponseCode());
     }
 }
