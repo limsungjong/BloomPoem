@@ -5,6 +5,7 @@
 //import org.springframework.security.config.annotation.web.builders.WebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.web.bind.annotation.CrossOrigin;
 //
 //@Configuration
 //@EnableWebSecurity // 스프링 Security 지원을 가능하게 함
