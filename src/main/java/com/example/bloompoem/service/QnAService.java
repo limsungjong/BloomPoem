@@ -32,4 +32,11 @@ public class QnAService {
 //            return null;
 //        }
     }
+
+    // QnA 작성
+    public int write(QnADTO qnaDTO){
+        QnAEntity qnaEntity = QnAEntity.toEntity(qnaDTO);
+
+        return qnaRepository.save(qnaEntity).getQnaNumber();
+    }
 }

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>나의 문의 내역</title>
-    <link rel="stylesheet" type="text/css" href="/css/QnA.css" />
+    <link rel="stylesheet" type="text/css" href="/css/QnAWrite.css" />
     <!-- script src="../static/build/FAQ.js" defer></script -->
   </head>
   <body>
@@ -39,11 +39,80 @@
           </div>
           <!-- 좌측 메뉴바 종료 -->
           <h2>문의 작성 하기</h2>
-          <!-- QnA 리스트 시작 -->
-          <div class="QnA_list">
-            <textarea name="" id="" cols="150" rows="70"></textarea>
+          <!-- QnA 작성 폼 div -->
+          <div class="QnA_write">
+            <!-- QnA 작성 폼 시작 -->
+            <form
+              action="/QnA/write"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <!-- QnA 작성자 입력 -->
+              <div>
+                <input
+                  type="text"
+                  name="QnA_writer"
+                  id="QnA_writer"
+                  placeholder="작성자"
+                />
+              </div>
+              <!-- QnA 작성자 종료 -->
+              <!-- QnA 사용자 이메일 입력 -->
+              <div>
+                <input
+                  type="text"
+                  name="QnA_email"
+                  id="QnA_email"
+                  placeholder="사용자 이메일"
+                />
+              </div>
+              <!-- QnA 사용자 이메일 종료 -->
+              <!-- QnA 제목 입력 -->
+              <div>
+                <input
+                  type="text"
+                  name="QnA_title"
+                  id="QnA_title"
+                  placeholder="제목을 입력해주세요."
+                />
+              </div>
+              <!-- QnA 제목 종료 -->
+              <!-- QnA 내용 입력 -->
+              <div>
+                <textarea
+                  name="QnA_content"
+                  id="QnA_content"
+                  cols="120"
+                  rows="30"
+                  placeholder="내용을 입력해주세요."
+                ></textarea>
+              </div>
+              <!-- QnA 내용 종료 -->
+              <!-- QnA 첨부파일 입력 -->
+              <div>
+                <input type="file" name="QnA_File" id="QnA_File" />
+              </div>
+              <!-- QnA 첨부파일 종료 -->
+              <!-- 버튼들 감싸는 태그 -->
+              <div class="QnA_buttons">
+                <!-- QnA 저장 버튼 -->
+                <div>
+                  <button type="button" name="Save_btn" id="Save_btn">
+                    저장
+                  </button>
+                </div>
+                <!-- QnA 저장 버튼 종료 -->
+                <!-- QnA 목록 버튼 -->
+                <button type="button" name="QnA_list_btn" id="QnA_list_btn">
+                  목록
+                </button>
+                <!-- QnA 목록 버튼 종료 -->
+              </div>
+              <!-- 버튼들 감싸는 태그 종료 -->
+            </form>
+            <!-- QnA 작성 폼 종료 -->
           </div>
-          <!-- QnA 리스트 종료 -->
+          <!-- QnA 작성 폼 div 종료 -->
         </div>
         <!-- 바디 컨텐츠 종료 -->
       </div>
