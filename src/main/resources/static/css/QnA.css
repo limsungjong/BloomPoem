@@ -201,20 +201,3 @@ li {
 .QnA_Table {
   text-align: center;
 }
-
-.toggle_Qbox {
-  width: 800px;
-  height: 50px;
-  background-color: #eff1f6;
-  flex-direction: column;
-}
-
-.toggle_Abox {
-  width: 800px;
-  height: 50px;
-  background-color: var(--color-cherry-blossom);
-}
-
-.FAQ_toggle_A {
-  display: none;
-}
