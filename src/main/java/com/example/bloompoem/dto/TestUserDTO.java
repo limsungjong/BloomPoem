@@ -29,7 +29,6 @@ public class TestUserDTO {
         testUserDTO.setUserName(entity.getUserName());
         testUserDTO.setUserRegDate(entity.getUserRegDate());
         testUserDTO.setUserStatus(entity.getUserStatus());
-        testUserDTO.setUserCouponNumber(entity.getUserCouponNumber());
         testUserDTO.setUserOtp(entity.getUserOtp());
         testUserDTO.setUserRole(entity.getUserRole());
         return testUserDTO;

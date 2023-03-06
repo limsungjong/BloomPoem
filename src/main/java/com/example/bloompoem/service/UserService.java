@@ -83,6 +83,7 @@ public class UserService {
         Optional<TestUserEntity> data = testUserRepository.findByUserEmail(userEmail);
         if (data.isPresent()) {
             data.get().setUserOtp(userOtp);
+
             return;
         }
         throw new RuntimeException("[UserService] Otp 생성중 오류 발생");
