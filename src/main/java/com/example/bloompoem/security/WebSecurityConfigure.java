@@ -17,17 +17,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurityConfigure {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final LoginSuccessHandler loginSuccessHandler;
-    private final LoginFailureHandler loginFailureHandler;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
         http
                 .cors()
-                .and()
+                .disable()
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/","/shopping/**","/api/**","/sign/**","/favicon/**")
+                .antMatchers("/","/shopping/**","/api/**","/sign/**")
                 .permitAll()
                 .and()
                 .authorizeRequests()
@@ -39,10 +37,21 @@ public class WebSecurityConfigure {
                 .usernameParameter("userEmail")
                 .passwordParameter("userOtp")
                 .loginProcessingUrl("/loginProc")
-                .successHandler(loginSuccessHandler)
-                .failureHandler(loginFailureHandler)
+                .successHandler((req,res,auth) -> {
+                    res.sendRedirect("/");
+                })
+                .failureHandler((req,res,ex) -> {
+                    res.sendRedirect("/sign/sign_in");
+                })
                 .defaultSuccessUrl("/")
-                .permitAll();
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler((req,res,auth) -> {
+                    res.sendRedirect("/sign/sign_in");
+                });
+//                .addLogoutHandler(logot)
+//                .logoutSuccessHandler(LogoutSuccessHandler);
         return http.build();
     }
 
@@ -55,6 +64,7 @@ public class WebSecurityConfigure {
                 "/image/**"
                 );
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

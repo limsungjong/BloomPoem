@@ -8,8 +8,8 @@ import com.example.bloompoem.service.SignService;
 import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +55,10 @@ public class RestSignController {
     }
 
     @PostMapping("/sign_in")
-    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request) {
+    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request, @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        if(!customUserDetail.getUsername().isEmpty()) {
+            return UserSignResponse.toResponseEntity(ResponseCode.ALREADY_LOG_IN,null);
+        }
         System.out.println(request.getUserOtp());
         System.out.println(request.getUserEmail());
 

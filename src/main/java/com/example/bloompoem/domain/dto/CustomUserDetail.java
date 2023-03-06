@@ -2,6 +2,7 @@ package com.example.bloompoem.domain.dto;
 
 import com.example.bloompoem.entity.TestUserEntity;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
+@ToString
 public class CustomUserDetail implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -98,4 +100,5 @@ public class CustomUserDetail implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
+
 }
