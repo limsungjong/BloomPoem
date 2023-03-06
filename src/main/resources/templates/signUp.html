@@ -1,82 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sign up</title>
-  <link rel="stylesheet" type="text/css" href="/css/skel.css" />
-  <link rel="stylesheet" type="text/css" href="/css/signIn.css" />
-  <link rel="stylesheet" type="text/css" href="/css/signUp.css" />
-  <script src="/build/signUp.js" defer></script>
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>sign up</title>
+    <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/signIn.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/signUp.css"/>
+    <script src="/build/daumPostCode.js" defer></script>
+    <script src="/build/signUp.js" defer></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <header class="header">
-  <img src="/image/logo최종.png" alt="logo" class="logo" />
+    <a href="http://localhost:9000">
+        <img src="/image/logo최종.png" alt="logo" class="logo"/>
+    </a>
 </header>
 <main>
-  <div class="mainBox-1">
-    <div class="loginBox">
-      <h1 class="loginTitle">Sign Up</h1>
-      <div class="logWrap"></div>
-      <div class="submitBox">
-        <label for="emailInput" class="tag">이메일</label>
-        <input
-                class="margin-2 inputWD"
-                type="email"
-                placeholder="Email"
-                id="emailInput"
-        />
-        <label for="nameInput" class="tag">이름</label>
-        <input
-                class="margin-2 inputWD"
-                type="text"
-                placeholder="name"
-                id="nameInput"
-        />
-        <label for="addressInput" class="tag">주소</label>
-        <input
-                class="margin-2 inputWD"
-                type="text"
-                placeholder="주소"
-                id="addressInput"
-                readonly
-        />
-        <label for="addressDetailInput" class="tag">상세 주소</label>
-        <input
-                class="margin-2 inputWD"
-                type="email"
-                placeholder="상세 주소"
-                id="addressDetailInput"
-        />
-        <label for="inputPhoneBox" class="tag">연락처</label>
-        <div class="inputPhoneBox" id="inputPhoneBox">
-          <input
-                  class="margin-2 inputWd-4"
-                  type="tel"
-                  id="phoneInput1"
-                  maxlength="3"
-          />
-          -
-          <input
-                  class="margin-2 inputWd-4"
-                  type="tel"
-                  id="phoneInput2"
-                  maxlength="4"
-          />
-          -
-          <input
-                  class="margin-2 inputWd-4"
-                  type="tel"
-                  id="phoneInput3"
-                  maxlength="4"
-          />
+    <div class="mainBox-1">
+        <div class="loginBox">
+            <h1 class="loginTitle">Sign Up</h1>
+            <div class="logWrap"></div>
+            <div class="submitBox">
+                <label for="emailInput" class="tag">이메일</label>
+                <input
+                        class="margin-2 inputWD"
+                        type="email"
+                        placeholder="이메일"
+                        id="emailInput"
+                        autocomplete="off"
+                />
+                <span class="emailTestFail">
+              이메일 주소의 형식이 올바르지 않습니다. 예시) bloomPoem@naver.com
+            </span>
+                <label for="nameInput" class="tag">이름</label>
+                <input
+                        class="margin-2 inputWD"
+                        type="text"
+                        placeholder="이름"
+                        id="nameInput"
+                        maxlength="10"
+                        autocomplete="off"
+                />
+                <label for="addressInput" class="tag">주소</label>
+                <input
+                        class="margin-2 inputWD"
+                        type="text"
+                        placeholder="주소"
+                        id="addressInput"
+                        autocomplete="off"
+                        readonly
+                />
+                <label for="addressDetailInput" class="tag">상세 주소</label>
+                <input
+                        class="margin-2 inputWD"
+                        type="email"
+                        placeholder="상세 주소"
+                        id="addressDetailInput"
+                        autocomplete="off"
+                />
+                <label for="inputPhoneBox" class="tag">연락처</label>
+                <div id="inputPhoneBox">
+                    <input
+                            class="margin-2 inputWd-4"
+                            type="tel"
+                            id="phoneInput1"
+                            maxlength="3"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                            autocomplete="off"
+                    />
+                    -
+                    <input
+                            class="margin-2 inputWd-4"
+                            type="tel"
+                            id="phoneInput2"
+                            maxlength="4"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                            autocomplete="off"
+                    />
+                    -
+                    <input
+                            class="margin-2 inputWd-4"
+                            type="tel"
+                            id="phoneInput3"
+                            maxlength="4"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                            autocomplete="off"
+                    />
+                </div>
+                <button id="submit" class="btn margin-3">Submit</button>
+            </div>
         </div>
-        <button id="submit" class="btn margin-3">Submit</button>
-      </div>
     </div>
-  </div>
 </main>
 <footer></footer>
 </body>

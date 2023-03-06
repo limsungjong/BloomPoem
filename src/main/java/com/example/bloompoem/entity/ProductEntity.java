@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Entity(name ="product")
+@Entity(name = "product")
 public class ProductEntity {
-
     @Id
     private int productNumber;
     private int productCategory;

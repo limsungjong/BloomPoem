@@ -63,7 +63,9 @@ article, aside, details, figcaption, figure, /**/
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
-
+a {
+  color: var(--color-sky-blue);
+}
 /* page css */
 * {
   box-sizing: border-box;
@@ -161,9 +163,139 @@ nav .fromLeft:after {
 }
 
 footer {
+  position: absolute;
+  bottom: 0;
   height: 100px;
   width: 100vw;
   font-weight: 400;
   background-color: var(--color-true-white);
   border-top: 2px solid var(--color-light-gray);
+}
+
+.img {
+  background-size: cover;
+  width: 100px px;
+  height: 100px;
+}
+.imgListBox {
+  position: absolute;
+}
+
+/* modal */
+
+#modal.modal-overlay {
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+#modal .modal-window {
+  background: var(--color-true-white);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(13.5px);
+  -webkit-backdrop-filter: blur(13.5px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  width: 50vw;
+  height: 45vh;
+  position: relative;
+  top: -20px;
+  padding: 10px;
+}
+#modal .title {
+  height: 5vh;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-black);
+  margin-top: 40px;
+}
+#modal .title h2 {
+  display: inline;
+}
+#modal .close-area {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding-right: 10px;
+  cursor: pointer;
+  font-size: 2rem;
+  color: var(--color-black);
+}
+#modal .modal-nav {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-around;
+}
+#modal .modal-nav li {
+  border: 2px solid var(--color-dark-gray);
+  border-right: none;
+  display: flex;
+  width: 100%;
+  min-height: 45px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-sun-gray);
+}
+#modal .modal-nav .active {
+  background-color: var(--color-true-white);
+  border-bottom: none;
+}
+#modal .modal-nav li:first-child {
+  border-radius: 12px 0 0 0;
+}
+#modal .modal-nav li:after {
+  margin-top: 5px;
+  display: block;
+  content: "";
+  border-bottom: solid 3px var(--color-dark-gray);
+  transform: scaleX(0);
+  transition: transform 250ms ease-in-out;
+}
+#modal .modal-nav li:last-child {
+  border-radius: 0 12px 0 0;
+  border: 2px solid var(--color-dark-gray);
+}
+#modal .modal-nav .active:last-child {
+  background-color: var(--color-true-white);
+  border-bottom: none;
+}
+#modal .modal-nav li:hover:after {
+  transform: scaleX(1);
+}
+#modal .modal-nav li.fromRight:after {
+  transform-origin: 100% 50%;
+}
+#modal .modal-nav li.fromLeft:after {
+  transform-origin: 0% 50%;
+}
+
+#modal .content {
+  border-top: none;
+  width: 100%;
+  height: 32vh;
+  padding: 0px 10px;
+  color: var(--color-black);
+}
+
+.emailTestFail {
+  font-size: 0.8rem;
+  margin: 10px 0;
+  color: red;
+  text-transform: math-auto;
+  display: none;
 }

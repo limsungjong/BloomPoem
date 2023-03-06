@@ -330,13 +330,3 @@
 document.querySelector(".moreBtn")?.addEventListener("click", (e) => {
   window.scrollBy({ top: window.innerHeight });
 });
-
-document.querySelector(`.card`)!.addEventListener('click',(e => {
-  fetch('/user',{
-
-  }).then(data => {
-    console.log(data);
-  }).catch((err => {
-    console.log(err);
-  }))
-}))

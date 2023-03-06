@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/pickUp.css" />
+  <script
+          src="https://kit.fontawesome.com/8e31ecfd50.js"
+          crossorigin="anonymous"
+  ></script>
+  <script
+          type="text/javascript"
+          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5596461f82340fc96fa11b43a06cb7c1&libraries=services"
+  ></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <title>Pick-Up</title>
+</head>
+<body>
+<header>
+  <div class="logoBox">
+    <img src="#" alt="logo" class="logo" />
+  </div>
+  <div class="searchBox">
+    <input
+            type="text"
+            class="searchTerm fromLeft"
+            placeholder="위치를 입력해주세요"
+    />
+    <button type="submit" class="searchButton">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+  <nav class="userBox">
+    <span class="signin">SignIn</span>
+    <span class="signup">SignUp</span>
+  </nav>
+</header>
+<main>
+  <div class="sideContainer">
+    <div class="sideList"></div>
+  </div>
+  <div class="mainContainer">
+    <div class="mapBox">
+      <div id="map"></div>
+    </div>
+  </div>
+  <!-- <div id="modal" class="modal-overlay">
+    <div class="modal-window">
+      <div class="title">
+        <h2>모달</h2>
+      </div>
+      <div class="close-area">X</div>
+      <ul class="modal-nav">
+        <li class="active">아름다운 꽃</li>
+        <li>장바구니</li>
+        <li>매장 정보</li>
+        <li>리뷰</li>
+      </ul>
+      <div class="content"></div>
+    </div>
+  </div> -->
+</main>
+</body>
+<script src="./pickUp.js"></script>
+</html>
