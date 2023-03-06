@@ -119,5 +119,13 @@
       <!-- 바디 레이아웃 종료 -->
     </main>
     <footer></footer>
+    <!-- hidden 타입 폼 태그 시작 -->
+    <form name="QnAForm" id="QnAForm" method="post">
+      <input type="hidden" name="qnaNumber" value="" />
+      <input type="hidden" name="searchType" value="${searchType}" />
+      <input type="hidden" name="searchValue" value="${searchValue}" />
+      <input type="hidden" name="curPage" value="${curPage}" />
+    </form>
+    <!-- hidden 타입 폼 태그 종료 -->
   </body>
 </html>

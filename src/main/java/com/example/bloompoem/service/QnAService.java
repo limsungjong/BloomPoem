@@ -33,10 +33,13 @@ public class QnAService {
 //        }
     }
 
-    // QnA 작성
+    // QnA 글작성
     public int write(QnADTO qnaDTO){
         QnAEntity qnaEntity = QnAEntity.toEntity(qnaDTO);
 
         return qnaRepository.save(qnaEntity).getQnaNumber();
     }
+
+    // QnA 글수정
+
 }
