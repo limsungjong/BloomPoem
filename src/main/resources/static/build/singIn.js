@@ -155,9 +155,7 @@
                                             console.log(err);
                                         });
                                 }
-                                if (!iList[k + 1] == undefined) {
                                     iList[k + 1].focus();
-                                }
                             }
                         });
                     });
