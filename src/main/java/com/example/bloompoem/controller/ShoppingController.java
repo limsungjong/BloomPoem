@@ -37,7 +37,7 @@ public class ShoppingController {
         model.addAttribute("category", category);
         model.addAttribute("page" , 1);
         model.addAttribute("searchValue", searchValue);
-        if(category > 8 && category<0){
+        if(category > 9 && category<0){
             return  "/shopping";
         }
         return "/shop/shopCategory";

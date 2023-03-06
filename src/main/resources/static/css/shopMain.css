@@ -226,7 +226,7 @@ main{
     align-items: center;
     justify-content: space-evenly;
     font-size: var(--font-regular);
-    background-color: #b9eeff;
+    background-color: #fff3d4 ;
 }
 .categoryBar ul{
     width: 80vw;
@@ -241,7 +241,6 @@ main{
 .categoryBar li{
     padding: 10px;
     border-radius: 10px;
-    cursor: pointer;
 }
 .categoryBar li:hover{
     background-color: pink;
@@ -345,4 +344,11 @@ main{
 .mainImage{
     width: 100vw;
     height: 100%;
+}
+
+.soil{
+    cursor: pointer;
+}
+.vase{
+    cursor: pointer;
 }

@@ -16,7 +16,7 @@
         //검색하는 스크립트 시작
         const search = function (){
             const searchValue = $(".searchValue").val();
-            $("#category").val(0);
+            $("#category").val(9);
             $.ajax({
                 url : "/shopping/search",
                 data  : {searchValue}
@@ -135,7 +135,7 @@
         })
         const viewCart = function (page, sort){
             const category = $("#category").val();
-            if(category != 0){
+            if(category != 9){
                 $.ajax({
                     url : "/shopping/productListView",
                     data : {category},
