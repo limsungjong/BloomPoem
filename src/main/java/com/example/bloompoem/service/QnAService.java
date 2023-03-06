@@ -17,11 +17,11 @@ public class QnAService {
 
     // QnA 리스트 가져오기
     public Page<QnAEntity> getQnAList(Pageable pageable){
-        Page<QnAEntity> qnaEntityPage = qnaRepository.findAll(pageable);
+        Page<QnAEntity> qnAEntityPage = qnaRepository.findAll(pageable);
 
-        return qnaEntityPage;
+        return qnAEntityPage;
         // Null Point Exception 방지를 위한 if문
-//        Optional<QnAEntity> qnaEntityOptional = qnaRepository.findById(qnaEntityPage.getNumber());
+//        Optional<QnAEntity> qnaEntityOptional = qnaRepository.findById(qnAEntityPage.getNumber());
 //        if(qnaEntityOptional.isPresent()){
 //            // 조회 결과가 있는 경우
 //            // get(): optional 객체에 들어있는 객체를 가져옴.
@@ -33,13 +33,10 @@ public class QnAService {
 //        }
     }
 
-    // QnA 글작성
-    public Integer write(QnADTO qnaDTO){
-        QnAEntity qnaEntity = QnAEntity.getQnAListToEntity(qnaDTO);
+    // QnA 작성
+    public int write(QnADTO qnaDTO){
+        QnAEntity qnaEntity = QnAEntity.toEntity(qnaDTO);
 
         return qnaRepository.save(qnaEntity).getQnaNumber();
     }
-
-    // QnA 글수정
-
 }
