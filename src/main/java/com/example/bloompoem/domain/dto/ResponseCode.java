@@ -11,6 +11,7 @@ import static org.springframework.http.HttpStatus.*;
 public enum ResponseCode {
     /* 200 OK : 요청 완료 응답 */
     SUCCESSFUL(OK, "정상적으로 요청되었습니다"),
+    SEND_OTP_MAIL(OK, "정상적으로 요청되었습니다"),
 
     /* 201 CREATE : 요청 완료 응답 */
     CREATE(CREATED,"정상적으로 작성되었습니다"),
@@ -34,6 +35,7 @@ public enum ResponseCode {
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),
+    DUPLICATE_EMAIL(CONFLICT, "해당하는 이메일은 이미 존재합니다"),
 
     ;
 

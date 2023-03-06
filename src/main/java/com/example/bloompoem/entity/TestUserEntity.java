@@ -27,6 +27,9 @@ public class TestUserEntity {
     @Column(length = 20)
     private String userName;
 
+    @Column
+    private String userRole;
+
     @Column(nullable=false, columnDefinition = "date default sysdate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date userRegDate = new Date();

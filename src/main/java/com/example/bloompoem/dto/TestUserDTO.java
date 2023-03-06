@@ -18,6 +18,7 @@ public class TestUserDTO {
     private char userStatus;
     private long userCouponNumber;
     private String userOtp;
+    private String userRole;
 
 
     public static TestUserDTO toDTO(TestUserEntity entity) {
@@ -30,6 +31,7 @@ public class TestUserDTO {
         testUserDTO.setUserStatus(entity.getUserStatus());
         testUserDTO.setUserCouponNumber(entity.getUserCouponNumber());
         testUserDTO.setUserOtp(entity.getUserOtp());
+        testUserDTO.setUserRole(entity.getUserRole());
         return testUserDTO;
     }
 }

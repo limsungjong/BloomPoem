@@ -19,4 +19,9 @@ public class SignController {
     public String signUpForm() {
         return "/signUp";
     }
+
+    @GetMapping("/loginSuccess")
+    public String success() {
+        return "/loginSuccess";
+    }
 }

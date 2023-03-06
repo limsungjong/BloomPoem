@@ -1,21 +1,23 @@
 package com.example.bloompoem.domain.dto;
 
-import com.example.bloompoem.dto.TestUserDTO;
+import com.example.bloompoem.entity.TestUserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
-public class MemberDetails implements UserDetails, Serializable {
+public class CustomUserDetail implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    TestUserDTO userDTO;
-    public MemberDetails(TestUserDTO userDTO) {
-        this.userDTO = userDTO;
+    TestUserEntity testUserEntity;
+
+    public CustomUserDetail(TestUserEntity testUserEntity) {
+        this.testUserEntity = testUserEntity;
     }
 
     /**
@@ -23,7 +25,14 @@ public class MemberDetails implements UserDetails, Serializable {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+        collection.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return testUserEntity.getUserRole();
+            }
+        });
+        return collection;
     }
 
     /**
@@ -31,7 +40,7 @@ public class MemberDetails implements UserDetails, Serializable {
      */
     @Override
     public String getPassword() {
-        return userDTO.getUserOtp();
+        return testUserEntity.getUserOtp();
     }
 
     /**
@@ -39,13 +48,14 @@ public class MemberDetails implements UserDetails, Serializable {
      */
     @Override
     public String getUsername() {
-        return userDTO.getUserEmail();
+        return testUserEntity.getUserEmail();
     }
 
     /**
      * 계정 만료 여부
      * true : 만료 안됨
      * false : 만료
+     *
      * @return
      */
     @Override
@@ -57,6 +67,7 @@ public class MemberDetails implements UserDetails, Serializable {
      * 계정 잠김 여부
      * true : 잠기지 않음
      * false : 잠김
+     *
      * @return
      */
     @Override
@@ -68,6 +79,7 @@ public class MemberDetails implements UserDetails, Serializable {
      * 비밀번호 만료 여부
      * true : 만료 안됨
      * false : 만료
+     *
      * @return
      */
     @Override
@@ -79,10 +91,11 @@ public class MemberDetails implements UserDetails, Serializable {
      * 사용자 활성화 여부
      * ture : 활성화
      * false : 비활성화
+     *
      * @return
      */
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

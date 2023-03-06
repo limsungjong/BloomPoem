@@ -5,7 +5,7 @@ import java.util.Random;
 
 @Service
 public class OtpUtil {
-    public String createOTP(int length) {
+    public static String createOTP(int length) {
         Random rnd = new Random();
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < length; i++) {

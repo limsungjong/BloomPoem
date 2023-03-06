@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -25,36 +26,36 @@ public class UserService {
     private final TestUserRepository testUserRepository;
     private final MailService mailService;
     private final OtpUtil otpUtil;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     public void createUser(UserSignUpRequest request) throws RuntimeException {
-        if(ObjectUtils.isEmpty(request.getUserEmail())) {
+        if (ObjectUtils.isEmpty(request.getUserEmail())) {
             logger.error("request 이메일 없음");
             throw new CustomException(ResponseCode.MISSING_PARAMETER_VALUE);
         }
-        if(ObjectUtils.isEmpty(request.getUserName())) {
+        if (ObjectUtils.isEmpty(request.getUserName())) {
             logger.error("request 이름 없음");
             throw new CustomException(ResponseCode.MISSING_PARAMETER_VALUE);
         }
-        if(ObjectUtils.isEmpty(request.getUserAddress())) {
+        if (ObjectUtils.isEmpty(request.getUserAddress())) {
             logger.error("request 주소 없음");
             throw new CustomException(ResponseCode.MISSING_PARAMETER_VALUE);
         }
-        if(ObjectUtils.isEmpty(request.getUserAddressDetail())) {
+        if (ObjectUtils.isEmpty(request.getUserAddressDetail())) {
             logger.error("request 상세 주소 없음");
             throw new CustomException(ResponseCode.MISSING_PARAMETER_VALUE);
         }
-        if(ObjectUtils.isEmpty(request.getUserPhoneNumber())) {
+        if (ObjectUtils.isEmpty(request.getUserPhoneNumber())) {
             logger.error("request 연락처 없음");
             throw new CustomException(ResponseCode.MISSING_PARAMETER_VALUE);
         }
 
         testUserRepository.findByUserEmail(request.getUserEmail()).ifPresent(user -> {
-            throw new CustomException(ResponseCode.DUPLICATE_RESOURCE);
+            throw new CustomException(ResponseCode.DUPLICATE_EMAIL);
         });
 
-        if(!testUserRepository.findByUserEmail(request.getUserEmail()).isPresent()) {
+        if (!testUserRepository.findByUserEmail(request.getUserEmail()).isPresent()) {
             String userOtp = otpUtil.createOTP(6);
             TestUserEntity userEntity = TestUserEntity
                     .builder()
@@ -65,11 +66,12 @@ public class UserService {
                     .userPhoneNumber(request.getUserPhoneNumber())
                     .userRegDate(new Date())
                     .userStatus('Y')
-                    .userOtp(bCryptPasswordEncoder.encode(userOtp))
+                    .userOtp(passwordEncoder.encode(userOtp))
+                    .userRole("user")
                     .build();
             testUserRepository.save(userEntity);
             userUpdateOTP(request.getUserEmail(), userOtp);
-            userOtpMailSend(request, userOtp);
+            userOtpMailSend(request.getUserEmail(), request.getUserName(), userOtp);
             return;
         }
 
@@ -79,19 +81,19 @@ public class UserService {
     @Transactional
     public void userUpdateOTP(String userEmail, String userOtp) throws RuntimeException {
         Optional<TestUserEntity> data = testUserRepository.findByUserEmail(userEmail);
-        if(data.isPresent()) {
+        if (data.isPresent()) {
             data.get().setUserOtp(userOtp);
             return;
         }
         throw new RuntimeException("[UserService] Otp 생성중 오류 발생");
     }
 
-    public void userOtpMailSend(UserSignUpRequest dto,String userOtp) throws RuntimeException {
+    public void userOtpMailSend(String userEmail, String userName, String userOtp) throws RuntimeException {
         MailDTO mailDTO = new MailDTO();
-        Optional<TestUserEntity> testUserEntity = testUserRepository.findByUserEmail(dto.getUserEmail());
+        Optional<TestUserEntity> testUserEntity = testUserRepository.findByUserEmail(userEmail);
         if (testUserEntity.isPresent()) {
-            mailDTO.setUserEmail(dto.getUserEmail());
-            mailDTO.setUserName(dto.getUserName());
+            mailDTO.setUserEmail(userEmail);
+            mailDTO.setUserName(userName);
             mailDTO.setOTP(userOtp);
             mailDTO.setTitle("블룸포엠에서 보내드리는 인증번호입니다.");
             mailService.mailSend(mailDTO);
