@@ -1,6 +1,6 @@
 package com.example.bloompoem.entity;
 
-import com.example.bloompoem.dto.UserDTO;
+import com.example.bloompoem.dto.TestUserDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,7 +39,7 @@ public class UserEntity {
     @Column(length = 10)
     private int userCouponNumber;
 
-    public static UserEntity toEntity(UserDTO userDTO) {
+    public static UserEntity toEntity(TestUserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserAddress(userDTO.getUserAddress());
         userEntity.setUserAddressDetail(userDTO.getUserAddressDetail());

@@ -1,39 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sign in</title>
-  <link rel="stylesheet" type="text/css" href="/css/skel.css" />
-  <link rel="stylesheet" type="text/css" href="/css/signIn.css" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>sign in</title>
+    <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/signUp.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/signIn.css"/>
+    <script src="/build/singIn.js" defer></script>
 </head>
 <body>
 <header class="header">
-  <img src="/image/logo최종.png" alt="logo" class="logo" />
+    <a href="http://localhost:9000">
+        <img src="/image/logo최종.png" alt="logo" class="logo"/>
+    </a>
 </header>
 <main>
-  <div class="mainBox-1">
-    <div class="loginBox">
-      <h1 class="loginTitle">Sign In</h1>
-      <div class="logWrap"></div>
-      <div class="submitBox">
-        <label for="emailInput" class="tag">Email</label>
-        <input
-                class="emailInput margin-3 inputWd-2"
-                type="email"
-                placeholder="Email"
-                id="emailInput"
-        />
-        <button id="emailSubmit" class="btn margin-3">Submit</button>
-      </div>
-      <h2 class="orBox">
-        <div class="line"></div>
-        <span>또는</span>
-        <div class="line"></div>
-      </h2>
+    <div class="mainBox-1">
+        <div class="loginBox">
+            <h1 class="loginTitle">Sign In</h1>
+            <div class="logWrap"></div>
+            <div class="submitBox">
+                <label for="emailInput" class="tag">Email</label>
+                <input
+                        class="emailInput margin-3 inputWd-2"
+                        type="email"
+                        placeholder="Email"
+                        id="emailInput"
+                        autocomplete="off"
+                />
+                <span class="emailTestFail">
+                  이메일 주소의 형식이 올바르지 않습니다. 예시) bloomPoem@naver.com
+                </span>
+                <button id="emailSubmit" class="btn margin-3">Submit</button>
+            </div>
+            <h2 class="orBox">
+                <div class="line"></div>
+                <span>또는</span>
+                <div class="line"></div>
+            </h2>
+        </div>
+        <div class="signUpBox">
+          <span class="signUpText"
+          >아직 회원이 아니신가요? <a href="http://localhost:9000/sign/sign_up">여기에서 회원 가입!</a></span
+          >
+        </div>
     </div>
-  </div>
 </main>
 <footer></footer>
 </body>

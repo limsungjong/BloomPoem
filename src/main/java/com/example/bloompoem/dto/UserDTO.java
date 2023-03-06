@@ -4,7 +4,6 @@ import com.example.bloompoem.entity.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 @Getter
@@ -20,15 +19,15 @@ public class UserDTO {
     private long userCouponNumber;
 
 
-    public static UserDTO toDTO(UserEntity userEntity) {
+    public static UserDTO toDTO(UserEntity entity) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUserEmail(userEntity.getUserEmail());
-        userDTO.setUserAddressDetail(userEntity.getUserAddressDetail());
-        userDTO.setUserPhoneNumber(userEntity.getUserPhoneNumber());
-        userDTO.setUserName(userEntity.getUserName());
-        userDTO.setUserRegDate(userEntity.getUserRegDate());
-        userDTO.setUserStatus(userEntity.getUserStatus());
-        userDTO.setUserCouponNumber(userEntity.getUserCouponNumber());
+        userDTO.setUserEmail(entity.getUserEmail());
+        userDTO.setUserAddressDetail(entity.getUserAddressDetail());
+        userDTO.setUserPhoneNumber(entity.getUserPhoneNumber());
+        userDTO.setUserName(entity.getUserName());
+        userDTO.setUserRegDate(entity.getUserRegDate());
+        userDTO.setUserStatus(entity.getUserStatus());
+        userDTO.setUserCouponNumber(entity.getUserCouponNumber());
         return userDTO;
     }
 }

@@ -1,0 +1,399 @@
+/*      Root         */
+:root {
+    /*    Color    */
+    --color-true-black: #000000;
+    --color-black: #181818;
+    --color-light-gray: #6d6d6d;
+    --color-gray: #565656;
+    --color-dark-gray: #424242;
+    --color-white: #f5f5f5;
+    --color-true-white: #ffffff;
+    --color-red: #ea3323;
+    --color-blue: #3ea4f8;
+    --color-sky-blue: #5ca4f8;
+    --color-sun-gray: #d6d6d6;
+    --color-cream-melon: #dcf8e4;
+    --color-light-sky-blue: #b9eeff;
+    --color-banana: #ffe062;
+    --color-ivory: #fff3d4;
+    --color-light-purple: #cc94c4;
+    --color-violet: #a8b3d8;
+    --color-light-white: #ebebeb;
+    --color-cherry-blossom: #f8d1d1;
+
+    /*  Size    */
+    --size-border-radius: 4px;
+    /*    Font  Size     */
+    --font-large: 48px;
+    --font-medium: 28px;
+    --font-regular: 18px;
+    --font-small: 16px;
+    --font-micro: 14px;
+    /*    Font Weight    */
+    --weight-bold: 700;
+    --weight-semi-bold: 600;
+    --weight-regular: 400;
+    /*    Animation    */
+    --animation-duration: 300ms;
+}
+/* font config */
+@font-face {
+    font-family: "MabinogiClassic";
+    font-weight: normal;
+    font-style: normal;
+    src: url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.eot");
+    src: url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.eot?#iefix")
+    format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.woff2")
+    format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.woff")
+    format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.ttf")
+    format("truetype");
+    font-display: swap;
+}
+
+/* reset.css */
+html, body, div, span, applet, object, iframe, /**/
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, /**/
+a, abbr, acronym, address, big, cite, code, /**/
+del, dfn, em, img, ins, kbd, q, s, samp, /**/
+small, strike, strong, sub, sup, tt, var, /**/
+b, u, i, center, /**/
+dl, dt, dd, ol, ul, li, /**/
+fieldset, form, label, legend, /**/
+table, caption, tbody, tfoot, thead, tr, th, td, /**/
+article, aside, canvas, details, embed, /**/
+figure, figcaption, footer, header, hgroup, /**/
+menu, nav, output, ruby, section, summary, /**/
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, /**/
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+/* page css */
+* {
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    user-select: none;
+}
+body {
+    line-height: 1;
+    font-family: "나눔스퀘어 네오";
+    overflow: hidden;
+}
+ol,
+ul {
+    list-style: none;
+}
+blockquote,
+q {
+    quotes: none;
+}
+blockquote:before, blockquote:after, /**/
+q:before, q:after {
+    content: "";
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* style css start */
+.headerContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    min-width: 800px;
+}
+
+/* 범수 css  */
+
+header {
+    height: 100px;
+    width: 100vw;
+    font-weight: 400;
+    justify-items: center;
+    background-color: var(--color-true-white);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 2px solid var(--color-light-gray);
+}
+.logoBox {
+    width: 15%;
+}
+.logo {
+    margin-left: 50px;
+}
+nav {
+    width: 100%;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+}
+
+.signup:hover,
+.signin:hover,
+.menu:hover {
+    background-color: var(--color-cherry-blossom);
+    color: #000000;
+}
+.searchBox {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+}
+
+.searchTerm {
+    width: 40vw;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: solid 3px var(--color-dark-gray);
+    padding: 5px;
+    height: 55px;
+    color: #000000;
+    font-size: 23px;
+}
+.searchTerm:focus {
+    outline: none;
+}
+.searchButton {
+    width: 40px;
+    height: 55px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: solid 3px var(--color-dark-gray);
+    background: #ffffff;
+    text-align: center;
+    color: #000000;
+    cursor: pointer;
+    font-size: 25px;
+}
+.userBox {
+    width: 15%;
+}
+menu {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* 범수 css end */
+
+span {
+    font-size: 1.5rem;
+}
+nav span {
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+nav span:after {
+    margin-top: 5px;
+    display: block;
+    content: "";
+    border-bottom: solid 3px var(--color-dark-gray);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+nav span:hover:after {
+    transform: scaleX(1);
+}
+nav span.fromRight:after {
+    transform-origin: 100% 50%;
+}
+nav span.fromLeft:after {
+    transform-origin: 0% 50%;
+}
+
+/* modal */
+
+#modal.modal-overlay {
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+#modal .modal-window {
+    background: var(--color-true-white);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(13.5px);
+    -webkit-backdrop-filter: blur(13.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 70vw;
+    height: 90vh;
+    position: relative;
+    top: -20px;
+    padding: 10px;
+}
+#modal .title {
+    height: 8vh;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-black);
+    margin-bottom: 20px;
+}
+#modal .title h2 {
+    display: inline;
+}
+#modal .close-area {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding-right: 10px;
+    cursor: pointer;
+    font-size: 2rem;
+    color: var(--color-black);
+}
+#modal .modal-nav {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+}
+#modal .modal-nav li {
+    border: 2px solid var(--color-dark-gray);
+    border-right: none;
+    display: flex;
+    width: 100%;
+    min-height: 45px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-sun-gray);
+}
+#modal .modal-nav .active {
+    background-color: var(--color-true-white);
+    border-bottom: none;
+}
+#modal .modal-nav li:first-child {
+    border-radius: 12px 0 0 0;
+}
+#modal .modal-nav li:after {
+    margin-top: 5px;
+    display: block;
+    content: "";
+    border-bottom: solid 3px var(--color-dark-gray);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+#modal .modal-nav li:last-child {
+    border-radius: 0 12px 0 0;
+    border: 2px solid var(--color-dark-gray);
+}
+#modal .modal-nav .active:last-child {
+    background-color: var(--color-true-white);
+    border-bottom: none;
+}
+#modal .modal-nav li:hover:after {
+    transform: scaleX(1);
+}
+#modal .modal-nav li.fromRight:after {
+    transform-origin: 100% 50%;
+}
+#modal .modal-nav li.fromLeft:after {
+    transform-origin: 0% 50%;
+}
+
+#modal .content {
+    border: 2px solid var(--color-dark-gray);
+    border-top: none;
+    width: 100%;
+    height: 70vh;
+    padding: 0px 10px;
+    color: var(--color-black);
+}
+
+/* map */
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+.mainContainer {
+    width: 70vw;
+    height: 100vh;
+}
+.sideContainer {
+    width: 30vw;
+    height: 90vh;
+    background-color: var(--color-true-white);
+    overflow-y: scroll;
+}
+
+.sideItem {
+    width: 100%;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+.sideItem::after {
+    margin-top: 10px;
+    display: block;
+    content: "";
+    border-bottom: solid 1px var(--color-light-gray);
+}
+.sideItem:last-child::after {
+    border-bottom: none;
+}
+.floristImg {
+    width: 200px;
+    height: 150px;
+    background-image: url("./image/flowerGift.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.floristImgBox {
+    height: 160px;
+}
+.floristTitle span {
+    font-size: 1.5rem;
+}
+.floristPhoneNumber span {
+    font-size: 1rem;
+}
+.floristAddress span {
+    font-size: 1rem;
+}
+
+.mapBox {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#map {
+    width: 70vw;
+    height: 90vh;
+}
