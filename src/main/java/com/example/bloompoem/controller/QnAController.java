@@ -1,5 +1,6 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.dto.QnADTO;
 import com.example.bloompoem.entity.QnAEntity;
 import com.example.bloompoem.service.QnAService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class QnAController {
@@ -26,6 +29,13 @@ public class QnAController {
     @GetMapping("/QnA/write")
     public String write(Model model){
         return "/QnA/write";
+    }
+
+    @PostMapping("QnA/write")
+    public String write(@ModelAttribute QnADTO qnaDTO){
+        qnaService.write(qnaDTO);
+
+        return "QnA/write";
     }
 
 

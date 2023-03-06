@@ -65,4 +65,23 @@ public class QnAEntity {
         qnaEntity.setQnaDate(qnaDTO.getQnaDate());
         return qnaEntity;
     }
+
+    // QnA 작성에 필요한 정보 가져오기(일단 다 넣었음)
+    public static QnAEntity toEntity(QnADTO qnaDTO){
+        QnAEntity qnaEntity = new QnAEntity();
+        qnaEntity.setQnaNumber(qnaDTO.getQnaNumber());
+        qnaEntity.setUserEmail(qnaDTO.getUserEmail());
+        qnaEntity.setQnaDate(qnaDTO.getQnaDate());
+        qnaEntity.setQnaStatus(qnaDTO.getQnaStatus());
+        qnaEntity.setQnaTitle(qnaDTO.getQnaTitle());
+        qnaEntity.setQnaGroup(qnaDTO.getQnaGroup());
+        qnaEntity.setQnaIndent(qnaDTO.getQnaIndent());
+        qnaEntity.setQnaParent(qnaDTO.getQnaParent());
+        qnaEntity.setQnaOrder(qnaDTO.getQnaOrder());
+        qnaEntity.setQnaImage1(qnaDTO.getQnaImage1());
+        qnaEntity.setQnaImage2(qnaDTO.getQnaImage2());
+        qnaEntity.setQnaImage3(qnaDTO.getQnaImage3());
+        qnaEntity.setQnaContent(qnaDTO.getQnaContent());
+        return toEntity(qnaDTO);
+    }
 }
