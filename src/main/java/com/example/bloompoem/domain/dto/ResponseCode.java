@@ -22,6 +22,7 @@ public enum ResponseCode {
     CANNOT_FOLLOW_MYSELF(BAD_REQUEST, "자기 자신은 팔로우 할 수 없습니다"),
     MISSING_PARAMETER_VALUE(BAD_REQUEST, "파라미터 값이 없습니다"),
     INVALID_REQUEST(BAD_REQUEST, "올바르지 않은 요청입니다"),
+    INVALID_OTP(BAD_REQUEST, "OTP가 일치하지 않습니다"),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),

@@ -22,10 +22,12 @@ public class WebSecurityConfigure {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
         http
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/","/shopping/**","/api/**","/sign/**")
+                .antMatchers("/","/shopping/**","/api/**","/sign/**","/favicon/**")
                 .permitAll()
                 .and()
                 .authorizeRequests()
