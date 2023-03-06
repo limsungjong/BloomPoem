@@ -41,7 +41,8 @@
           <h2>나의 문의 내역</h2>
           <!-- QnA 리스트 시작 -->
           <div class="QnA_list">
-            <div class="QnA_write_button">문의 작성하기</div>
+            <!-- div class="QnA_write_button">문의 작성하기</div -->
+            <button>문의 작성하기</button>
             <!-- QnA 테이블 시작 -->
             <table class="QnA_Table">
               <!-- QnA 테이블 헤드 시작 -->
@@ -59,6 +60,12 @@
                   <td>답변완료</td>
                   <td>집나간 의욕 찾습니다...</td>
                   <td>2023/03/02</td>
+                </tr>
+                <tr th:each="qna:${QnAList}">
+                  <td th:text="${qna.qnaNumber}"></td>
+                  <td th:text="${qna.qnaStatus}"></td>
+                  <td th:text="${qna.qnaTitle}"></td>
+                  <td th:text="${qna.qnaDate}"></td>
                 </tr>
               </tbody>
               <!-- QnA 테이블 바디 종료-->
