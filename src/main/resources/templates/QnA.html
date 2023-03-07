@@ -41,7 +41,11 @@
           <h2>나의 문의 내역</h2>
           <!-- QnA 리스트 시작 -->
           <div class="QnA_list">
-            <button id="QnA_write_button" class="QnA_write_button">
+            <button
+              type="button"
+              id="QnA_write_button"
+              class="QnA_write_button"
+            >
               문의하기
             </button>
             <!-- QnA 테이블 시작 -->
@@ -77,9 +81,9 @@
     <!-- hidden 타입 폼 태그 시작 -->
     <form name="QnAForm" id="QnAForm" method="get">
       <input type="hidden" name="qnaNumber" value="" />
-      <input type="hidden" name="searchType" value="${searchType}" />
-      <input type="hidden" name="searchValue" value="${searchValue}" />
-      <input type="hidden" name="curPage" value="${curPage}" />
+      <!-- input type="hidden" name="searchType" value="${searchType}" /-->
+      <!-- input type="hidden" name="searchValue" value="${searchValue}" /-->
+      <!-- input type="hidden" name="curPage" value="${curPage}" /-->
     </form>
     <!-- hidden 타입 폼 태그 종료 -->
   </body>

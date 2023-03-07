@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -16,8 +13,15 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "QNA")
+@SequenceGenerator(
+        name = "SEQ_QNA_NUMBER",
+        sequenceName = "SEQ_QNA_NUMBER",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class QnAEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_QNA_NUMBER")
     private int qnaNumber;
 
     @Column(length = 40, nullable = false)
