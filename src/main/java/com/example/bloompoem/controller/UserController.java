@@ -2,7 +2,6 @@ package com.example.bloompoem.controller;
 
 import com.example.bloompoem.domain.dto.UserResponse;
 import com.example.bloompoem.domain.dto.UserSignInRequest;
-import com.example.bloompoem.domain.dto.UserSignResponse;
 import com.example.bloompoem.dto.UserDTO;
 import com.example.bloompoem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,13 @@ public class UserController {
     public ResponseEntity<UserDTO> user(@RequestBody UserSignInRequest req) {
         UserDTO userDTO = UserDTO.toDTO(userRepository.findByUserEmail(req.getUserEmail()).get());
 
-        UserResponse res = new UserResponse();
+        UserResponse res = UserResponse.builder()
+                .userAddress(userDTO.getUserAddress())
+                .userAddressDetail(userDTO.getUserAddressDetail())
+                .userPhoneNumber(userDTO.getUserPhoneNumber())
+                .userEmail(userDTO.getUserEmail())
+                .userName(userDTO.getUserName())
+                .build();
 
         return ResponseEntity.ok().body(userDTO);
     }

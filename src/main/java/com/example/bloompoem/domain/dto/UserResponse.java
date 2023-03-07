@@ -2,8 +2,6 @@ package com.example.bloompoem.domain.dto;
 
 import lombok.Builder;
 
-import java.util.Date;
-
 @Builder
 public class UserResponse {
     private String userEmail;
@@ -13,7 +11,4 @@ public class UserResponse {
     private String userName;
     private String userRole;
 
-    public UserResponse() {
-
-    }
 }
