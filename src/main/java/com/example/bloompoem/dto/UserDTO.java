@@ -24,6 +24,7 @@ public class UserDTO {
     public static UserDTO toDTO(UserEntity entity) {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserEmail(entity.getUserEmail());
+        userDTO.setUserAddress(entity.getUserAddress());
         userDTO.setUserAddressDetail(entity.getUserAddressDetail());
         userDTO.setUserPhoneNumber(entity.getUserPhoneNumber());
         userDTO.setUserName(entity.getUserName());

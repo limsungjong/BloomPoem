@@ -1,8 +1,10 @@
 package com.example.bloompoem.domain.dto;
 
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class UserResponse {
     private String userEmail;
     private String userAddress;
