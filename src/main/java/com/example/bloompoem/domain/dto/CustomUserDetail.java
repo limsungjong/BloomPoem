@@ -1,25 +1,22 @@
 package com.example.bloompoem.domain.dto;
 
-import com.example.bloompoem.entity.TestUserEntity;
+import com.example.bloompoem.entity.UserEntity;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
 @ToString
-public class CustomUserDetail implements UserDetails, Serializable {
+public class CustomUserDetail implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
+    UserEntity userEntity;
 
-    TestUserEntity testUserEntity;
-
-    public CustomUserDetail(TestUserEntity testUserEntity) {
-        this.testUserEntity = testUserEntity;
+    public CustomUserDetail(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     /**
@@ -31,7 +28,7 @@ public class CustomUserDetail implements UserDetails, Serializable {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return testUserEntity.getUserRole();
+                return userEntity.getUserRole();
             }
         });
         return collection;
@@ -42,7 +39,7 @@ public class CustomUserDetail implements UserDetails, Serializable {
      */
     @Override
     public String getPassword() {
-        return testUserEntity.getUserOtp();
+        return userEntity.getUserOtp();
     }
 
     /**
@@ -50,7 +47,7 @@ public class CustomUserDetail implements UserDetails, Serializable {
      */
     @Override
     public String getUsername() {
-        return testUserEntity.getUserEmail();
+        return userEntity.getUserEmail();
     }
 
     /**
