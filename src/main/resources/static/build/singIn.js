@@ -11,7 +11,8 @@
         const text = document.querySelector(".emailTestFail");
         if (!reg.test(this.value)) {
             text.style.display = "block";
-        } else {
+        }
+        else {
             text.style.display = "none";
         }
     });
@@ -67,36 +68,42 @@
               id="inpit1"
               type="text"
               maxlength="1"
+              autocomplete="off"
             />
             <input
               class="inputOtp"
               id="inpit2"
               type="text"
               maxlength="1"
+              autocomplete="off"
             />
             <input
               class="inputOtp"
               id="inpit3"
               type="text"
               maxlength="1"
+              autocomplete="off"
             />
             <input
               class="inputOtp"
               id="inpit4"
               type="text"
               maxlength="1"
+              autocomplete="off"
             />
             <input
               class="inputOtp"
               id="inpit5"
               type="text"
               maxlength="1"
+              autocomplete="off"
             />
             <input
               class="inputOtp"
               id="inpit6"
               type="text"
               maxlength="1"
+              autocomplete="off"
             />
           </div>
         </div>
@@ -113,8 +120,7 @@
                         }
                     });
                     const retryBtn = modal.querySelector(".retry");
-                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => {
-                    });
+                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => { });
                     const iList = modal.querySelectorAll(".inputOtp");
                     iList.forEach((v, k) => {
                         v.addEventListener("keyup", () => {
@@ -127,24 +133,30 @@
                                     let otp = "";
                                     iList.forEach((v) => (otp += v.value));
                                     const myHeaders = new Headers();
-                                    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-                                    const urlencoded = new URLSearchParams();
-                                    urlencoded.append("userEmail", mailInput.value);
-                                    urlencoded.append("userOtp", otp);
+                                    myHeaders.append("Content-Type", "application/json");
+                                    const raw = JSON.stringify({
+                                        userEmail: mailInput.value,
+                                        userOtp: otp,
+                                    });
+                                    console.log(inputData);
                                     const requestOptions = {
                                         method: "POST",
                                         headers: myHeaders,
-                                        body: urlencoded,
+                                        body: raw,
                                         redirect: "follow",
                                     };
-                                    fetch("http://localhost:9000/loginProc", requestOptions)
+                                    fetch("http://localhost:9000/api/v1/sign/sign_in", requestOptions)
                                         .then((data) => {
                                             var _a;
                                             console.log(data);
+                                            otp = "";
                                             if (data.status == 200) {
                                                 alert("로그인에 성공하였습니다.");
-                                                location.href = "http://localhost:9000/";
-                                            } else {
+                                                // location.href = "http://localhost:9000/";
+                                                // location.reload();
+                                                console.log(data.headers);
+                                            }
+                                            else {
                                                 (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                 ioBox.style.display = "flex";
                                                 alert("인증 번호를 다시 확인해주세요.");
