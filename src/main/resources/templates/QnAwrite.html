@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>나의 문의 내역</title>
     <link rel="stylesheet" type="text/css" href="/css/QnAWrite.css" />
-    <!-- script src="../static/build/FAQ.js" defer></script -->
+    <script src="/build/QnAwrite.js" defer></script>
   </head>
   <body>
     <header class="header">
@@ -30,9 +30,7 @@
           <!-- 좌측 메뉴바 시작 -->
           <div class="left_menu">
             <li>공지사항</li>
-            <br />
             <li>자주 묻는 질문</li>
-            <br />
             <li>나의 문의 내역</li>
           </div>
           <!-- 좌측 메뉴바 종료 -->
@@ -42,6 +40,7 @@
             <!-- QnA 작성 폼 시작 -->
             <form
               action="/QnA/write"
+              id=""
               method="post"
               enctype="multipart/form-data"
             >
@@ -95,13 +94,21 @@
               <div class="QnA_buttons">
                 <!-- QnA 저장 버튼 -->
                 <div>
-                  <button type="button" name="Save_btn" id="Save_btn">
+                  <button
+                    type="button"
+                    name="QnA_save_button"
+                    id="QnA_save_button"
+                  >
                     저장
                   </button>
                 </div>
                 <!-- QnA 저장 버튼 종료 -->
                 <!-- QnA 목록 버튼 -->
-                <button type="button" name="QnA_list_btn" id="QnA_list_btn">
+                <button
+                  type="button"
+                  name="QnA_list_button"
+                  id="QnA_list_button"
+                >
                   목록
                 </button>
                 <!-- QnA 목록 버튼 종료 -->
@@ -118,7 +125,7 @@
     </main>
     <footer></footer>
     <!-- hidden 타입 폼 태그 시작 -->
-    <form name="QnAForm" id="QnAForm" method="post">
+    <form name="QnAForm" id="QnAForm" method="get/">
       <input type="hidden" name="qnaNumber" value="" />
       <input type="hidden" name="searchType" value="${searchType}" />
       <input type="hidden" name="searchValue" value="${searchValue}" />

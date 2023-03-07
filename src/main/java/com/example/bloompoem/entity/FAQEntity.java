@@ -12,8 +12,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "FAQ")
+@SequenceGenerator(
+        name = "SEQ_FAQ_NUMBER",
+        sequenceName = "SEQ_FAQ_NUMBER",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class FAQEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FAQ_NUMBER")
     private int faqNumber;
 
     @Column(length = 100, nullable = false)
