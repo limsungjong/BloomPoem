@@ -4,9 +4,9 @@ package com.example.bloompoem.service;
 import com.example.bloompoem.domain.dto.MailDTO;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.UserSignInRequest;
-import com.example.bloompoem.entity.TestUserEntity;
+import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.exception.CustomException;
-import com.example.bloompoem.repository.TestUserRepository;
+import com.example.bloompoem.repository.UserRepository;
 import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @PropertySource("classpath:app.properties")
 public class SignService {
     Logger logger = LoggerFactory.getLogger(UserService.class);
-    private final TestUserRepository testUserRepository;
+    private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -54,7 +54,7 @@ public class SignService {
     }
 
     public String login(UserSignInRequest dto) throws RuntimeException {
-        Optional<TestUserEntity> user = testUserRepository.findByUserEmail(dto.getUserEmail());
+        Optional<UserEntity> user = userRepository.findByUserEmail(dto.getUserEmail());
         if (user.isPresent()) {
             if (user.get().getUserEmail().equals(dto.getUserEmail())) {
                 if (passwordEncoder.matches(dto.getUserOtp(), user.get().getUserOtp())) {
