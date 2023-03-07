@@ -11,8 +11,7 @@
         const text = document.querySelector(".emailTestFail");
         if (!reg.test(this.value)) {
             text.style.display = "block";
-        }
-        else {
+        } else {
             text.style.display = "none";
         }
     });
@@ -38,7 +37,7 @@
             console.log("error");
             return;
         }
-        fetch("http://localhost:9000/api/v1/sign/sign_in", requestOptions)
+        fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
             .then((data) => data.json())
             .then((data) => {
                 if (data.status == 200) {
@@ -114,7 +113,8 @@
                         }
                     });
                     const retryBtn = modal.querySelector(".retry");
-                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => { });
+                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => {
+                    });
                     const iList = modal.querySelectorAll(".inputOtp");
                     iList.forEach((v, k) => {
                         v.addEventListener("keyup", () => {
@@ -144,8 +144,7 @@
                                             if (data.status == 200) {
                                                 alert("로그인에 성공하였습니다.");
                                                 location.href = "http://localhost:9000/";
-                                            }
-                                            else {
+                                            } else {
                                                 (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                 ioBox.style.display = "flex";
                                                 alert("인증 번호를 다시 확인해주세요.");
@@ -155,7 +154,7 @@
                                             console.log(err);
                                         });
                                 }
-                                    iList[k + 1].focus();
+                                iList[k + 1].focus();
                             }
                         });
                     });

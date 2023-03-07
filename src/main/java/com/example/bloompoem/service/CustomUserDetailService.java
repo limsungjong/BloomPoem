@@ -12,15 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
     Logger logger = LoggerFactory.getLogger(CustomUserDetailService.class);
     private final TestUserRepository testUserRepository;
-
-    private final SignService signService;
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws CustomException {

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,8 +25,12 @@ public class SignService {
     Logger logger = LoggerFactory.getLogger(UserService.class);
     private final TestUserRepository testUserRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
+
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
+
 
     private Long expiredMs = 1000 * 60 * 60L;
 
@@ -52,7 +57,13 @@ public class SignService {
         Optional<TestUserEntity> user = testUserRepository.findByUserEmail(dto.getUserEmail());
         if (user.isPresent()) {
             if (user.get().getUserEmail().equals(dto.getUserEmail())) {
-                return JwtUtil.createJwt(dto.getUserEmail(), secretKey, expiredMs);
+                if (passwordEncoder.matches(dto.getUserOtp(), user.get().getUserOtp())) {
+                    System.out.println("성공");
+                    return JwtUtil.createJwt(dto.getUserEmail(), secretKey, expiredMs);
+                } else {
+                    System.out.println("실패");
+                    throw new CustomException(ResponseCode.INVALID_OTP);
+                }
             } else {
                 throw new CustomException(ResponseCode.ACCOUNT_MISMATCH);
             }

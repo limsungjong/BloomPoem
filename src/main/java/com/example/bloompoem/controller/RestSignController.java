@@ -6,15 +6,14 @@ import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.TestUserRepository;
 import com.example.bloompoem.service.SignService;
 import com.example.bloompoem.service.UserService;
-import com.example.bloompoem.util.JwtUtil;
 import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://192.168.45.124:5500/")
+@CrossOrigin(origins = "http://192.168.1.135:5500/")
 @RestController
 @RequestMapping(value = "/api/v1/sign")
 @RequiredArgsConstructor
@@ -23,11 +22,6 @@ public class RestSignController {
     private final UserService userService;
     private final TestUserRepository testUserRepository;
     private final SignService signService;
-
-    private Long expiredMs = 1000 * 60 * 60L;
-
-    @Value("#{environment['jwt.secret']}")
-    private String secretKey;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -61,7 +55,10 @@ public class RestSignController {
     }
 
     @PostMapping("/sign_in")
-    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request) {
+    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request, @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        if(!customUserDetail.getUsername().isEmpty()) {
+            return UserSignResponse.toResponseEntity(ResponseCode.ALREADY_LOG_IN,null);
+        }
         System.out.println(request.getUserOtp());
         System.out.println(request.getUserEmail());
 

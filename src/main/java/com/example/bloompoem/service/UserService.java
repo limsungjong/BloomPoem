@@ -81,8 +81,7 @@ public class UserService {
     public void userUpdateOTP(String userEmail, String userOtp) throws RuntimeException {
         Optional<TestUserEntity> data = testUserRepository.findByUserEmail(userEmail);
         if (data.isPresent()) {
-            data.get().setUserOtp(userOtp);
-
+            data.get().setUserOtp(passwordEncoder.encode(userOtp));
             return;
         }
         throw new RuntimeException("[UserService] Otp 생성중 오류 발생");
@@ -101,4 +100,12 @@ public class UserService {
         }
         throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
     }
+
+//    public void getUserData() {
+//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+//        String userName = loggedInUser.getName();
+//        String userEmail = loggedInUser.getPrincipal().
+//
+//        System.out.println(userName);
+//    }
 }
