@@ -4,6 +4,7 @@ import com.example.bloompoem.dto.FloristDTO;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "FLORIST")
@@ -31,10 +32,12 @@ public class FloristEntity {
     private String floristAddress;
     @Column
     private String floristPhoneNumber;
-    @Column
-    private long floristLatitude;
-    @Column
-    private long floristLongtitude;
+
+    @Column(precision = 15,scale = 10)
+    private BigDecimal floristLatitude;
+
+    @Column(precision = 15,scale = 10)
+    private BigDecimal floristLongtitude;
     @Column
     private String userEmail;
 

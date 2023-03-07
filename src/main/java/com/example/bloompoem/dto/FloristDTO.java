@@ -4,6 +4,8 @@ import com.example.bloompoem.entity.FloristEntity;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 
 @Getter
 @Builder
@@ -12,8 +14,8 @@ public class FloristDTO {
     private String floristName;
     private String floristAddress;
     private String floristPhoneNumber;
-    private long floristLatitude;
-    private long floristLongtitude;
+    private BigDecimal floristLatitude;
+    private BigDecimal floristLongtitude;
     private String userEmail;
 
     public static FloristDTO toDTO(FloristEntity floristEntity) {
