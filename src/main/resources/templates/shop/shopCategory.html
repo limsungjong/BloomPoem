@@ -13,6 +13,11 @@
     <title>구조 잡기</title>
     <link rel="stylesheet" href="/css/shopCategory.css" />
     <script>
+        var getCookie = function(name) {
+            var value = document.cookie.match('^[^\;]+' + name + '=([^;]*)(;|$)');
+            return value? value[2] : null;
+        };
+
         //검색하는 스크립트 시작
         const search = function (){
             const searchValue = $(".searchValue").val();
@@ -21,6 +26,11 @@
                 url : "/shopping/search",
                 data  : {searchValue}
             }).then(r =>{
+                    if(r.content.length<=0){
+                        alert("검색결과가 없습니다.");
+                        location.href= "/shopping"
+                        return;
+                    }
                     $(".productContent").empty();
                     $.each(r.content, (i,m)=>{
                         const msg =
@@ -46,8 +56,72 @@
         }
 
         //검색하는 스크립트 끝
+
         $(document).ready(function (){
             viewCart();
+            //쿠키가 있으면 header 변경 시작
+            const cookieName =document.cookie.match("^[^\;]+")[0];
+                if(cookieName == "Authorization" ){
+                    const msg =  (cookieName ==  "Authorization")
+                        ?"<span class=\"cart\"><a href='/shopping/cart'>Cart</a></span> <span class=\"myPage\"><a href='/my_page'>MyPage</a></span>\n "  : "<span class=\"signin\"><a href='/sign/sign_in'>SignIn</a></span>\n" +
+                        "        <span class=\"signup\"><a href='/sign/sign_up'>SignUp</a></span>"
+                    $(".userBox").append(msg);
+                }
+            //쿠기가 있으면 header 변경 끝
+            //장바구니 넣는 스크립트 시작
+            $(".productContent").on("click" ,".productBasket", (e)=>{
+                const productNumber = e.target.dataset.no
+                const cookie= document.cookie.split("=")[1]
+                if(cookie == null){
+                    alert("로그인이 필요합니다.");
+                    location.href="/sign/sign_in"
+                    return
+                }
+                $.ajax({
+                    url : "/shopping/cart_exists_product",
+                    method : "post",
+                    data : {productNumber, cookie}
+                }).then(r =>{
+                    if(r == "success"){
+                        $.ajax({
+                            url : "/shopping/cartCount",
+                            method : "post",
+                            data : {cookie}
+                        }).then(r =>{
+                            if(r<5){
+                                $.ajax({
+                                    url : "/shopping/cartSave",
+                                    method : "put",
+                                    data : {"cookie" : cookie, "productNumber" : productNumber, "count" : 1}
+                                }).then(r=> {
+                                    alert("장바구니에 담겼습니다.")
+                                }).catch(err => console.log(err));
+                            }else{
+                                alert("장바구니에는 물건을 5개까지 담을 수 있습니다.")
+                            }
+                        }).catch(err=> console.log(err))
+                    }else if(r== "alreadyProduct"){
+                        alert("장바구니안에 이미 상품이 존재합니다.");
+                        return
+                    }
+
+                }).catch(err => console.log(err))
+
+
+            })
+            //장바구니 넣는 스크립트 끝
+            const category =$("#category").val();
+            if(category == 1 || category == 2){
+                $(".plantMenu").css("backgroundColor" , "#fff3d4");
+            }else if(category == 3 || category == 4){
+                $(".wreathMenu").css("backgroundColor" , "#fff3d4");
+            }else if(category == 5 || category == 6){
+                $(".flowerBasketMenu").css("backgroundColor" , "#fff3d4");
+            }else if(category == 7){
+                $(".soil").css("backgroundColor" , "#fff3d4");
+            }else if(category == 8){
+                $(".vase").css("backgroundColor" , "#fff3d4");
+            }
 
                 // 메뉴바 보이게하는 제이쿼리
                 $(".plantMenu").on("mouseenter", ()=> {
@@ -140,7 +214,7 @@
                     url : "/shopping/productListView",
                     data : {category},
                 }).then(suc => {
-                    if(suc == null){
+                    if(suc.content == null){
                         alert("상품이 없습니다.");
                         location.href="/shopping";
                         return;
@@ -225,7 +299,7 @@
                         url : "/shopping/productListView",
                         data : {category, sort},
                     }).then(suc => {
-                        if (suc == null) {
+                        if (suc.content == "null") {
                             alert("상품이 없습니다.");
                             location.href = "/shopping";
                             return;
@@ -312,8 +386,7 @@
         </div>
     </menu>
     <nav class="userBox">
-        <span class="signin">SignIn</span>
-        <span class="signup">SignUp</span>
+
     </nav>
 </header>
 <main>

@@ -325,18 +325,21 @@ main{
     position: absolute;
     left: 279px;
     border: 1px solid rgba(0, 0, 0, 0.2);
+    z-index: 3;
 }
 .subMenu .wreath{
     display: none;
     position: absolute;
     left: 552px;
     border: 1px solid rgba(0, 0, 0, 0.2);
+    z-index: 3;
 }
 .subMenu .flowerBasket{
     display: none;
     position: absolute;
     left: 840px;
     border: 1px solid rgba(0, 0, 0, 0.2);
+    z-index: 3;
 }
 .logo{
     cursor: pointer;
@@ -352,3 +355,10 @@ main{
 .vase{
     cursor: pointer;
 }
+    a {
+        text-decoration: none;
+        color: #191919;
+    }
+    a:hover{
+        color: #191919;
+    }
