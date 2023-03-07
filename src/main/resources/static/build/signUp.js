@@ -204,13 +204,13 @@ const reg = new RegExp(emailTest);
                                             body: body,
                                             redirect: "follow",
                                         };
-                                        fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
+                                        fetch("http://localhost:9000/api/v1/sign/sign_in", requestOptions)
                                             .then((data) => data.json())
                                             .then((data) => {
                                                 var _a;
                                                 if (data.status == 200) {
                                                     alert("회원가입에 성공하였습니다.");
-                                                    location.href = "http://localhost:9000/sign/sign_in";
+                                                    location.href = "http://localhost:9000/";
                                                 }
                                                 else {
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
