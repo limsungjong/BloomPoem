@@ -1,5 +1,8 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.UserResponse;
+import com.example.bloompoem.domain.dto.UserSignInRequest;
+import com.example.bloompoem.domain.dto.UserSignResponse;
 import com.example.bloompoem.dto.UserDTO;
 import com.example.bloompoem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.file.Files;
@@ -25,9 +29,10 @@ public class UserController {
 
     private final UserRepository userRepository;
     @PostMapping("/user")
-    public ResponseEntity<UserDTO> user(@RequestParam String userEmail) {
-        UserDTO userDTO = UserDTO.toDTO(userRepository.findByUserEmail(userEmail).get());
+    public ResponseEntity<UserDTO> user(@RequestBody UserSignInRequest req) {
+        UserDTO userDTO = UserDTO.toDTO(userRepository.findByUserEmail(req.getUserEmail()).get());
 
+        UserResponse res = new UserResponse();
 
         return ResponseEntity.ok().body(userDTO);
     }

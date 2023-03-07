@@ -56,17 +56,10 @@ public class RestSignController {
 
     @PostMapping("/otp_check")
     public ResponseEntity<UserSignResponse> signUpOtpCheck(@RequestBody UserSignInRequest request) {
-        System.out.println(request.getUserEmail());
-
-        String userEmail = JwtUtil.getUserName(request.getUserEmail(),secretKey);
-
-        System.out.println(userEmail);
-
         UserEntity testUserEntity = userRepository
-                .findByUserEmail(userEmail)
+                .findByUserEmail(request.getUserEmail())
                 .orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
 
-        System.out.println(testUserEntity.getUserEmail());
 
 //        String userEmail = testUserEntity.getUserEmail();
 //        String userName = testUserEntity.getUserName();
