@@ -94,6 +94,8 @@ table {
 
 /* style css start */
 header {
+    position: sticky;
+    top: 0px;
     background-color: #fff3d4;
     height: 100px;
     width: 100vw;
@@ -104,7 +106,6 @@ header {
     justify-content: space-around;
     grid-template-columns: 300px 1fr 240px;
     justify-items: center;
-    border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
 }
 .logo {
@@ -130,10 +131,10 @@ span {
     text-transform: uppercase;
 }
 menu {
+    display: flex;
+    justify-content: center;
     font-weight: 400;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
 }
 nav span {
     color: #000;
@@ -170,11 +171,11 @@ footer {
 .mainArea{
     display: grid;
     grid-template-columns: 500px 250px 250px ;
-    grid-template-rows: 70px 70px 70px 90px ;
+    grid-template-rows: 100px 70px 70px 90px ;
 
     grid-template-areas:
       "a b b"
-      "a c ."
+      "a c c"
       "a d d"
       "a e f";
 
@@ -188,14 +189,18 @@ footer {
     object-fit: contain;
 
 }
-.ProductName{
+.productName{
     grid-area: b;
 }
 .productQuantity{
     grid-area: c;
+    display: flex;
+    justify-content: space-evenly;
 }
 .productPrice{
     grid-area: d;
+    display: flex;
+    justify-content: space-evenly;
 }
 .productBasket{
     width: 60%;
@@ -219,8 +224,9 @@ footer {
     height: auto;
 }
 .sideStickyArea{
+    display: none;
     position: fixed;
-    top: 750px;
+    top: 700px;
     right: 30px;
 }
 .sideStickyBox {
@@ -237,4 +243,106 @@ footer {
 }
 .logo{
     cursor: pointer;
+}
+.categoryBar {
+    width: 900px;
+    height: 70px;
+    font-size: var(--font-regular);
+    background-color: #fff3d4 ;
+}
+.categoryBar ul{
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.categoryBar li{
+    padding: 10px;
+    border-radius: 10px;
+}
+.categoryBar li:hover{
+    background-color: pink;
+    font-weight: bold;
+}
+.subMenu{
+    display: flex;
+    justify-content: space-around;
+
+}
+.subMenu div{
+    padding: 10px;
+    font-size: medium;
+    background-color: white;
+    cursor: pointer;
+
+}
+.subMenu div :hover{
+    background-color: pink;
+    font-weight: bold;
+}
+.subMenu .plant{
+    display: none;
+    position: absolute;
+    left: 570px;
+    bottom: -94px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+.subMenu .wreath{
+    display: none;
+    position: absolute;
+    left: 710px;
+    bottom: -94px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+.subMenu .flowerBasket{
+    display: none;
+    position: absolute;
+    left: 875px;
+    bottom: -94px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+.soil{
+    cursor: pointer;
+}
+.vase{
+    cursor: pointer;
+}
+.productName{
+    font-size: 1.9rem;
+    text-align: center;
+}
+.quantitySelect{
+    width: 100px;
+    grid-area: g;
+}
+.form-select{
+    width: 80px;
+}
+.sideQuantityBox{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 15px;
+}
+.sidePriceBox{
+    margin: 15px;
+    font-size: medium;
+}
+.sideButtonBox{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.sidePriceBox span{
+    font-size: medium;
+}
+a {
+    text-decoration: none;
+    color: #191919;
+}
+a:hover{
+    color: #191919;
 }

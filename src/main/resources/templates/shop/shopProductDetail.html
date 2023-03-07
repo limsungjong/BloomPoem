@@ -12,9 +12,142 @@
   <title>구조 잡기</title>
   <link rel="stylesheet" href="/css/shopProductDetail.css" />
   <script>
+    function comma(str) {
+      str = String(str);
+      return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
     $(document).ready(function (){
+      const category =$("#category").val();
+      if(category == 1 || category == 2){
+        $(".plantMenu").css("backgroundColor" , "#afffba");
+      }else if(category == 3 || category == 4){
+        $(".wreathMenu").css("backgroundColor" , "#afffba");
+      }else if(category == 5 || category == 6){
+        $(".flowerBasketMenu").css("backgroundColor" , "#afffba");
+      }else if(category == 7){
+        $(".soil").css("backgroundColor" , "#afffba");
+      }else if(category == 8){
+        $(".vase").css("backgroundColor" , "#afffba");
+      }
       $(".logo").on("click" ,()=>{
         location.href="/shopping"
+      })
+
+      // 메뉴바 보이게하는 제이쿼리
+      $(".plantMenu").on("mouseenter", ()=> {
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","block");
+        $(".wreath").css("display","none")});
+      $(".plant").on("mouseleave", ()=> $(".plant").css("display", "none"));
+      $(".wreathMenu").on("mouseenter", ()=> {
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","block")});
+      $(".wreath").on("mouseleave", ()=> $(".wreath").css("display", "none"));
+      $(".flowerBasketMenu").on("mouseenter", ()=> {
+        $(".flowerBasket").css("display", "block");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none");
+      })
+      $(".flowerBasket").on("mouseleave", ()=> $(".flowerBasket").css("display", "none"))
+      $(".soil").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".vase").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".mainImg").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".mainArea").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".subImageBox").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".orientalOrchid").on("click", ()=>{
+        $(".category").val(1);
+        document.categorySelect.submit();
+      })
+      $(".westernOrchid").on("click" ,()=>{
+        $(".category").val(2);
+        document.categorySelect.submit();
+      })
+      $(".funeralWreath").on("click", ()=>{
+        $(".category").val(3);
+        document.categorySelect.submit();
+      })
+      $(".congratulatoryWreath").on("click",()=>{
+        $(".category").val(4);
+        document.categorySelect.submit();
+      })
+      $(".bloomBasket").on("click",()=> {
+        $(".category").val(5);
+        document.categorySelect.submit();
+      })
+      $(".bloomBox").on("click",()=> {
+        $(".category").val(6);
+        document.categorySelect.submit();
+      })
+      $(".soil").on("click",()=> {
+        $(".category").val(7);
+        document.categorySelect.submit();
+      })
+      $(".vase").on("click",()=> {
+        $(".category").val(8);
+        document.categorySelect.submit();
+      })
+
+      $(".quantitySelect").change(()=>{
+        const selectQuantity =parseInt($(".quantitySelect").val());
+        const productNumber = parseInt($("#productNumber").val());
+        $.ajax({
+          url:"/shopping/product_info",
+          method : "get",
+          data : {productNumber}
+        }).then(r =>{
+          if(r.productQuantity < selectQuantity){
+            $(".quantitySelect").val("");
+            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);
+            return;
+          }else{
+            $("#totalPrice").text(comma(selectQuantity*r.productPrice));
+            $(".sideQuantity").val(selectQuantity).prop("selected", true);
+            $(".sideTotalPrice").text(comma(selectQuantity*r.productPrice));
+          }
+        }).catch(err => console.log(err))
+      })
+      $(".sideQuantity").change(()=>{
+        const selectQuantity =parseInt($(".sideQuantity").val());
+        const productNumber = parseInt($("#productNumber").val());
+        $.ajax({
+          url:"/shopping/product_info",
+          method : "get",
+          data : {productNumber}
+        }).then(r =>{
+          if(r.productQuantity < selectQuantity){
+            $(".quantitySelect").val("");
+            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);
+            return;
+          }else{
+            $(".sideTotalPrice").text(comma(selectQuantity*r.productPrice));
+            $(".quantitySelect").val(selectQuantity).prop("selected", true);
+            $("#totalPrice").text(comma(selectQuantity*r.productPrice));
+          }
+        }).catch(err=>console.log(err));
+      })
+      $("main").on("wheel" , ()=>{
+        $(".sideStickyArea").css("display", "block")
       })
     })
   </script>
@@ -24,31 +157,51 @@
   <input type="hidden" name="curPage" id="curPage" th:value="${curPage}">
   <input type="hidden" name="productNumber" id="productNumber" th:value="${productNumber}">
 
+  <form name="categorySelect" action="/shopping/category">
+    <input type="hidden" name="category" class="category" value="">
+  </form>
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
   <menu>
-
+    <div class="categoryBar">
+      <ul>
+        <li class="plantMenu">식물</li>
+        <li class="wreathMenu">화환</li>
+        <li class="flowerBasketMenu">꽃 바구니</li>
+        <li class="soil">흙, 식물영양제</li>
+        <li class="vase">화병, 화분</li>
+      </ul>
+    </div>
+    <div class="subMenu">
+      <div class="plant"><div class="orientalOrchid">동양란</div><div class="westernOrchid">서양란</div></div>
+      <div class="wreath"><div class="congratulatoryWreath">축하 화환</div><div class="funeralWreath">근조 화환</div></div>
+      <div class="flowerBasket"><div class="bloomBasket">꽃 바구니</div><div class="bloomBox">꽃 상자</div></div>
+    </div>
   </menu>
   <nav class="userBox">
-    <span class="signin">SignIn</span>
-    <span class="signup">SignUp</span>
+    <span class="signin"></span>
+    <span class="signup"></span>
   </nav>
 </header>
 <main>
   <div class="mainArea">
+    <br/>
     <img  class ="productMainImage" th:src="@{/image/product/}+${product.productMainImage}" >
-    <div class="ProductName" th:text="${product.productName}">
+    <div class="productName" th:text="${product.productName}">
     </div>
     <div class="productQuantity"> 수량 :
-      </div><div><select class="form-select form-select-sm">
-    <option>수량</option>
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-  </select></div>
-    <div class="productPrice">가격 : <span th:text="${product.productPrice}"></span>원</div>
+      <select class="form-select form-select-sm quantitySelect">
+      <option value="">수량</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      </select>
+      개
+    </div>
+
+    <div class="productPrice">가격 : <span id="totalPrice" th:text="${product.productPrice}"></span>원</div>
     <button class="btn btn-outline-primary productBasket" th:data-no="${productNumber}">장바구니</button>
     <button class="btn btn-outline-success productBuy" th:data-no="${productNumber}">구매하기</button>
   </div>
@@ -58,20 +211,20 @@
   </div>
   <div class="sideStickyArea">
     <div class="sideStickyBox">
-      <div>수량<select class="form-select form-select-sm">
-          <option>수량</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
+      <div class="sideQuantityBox">수량<select class="sideQuantity form-select form-select-sm">
+          <option value="">수량</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
         </select>
       </div>
     </div>
-    <div>가격 : <span th:text="${product.productPrice}"></span>원</div>
-    <div>
-      <button class="btn btn-outline-primary " th:data-no="${productNumber}">Basket</button>
-      <button class="btn btn-outline-success " th:data-no="${productNumber}">Buy</button>
+    <div class="sidePriceBox">가격 : <span class="sideTotalPrice" th:text="${product.productPrice}"></span>원</div>
+    <div class="sideButtonBox">
+      <button class="btn btn-outline-primary " th:data-no="${productNumber}">장바구니</button>
+      <button class="btn btn-outline-success " th:data-no="${productNumber}">구매</button>
     </div>
   </div>
 </div>
