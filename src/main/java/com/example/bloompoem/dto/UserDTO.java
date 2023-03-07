@@ -17,6 +17,8 @@ public class UserDTO {
     private Date userRegDate;
     private char userStatus;
     private long userCouponNumber;
+    private String userOtp;
+    private String userRole;
 
 
     public static UserDTO toDTO(UserEntity entity) {
@@ -28,6 +30,8 @@ public class UserDTO {
         userDTO.setUserRegDate(entity.getUserRegDate());
         userDTO.setUserStatus(entity.getUserStatus());
         userDTO.setUserCouponNumber(entity.getUserCouponNumber());
+        userDTO.setUserOtp(entity.getUserOtp());
+        userDTO.setUserRole(entity.getUserRole());
         return userDTO;
     }
 }

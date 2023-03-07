@@ -1,7 +1,8 @@
 package com.example.bloompoem.controller;
 
-import com.example.bloompoem.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.bloompoem.dto.UserDTO;
+import com.example.bloompoem.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,8 +20,17 @@ import java.util.Map;
 
 @Controller()
 @CrossOrigin(origins = "http://192.168.45.148:5500/")
+@RequiredArgsConstructor
 public class UserController {
 
+    private final UserRepository userRepository;
+    @PostMapping("/user")
+    public ResponseEntity<UserDTO> user(@RequestParam String userEmail) {
+        UserDTO userDTO = UserDTO.toDTO(userRepository.findByUserEmail(userEmail).get());
+
+
+        return ResponseEntity.ok().body(userDTO);
+    }
     @PostMapping("/user/image")
     public ResponseEntity<Resource> userImage(@RequestParam Map<String, String> param) {
         System.out.println("\n");

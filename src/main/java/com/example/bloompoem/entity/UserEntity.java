@@ -1,9 +1,7 @@
 package com.example.bloompoem.entity;
 
-import com.example.bloompoem.dto.TestUserDTO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.bloompoem.dto.UserDTO;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,6 +11,9 @@ import java.util.Date;
 @Setter
 @Table(name = "BP_USER")
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@ToString
 public class UserEntity {
     @Id
     private String userEmail;
@@ -37,9 +38,15 @@ public class UserEntity {
     private char userStatus;
 
     @Column(length = 10)
-    private int userCouponNumber;
+    private long userCouponNumber;
 
-    public static UserEntity toEntity(TestUserDTO userDTO) {
+    @Column(length = 10)
+    private String userOtp;
+
+    @Column(length = 10)
+    private String userRole;
+
+    public static UserEntity toEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserAddress(userDTO.getUserAddress());
         userEntity.setUserAddressDetail(userDTO.getUserAddressDetail());
@@ -47,7 +54,9 @@ public class UserEntity {
         userEntity.setUserName(userDTO.getUserName());
         userEntity.setUserRegDate(userDTO.getUserRegDate());
         userEntity.setUserStatus(userDTO.getUserStatus());
-        userEntity.setUserCouponNumber(userEntity.getUserCouponNumber());
+        userEntity.setUserCouponNumber(userDTO.getUserCouponNumber());
+        userEntity.setUserOtp(userDTO.getUserOtp());
+        userEntity.setUserRole(userDTO.getUserRole());
         return userEntity;
     }
 }

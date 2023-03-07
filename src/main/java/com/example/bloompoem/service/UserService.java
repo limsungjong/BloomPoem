@@ -3,9 +3,9 @@ package com.example.bloompoem.service;
 import com.example.bloompoem.domain.dto.MailDTO;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.UserSignUpRequest;
-import com.example.bloompoem.entity.TestUserEntity;
+import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.exception.CustomException;
-import com.example.bloompoem.repository.TestUserRepository;
+import com.example.bloompoem.repository.UserRepository;
 import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     Logger logger = LoggerFactory.getLogger(UserService.class);
-    private final TestUserRepository testUserRepository;
+    private final UserRepository userRepository;
     private final MailService mailService;
     private final OtpUtil otpUtil;
     private final PasswordEncoder passwordEncoder;
@@ -50,13 +50,13 @@ public class UserService {
             throw new CustomException(ResponseCode.MISSING_PARAMETER_VALUE);
         }
 
-        testUserRepository.findByUserEmail(request.getUserEmail()).ifPresent(user -> {
+        userRepository.findByUserEmail(request.getUserEmail()).ifPresent(user -> {
             throw new CustomException(ResponseCode.DUPLICATE_EMAIL);
         });
 
-        if (!testUserRepository.findByUserEmail(request.getUserEmail()).isPresent()) {
+        if (!userRepository.findByUserEmail(request.getUserEmail()).isPresent()) {
             String userOtp = otpUtil.createOTP(6);
-            TestUserEntity userEntity = TestUserEntity
+            UserEntity userEntity = UserEntity
                     .builder()
                     .userEmail(request.getUserEmail())
                     .userAddress(request.getUserAddress())
@@ -68,7 +68,7 @@ public class UserService {
                     .userOtp(passwordEncoder.encode(userOtp))
                     .userRole("user")
                     .build();
-            testUserRepository.save(userEntity);
+            userRepository.save(userEntity);
             userUpdateOTP(request.getUserEmail(), userOtp);
             userOtpMailSend(request.getUserEmail(), request.getUserName(), userOtp);
             return;
@@ -79,7 +79,7 @@ public class UserService {
 
     @Transactional
     public void userUpdateOTP(String userEmail, String userOtp) throws RuntimeException {
-        Optional<TestUserEntity> data = testUserRepository.findByUserEmail(userEmail);
+        Optional<UserEntity> data = userRepository.findByUserEmail(userEmail);
         if (data.isPresent()) {
             data.get().setUserOtp(passwordEncoder.encode(userOtp));
             return;
@@ -89,8 +89,8 @@ public class UserService {
 
     public void userOtpMailSend(String userEmail, String userName, String userOtp) throws RuntimeException {
         MailDTO mailDTO = new MailDTO();
-        Optional<TestUserEntity> testUserEntity = testUserRepository.findByUserEmail(userEmail);
-        if (testUserEntity.isPresent()) {
+        Optional<UserEntity> userEntity = userRepository.findByUserEmail(userEmail);
+        if (userEntity.isPresent()) {
             mailDTO.setUserEmail(userEmail);
             mailDTO.setUserName(userName);
             mailDTO.setOTP(userOtp);
@@ -101,11 +101,4 @@ public class UserService {
         throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
     }
 
-//    public void getUserData() {
-//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-//        String userName = loggedInUser.getName();
-//        String userEmail = loggedInUser.getPrincipal().
-//
-//        System.out.println(userName);
-//    }
 }
