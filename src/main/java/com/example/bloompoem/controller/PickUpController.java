@@ -1,19 +1,25 @@
 package com.example.bloompoem.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.example.bloompoem.repository.FloristRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+
 
 @Controller
+@RequiredArgsConstructor
 public class PickUpController {
+    FloristRepository floristRepository;
     @GetMapping(value = "/pick_up")
     public String pickUpPage() {
         return "/pickUp";
     }
 
-    @PostMapping(value = "/pick_up")
-    public ResponseEntity<String> pick() {
-        return ResponseEntity.ok().body("성공");
-    }
+//    @PostMapping(value = "/pick_up_list")
+//    public ResponseEntity<List<FloristDTO>> pick() {
+//        List<FloristDTO> arrayList = new ArrayList<>();
+//
+//
+//        return ResponseEntity.ok().body("성공");
+//    }
 }

@@ -6,12 +6,10 @@ import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.UserRepository;
 import com.example.bloompoem.service.SignService;
 import com.example.bloompoem.service.UserService;
-import com.example.bloompoem.util.JwtUtil;
 import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -61,26 +59,24 @@ public class RestSignController {
                 .orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
 
 
-//        String userEmail = testUserEntity.getUserEmail();
-//        String userName = testUserEntity.getUserName();
+        String userEmail = testUserEntity.getUserEmail();
+        String userName = testUserEntity.getUserName();
         String otp = OtpUtil.createOTP(6);
-//        userService.userOtpMailSend(userEmail, userName, otp);
-//        userService.userUpdateOTP(userEmail, otp);
+        userService.userOtpMailSend(userEmail, userName, otp);
+        userService.userUpdateOTP(userEmail, otp);
 
         return UserSignResponse.toResponseEntity(ResponseCode.SEND_OTP_MAIL);
     }
 
     @PostMapping("/sign_in")
-    public ResponseEntity<?> singIn(@RequestBody UserSignInRequest request, HttpServletRequest req, HttpServletResponse res, HttpSession session) {
-        System.out.println(request.getUserOtp());
-        System.out.println(request.getUserEmail());
+    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request, HttpServletRequest req, HttpServletResponse res, HttpSession session) {
 
         UserEntity userEntity = userRepository
                 .findByUserEmail(request.getUserEmail())
                 .orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
-        String xx = signService.login(request);
 
-        session.setAttribute("Authorization", xx);
+
+        String xx = signService.login(request);
 
         Cookie cookie = new Cookie("Authorization", xx);
         cookie.setMaxAge(7 * 24 * 60 * 60);
@@ -88,7 +84,6 @@ public class RestSignController {
 
         res.addCookie(cookie);
 
-        System.out.println(xx);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 }

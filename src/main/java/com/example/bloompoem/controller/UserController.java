@@ -1,8 +1,10 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.UserResponse;
 import com.example.bloompoem.domain.dto.UserSignInRequest;
 import com.example.bloompoem.dto.UserDTO;
+import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
@@ -28,8 +30,10 @@ public class UserController {
 
     private final UserRepository userRepository;
     @PostMapping("/user")
-    public ResponseEntity<UserDTO> user(@RequestBody UserSignInRequest req) {
+    public ResponseEntity<UserResponse> user(@RequestBody UserSignInRequest req) throws RuntimeException {
         UserDTO userDTO = UserDTO.toDTO(userRepository.findByUserEmail(req.getUserEmail()).get());
+
+        if (userDTO.getUserEmail().equals(req.getUserEmail())) {
 
         UserResponse res = UserResponse.builder()
                 .userAddress(userDTO.getUserAddress())
@@ -37,9 +41,12 @@ public class UserController {
                 .userPhoneNumber(userDTO.getUserPhoneNumber())
                 .userEmail(userDTO.getUserEmail())
                 .userName(userDTO.getUserName())
+                .userRole(userDTO.getUserRole())
                 .build();
 
-        return ResponseEntity.ok().body(userDTO);
+        return ResponseEntity.ok().body(res);
+        }
+        throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
     }
     @PostMapping("/user/image")
     public ResponseEntity<Resource> userImage(@RequestParam Map<String, String> param) {

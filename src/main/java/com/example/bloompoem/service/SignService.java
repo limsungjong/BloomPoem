@@ -32,7 +32,7 @@ public class SignService {
     private String secretKey;
 
 
-    private Long expiredMs = 1000 * 60  * 10 * 60L;
+    private Long expiredMs = 1000 * 60  * 360L;
 
     private final MailService mailService;
 
