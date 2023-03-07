@@ -1,57 +1,48 @@
 package com.example.bloompoem.security;
 
+import com.example.bloompoem.service.SignService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
+@PropertySource("classpath:app.properties")
 public class WebSecurityConfigure {
+    private final SignService signService;
+    @Value("#{environment['jwt.secret']}")
+    private String secretKey;
     private final Logger log = LoggerFactory.getLogger(getClass());
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
         http
-                .cors()
-                .disable()
-                .csrf()
-                .disable()
+                .httpBasic().disable()
+                .csrf().disable()
+                .cors().and()
                 .authorizeRequests()
-                .antMatchers("/","/shopping/**","/api/**","/sign/**")
-                .permitAll()
+//                .antMatchers(HttpMethod.POST,"/api/**","/sign/**").permitAll()
+//                .antMatchers("/","/shopping/**","/api/**","/sign/**").permitAll()
+                .antMatchers("/user").authenticated()
+//                .antMatchers("/pick_up").authenticated()
+                .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/test")
-                .authenticated()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin()
-                .loginPage("/sign/sign_in")
-                .usernameParameter("userEmail")
-                .passwordParameter("userOtp")
-                .loginProcessingUrl("/loginProc")
-                .successHandler((req,res,auth) -> {
-                    res.sendRedirect("/");
-                })
-                .failureHandler((req,res,ex) -> {
-                    res.sendRedirect("/sign/sign_in");
-                })
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessHandler((req,res,auth) -> {
-                    res.sendRedirect("/sign/sign_in");
-                });
-//                .addLogoutHandler(logot)
-//                .logoutSuccessHandler(LogoutSuccessHandler);
+                .addFilterBefore(new JwtFilter(signService,secretKey), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -63,11 +54,5 @@ public class WebSecurityConfigure {
                 "/favicon*/**",
                 "/image/**"
                 );
-    }
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
