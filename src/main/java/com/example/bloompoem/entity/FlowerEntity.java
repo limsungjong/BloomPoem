@@ -1,9 +1,6 @@
 package com.example.bloompoem.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @SequenceGenerator(
         name = "SEQ_FLOWER_NUMBER",
