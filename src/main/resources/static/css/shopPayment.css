@@ -102,7 +102,7 @@ header {
     color: var(--color-black);
     font-weight: 400;
     justify-content: space-around;
-    grid-template-columns: 300px 1fr 240px;
+    grid-template-columns: 300px 1fr 340px;
     justify-items: center;
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
@@ -172,8 +172,9 @@ main{
     width: 100vw;
     height: 81.1vh;
     display: grid;
-    grid-template-columns: 1000px 500px ;
-    grid-template-rows: 500px 250px;
+    grid-template-columns: 900px 500px ;
+    grid-template-rows: 450px 250px;
+    grid-row-gap: 30px;
     justify-content: center;
     align-content: center;
 }
@@ -191,7 +192,7 @@ main{
 .oneProductBox{
     width: 1500px;
     display: grid;
-    grid-template-columns: 400px 400px 100px ;
+    grid-template-columns: 300px 400px 100px ;
     grid-template-rows: repeat(3, 50px);
     justify-content: center;
     grid-gap : 10px;
@@ -271,6 +272,7 @@ main{
     display: flex;
     align-items: center;
     flex-direction: column;
+    display: none;
 }
 .scroll{
     margin-top: 30px;
@@ -317,4 +319,17 @@ main{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+}
+a {
+    text-decoration: none;
+    color: #191919;
+}
+a:hover{
+    color: #191919;
+}
+.kakaoPageImage{
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 36px;
+    height: 70px;
+
 }

@@ -135,13 +135,12 @@
 
             //한 개 구매하기 버튼 기능 시작
             $(".productArea").on("click", ".payButtonBox", (e)=>{
-                const shoppingCartNumber = e.target.dataset.no
-                $.ajax({
-                    url : "/shopping/payment/oneProduct",
-                    method : "post",
-                    data : {shoppingCartNumber, cookie}
-                }).catch(err=>console.log(err))
+                const shoppingCartNumber = parseInt(e.target.dataset.no);
+                $(".shoppingCartNumber").val(shoppingCartNumber);
+                $("#cookie").val(cookie)
+                document.payment.submit();
             } )
+            //한 개 구매하기 버튼 기능 끝
 
         // documentReady 끝나는 선
         })
@@ -155,10 +154,14 @@
     </menu>
     <nav class="userBox">
         <span class='logout'><a href='/sign/sign_out'>logOut</a></span>
-        <span class="MyPage">MyPage</span>
+        <span class="myPage">MyPage</span>
     </nav>
 </header>
 <main>
+    <form action="/shopping/payment/oneProduct" method ="post" name="payment" >
+        <input type="hidden" id="cookie" class="cookie" name="cookie" value="">
+        <input type="hidden" class="shoppingCartNumber" name="shoppingCartNumber" value="">
+    </form>
     <br/>
     <div class="productArea">
 

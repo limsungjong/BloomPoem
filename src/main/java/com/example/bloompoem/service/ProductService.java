@@ -73,6 +73,10 @@ public class ProductService {
     public ShoppingCartEntity oneCartSelect (int shoppingCartNumber){
         return cartDao.findByShoppingCartNumber(shoppingCartNumber);
     }
-
+    public int cartNumberSelecter(int productNumber, String userEmail){
+        ProductEntity product = new ProductEntity();
+        product.setProductNumber(productNumber);
+        return cartDao.findByProductAndUserEmail(product, userEmail).getShoppingCartNumber();
+    }
 
 }

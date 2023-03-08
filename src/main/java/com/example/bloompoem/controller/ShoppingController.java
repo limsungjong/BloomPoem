@@ -31,7 +31,8 @@ import java.util.List;
 public class ShoppingController {
     @Autowired
     private ProductService productService;
-
+    @Autowired
+    private UserService userService;
 
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
@@ -152,13 +153,22 @@ public class ShoppingController {
         productService.saveCart(cart);
         return ResponseEntity.ok("success");
     }
-    @PostMapping("/shopping/payment/oneProcut")
+    @PostMapping("/shopping/payment/oneProduct")
     public String oneProductPayment(Model model, int shoppingCartNumber, String cookie){
         String userEmail = JwtUtil.getUserName(cookie, secretKey);
         ShoppingCartEntity cart = productService.oneCartSelect(shoppingCartNumber);
         model.addAttribute("cart", cart);
-
         return "/shop/shopPayment";
     }
 
+    @PostMapping("/shoping/payment/find_cartNumber")
+    public ResponseEntity<Integer> findCartNumber(int productNumber, String cookie){
+        String userEmail = JwtUtil.getUserName(cookie, secretKey);
+        int count = productService.cartNumberSelecter(productNumber, userEmail);
+        if(count > 0){
+           return ResponseEntity.ok(count);
+        }else {
+           return ResponseEntity.status(HttpStatus.NO_CONTENT).body(0);
+        }
+    }
 }

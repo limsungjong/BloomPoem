@@ -208,6 +208,10 @@
   </script>
 </head>
 <body>
+<form action="/shopping/payment/oneProduct" method ="post" name="payment" >
+  <input type="hidden" id="cookie" class="cookie" name="cookie" value="">
+  <input type="hidden" class="shoppingCartNumber" name="shoppingCartNumber" value="">
+</form>
   <input type="hidden" name="category" id="category" th:value="${category}">
   <input type="hidden" name="curPage" id="curPage" th:value="${curPage}">
   <input type="hidden" name="productNumber" id="productNumber" th:value="${productNumber}">
@@ -234,8 +238,7 @@
     </div>
   </menu>
   <nav class="userBox">
-    <span class="signin"></span>
-    <span class="signup"></span>
+
   </nav>
 </header>
 <main>
@@ -255,7 +258,9 @@
       개
     </div>
 
-    <div class="productPrice">가격 : <span id="totalPrice" th:text="${product.productPrice}"></span>원</div>
+    <div class="productPrice">가격 : <span id="totalPrice"><script th:inline="javascript">
+      $("#totalPrice").append(comma([[${product.productPrice}]]))
+    </script></span>원</div>
     <button class="btn btn-outline-primary productBasket" th:data-no="${productNumber}">장바구니</button>
     <button class="btn btn-outline-success productBuy" th:data-no="${productNumber}">구매하기</button>
   </div>
@@ -274,7 +279,9 @@
         </select>
       </div>
     </div>
-    <div class="sidePriceBox">가격 : <span class="sideTotalPrice" th:text="${product.productPrice}"></span>원</div>
+    <div class="sidePriceBox">가격 : <span class="sideTotalPrice"><script th:inline="javascript">
+      $(".sideTotalPrice").append(comma([[${product.productPrice}]]))
+    </script></span>원</div>
     <div class="sideButtonBox">
       <button class="btn btn-outline-primary " th:data-no="${productNumber}">장바구니</button>
       <button class="btn btn-outline-success " th:data-no="${productNumber}">구매</button>

@@ -56,7 +56,13 @@
         }
 
         //검색하는 스크립트 끝
-
+        //구매하기 폼을 넘기는 method 시작
+        const payment = (cartNumber, cookie)=>{
+            $(".shoppingCartNumber").val(parseInt(cartNumber));
+            $("#cookie").val(cookie);
+            document.payment.submit();
+        }
+        //구매하기 폼을 넘기는 method 끝
         $(document).ready(function (){
             viewCart();
             const cookie= document.cookie.split("=")[1]
@@ -70,6 +76,42 @@
                 $(".userBox").append(header);
             }
             //쿠기가 있으면 header 변경 끝
+            //한 개 구매하기 버튼 기능 시작
+                $(".productContent").on("click",".productBuy",(e)=>{
+                    const productNumber = e.target.dataset.no
+                    $.ajax({
+                        url : "/shopping/cart_exists_product",
+                        method : "post",
+                        data : {cookie, productNumber}
+                    }).then(r=>{
+                            console.log(r);
+                        if(r == 'success' ){
+                            $.ajax({
+                                url : "/shopping/cartSave",
+                                method : "put",
+                                data : {"cookie" : cookie, "productNumber" : productNumber, "count" : 1}
+                            }).then(r=>{
+                                $.ajax({
+                                    url : "/shoping/payment/find_cartNumber",
+                                    method : "post",
+                                    data :{productNumber, cookie}
+                                }).then(r=>{
+                                    payment(r,cookie)
+                                })
+                            }).catch(err=>console.log(err))
+                        }else if(r== 'alreadyProduct'){
+                            $.ajax({
+                                url : "/shoping/payment/find_cartNumber",
+                                method : "post",
+                                data :{productNumber, cookie}
+                            }).then(r=>{
+                                payment(r,cookie)
+                            })
+                        }
+                    }).catch(err=>console.log(err))
+
+                })
+            //한 개 구매하기 버튼 기능 끝
             //장바구니 넣는 스크립트 시작
             $(".productContent").on("click" ,".productBasket", (e)=>{
                 const productNumber = e.target.dataset.no
@@ -358,10 +400,9 @@
                         }
                     ).catch(err =>console.log(err));
                 }
-
-
             })
             //sort하는 스크립트 끝
+
 
         }
         function comma(str) {
@@ -392,6 +433,10 @@
     </nav>
 </header>
 <main>
+    <form action="/shopping/payment/oneProduct" method ="post" name="payment" >
+        <input type="hidden" id="cookie" class="cookie" name="cookie" value="">
+        <input type="hidden" class="shoppingCartNumber" name="shoppingCartNumber" value="">
+    </form>
     <form name="detailForm" action="/shopping/product_detail">
         <input type="hidden" name="category" id="category" th:value="${category}">
         <input type="hidden" name="page" id="page" th:value="${page}">

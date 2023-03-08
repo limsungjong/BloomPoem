@@ -256,6 +256,7 @@ main{
     width: 70px;
 }
 .footerBar{
+    margin-top : 30px;
     display: grid;
     height: 100%;
     width: 1500px;
