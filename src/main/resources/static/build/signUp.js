@@ -108,6 +108,7 @@ const reg = new RegExp(emailTest);
         fetch("http://localhost:9000/api/v1/sign/sign_up", requestOptions)
             .then((data) => data.json())
             .then((data) => {
+                submitBtn.disabled = false;
                 console.log(data);
                 {
                     if (data.status == 201) {
@@ -204,13 +205,13 @@ const reg = new RegExp(emailTest);
                                             body: body,
                                             redirect: "follow",
                                         };
-                                        fetch("http://localhost:9000/api/v1/sign/sign_in", requestOptions)
+                                        fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
                                             .then((data) => data.json())
                                             .then((data) => {
                                                 var _a;
                                                 if (data.status == 200) {
                                                     alert("회원가입에 성공하였습니다.");
-                                                    location.href = "http://localhost:9000/";
+                                                    location.href = "http://localhost:9000/sign/sign_in";
                                                 }
                                                 else {
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
@@ -219,6 +220,7 @@ const reg = new RegExp(emailTest);
                                                 }
                                             })
                                             .catch((err) => {
+                                                submitBtn.disabled = false;
                                                 console.log(err);
                                             });
                                     }
@@ -237,9 +239,11 @@ const reg = new RegExp(emailTest);
                     else {
                         alert(data.message);
                     }
+                    submitBtn.disabled = false;
                 }
             })
             .catch((err) => {
+                submitBtn.disabled = false;
                 console.log(err);
             });
     });

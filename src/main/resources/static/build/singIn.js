@@ -153,6 +153,7 @@
                                             if (data.status == 200) {
                                                 alert("로그인에 성공하였습니다.");
                                                 location.href = "http://localhost:9000/";
+                                                console.log(data.headers);
                                             }
                                             else {
                                                 (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();

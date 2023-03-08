@@ -27,6 +27,7 @@
     height: 79vh;
     padding-top: 2rem;
     padding-bottom: 2rem;
+    overflow: auto;
 }
 .loginBox,
 .signUpBox {
