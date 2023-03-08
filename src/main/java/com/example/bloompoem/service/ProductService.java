@@ -53,16 +53,26 @@ public class ProductService {
         return product;
     }
     public void saveCart(ShoppingCartEntity cart){
+
         cartDao.saveAndFlush(cart);
     }
     public boolean existsProduct(int productNumber, String userEmail){
-        return cartDao.existsByProductNumberAndUserEmail(productNumber, userEmail);
+        ProductEntity product =new ProductEntity();
+        product.setProductNumber(productNumber);
+        return cartDao.existsByProductAndUserEmail(product, userEmail);
     }
     public int countCart(String userEmail){
         return cartDao.countByUserEmail(userEmail);
     }
     public List<ShoppingCartEntity> viewCart(String userEmail){
-        return cartDao.findByUserEmail(userEmail);
+        return cartDao.findByUserEmailOrderByShoppingCartNumberDesc(userEmail);
     }
+    public int deletecCart(int shoppingCartNumber, String userEmail){
+        return cartDao.deleteByShoppingCartNumberAndUserEmail(shoppingCartNumber, userEmail);
+    }
+    public ShoppingCartEntity oneCartSelect (int shoppingCartNumber){
+        return cartDao.findByShoppingCartNumber(shoppingCartNumber);
+    }
+
 
 }

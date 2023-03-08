@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 
-    <title>구조 잡기</title>
+    <title>카테고리 별 아이템</title>
     <link rel="stylesheet" href="/css/shopCategory.css" />
     <script>
         var getCookie = function(name) {
@@ -59,19 +59,21 @@
 
         $(document).ready(function (){
             viewCart();
+            const cookie= document.cookie.split("=")[1]
             //쿠키가 있으면 header 변경 시작
-            const cookieName =document.cookie.match("^[^\;]+")[0];
-                if(cookieName == "Authorization" ){
-                    const msg =  (cookieName ==  "Authorization")
-                        ?"<span class=\"cart\"><a href='/shopping/cart'>Cart</a></span> <span class=\"myPage\"><a href='/my_page'>MyPage</a></span>\n "  : "<span class=\"signin\"><a href='/sign/sign_in'>SignIn</a></span>\n" +
-                        "        <span class=\"signup\"><a href='/sign/sign_up'>SignUp</a></span>"
-                    $(".userBox").append(msg);
-                }
+            const header =  (cookie != null)
+                ?"<span class='logout'><a href='/sign/sign_out'>logOut</a></span><span class=\"cart\"><a href='/shopping/cart'>Cart</a></span> <span class=\"myPage\"><a href='/my_page'>MyPage</a></span> "
+                :"<span class=\"signin\"><a href='/sign/sign_in'>SignIn</a></span> <span class=\"signup\"><a href='/sign/sign_up'>SignUp</a></span>"
+            if(cookie != null ){
+                $(".userBox").append(header);
+            }else {
+                $(".userBox").append(header);
+            }
             //쿠기가 있으면 header 변경 끝
             //장바구니 넣는 스크립트 시작
             $(".productContent").on("click" ,".productBasket", (e)=>{
                 const productNumber = e.target.dataset.no
-                const cookie= document.cookie.split("=")[1]
+
                 if(cookie == null){
                     alert("로그인이 필요합니다.");
                     location.href="/sign/sign_in"

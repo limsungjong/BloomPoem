@@ -20,10 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,9 +100,11 @@ public class ShoppingController {
     @PutMapping("/shopping/cartSave")
     public ResponseEntity<String> cartSave (int productNumber , int count, String cookie){
         ShoppingCartEntity cart = new ShoppingCartEntity();
-        cart.setProductNumber(productNumber);
+        ProductEntity product = new ProductEntity();
         cart.setShoppingCartCount(count);
         cart.setUserEmail(JwtUtil.getUserName(cookie, secretKey));
+        product.setProductNumber(productNumber);
+        cart.setProduct(product);
         productService.saveCart(cart);
         return ResponseEntity.ok("success");
     }
@@ -133,7 +132,33 @@ public class ShoppingController {
     public ResponseEntity<List<ShoppingCartEntity>> viewCart (String cookie){
         String userEmail =  JwtUtil.getUserName(cookie, secretKey);
         List<ShoppingCartEntity> cart = productService.viewCart(userEmail);
+        System.out.println(cart.toArray());
         return ResponseEntity.ok(cart);
+    }
+    @DeleteMapping("/shopping/cart/delete")
+    public ResponseEntity<String > deleteCart (String cookie , int shoppingCartNumber){
+        String userEmail = JwtUtil.getUserName(cookie, secretKey);
+        productService.deletecCart(shoppingCartNumber, userEmail);
+        return ResponseEntity.ok("success");
+    }
+
+    @PutMapping("/shopping/cart/update_count")
+    public ResponseEntity<String> updateCount(String cookie, int shoppingCartNumber , int count){
+        String userEmail = JwtUtil.getUserName(cookie, secretKey);
+        ShoppingCartEntity cart = productService.oneCartSelect(shoppingCartNumber);
+        cart.setShoppingCartCount(count);
+
+
+        productService.saveCart(cart);
+        return ResponseEntity.ok("success");
+    }
+    @PostMapping("/shopping/payment/oneProcut")
+    public String oneProductPayment(Model model, int shoppingCartNumber, String cookie){
+        String userEmail = JwtUtil.getUserName(cookie, secretKey);
+        ShoppingCartEntity cart = productService.oneCartSelect(shoppingCartNumber);
+        model.addAttribute("cart", cart);
+
+        return "/shop/shopPayment";
     }
 
 }

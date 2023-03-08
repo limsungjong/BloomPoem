@@ -3,11 +3,13 @@ package com.example.bloompoem.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@DynamicUpdate
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
@@ -24,6 +26,9 @@ public class ShoppingCartEntity {
     private int shoppingCartNumber;
     private String userEmail;
     private int shoppingCartCount;
-    private int productNumber;
+
+    @ManyToOne
+    @JoinColumn(name="productNumber")
+    private ProductEntity product;
 
 }
