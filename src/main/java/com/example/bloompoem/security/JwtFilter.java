@@ -10,7 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -36,6 +35,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.info("authorization : " + authorization);
+
+        final String cookie = request.getHeader(HttpHeaders.COOKIE);
+        logger.info(cookie);
 
         // token 안 보내면 블락
         if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -65,7 +67,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // detail을 넣어주기
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);
     }
 }
