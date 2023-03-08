@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @CrossOrigin(origins = "http://172.28.16.1:5500")
 @RestController
@@ -39,9 +39,16 @@ public class RestSignController {
 //     "userName":"임성종"
 
     @PostMapping("/sign_up")
-    public ResponseEntity<UserSignResponse> singUp(@RequestBody UserSignUpRequest request) {
+    public ResponseEntity<UserSignResponse> singUp(@RequestBody @Valid UserSignUpRequest request) {
         userService.createUser(request);
         return UserSignResponse.toResponseEntity(ResponseCode.CREATE);
+    }
+
+    @GetMapping("/sign_check")
+    public ResponseEntity<?> signCheck(@CookieValue(value = "Authorization") String token) {
+
+        System.out.println(token);
+        return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 
 
@@ -62,7 +69,7 @@ public class RestSignController {
     }
 
     @PostMapping("/sign_in")
-    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request, HttpServletRequest req, HttpServletResponse res, HttpSession session) {
+    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request,HttpServletResponse res) {
 
         UserEntity userEntity = userRepository
                 .findByUserEmail(request.getUserEmail())
