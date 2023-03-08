@@ -1,7 +1,10 @@
 package com.example.bloompoem.entity;
 
 import com.example.bloompoem.dto.FloristDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -38,6 +41,7 @@ public class FloristEntity {
 
     @Column(precision = 15,scale = 10)
     private BigDecimal floristLongtitude;
+
     @Column
     private String userEmail;
 
@@ -50,7 +54,6 @@ public class FloristEntity {
                 .floristPhoneNumber(floristDTO.getFloristPhoneNumber())
                 .floristLatitude(floristDTO.getFloristLatitude())
                 .floristLongtitude(floristDTO.getFloristLongtitude())
-                .userEmail(floristDTO.getUserEmail())
                 .build();
     }
 }
