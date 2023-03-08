@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://192.168.1.135:5500/")
+@CrossOrigin(origins = "http://172.28.16.1:5500")
 @RestController
 @RequestMapping(value = "/api/v1/sign")
 @RequiredArgsConstructor
@@ -38,12 +37,6 @@ public class RestSignController {
 //     "userAddressDetail":"아르누보 506호",
 //     "userPhoneNumber":"010-3716-8640",
 //     "userName":"임성종"
-
-    @RequestMapping("/sign")
-    public ResponseEntity<?> check(Authentication authentication) {
-
-        return ResponseEntity.ok().body(authentication.getName());
-    }
 
     @PostMapping("/sign_up")
     public ResponseEntity<UserSignResponse> singUp(@RequestBody UserSignUpRequest request) {
@@ -83,6 +76,16 @@ public class RestSignController {
         cookie.setPath("/");
 
         res.addCookie(cookie);
+
+        return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
+    }
+
+    @PostMapping("/sign_out")
+    public ResponseEntity<?> signOut(HttpServletResponse res) {
+        Cookie cookie = new Cookie("Authorization", null);
+        cookie.setPath("/");
+        res.addCookie(cookie);
+
 
         return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
