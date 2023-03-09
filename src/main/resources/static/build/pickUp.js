@@ -3,7 +3,6 @@ const modalCon = document.querySelector("#modal");
 const closeBtn = document.querySelector(".close-area");
 const container = document.querySelector("#map");
 
-const googleMapApi = "AIzaSyAzdBLLKTSqZ_-KMogDx6tHdaMz4OmgNOM";
 const mapOption = {
     center: new kakao.maps.LatLng(37.442928, 126.670556), // 지도의 중심좌표
     level: 4, // 지도의 확대 레벨
@@ -37,12 +36,10 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
         .then((response) => response.json())
         .then((result) => {
             {
-                const myHeaders = new Headers();
+                const cookie = document.cookie.split("=");
+                var myHeaders = new Headers();
+                myHeaders.append("Cookie", `${cookie[0]}=${cookie[1]}`);
                 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-                myHeaders.append(
-                    "Cookie",
-                    "Authorization=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyRW1haWwiOiJzdW5nODg4MUBuYXZlci5jb20iLCJpYXQiOjE2NzgxNjYwMjEsImV4cCI6MTY3ODE4NzYyMX0.F_NnJhk2r0QR60ydKfTxu8I1fbCgrDkCi0B6tujPisE; JSESSIONID=F3B6904617F33ADE3ECE40A606D1A576"
-                );
 
                 const urlencoded = new URLSearchParams();
                 urlencoded.append("x", result.documents[0].x);
@@ -55,29 +52,13 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
                     body: urlencoded,
                     redirect: "follow",
                 };
-                console.log(result);
-
-                fetch("http://localhost:9000/pick_up_list_query", requestOptions)
+                fetch("http://localhost:9000/api/v1/pick_up/pick_up_list_query", requestOptions)
                     .then((response) => response.json())
-                    .then((result) => {
-                        console.log(result);
-                        removeMarker();
-                        result.forEach((data) => {
-                            const mapOjb = new sideItemObj(
-                                String(data.floristLatitude),
-                                String(data.floristLongtitude),
-                                data
-                            );
-                            mapOjb.createItem(data);
-                            mapOjb.setMarker();
-                            mapOjb.setAddEvent();
-                        });
-                    })
+                    .then((result) => floristListPrint(result))
                     .catch((error) => console.log("error", error));
             }
             removeMarker();
             const data = result.documents[0];
-            console.log(data);
             const coords = new kakao.maps.LatLng(data.y, data.x);
             map.panTo(coords);
         })
@@ -92,11 +73,12 @@ function removeMarker() {
 }
 
 class sideItemObj {
-    constructor(x, y, data) {
+    constructor(x, y, floristData, flowerData) {
         this.florist_latitude = x;
         this.florist_longitude = y;
         this.element = null;
-        this.data = data;
+        this.floristData = floristData;
+        this.flowerData = flowerData;
     }
 
     // 사이드 아이템 생성하고 추가
@@ -104,17 +86,14 @@ class sideItemObj {
         const sideItem = document.createElement("ul");
         sideItem.setAttribute("class", "sideItem");
         sideItem.innerHTML = `
-    <li class="floristImgBox">
-      <img class="floristImg" />
-    </li>
     <li class="floristTitle">
-      <span>${data.floristName}</span>
+      <span>${this.floristData.floristName}</span>
     </li>
     <li class="floristPhoneNumber">
-      <span>${data.floristPhoneNumber}</span>
+      <span>${this.floristData.floristPhoneNumber}</span>
     </li>
     <li class="floristAddress">
-      <span>${data.floristAddress}</span>
+      <span>${this.floristData.floristAddress}</span>
     </li>
     `;
         document.querySelector(".sideList").appendChild(sideItem);
@@ -158,44 +137,71 @@ class sideItemObj {
 
     setAddEvent() {
         this.element.addEventListener("click", (e) => {
-            createModal(this.data);
+            console.log(this.floristData);
+            console.log(this.flowerData);
+            createModal(this.floristData);
         });
     }
 }
 
-const floristList = [];
+window.addEventListener("DOMContentLoaded", getList);
 
-window.addEventListener("DOMContentLoaded", (e) => {
+function getList() {
     fetch("http://localhost:9000/api/v1/pick_up/pick_up_list")
         .then((data) => data.json())
         .then(list => {
             floristListPrint(list);
         }).catch(err => console.log(err));
-})
+}
+
+function moveGetList(x, y) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("x", x);
+    urlencoded.append("y", y);
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+    };
+    fetch("http://localhost:9000/api/v1/pick_up/pick_up_list_query", requestOptions)
+        .then(data => data.json())
+        .then((list) => floristListPrint(list))
+        .catch(err => console.log(err));
+}
 
 // map create
 function floristListPrint(floristList) {
+    document.querySelectorAll('.sideItem')
+        .forEach(v =>
+            document.querySelector('.sideList').removeChild(v));
     floristList.forEach((data) => {
-        const mapOjb = new sideItemObj(
+        const mapObj = new sideItemObj(
             String(data.floristLatitude),
             String(data.floristLongtitude),
             data
         );
-        mapOjb.createItem(data);
-        mapOjb.setMarker();
-        mapOjb.setAddEvent();
+        mapObj.createItem(data);
+        mapObj.setMarker();
+        mapObj.setAddEvent();
     });
 }
 
 // add modal
-function createModal(data) {
+function createModal(floristData, flowerData) {
+    console.log(floristData)
+    console.log(flowerData)
     const box = document.createElement("div");
     box.setAttribute("id", "modal");
     box.setAttribute("class", "modal-overlay");
     box.innerHTML = `
   <div class="modal-window">
     <div class="title">
-      <h2>${data.floristName}</h2>
+      <h2>${floristData.floristName}</h2>
     </div>
     <div class="close-area">X</div>
     <ul class="modal-nav">
@@ -229,3 +235,11 @@ function createModal(data) {
         });
     });
 }
+
+
+// 지도 드래그시에 해당하는 중심 좌표를 기준으로 리스트 다시 작성
+kakao.maps.event.addListener(map, 'dragend', function (data) {
+    removeMarker();
+    let center = map.getCenter();
+    moveGetList(center.La, center.Ma);
+});
