@@ -1,0 +1,21 @@
+#loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+
+
+
+
+    background: url("https://i.stack.imgur.com/MnyxU.gif"),
+    linear-gradient(180deg, rgba(255,243,212,1) 0%, rgba(248,209,209,1) 60%),
+    rgb(255,243,212);
+
+    /*background-color: rgba(255, 243, 212, 1);*/
+    /*background-image: url("https://i.stack.imgur.com/MnyxU.gif");*/
+    background-repeat: no-repeat;
+    background-position: center;
+}
