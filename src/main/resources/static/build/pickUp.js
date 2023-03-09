@@ -13,7 +13,13 @@ let markers = [];
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 // 공통된 하나의 글로벌 객체로 사용함. 추가 금지
 const map = new kakao.maps.Map(document.querySelector("#map"), mapOption);
-
+// 마커 전부 제거 markers에 있는 모든 marker 제거
+function removeMarker() {
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
 document.querySelector(".searchButton").addEventListener("click", (e) => {
     const queryInput = document.querySelector(".searchTerm");
     const myHeaders = new Headers();
@@ -36,9 +42,7 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
         .then((response) => response.json())
         .then((result) => {
             {
-                const cookie = document.cookie.split("=");
                 var myHeaders = new Headers();
-                myHeaders.append("Cookie", `${cookie[0]}=${cookie[1]}`);
                 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
                 const urlencoded = new URLSearchParams();
@@ -54,7 +58,7 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
                 };
                 fetch("http://localhost:9000/api/v1/pick_up/pick_up_list_query", requestOptions)
                     .then((response) => response.json())
-                    .then((result) => floristListPrint(result))
+                    .then((result) => rootFloristListPrint(result))
                     .catch((error) => console.log("error", error));
             }
             removeMarker();
@@ -65,20 +69,18 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
         .catch((error) => console.log("error", error));
 });
 
-function removeMarker() {
-    for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-    markers = [];
-}
-
 class sideItemObj {
-    constructor(x, y, floristData, flowerData) {
+    // x 좌표
+    // y 좌표
+    // florist 꽃 집 정보
+    // {}
+    constructor(x, y, floristData, flowerData, bucket) {
         this.florist_latitude = x;
         this.florist_longitude = y;
-        this.element = null;
+        this.sideFloristItem = null;
         this.floristData = floristData;
         this.flowerData = flowerData;
+        this.bucket = bucket;
     }
 
     // 사이드 아이템 생성하고 추가
@@ -97,7 +99,7 @@ class sideItemObj {
     </li>
     `;
         document.querySelector(".sideList").appendChild(sideItem);
-        this.element = sideItem;
+        this.sideFloristItem = sideItem;
     }
 
     // 생성된 아이템 위치로 마커추가
@@ -131,29 +133,151 @@ class sideItemObj {
         });
         kakao.maps.event.addListener(marker, "click", () => {
             // 마커 위에 인포윈도우를 표시합니다
-            createModal(this.data);
+            this.fetchToCreateModal(this.floristData);
         });
     }
 
+    // 마커에 이벤트 추가하기
     setAddEvent() {
-        this.element.addEventListener("click", (e) => {
-            console.log(this.floristData);
-            console.log(this.flowerData);
-            createModal(this.floristData);
+        this.sideFloristItem.addEventListener("click", (e) => {
+            this.fetchToCreateModal(this.floristData);
+        });
+    }
+
+    // fetch florist_product_list3에 보내서 모달 만들기
+    fetchToCreateModal() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("floristNumber", this.floristData.floristNumber);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:9000/api/v1/pick_up/florist_product_list3", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                this.createModal(this.floristData, result);
+            })
+            .catch(error => console.log('error', error));
+
+    }
+
+    createModal(floristData, flowerDataArr) {
+        if (!floristData && !flowerDataArr) return;
+
+        // modal box
+        const box = document.createElement("div");
+        box.setAttribute("id", "modal");
+        box.setAttribute("class", "modal-overlay");
+        box.innerHTML = `
+          <div class="modal-window">
+            <div class="title">
+              <h2>${floristData.floristName}</h2>
+            </div>
+            <div class="close-area">X</div>
+            <ul class="modal-nav">
+              <li class="active">아름다운 꽃</li>
+              <li>장바구니</li>
+              <li>매장 정보</li>
+              <li>리뷰</li>
+            </ul>
+            <div class="content">
+                <ul class="flowerList">
+                </ul>
+            </div>
+          </div>
+        `;
+
+        // 꽃 정보 띄우기
+        flowerDataArr.forEach((flower => {
+            const liFlowerHtml = `
+          <div class="flowerImageBox">
+              <img
+                class="flowerMainImg"
+                src="/image/florist_product/${flower.floristSubImage1}"
+                alt="꽃 이미지"
+              />
+          </div>
+          <div class="flowerDetailContent">
+            <span class="flowerDetailSpan">${flower.flowerName}</span>
+              <br />
+            <span class="flowerDetailSpan">가격 : ${flower.floristProductPrice}</span>
+          </div>
+          <div class="flowerDetailBuy">
+            <div class="flowerCountBox">
+
+                  <input
+                    class="flowerCount"
+                    type="number"
+                    min="1"
+                    max="100"
+                    value="1"
+                    data-flowerNumber=${flower.flowerNumber}
+                  />
+
+              <button class="btn btn-outline-secondary productBasket">
+                10개 추가하기
+              </button>
+            </div>
+            <div class="flowerBuyBox">
+              <button class="btn btn-outline-primary productBasket">
+                장바구니
+              </button>
+              <button class="btn btn-outline-success productBuy">
+                구매하기
+              </button>
+            </div>
+          </div>
+        `;
+            const flowerLi = document.createElement('li');
+            flowerLi.setAttribute('class','flowerContent');
+            flowerLi.innerHTML = liFlowerHtml;
+            box.querySelector(".flowerList").append(flowerLi);
+        }))
+
+        document.querySelector("body").appendChild(box);
+        document.querySelector(".close-area").addEventListener("click", () => {
+            document.querySelector("body").removeChild(box);
+        });
+        const navMenus = box.querySelectorAll(".modal-nav li");
+        navMenus.forEach((v, i) => {
+            v.addEventListener("click", (e) => {
+                if (e.target.classList.value == "active") {
+                    console.log("ac");
+                    return;
+                } else {
+                    navMenus.forEach((ele) => {
+                        if (ele == e.target) {
+                            ele.setAttribute("class", "active");
+                        } else {
+                            ele.removeAttribute("class", "active");
+                        }
+                    });
+                }
+            });
         });
     }
 }
 
-window.addEventListener("DOMContentLoaded", getList);
 
+// 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
     fetch("http://localhost:9000/api/v1/pick_up/pick_up_list")
         .then((data) => data.json())
         .then(list => {
-            floristListPrint(list);
+            rootFloristListPrint(list);
         }).catch(err => console.log(err));
 }
+window.addEventListener("DOMContentLoaded", getList);
 
+// 드래그 하면 리스트 띄우기 // root 사용됨
 function moveGetList(x, y) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -170,12 +294,13 @@ function moveGetList(x, y) {
     };
     fetch("http://localhost:9000/api/v1/pick_up/pick_up_list_query", requestOptions)
         .then(data => data.json())
-        .then((list) => floristListPrint(list))
+        .then((list) => rootFloristListPrint(list))
         .catch(err => console.log(err));
 }
 
 // map create
-function floristListPrint(floristList) {
+// root
+function rootFloristListPrint(floristList) {
     document.querySelectorAll('.sideItem')
         .forEach(v =>
             document.querySelector('.sideList').removeChild(v));
@@ -190,52 +315,6 @@ function floristListPrint(floristList) {
         mapObj.setAddEvent();
     });
 }
-
-// add modal
-function createModal(floristData, flowerData) {
-    console.log(floristData)
-    console.log(flowerData)
-    const box = document.createElement("div");
-    box.setAttribute("id", "modal");
-    box.setAttribute("class", "modal-overlay");
-    box.innerHTML = `
-  <div class="modal-window">
-    <div class="title">
-      <h2>${floristData.floristName}</h2>
-    </div>
-    <div class="close-area">X</div>
-    <ul class="modal-nav">
-      <li class="active">아름다운 꽃</li>
-      <li>장바구니</li>
-      <li>매장 정보</li>
-      <li>리뷰</li>
-    </ul>
-    <div class="content"></div>
-  </div>
-  `;
-    document.querySelector("body").appendChild(box);
-    document.querySelector(".close-area").addEventListener("click", () => {
-        document.querySelector("body").removeChild(box);
-    });
-    const navMenus = box.querySelectorAll(".modal-nav li");
-    navMenus.forEach((v, i) => {
-        v.addEventListener("click", (e) => {
-            if (e.target.classList.value == "active") {
-                console.log("ac");
-                return;
-            } else {
-                navMenus.forEach((ele) => {
-                    if (ele == e.target) {
-                        ele.setAttribute("class", "active");
-                    } else {
-                        ele.removeAttribute("class", "active");
-                    }
-                });
-            }
-        });
-    });
-}
-
 
 // 지도 드래그시에 해당하는 중심 좌표를 기준으로 리스트 다시 작성
 kakao.maps.event.addListener(map, 'dragend', function (data) {

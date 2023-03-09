@@ -36,22 +36,6 @@
     /*    Animation    */
     --animation-duration: 300ms;
 }
-/* font config */
-@font-face {
-    font-family: "MabinogiClassic";
-    font-weight: normal;
-    font-style: normal;
-    src: url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.eot");
-    src: url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.eot?#iefix")
-    format("embedded-opentype"),
-    url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.woff2")
-    format("woff2"),
-    url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.woff")
-    format("woff"),
-    url("https://cdn.jsdelivr.net/gh/webfontworld/NexonMabinogi/MabinogiClassic.ttf")
-    format("truetype");
-    font-display: swap;
-}
 
 /* reset.css */
 html, body, div, span, applet, object, iframe, /**/
@@ -252,7 +236,7 @@ nav span.fromLeft:after {
     -webkit-backdrop-filter: blur(13.5px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
-    width: 70vw;
+    width: 75vw;
     height: 90vh;
     position: relative;
     top: -20px;
@@ -336,6 +320,7 @@ nav span.fromLeft:after {
     height: 68vh;
     padding: 0px 10px;
     color: var(--color-black);
+    overflow: auto;
 }
 
 /* map */
@@ -398,3 +383,55 @@ main {
     width: 70vw;
     height: 90vh;
 }
+
+#modal .flowerContent {
+    margin: 10px;
+    border: 1px solid var(--color-sun-gray);
+    display: grid;
+    grid-template-columns: 30vw 19vw 16vw;
+    grid-auto-rows: 300px;
+    justify-items: center;
+}
+#modal .flowerMainImg {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+}
+
+#modal .flowerDetailContent {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+#modal .flowerDetailBuy {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#modal .productBasket,
+#modal .productBuy {
+    margin: 2px;
+    min-width: 130px;
+}
+
+#modal .flowerCount {
+    border: 1px solid var(--color-light-gray);
+    border-radius: 10px;
+    text-align: center;
+    outline: none;
+}
+
+#modal .flowerCountBox {
+    display: flex;
+    margin: 10px;
+}
+
+#modal .flowerBuyBox {
+    display: flex;
+    margin: 10px;
+}
+
