@@ -111,6 +111,7 @@ header {
     height: 80px;
     width: 254px;
     margin-left: 20px;
+    cursor: pointer;
 }
 .logoBox {
     width: 15%;
@@ -267,12 +268,15 @@ main{
     height: 100%;
 
 }
-.productArea{
+.navArea{
     position: fixed;
     display: flex;
     align-items: center;
     flex-direction: column;
     display: none;
+}
+.productArea{
+
 }
 .scroll{
     margin-top: 30px;
@@ -332,4 +336,12 @@ a:hover{
     border-radius: 36px;
     height: 70px;
 
+}
+.address{
+    font-size: 1rem;
+}
+.productArea{
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }

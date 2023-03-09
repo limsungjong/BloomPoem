@@ -67,7 +67,7 @@ public class ProductService {
     public List<ShoppingCartEntity> viewCart(String userEmail){
         return cartDao.findByUserEmailOrderByShoppingCartNumberDesc(userEmail);
     }
-    public int deletecCart(int shoppingCartNumber, String userEmail){
+    public int deleteCart(int shoppingCartNumber, String userEmail){
         return cartDao.deleteByShoppingCartNumberAndUserEmail(shoppingCartNumber, userEmail);
     }
     public ShoppingCartEntity oneCartSelect (int shoppingCartNumber){
@@ -78,5 +78,7 @@ public class ProductService {
         product.setProductNumber(productNumber);
         return cartDao.findByProductAndUserEmail(product, userEmail).getShoppingCartNumber();
     }
+
+
 
 }

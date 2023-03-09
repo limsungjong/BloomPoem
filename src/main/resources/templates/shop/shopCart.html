@@ -81,8 +81,7 @@
             $(".logo").on("click" ,()=>{
                 location.href="/shopping"
             })
-            //로고 눌렀을 시 이동하는 스크립트 끝
-
+            //로고 눌렀을 시 이동하는 스크립트
             //count가져오는 스크립트 시작
             $.ajax({
                 url : "/shopping/cartCount",
@@ -118,11 +117,17 @@
                 }
             })
             //삭제하는 스크립트 끝
+            //모두 구매하기 버튼 클릭 이벤트 시작
+            $(".allPayButton").on("click" , ()=>{
+                $(".shoppingCartNumber").val(0);
+                $("#cookie").val(cookie);
+                document.payment.submit();
+            })
+            //모두 구매하기 버튼 클릭 이벤트 끝
             //수량 변경하는 기능 시작
             $(".productArea").on("change",".selectCount",(e)=>{
                 const shoppingCartNumber = e.target.dataset.no
                 const count = e.target.value
-                console.log(1)
                 $.ajax({
                     url : "/shopping/cart/update_count",
                     method : "put",
