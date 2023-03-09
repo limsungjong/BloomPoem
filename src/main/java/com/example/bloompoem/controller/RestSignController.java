@@ -8,6 +8,7 @@ import com.example.bloompoem.service.SignService;
 import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
@@ -88,14 +89,10 @@ public class RestSignController {
     }
 
     @PostMapping("/sign_out")
-    public ResponseEntity<?> signOut(HttpServletRequest request, HttpServletResponse response) {
-        Cookie[] cookies = request.getCookies(); // 모든 쿠키의 정보를 cookies에 저장
-        if (cookies != null) { // 쿠키가 한개라도 있으면 실행
-            for (int i = 0; i < cookies.length; i++) {
-                cookies[i].setMaxAge(0); // 유효시간을 0으로 설정
-                response.addCookie(cookies[i]); // 응답 헤더에 추가
-            }
-        }
-        return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
+    public HttpServletResponse signOut(HttpServletRequest request, HttpServletResponse response) {
+        Cookie myCookie = new Cookie("Authorization", null);
+        myCookie.setMaxAge(0);  // 남은 만료시간을 0으로 설정
+        response.addCookie(myCookie);
+        return response;
     }
 }
