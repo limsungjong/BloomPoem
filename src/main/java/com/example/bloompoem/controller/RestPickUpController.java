@@ -79,21 +79,14 @@ public class RestPickUpController {
     public ResponseEntity<List<FloristFlowerInterFace>> floristList2(@RequestParam Long floristNumber) {
         List<FloristFlowerInterFace> arrayList = floristRepository.searchFloristFlower2(floristNumber);
         List<FlowerEntity> flowerList = new ArrayList<>();
+        return ResponseEntity.ok().body(arrayList);
+    }
 
-//        arrayList.forEach(data -> {
-//            System.out.println(data.getFlowerNumber());
-//            FlowerEntity flower = FlowerEntity
-//                    .builder()
-//                    .flowerNumber(data.getFlowerNumber())
-//                    .flowerName(data.getFlowerName())
-//                    .flowerTag(data.getFlowerTag())
-//                    .flowerSeason(data.getFlowerSeason())
-//                    .flowerColor(data.getFlowerColor())
-//                    .flowerImage(data.getFlowerImage())
-//                    .build();
-//            flowerList.add(flower);
-//        });
-
+    @PostMapping(value = "/florist_product_list3")
+    @ResponseBody
+    public ResponseEntity<List<FloristFlowerInterFace>> floristList3(@RequestParam Long floristNumber) {
+        List<FloristFlowerInterFace> arrayList = floristRepository.searchFloristFlower3(floristNumber);
+        List<FlowerEntity> flowerList = new ArrayList<>();
         return ResponseEntity.ok().body(arrayList);
     }
 
