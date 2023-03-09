@@ -1,12 +1,18 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.dto.KakaoApprovar;
+import com.example.bloompoem.dto.KakaoOrder;
+import com.example.bloompoem.dto.KakaoReady;
 import com.example.bloompoem.entity.ProductEntity;
 import com.example.bloompoem.entity.ShoppingCartEntity;
+import com.example.bloompoem.entity.ShoppingOrder;
 import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.service.ProductService;
 
 import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.JwtUtil;
+
+import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +28,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import java.io.Console;
 import java.util.List;
+import java.util.Objects;
+
 
 @Controller
 @PropertySource("classpath:app.properties")
@@ -176,5 +184,67 @@ public class ShoppingController {
         return ResponseEntity.ok(cart);
     }
 
+
+    @PutMapping("/shopping/payment/insert_order")
+    public ResponseEntity<JSONObject> insertOrder(String cookie, int shoppingTotalPrice, String itemName){
+        String userEmail =JwtUtil.getUserName(cookie,secretKey);
+        String orderNumber = productService.orderInsert(userEmail, shoppingTotalPrice);
+        logger.error(""+orderNumber);
+        logger.error(""+itemName);
+        logger.error(""+userEmail);
+        logger.error(""+shoppingTotalPrice);
+        KakaoOrder kakaoOrder =new KakaoOrder();
+        kakaoOrder.setPartnerOrderId(orderNumber);
+        kakaoOrder.setPartnerUserId(userEmail);
+        kakaoOrder.setItemName(itemName);
+        kakaoOrder.setQuantity(1);
+        kakaoOrder.setTotalAmount(shoppingTotalPrice);
+        kakaoOrder.setTaxFreeAmount(0);
+
+        KakaoReady kakaoReady = productService.kakaoReady(kakaoOrder);
+        logger.error(""+kakaoReady);
+
+        JSONObject json = new JSONObject();
+        json.put("userEmail", userEmail);
+        json.put("orderId", orderNumber);
+        json.put("tId", kakaoReady.getTid());
+        json.put("pcUrl", kakaoReady.getNext_redirect_pc_url());
+
+
+        return ResponseEntity.ok(json);
+    }
+    @PostMapping("/shopping/kakao/payPopUp")
+    public String payPopup (Model model , String pcUrl, String orderId , String tId, String userEmail){
+        model.addAttribute("pcUrl", pcUrl);
+        model.addAttribute("orderId", orderId);
+        model.addAttribute("tId", tId);
+        model.addAttribute("userEmail", userEmail);
+
+        return "/shop/popup";
+    }
+    @PostMapping("/shopping/kakao/payResult")
+    public String payResult (Model model, String orderId, String tId, String pgToken, String cookie){
+        String userEmail =JwtUtil.getUserName(cookie,secretKey);
+        KakaoApprovar kakaoApprovar = null;
+        KakaoOrder kakakOrder = new KakaoOrder();
+        kakakOrder.setPartnerUserId(userEmail);
+        kakakOrder.setPartnerOrderId(orderId);
+        kakakOrder.setTId(tId);
+        kakakOrder.setPgToken(pgToken);
+        kakaoApprovar = productService.kakaoPayApprove(kakakOrder);
+        if(kakaoApprovar != null) {
+            model.addAttribute("kakaoApprovar", kakaoApprovar);
+            return "/shop/shopPaymentSuccess";
+        }
+        else {
+            return "/shop/paymentFail";
+        }
+    }
+    @GetMapping("/shopping/kakao/payResult")
+    public String payResult(Model model, String pg_token){
+        model.addAttribute("pgToken", pg_token);
+
+        return "/shop/shopPayResult";
+    }
 
 }

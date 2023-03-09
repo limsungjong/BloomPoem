@@ -23,6 +23,7 @@
         data : {shoppingCartNumber, cookie}
       }).then(r=>{
         $(".productArea").empty()
+        let productName = "";
         let option = "";
         for(let i = 1; i<= 5;i++){
           if(i == r.shoppingCartCount){
@@ -48,11 +49,16 @@
               <div class="deleteButtonBox"><button class="btn btn-outline-danger deleteButton" data-no="${r.shoppingCartNumber}">삭제</button></div>
             </div>
           </div>`
+        productName = r.product.productName
         $(".productArea").append(msg);
+        $("#itemName").val(productName);
         $(".totalPrice").append(comma(r.product.productPrice * r.shoppingCartCount));
+        $("#totalPrice").val(r.product.productPrice * r.shoppingCartCount);
+
       })
     }
     const allCartView = (cookie)=>{
+      $(".navArea").css("display", "block");
       $.ajax({
         url : "/shopping/viewCart",
         method : "post",
@@ -60,6 +66,7 @@
       }).then(r=> {
         $(".productArea").empty()
         let totalPrice = 0;
+        let productName = "";
         $.each(r , (i,p)=>{
           let option = "";
           for(let i = 1; i<= 5;i++){
@@ -86,10 +93,13 @@
               <div class="deleteButtonBox"><button class="btn btn-outline-danger deleteButton" data-no="${p.shoppingCartNumber}">삭제</button></div>
             </div>
           </div>`
+          productName = productName + p.product.productName +","
           totalPrice = totalPrice + p.product.productPrice * p.shoppingCartCount
           $(".productArea").append(msg);
         })
+        $("#totalPrice").val(totalPrice);
         $(".totalPrice").append(comma(totalPrice));
+        $("#itemName").val(productName);
         $.ajax({
           url : "/shopping/cartCount",
           method : "post",
@@ -135,11 +145,16 @@
           method : "delete",
           data : {cookie, shoppingCartNumber}
         }).then( r=>{
+          if(shoppingCartNumber> 0){
+            alert("결제 할 상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
+            location.href = "/shopping";
+          }
           $.ajax({
             url : "/shopping/cartCount",
             method : "post",
             data : {cookie}
           }).then(r=>{
+            console.log(shoppingCartNumber);
             if(r == 0){
               alert("상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
               location.href="/shopping"
@@ -152,11 +167,24 @@
       //삭제하는 기능 끝
       //카카오페이 기능 시작
       $(".kakaoPageImage").on("click", ()=>{
+        const shoppingTotalPrice = $("#totalPrice").val();
+        const itemName = $("#itemName").val();
+        console.log(itemName)
         $.ajax({
           url : "/shopping/payment/insert_order",
-          method : "post",
-          data : {}
-        })
+          method : "put",
+          data : {cookie, shoppingTotalPrice, itemName}
+        }).then(r=> {
+          console.log(r)
+          window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
+          $("#orderId").val(r.orderId);
+          $("#tId").val(r.tId);
+          $("#pcUrl").val(r.pcUrl);
+          console.log($("#orderId").val());
+          console.log($("#tId").val());
+          console.log($("#pcUrl").val());
+          $("#kakaoForm").submit();
+        }).catch(err=>console.log(err))
       })
 
 
@@ -178,9 +206,13 @@
   </nav>
 </header>
 <main>
+
   <input type="hidden" class="shoppingCartNumber" name="shoppingCartNumber" th:value="${shoppingCartNumber}">
+  <input type="hidden" id="totalPrice" name="totalPrice" value="">
+  <input type="hidden" id="itemName" name="itemName" value="">
+  <input type="hidden" id="quantity" name="quantity" value="">
   <div class="orderInfo">
-    <label class="navArea">Cart
+    <label class="navArea">Page<br/>Down
       <div class="scroll">
         <span class="scroll-dot"></span>
       </div>
@@ -213,6 +245,14 @@
       <img src="/image/kakaoPay.png" alt="kakaoPayImage" class="kakaoPageImage">
     </div>
   </div>
+  <form name="kakaoForm" id="kakaoForm" method="post" target="kakaoPopUp" action="/shopping/kakao/payPopUp">
+    <input type="hidden" name="orderId" id="orderId" value="" />
+    <input type="hidden" name="tId" id="tId" value="" />
+    <input type="hidden" name="pcUrl" id="pcUrl" value="" />
+  </form>
+  <form nema="paymentSuccess" id="paymentSuccess" action="shopping/payment/success">
+    <input type="hidden" name="orderId" class="orderId" value="">
+  </form>
 </main>
 <footer>
 </footer>
