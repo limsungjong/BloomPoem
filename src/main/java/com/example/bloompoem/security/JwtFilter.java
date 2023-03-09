@@ -37,6 +37,9 @@ public class JwtFilter extends OncePerRequestFilter {
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.info("authorization : " + authorization);
 
+        final String cookie = request.getHeader(HttpHeaders.COOKIE);
+        logger.info(cookie);
+
         // token 안 보내면 블락
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             logger.error("authorization is null");

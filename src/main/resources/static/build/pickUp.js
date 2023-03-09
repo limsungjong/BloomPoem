@@ -3,53 +3,27 @@ const modalCon = document.querySelector("#modal");
 const closeBtn = document.querySelector(".close-area");
 const container = document.querySelector("#map");
 
-const googleMapApi = "AIzaSyAzdBLLKTSqZ_-KMogDx6tHdaMz4OmgNOM";
 const mapOption = {
     center: new kakao.maps.LatLng(37.442928, 126.670556), // 지도의 중심좌표
     level: 4, // 지도의 확대 레벨
 };
 
+let markers = [];
+
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 // 공통된 하나의 글로벌 객체로 사용함. 추가 금지
 const map = new kakao.maps.Map(document.querySelector("#map"), mapOption);
 
-// document.querySelector(".searchButton").addEventListener("click", (e) => {
-//   // 주소-좌표 변환 객체를 생성합니다
-//   const geocoder = new kakao.maps.services.Geocoder();
-
-//   // 주소로 좌표를 검색합니다
-//   geocoder.addressSearch(
-//     document.querySelector(".searchTerm").value,
-//     function (result, status) {
-//       console.log(result);
-//       console.log(status);
-//       // 정상적으로 검색이 완료됐으면
-//       if (status === kakao.maps.services.Status.OK) {
-//         console.log(result);
-//         console.log(status);
-//         const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-//         const marker = new kakao.maps.Marker({
-//           position: coords,
-//         });
-//         map.panTo(coords);
-//         console.log(coords);
-//         // 그 다음에 위도와 경도를 가지고 다시 서버에 정보를 요청하여
-//         // 다시 리스트를 받아서 보여줘야 함
-
-//         // 결과값으로 받은 위치를 마커로 표시합니다
-//         marker.setMap(map);
-//       }
-//     }
-//   );
-// });
 document.querySelector(".searchButton").addEventListener("click", (e) => {
+    const queryInput = document.querySelector(".searchTerm");
     const myHeaders = new Headers();
     myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     myHeaders.append("Cookie", "kd_lang=ko");
 
     const urlencoded = new URLSearchParams();
-    urlencoded.append("query", "인천터미널");
+    urlencoded.append("query", `${queryInput.value}`);
+    urlencoded.append("size", 1);
 
     const requestOptions = {
         method: "POST",
@@ -61,17 +35,50 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
     fetch("https://dapi.kakao.com/v2/local/search/keyword.json", requestOptions)
         .then((response) => response.json())
         .then((result) => {
+            {
+                const cookie = document.cookie.split("=");
+                var myHeaders = new Headers();
+                myHeaders.append("Cookie", `${cookie[0]}=${cookie[1]}`);
+                myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+                const urlencoded = new URLSearchParams();
+                urlencoded.append("x", result.documents[0].x);
+                urlencoded.append("y", result.documents[0].y);
+                console.log(result.documents[0]);
+
+                const requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: urlencoded,
+                    redirect: "follow",
+                };
+                fetch("http://localhost:9000/api/v1/pick_up/pick_up_list_query", requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => floristListPrint(result))
+                    .catch((error) => console.log("error", error));
+            }
+            removeMarker();
             const data = result.documents[0];
+            const coords = new kakao.maps.LatLng(data.y, data.x);
+            map.panTo(coords);
         })
         .catch((error) => console.log("error", error));
 });
 
+function removeMarker() {
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
+
 class sideItemObj {
-    constructor(x, y, data) {
+    constructor(x, y, floristData, flowerData) {
         this.florist_latitude = x;
         this.florist_longitude = y;
         this.element = null;
-        this.data = data;
+        this.floristData = floristData;
+        this.flowerData = flowerData;
     }
 
     // 사이드 아이템 생성하고 추가
@@ -79,17 +86,14 @@ class sideItemObj {
         const sideItem = document.createElement("ul");
         sideItem.setAttribute("class", "sideItem");
         sideItem.innerHTML = `
-    <li class="floristImgBox">
-      <img class="floristImg" />
-    </li>
     <li class="floristTitle">
-      <span>${data.florist_name}</span>
+      <span>${this.floristData.floristName}</span>
     </li>
     <li class="floristPhoneNumber">
-      <span>${data.florist_phone_number}</span>
+      <span>${this.floristData.floristPhoneNumber}</span>
     </li>
     <li class="floristAddress">
-      <span>${data.florist_address}</span>
+      <span>${this.floristData.floristAddress}</span>
     </li>
     `;
         document.querySelector(".sideList").appendChild(sideItem);
@@ -99,13 +103,14 @@ class sideItemObj {
     // 생성된 아이템 위치로 마커추가
     setMarker() {
         const markerPosition = new kakao.maps.LatLng(
-            this.florist_latitude,
-            this.florist_longitude
+            this.florist_longitude,
+            this.florist_latitude
         );
         const marker = new kakao.maps.Marker({
             position: markerPosition,
         });
-        const iwContent = `<div style="padding:5px; font-size:1.2rem; width:200px; height:40px; display:flex;">${this.data.florist_name}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        markers.push(marker);
+        const iwContent = `<div style="padding:5px; font-size:1.2rem; width:200px; height:40px; display:flex;">${this.data.floristName}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
             iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
         // 인포윈도우를 생성합니다
@@ -132,84 +137,71 @@ class sideItemObj {
 
     setAddEvent() {
         this.element.addEventListener("click", (e) => {
-            createModal(this.data);
+            console.log(this.floristData);
+            console.log(this.flowerData);
+            createModal(this.floristData);
         });
     }
 }
 
-const flo1 = {
-    florist_number: 1,
-    florist_address: "인천 미추홀구 학익소로 53 동문빌딩",
-    florist_phone_number: "032-438-0011",
-    florist_name: "그린플라워",
-    florist_latitude: "37.4429280",
-    florist_longitude: "126.670556",
-};
-const flo2 = {
-    florist_number: 1,
-    florist_address: "인천 미추홀구 매소홀로 468 1층",
-    florist_phone_number: "0507-1347-4301",
-    florist_name: "로지플라워",
-    florist_latitude: "37.4393150",
-    florist_longitude: "126.673826",
-};
-const flo3 = {
-    florist_number: 1,
-    florist_address: "인천 미추홀구 매소홀로 482 대진타운 1층 101호",
-    florist_phone_number: "010-3168-4050",
-    florist_name: "엘리스&플라워",
-    florist_latitude: "37.4392206",
-    florist_longitude: "126.675510",
-};
-const flo4 = {
-    florist_number: 1,
-    florist_address: "인천 미추홀구 한나루로 360 학산빌딩 1층",
-    florist_phone_number: "0507-1376-6360",
-    florist_name: "르밍플라워",
-    florist_latitude: "37.4402290",
-    florist_longitude: "126.662454",
-};
-const flo5 = {
-    florist_number: 1,
-    florist_address: "인천 미추홀구 한나루로 399 사랑,꽃",
-    florist_phone_number: "0507-1381-7776",
-    florist_name: "사랑꽃",
-    florist_latitude: "37.4433246",
-    florist_longitude: "126.664248",
-};
-const flo6 = {
-    florist_number: 1,
-    florist_address: "인천 남동구 인하로 523 미추홀빌딩 1층 클로리스플라워",
-    florist_phone_number: "0507-1493-4112",
-    florist_name: "클로리스플라워",
-    florist_latitude: "37.4432622",
-    florist_longitude: "126.704805",
-};
-const floristList = [flo1, flo2, flo3, flo4, flo5, flo6];
+window.addEventListener("DOMContentLoaded", getList);
+
+function getList() {
+    fetch("http://localhost:9000/api/v1/pick_up/pick_up_list")
+        .then((data) => data.json())
+        .then(list => {
+            floristListPrint(list);
+        }).catch(err => console.log(err));
+}
+
+function moveGetList(x, y) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("x", x);
+    urlencoded.append("y", y);
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+    };
+    fetch("http://localhost:9000/api/v1/pick_up/pick_up_list_query", requestOptions)
+        .then(data => data.json())
+        .then((list) => floristListPrint(list))
+        .catch(err => console.log(err));
+}
 
 // map create
-{
+function floristListPrint(floristList) {
+    document.querySelectorAll('.sideItem')
+        .forEach(v =>
+            document.querySelector('.sideList').removeChild(v));
     floristList.forEach((data) => {
-        const mapOjb = new sideItemObj(
-            data.florist_latitude,
-            data.florist_longitude,
+        const mapObj = new sideItemObj(
+            String(data.floristLatitude),
+            String(data.floristLongtitude),
             data
         );
-        mapOjb.createItem(data);
-        mapOjb.setMarker();
-        mapOjb.setAddEvent();
+        mapObj.createItem(data);
+        mapObj.setMarker();
+        mapObj.setAddEvent();
     });
 }
 
 // add modal
-function createModal(data) {
+function createModal(floristData, flowerData) {
+    console.log(floristData)
+    console.log(flowerData)
     const box = document.createElement("div");
     box.setAttribute("id", "modal");
     box.setAttribute("class", "modal-overlay");
     box.innerHTML = `
   <div class="modal-window">
     <div class="title">
-      <h2>${data.florist_name}</h2>
+      <h2>${floristData.floristName}</h2>
     </div>
     <div class="close-area">X</div>
     <ul class="modal-nav">
@@ -243,3 +235,11 @@ function createModal(data) {
         });
     });
 }
+
+
+// 지도 드래그시에 해당하는 중심 좌표를 기준으로 리스트 다시 작성
+kakao.maps.event.addListener(map, 'dragend', function (data) {
+    removeMarker();
+    let center = map.getCenter();
+    moveGetList(center.La, center.Ma);
+});

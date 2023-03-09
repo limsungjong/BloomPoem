@@ -6,10 +6,13 @@ import com.example.bloompoem.domain.dto.UserSignUpRequest;
 import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.UserRepository;
+import com.example.bloompoem.util.JwtUtil;
 import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +23,10 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@PropertySource("classpath:app.properties")
 public class UserService {
+    @Value("#{environment['jwt.secret']}")
+    private String secretKey;
     Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final MailService mailService;
@@ -97,6 +103,17 @@ public class UserService {
             mailDTO.setTitle("블룸포엠에서 보내드리는 인증번호입니다.");
             mailService.mailSend(mailDTO);
             return;
+        }
+        throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
+    }
+
+    public UserEntity tokenToUserEntity(String token) {
+        if(token.isEmpty()) {
+            throw new CustomException(ResponseCode.INVALID_AUTH_TOKEN);
+        }
+        Optional<UserEntity> user = userRepository.findByUserEmail(JwtUtil.getUserName(token,secretKey));
+        if(user.isPresent()) {
+            return user.get();
         }
         throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
     }

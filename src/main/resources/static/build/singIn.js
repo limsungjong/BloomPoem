@@ -1,4 +1,5 @@
 "use strict";
+
 {
     const emailTest = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
     const reg = new RegExp(emailTest);
@@ -41,6 +42,10 @@
         fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
             .then((data) => data.json())
             .then((data) => {
+                if(data.status == 404) {
+                    alert(data.message);
+                    return;
+                }
                 if (data.status == 200) {
                     const body = document.querySelector("body");
                     const modal = document.createElement("div");
@@ -57,7 +62,7 @@
           >
           <br />
           <span
-            >만약 이메일로 인증번호가 오지 않았다면 <span class="retry">클릭해주세요</span>.</span
+            >만약 이메일로 인증번호가 오지 않았다면 <span class="retry" style="color: #5ca4f8">클릭해주세요</span>.</span
           >
         </div>
         <div class="close-area">X</div>
@@ -120,7 +125,16 @@
                         }
                     });
                     const retryBtn = modal.querySelector(".retry");
-                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => { });
+                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => {
+                        fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
+                            .then(res => res.text())
+                            .then((data) => {
+                                alert("인증 번호를 다시 보내드렸습니다.");
+                            }).catch(err => {
+                            alert("로그인 중에 오류가 발생하였습니다. 다시 진행해주세요.");
+                            location.href = "http://localhost:9000/sign_in";
+                        })
+                    });
                     const iList = modal.querySelectorAll(".inputOtp");
                     iList.forEach((v, k) => {
                         v.addEventListener("keyup", () => {
@@ -152,7 +166,8 @@
                                             otp = "";
                                             if (data.status == 200) {
                                                 alert("로그인에 성공하였습니다.");
-                                                location.href = "http://localhost:9000/";
+                                                history.back();
+                                                console.log(data.headers);
                                             }
                                             else {
                                                 (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();

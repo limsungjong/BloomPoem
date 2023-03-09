@@ -11,15 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
-@CrossOrigin(origins = "http://192.168.1.135:5500/")
+@CrossOrigin(origins = "http://172.28.16.1:5500")
 @RestController
 @RequestMapping(value = "/api/v1/sign")
 @RequiredArgsConstructor
@@ -39,16 +38,17 @@ public class RestSignController {
 //     "userPhoneNumber":"010-3716-8640",
 //     "userName":"임성종"
 
-    @RequestMapping("/sign")
-    public ResponseEntity<?> check(Authentication authentication) {
-
-        return ResponseEntity.ok().body(authentication.getName());
-    }
-
     @PostMapping("/sign_up")
-    public ResponseEntity<UserSignResponse> singUp(@RequestBody UserSignUpRequest request) {
+    public ResponseEntity<UserSignResponse> singUp(@RequestBody @Valid UserSignUpRequest request) {
         userService.createUser(request);
         return UserSignResponse.toResponseEntity(ResponseCode.CREATE);
+    }
+
+    @GetMapping("/sign_check")
+    public ResponseEntity<?> signCheck(@CookieValue(value = "Authorization") String token) {
+
+        System.out.println(token);
+        return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 
 
@@ -69,7 +69,7 @@ public class RestSignController {
     }
 
     @PostMapping("/sign_in")
-    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request, HttpServletRequest req, HttpServletResponse res, HttpSession session) {
+    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request,HttpServletResponse res) {
 
         UserEntity userEntity = userRepository
                 .findByUserEmail(request.getUserEmail())
@@ -84,6 +84,18 @@ public class RestSignController {
 
         res.addCookie(cookie);
 
+        return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
+    }
+
+    @PostMapping("/sign_out")
+    public ResponseEntity<?> signOut(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies(); // 모든 쿠키의 정보를 cookies에 저장
+        if (cookies != null) { // 쿠키가 한개라도 있으면 실행
+            for (int i = 0; i < cookies.length; i++) {
+                cookies[i].setMaxAge(0); // 유효시간을 0으로 설정
+                response.addCookie(cookies[i]); // 응답 헤더에 추가
+            }
+        }
         return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 }

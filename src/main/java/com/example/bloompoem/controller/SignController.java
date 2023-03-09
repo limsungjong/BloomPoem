@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @RequestMapping(value = "/sign")
 public class SignController {
@@ -23,8 +26,11 @@ public class SignController {
         return "/signUp";
     }
 
-    @GetMapping("/loginSuccess")
-    public String success() {
-        return "/loginSuccess";
+    @GetMapping("/sing_out")
+    public String singOut(HttpServletResponse res) {
+
+        Cookie cookie = new Cookie("Authorization", null);
+        res.addCookie(cookie);
+        return "/signIn";
     }
 }

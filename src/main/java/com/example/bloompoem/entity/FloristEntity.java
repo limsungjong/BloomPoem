@@ -1,9 +1,13 @@
 package com.example.bloompoem.entity;
 
 import com.example.bloompoem.dto.FloristDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "FLORIST")
@@ -31,10 +35,13 @@ public class FloristEntity {
     private String floristAddress;
     @Column
     private String floristPhoneNumber;
-    @Column
-    private long floristLatitude;
-    @Column
-    private long floristLongtitude;
+
+    @Column(precision = 15,scale = 10)
+    private BigDecimal floristLatitude;
+
+    @Column(precision = 15,scale = 10)
+    private BigDecimal floristLongtitude;
+
     @Column
     private String userEmail;
 
@@ -47,7 +54,6 @@ public class FloristEntity {
                 .floristPhoneNumber(floristDTO.getFloristPhoneNumber())
                 .floristLatitude(floristDTO.getFloristLatitude())
                 .floristLongtitude(floristDTO.getFloristLongtitude())
-                .userEmail(floristDTO.getUserEmail())
                 .build();
     }
 }

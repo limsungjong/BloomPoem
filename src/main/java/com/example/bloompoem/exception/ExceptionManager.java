@@ -15,13 +15,6 @@ import static com.example.bloompoem.domain.dto.ResponseCode.DUPLICATE_RESOURCE;
 public class ExceptionManager extends ResponseEntityExceptionHandler {
     Logger logger = LoggerFactory.getLogger(ExceptionManager.class);
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex){
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors()
-//                .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
-//        return ResponseEntity.badRequest().body(errors);
-//    }
 
     // handleDataException : hibernate 관련 에러 처리
     @ExceptionHandler(value = { ConstraintViolationException.class, DataIntegrityViolationException.class })
