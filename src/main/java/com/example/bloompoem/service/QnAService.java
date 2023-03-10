@@ -34,12 +34,11 @@ public class QnAService {
     }
 
     // QnA 글작성
-    public Integer save(QnADTO qnaDTO){
+    public Integer write(QnADTO qnaDTO){
         QnAEntity qnaEntity = QnAEntity.toEntity(qnaDTO);
+
         return qnaRepository.save(qnaEntity).getQnaNumber();
     }
-
-
 
     // QnA 글수정
 
