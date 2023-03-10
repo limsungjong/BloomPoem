@@ -1,6 +1,6 @@
 package com.example.bloompoem.entity;
 
-import com.example.bloompoem.dto.QnADTO;
+import com.example.bloompoem.dto.QnaDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +19,7 @@ import java.util.Date;
         initialValue = 1,
         allocationSize = 1
 )
-public class QnAEntity {
+public class QnaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_QNA_NUMBER")
     private int qnaNumber;
@@ -61,8 +61,8 @@ public class QnAEntity {
     private String qnaContent;
 
     // 1:1 문의 목록에 띄울 문의번호, 상태, 제목, 등록일만 가져오기
-    public static QnAEntity getQnAListToEntity(QnADTO qnaDTO){
-        QnAEntity qnaEntity = new QnAEntity();
+    public static QnaEntity getQnaListToEntity(QnaDTO qnaDTO){
+        QnaEntity qnaEntity = new QnaEntity();
         qnaEntity.setQnaNumber(qnaDTO.getQnaNumber());
         qnaEntity.setQnaStatus(qnaDTO.getQnaStatus());
         qnaEntity.setQnaTitle(qnaDTO.getQnaTitle());
@@ -70,9 +70,9 @@ public class QnAEntity {
         return qnaEntity;
     }
 
-    // QnA 작성에 필요한 정보 가져오기(일단 다 넣었음)
-    public static QnAEntity toEntity(QnADTO qnaDTO){
-        QnAEntity qnaEntity = new QnAEntity();
+    // Qna 작성에 필요한 정보 가져오기(일단 다 넣었음)
+    public static QnaEntity toEntity(QnaDTO qnaDTO){
+        QnaEntity qnaEntity = new QnaEntity();
         qnaEntity.setQnaNumber(qnaDTO.getQnaNumber());
         qnaEntity.setUserEmail(qnaDTO.getUserEmail());
         qnaEntity.setQnaDate(qnaDTO.getQnaDate());

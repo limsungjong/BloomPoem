@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>나의 문의 내역</title>
-    <link rel="stylesheet" type="text/css" href="/css/QnA.css" />
-    <script src="/build/QnA.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/css/qna.css" />
+    <script src="/build/qna.js" defer></script>
   </head>
   <body>
     <header class="header">
@@ -39,39 +39,39 @@
           </div>
           <!-- 좌측 메뉴바 종료 -->
           <h2>나의 문의 내역</h2>
-          <!-- QnA 리스트 시작 -->
-          <div class="QnA_list">
-            <button
-              type="button"
-              id="QnA_write_button"
-              class="QnA_write_button"
+          <!-- Qna 리스트 시작 -->
+          <div class="Qna_list">
+            <a
+              href="http://localhost:9000/qna"
+              id="Qna_write_button"
+              class="Qna_write_button"
             >
               문의하기
-            </button>
-            <!-- QnA 테이블 시작 -->
-            <table class="QnA_Table">
-              <!-- QnA 테이블 헤드 시작 -->
+            </a>
+            <!-- Qna 테이블 시작 -->
+            <table class="Qna_Table">
+              <!-- Qna 테이블 헤드 시작 -->
               <thead>
                 <th>번호</th>
                 <th>상태</th>
                 <th>제목</th>
                 <th>등록일</th>
               </thead>
-              <!-- QnA 테이블 헤드 종료-->
-              <!-- QnA 테이블 바디 시작-->
+              <!-- Qna 테이블 헤드 종료-->
+              <!-- Qna 테이블 바디 시작-->
               <tbody>
-                <tr th:each="qna:${QnAList}">
+                <tr th:each="qna:${QnaList}">
                   <td th:text="${qna.qnaNumber}"></td>
                   <td th:text="${qna.qnaStatus}"></td>
                   <td th:text="${qna.qnaTitle}"></td>
                   <td th:text="${qna.qnaDate}"></td>
                 </tr>
               </tbody>
-              <!-- QnA 테이블 바디 종료-->
+              <!-- Qna 테이블 바디 종료-->
             </table>
-            <!-- QnA 테이블 종료 -->
+            <!-- Qna 테이블 종료 -->
           </div>
-          <!-- QnA 리스트 종료 -->
+          <!-- Qna 리스트 종료 -->
         </div>
         <!-- 바디 컨텐츠 종료 -->
       </div>
@@ -79,12 +79,12 @@
     </main>
     <footer></footer>
     <!-- hidden 타입 폼 태그 시작 -->
-    <form name="QnAForm" id="QnAForm" method="get">
+    <!-- form name="QnaForm" id="QnaForm" method="get">
       <input type="hidden" name="qnaNumber" value="" />
-      <!-- input type="hidden" name="searchType" value="${searchType}" /-->
-      <!-- input type="hidden" name="searchValue" value="${searchValue}" /-->
-      <!-- input type="hidden" name="curPage" value="${curPage}" /-->
-    </form>
+      <input type="hidden" name="searchType" value="${searchType}" />
+      <input type="hidden" name="searchValue" value="${searchValue}" />
+      <input type="hidden" name="curPage" value="${curPage}" />
+    </form -->
     <!-- hidden 타입 폼 태그 종료 -->
   </body>
 </html>
