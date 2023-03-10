@@ -39,16 +39,16 @@ public class RestPickUpController {
     @ResponseBody
     public ResponseEntity<?> pickQuery(@RequestParam String x, @RequestParam String y) {
         List<FloristEntity> arrayList;
-        BigDecimal xadd = new BigDecimal("0.04");
-        BigDecimal yadd = new BigDecimal("0.02");
+        BigDecimal aadd = new BigDecimal("0.01");
+        BigDecimal badd = new BigDecimal("0.005");
 
-        BigDecimal xa = new BigDecimal(x).subtract(yadd);
-        BigDecimal xb = new BigDecimal(x).add(yadd);
+        BigDecimal xa = new BigDecimal(x).subtract(aadd);
+        BigDecimal xb = new BigDecimal(x).add(aadd);
         System.out.println(xa);
         System.out.println(xb);
 
-        BigDecimal ya = new BigDecimal(y).subtract(yadd);
-        BigDecimal yb = new BigDecimal(y).add(yadd);
+        BigDecimal ya = new BigDecimal(y).subtract(badd);
+        BigDecimal yb = new BigDecimal(y).add(badd);
         System.out.println(ya);
         System.out.println(yb);
         arrayList = floristRepository.searchXY(xa, xb, ya, yb);
@@ -67,22 +67,13 @@ public class RestPickUpController {
     @PostMapping(value = "/florist_product_list")
     @ResponseBody
     public ResponseEntity<?> floristList(@RequestParam Long floristNumber) {
-        System.out.println(floristNumber);
         List<BigInteger> arrayList;
         arrayList = floristRepository.searchFloristFlower(floristNumber);
 
         return ResponseEntity.ok().body(arrayList);
     }
 
-    @PostMapping(value = "/florist_product_list2")
-    @ResponseBody
-    public ResponseEntity<List<FloristFlowerInterFace>> floristList2(@RequestParam Long floristNumber) {
-        List<FloristFlowerInterFace> arrayList = floristRepository.searchFloristFlower2(floristNumber);
-        List<FlowerEntity> flowerList = new ArrayList<>();
-        return ResponseEntity.ok().body(arrayList);
-    }
-
-    @PostMapping(value = "/florist_product_list3")
+    @PostMapping(value = "/florist_product_list_detail")
     @ResponseBody
     public ResponseEntity<List<FloristFlowerInterFace>> floristList3(@RequestParam Long floristNumber) {
         List<FloristFlowerInterFace> arrayList = floristRepository.searchFloristFlower3(floristNumber);
