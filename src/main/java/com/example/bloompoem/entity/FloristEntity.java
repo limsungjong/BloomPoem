@@ -28,7 +28,7 @@ public class FloristEntity {
             strategy = GenerationType.SEQUENCE,
             generator = "SEQ_FLORIST_NUMBER"
     )
-    private long floristNumber;
+    private int floristNumber;
     @Column
     private String floristName;
     @Column

@@ -26,7 +26,7 @@ public class PickUpOrderEntity {
             strategy = GenerationType.SEQUENCE,
             generator = "SEQ_PICK_UP_ORDER_NUMBER"
     )
-    private long pickUpOrderNumber;
+    private int pickUpOrderNumber;
     @Column
     private String userEmail;
     @Column
@@ -39,10 +39,10 @@ public class PickUpOrderEntity {
     private Date pickUpOrderDate;
 
     @Column
-    private long pickUpOrderTotalPrice;
+    private int pickUpOrderTotalPrice;
 
     @Column
-    private long pickUpOrderRealPrice;
+    private int pickUpOrderRealPrice;
 
     @Column
     private Character pickUpOrderStatus;

@@ -20,20 +20,20 @@ import java.util.Date;
         initialValue = 1,
         allocationSize = 1
 )
-public class PickUpOrderDetail {
+public class PickUpOrderDetailEntity {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "SEQ_PICK_UP_ORDER_DETAIL_NUMBER"
     )
-    private long pickUpOrderDetailNumber;
+    private int pickUpOrderDetailNumber;
 
     @Column
-    private long flowerNumber;
+    private int flowerNumber;
     @Column
     private String userEmail;
     @Column
-    private long pickUpOrderNumber;
+    private int pickUpOrderNumber;
     @Column
-    private long pickUpOrderDetailCount;
+    private int pickUpOrderDetailCount;
 }

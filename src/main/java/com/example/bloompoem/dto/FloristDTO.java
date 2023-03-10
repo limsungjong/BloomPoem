@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 public class FloristDTO {
-    private long floristNumber;
+    private int floristNumber;
     private String floristName;
     private String floristAddress;
     private String floristPhoneNumber;
