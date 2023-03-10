@@ -20,4 +20,6 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartEntity
 
     ShoppingCartEntity findByProductAndUserEmail(ProductEntity product, String userEmail);
 
+    int deleteByProductAndUserEmail(ProductEntity product, String userEmail);
+
 }

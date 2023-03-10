@@ -4,16 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@SequenceGenerator(
+        name = "SEQ_SHOPPING_ORDER_DETAIL_NUMBER",
+        sequenceName = "SEQ_SHOPPING_ORDER_DETAIL_NUMBER",
+        initialValue = 1, //시작값
+        allocationSize = 1
+)
 public class ShoppingOrderDetail {
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SHOPPING_ORDER_DETAIL_NUMBER")
     @Id
     private int shoppingOrderDetailNumber;
     private int shoppingOrderDetailCount;

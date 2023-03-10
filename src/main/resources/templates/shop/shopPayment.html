@@ -16,6 +16,10 @@
       str = String(str);
       return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
     }
+    function paymentSuccess(orderId){
+      $(".orderId").val(orderId)
+      $("#paymentSuccess").submit();
+    }
     const singleCartView = (shoppingCartNumber, cookie)=>{
       $.ajax({
         url : "/shopping/payment/oneview",
@@ -250,7 +254,7 @@
     <input type="hidden" name="tId" id="tId" value="" />
     <input type="hidden" name="pcUrl" id="pcUrl" value="" />
   </form>
-  <form nema="paymentSuccess" id="paymentSuccess" action="shopping/payment/success">
+  <form nema="paymentSuccess" id="paymentSuccess" action="/shopping/payment/success" method ="post">
     <input type="hidden" name="orderId" class="orderId" value="">
   </form>
 </main>

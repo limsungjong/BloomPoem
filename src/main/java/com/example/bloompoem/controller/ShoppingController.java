@@ -3,10 +3,7 @@ package com.example.bloompoem.controller;
 import com.example.bloompoem.dto.KakaoApprovar;
 import com.example.bloompoem.dto.KakaoOrder;
 import com.example.bloompoem.dto.KakaoReady;
-import com.example.bloompoem.entity.ProductEntity;
-import com.example.bloompoem.entity.ShoppingCartEntity;
-import com.example.bloompoem.entity.ShoppingOrder;
-import com.example.bloompoem.entity.UserEntity;
+import com.example.bloompoem.entity.*;
 import com.example.bloompoem.service.ProductService;
 
 import com.example.bloompoem.service.UserService;
@@ -29,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -189,10 +187,7 @@ public class ShoppingController {
     public ResponseEntity<JSONObject> insertOrder(String cookie, int shoppingTotalPrice, String itemName){
         String userEmail =JwtUtil.getUserName(cookie,secretKey);
         String orderNumber = productService.orderInsert(userEmail, shoppingTotalPrice);
-        logger.error(""+orderNumber);
-        logger.error(""+itemName);
-        logger.error(""+userEmail);
-        logger.error(""+shoppingTotalPrice);
+
         KakaoOrder kakaoOrder =new KakaoOrder();
         kakaoOrder.setPartnerOrderId(orderNumber);
         kakaoOrder.setPartnerUserId(userEmail);
@@ -233,10 +228,19 @@ public class ShoppingController {
         kakakOrder.setPgToken(pgToken);
         kakaoApprovar = productService.kakaoPayApprove(kakakOrder);
         if(kakaoApprovar != null) {
+            ShoppingOrder order = new ShoppingOrder();
             model.addAttribute("kakaoApprovar", kakaoApprovar);
+            order.setShoppingOrderNumber(Integer.parseInt(orderId));
+            order.setShoppingOrderDate(kakaoApprovar.getApproved_at());
+            order.setShoppingOrderStatus(3);
+            order.setShoppingTotalPrice(kakaoApprovar.getAmount().getTotal());
+            order.setShoppingRealPrice(kakaoApprovar.getAmount().getTotal());
+            order.setUserEmail(userEmail);
+            productService.orderUpdate(order);
             return "/shop/shopPaymentSuccess";
         }
         else {
+            productService.orderDelete(Integer.parseInt(orderId));
             return "/shop/paymentFail";
         }
     }
@@ -245,6 +249,45 @@ public class ShoppingController {
         model.addAttribute("pgToken", pg_token);
 
         return "/shop/shopPayResult";
+    }
+    @PostMapping("/shopping/payment/success")
+    public String  paymentSuccess (Model model, int orderId){
+        model.addAttribute("orderId", orderId);
+        return "/shop/paymentApproval";
+    }
+
+    @PostMapping("/shopping/success/cartDelete")
+    public ResponseEntity<String> cartSelectAndDelete (String productName, String cookie ,int shoppingOrderId){
+        String userEmail =JwtUtil.getUserName(cookie,secretKey);
+        ShoppingCartEntity cart = productService.productNameCartSelecter(productName,userEmail);
+        ShoppingOrderDetail orderDetail = new ShoppingOrderDetail();
+        ProductEntity product =new ProductEntity();
+        ShoppingOrder order = new ShoppingOrder();
+        product.setProductNumber(cart.getProduct().getProductNumber());
+        order.setShoppingOrderNumber(shoppingOrderId);
+        orderDetail.setProduct(product);
+
+        orderDetail.setShoppingOrderDetailCount(cart.getShoppingCartCount());
+        logger.error(""+ orderDetail.getShoppingOrderDetailCount());
+        orderDetail.setUserEmail(userEmail);
+        logger.error("" + orderDetail.getUserEmail());
+        orderDetail.setShoppingOrder(order);
+
+
+
+        productService.orderDetailInsert(orderDetail);
+        productService.cartDelete(cart.getShoppingCartNumber());
+
+
+        return ResponseEntity.ok("success");
+    }
+
+    @PostMapping("/shopping/success/orderDetailView")
+    public ResponseEntity<List<ShoppingOrderDetail>> orderDetailView (int orderNumber , String cookie){
+        String userEmail =JwtUtil.getUserName(cookie,secretKey);
+        logger.error(""+orderNumber);
+        logger.error(""+userEmail);
+        return ResponseEntity.ok(productService.orderDetails(userEmail,orderNumber));
     }
 
 }

@@ -7,8 +7,10 @@ import com.example.bloompoem.dto.KakaoReady;
 import com.example.bloompoem.entity.ProductEntity;
 import com.example.bloompoem.entity.ShoppingCartEntity;
 import com.example.bloompoem.entity.ShoppingOrder;
+import com.example.bloompoem.entity.ShoppingOrderDetail;
 import com.example.bloompoem.repository.ProductRepository;
 import com.example.bloompoem.repository.ShoppingCartRepository;
+import com.example.bloompoem.repository.ShoppingOrderDetailRepository;
 import com.example.bloompoem.repository.ShoppingOrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,8 @@ public class ProductService {
     private ShoppingCartRepository cartDao;
     @Autowired
     private ShoppingOrderRepository shoppingOrderDao;
+    @Autowired
+    private ShoppingOrderDetailRepository shoppingOrderDetailRepository;
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public Page<ProductEntity> categoryProductView (int category ,Pageable pageable){
@@ -107,6 +111,9 @@ public class ProductService {
         order.setShoppingRealPrice(shoppingTotalPrice);
         shoppingOrderDao.save(order);
         return ""+order.getShoppingOrderNumber();
+    }
+    public void orderUpdate(ShoppingOrder order){
+        shoppingOrderDao.save(order);
     }
     public KakaoReady kakaoReady(KakaoOrder kakaoOrder){
         KakaoReady kakaoReady =null;
@@ -180,6 +187,29 @@ public class ProductService {
             logger.error("[KakaoPayService] kakaoPayApprove URISyntaxException", e);
         }
         return kakaoApprovar;
+    }
+
+    public void orderDelete(int orderId){
+        shoppingOrderDao.deleteById(orderId);
+    }
+
+    public ShoppingCartEntity productNameCartSelecter(String productName , String userEmail ){
+        ProductEntity product = productDao.findByProductName(productName);
+        ShoppingCartEntity cart = cartDao.findByProductAndUserEmail(product, userEmail);
+        product.setProductQuantity(product.getProductQuantity()-cart.getShoppingCartCount());
+        return cart ;
+    }
+    public void orderDetailInsert(ShoppingOrderDetail orderDetail){
+        shoppingOrderDetailRepository.save(orderDetail);
+    }
+    public void cartDelete(int shoppingCartNumber){
+        cartDao.deleteById(shoppingCartNumber);
+    }
+
+    public List<ShoppingOrderDetail> orderDetails (String userEmail, int orderNumber){
+        ShoppingOrder shoppingOrder =new ShoppingOrder();
+        shoppingOrder.setShoppingOrderNumber(orderNumber);
+        return shoppingOrderDetailRepository.findByUserEmailAndShoppingOrder(userEmail, shoppingOrder);
     }
 
 }

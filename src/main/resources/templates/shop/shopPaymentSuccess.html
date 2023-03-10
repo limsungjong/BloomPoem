@@ -21,13 +21,31 @@
     }
   </style>
   <script>
-    $(document).ready(()=>{
+    $(document).ready( async function () {
+      const cookie= document.cookie.split("=")[1]
       //닫기 버튼 기능 시작
       $(".close").on("click", ()=>{
         window.close();
       })
       //닫기 버튼 기능 끝
-      //원래있던 페이지에 성공 order번호 보내기
+
+      const orderId = $("#orderId").val()
+
+      //이름으로 카트 찾은 후 삭제& orderDetail 추가 시작
+      const productNames = $("#productName").val().split(",")
+       for(let i = 0 ; productNames.length>i ; i++){
+         if(productNames[i] != ""){
+           $.ajax({
+             url : "/shopping/success/cartDelete",
+             method : "post",
+             data : {"cookie" : cookie, "productName" : productNames[i] , "shoppingOrderId" : orderId}
+           })
+        }
+      }
+      //이름으로 카트 찾은 후 삭제& orderDetail 추가 끝
+      //원래있던 페이지에 성공 order번호 보내기 시작
+      await opener.parent.paymentSuccess(orderId);
+      //원래있던 페이지에 order번호 보내기 끝
     })
   </script>
 
@@ -47,11 +65,14 @@
     </div>
     <div class="successArea">
       <div>주문번호 : <span th:text="${kakaoApprovar.partner_order_id}"></span></div>
-      <div>이름 : <span th:text="${kakaoApprovar.item_name}"></span></div>
+      <div>이름 : <span class="productName" th:text="${kakaoApprovar.item_name}"></span></div>
       <div>수량 : <span th:text="${kakaoApprovar.quantity}"></span></div>
       <div>가격 : <span th:text="${kakaoApprovar.amount.total}"></span></div>
     </div>
     <button class="btn btn-outline-dark close">닫기</button>
+    <input type="hidden" id="orderId" th:value="${kakaoApprovar.partner_order_id}">
+    <input type="hidden" id="productName" th:value="${kakaoApprovar.item_name}">
+
   </div>
 </main>
 

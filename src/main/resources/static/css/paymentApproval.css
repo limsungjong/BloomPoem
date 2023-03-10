@@ -186,7 +186,7 @@ footer {
 }
 .oneProductArea{
     display:grid;
-    grid-template-columns: 200px 150px;
+    grid-template-columns: 400px 250px;
     grid-template-rows: repeat(3, 70px);
     grid-template-areas:
   "productImage productName"

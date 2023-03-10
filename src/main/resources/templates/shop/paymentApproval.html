@@ -16,7 +16,26 @@
   </style>
   <script>
     $(document).ready(()=>{
+      const orderNumber = parseInt($(".orderNumber").val());
+      const cookie= document.cookie.split("=")[1]
 
+      $.ajax({
+        url : "/shopping/success/orderDetailView",
+        method : "post",
+        data : {orderNumber, cookie}
+      }).then(r=>{
+        console.log(r)
+        $.each(r, (i, p)=>{
+          const msg =`<div class="oneProductArea">
+          <img src ="/image/product/${p.product.productMainImage}" alt="productImage" class="oneProductImage">
+          <div class="oneProductName">${p.product.productName}</div>
+          <div class="oneProductQuantity">수량 : ${p.shoppingOrderDetailCount}</div>
+          <div class="oneProductPrice">가격 : ${p.product.productPrice * p.shoppingOrderDetailCount}</div>
+            </div>`
+          $(".productArea").append(msg)
+
+        })
+      })
     })
   </script>
 
@@ -31,52 +50,20 @@
 </header>
 <main>
   <div class="resultArea">
-    <div class="result">결제가 완료 되었습니다.
+    <div class="result">결제가 완료 되었습니다.</div>
       <hr/>
+
+
+    <div class="productArea"></div>
+
+
+    <button class="btn btn-outline-dark close"><a href="/shopping">홈으로 돌아가기</a></button>
     </div>
-    <div class="successArea">
-      <div>주문번호 : <span th:text="${kakaoApprovar.partner_order_id}"></span></div>
-      <div>이름 : <span th:text="${kakaoApprovar.item_name}"></span></div>
-      <div>수량 : <span th:text="${kakaoApprovar.quantity}"></span></div>
-      <div>가격 : <span th:text="${kakaoApprovar.amount.total}"></span></div>
-    </div>
-
-
-
-    <!-- .remove 사용하여 지울예정-->
-<!--    <div class="productArea">-->
-<!--      <div class="oneProductArea">-->
-<!--        <img src ="/pexels-louis-2101187.jpg" alt="productImage" class="oneProductImage">-->
-<!--        <div class="oneProductName">productName</div>-->
-<!--        <div class="oneProductQuantity">productQuantity</div>-->
-<!--        <div class="oneProductPrice">productPrice</div>-->
-<!--      </div>-->
-
-<!--      <div class="oneProductArea">-->
-<!--        <img src ="/pexels-louis-2101187.jpg" alt="productImage" class="oneProductImage">-->
-<!--        <div class="oneProductName">productName</div>-->
-<!--        <div clas="oneProductQuantity">productQuantity</div>-->
-<!--        <div class="oneProductPrice">productPrice</div>-->
-<!--      </div>-->
-
-<!--      <div class="oneProductArea">-->
-<!--        <img src ="/pexels-louis-2101187.jpg" alt="productImage" class="oneProductImage">-->
-<!--        <div class="oneProductName">productName</div>-->
-<!--        <div clas="oneProductQuantity">productQuantity</div>-->
-<!--        <div class="oneProductPrice">productPrice</div>-->
-<!--      </div>-->
-
-<!--      <div class="oneProductArea">-->
-<!--        <img src ="/pexels-louis-2101187.jpg" alt="productImage" class="oneProductImage">-->
-<!--        <div class="oneProductName">productName</div>-->
-<!--        <div clas="oneProductQuantity">productQuantity</div>-->
-<!--        <div class="oneProductPrice">productPrice</div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-    <button><a href="/shopping">홈으로 돌아가기</a></button>
   </div>
+  <input type="hidden" class="orderNumber" th:value="${orderId}">
 </main>
+<footer>
 
+</footer>
 </body>
 </html>
