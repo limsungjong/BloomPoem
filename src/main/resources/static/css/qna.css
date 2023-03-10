@@ -172,7 +172,7 @@ li {
   list-style: none;
 }
 
-.QnA_list {
+.Qna_list {
   margin-left: 30vw;
   padding: 50px auto;
 }
@@ -185,19 +185,19 @@ li {
   background-color: #eff1f6;
 }
 
-.QnA_write_button {
+.Qna_write_button {
   background-color: linen;
   text-align: right;
   border-radius: 1em;
 }
 
-.QnA_contents {
+.Qna_contents {
   display: flex;
   flex-direction: column;
   width: 900px;
   height: 100px;
 }
 
-.QnA_Table {
+.Qna_Table {
   text-align: center;
 }
