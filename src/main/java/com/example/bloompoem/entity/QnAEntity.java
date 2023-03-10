@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -16,8 +13,15 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "QNA")
+@SequenceGenerator(
+        name = "SEQ_QNA_NUMBER",
+        sequenceName = "SEQ_QNA_NUMBER",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class QnAEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_QNA_NUMBER")
     private int qnaNumber;
 
     @Column(length = 40, nullable = false)
@@ -64,5 +68,24 @@ public class QnAEntity {
         qnaEntity.setQnaTitle(qnaDTO.getQnaTitle());
         qnaEntity.setQnaDate(qnaDTO.getQnaDate());
         return qnaEntity;
+    }
+
+    // QnA 작성에 필요한 정보 가져오기(일단 다 넣었음)
+    public static QnAEntity toEntity(QnADTO qnaDTO){
+        QnAEntity qnaEntity = new QnAEntity();
+        qnaEntity.setQnaNumber(qnaDTO.getQnaNumber());
+        qnaEntity.setUserEmail(qnaDTO.getUserEmail());
+        qnaEntity.setQnaDate(qnaDTO.getQnaDate());
+        qnaEntity.setQnaStatus(qnaDTO.getQnaStatus());
+        qnaEntity.setQnaTitle(qnaDTO.getQnaTitle());
+        qnaEntity.setQnaGroup(qnaDTO.getQnaGroup());
+        qnaEntity.setQnaIndent(qnaDTO.getQnaIndent());
+        qnaEntity.setQnaParent(qnaDTO.getQnaParent());
+        qnaEntity.setQnaOrder(qnaDTO.getQnaOrder());
+        qnaEntity.setQnaImage1(qnaDTO.getQnaImage1());
+        qnaEntity.setQnaImage2(qnaDTO.getQnaImage2());
+        qnaEntity.setQnaImage3(qnaDTO.getQnaImage3());
+        qnaEntity.setQnaContent(qnaDTO.getQnaContent());
+        return toEntity(qnaDTO);
     }
 }
