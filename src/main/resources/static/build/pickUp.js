@@ -339,12 +339,12 @@ class sideItemObj {
             </div>
           </div>
         `;
-            const flowerLi = document.createElement('li');
-            flowerLi.setAttribute('class', 'flowerContent');
-            flowerLi.innerHTML = liFlowerHtml;
-            flowerListTab.append(flowerLi);
+            const bucketLi = document.createElement('li');
+            bucketLi.setAttribute('class', 'flowerContent');
+            bucketLi.innerHTML = liBucketHtml;
+            bucketListTab.append(bucketLi);
         }))
-        this.tabContent = flowerListTab;
+        this.tabContent = bucketListTab;
         this.modalContainer.querySelector(".content").append(this.tabContent);
     }
 }
