@@ -28,6 +28,18 @@ public interface FloristFlowerInterFace {
  @Value("#{target.flower_color}")
      String getFlowerColor();
 
- @Value("#{target.flower_image}")
-     String getFlowerImage();
+ @Value("#{target.florist_main_image}")
+    String getFloristMainImage();
+
+ @Value("#{target.florist_sub_image1}")
+    String getFloristSubImage1();
+
+ @Value("#{target.florist_sub_image2}")
+    String getFloristSubImage2();
+
+ @Value("#{target.florist_product_price}")
+    long getFloristProductPrice();
+
+ @Value("#{target.florist_product_quantity}")
+    long getFloristProductQuantity();
 }

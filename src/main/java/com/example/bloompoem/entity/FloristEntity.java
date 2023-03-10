@@ -36,10 +36,10 @@ public class FloristEntity {
     @Column
     private String floristPhoneNumber;
 
-    @Column(precision = 15,scale = 10)
+    @Column(precision = 15, scale = 10)
     private BigDecimal floristLatitude;
 
-    @Column(precision = 15,scale = 10)
+    @Column(precision = 15, scale = 10)
     private BigDecimal floristLongtitude;
 
     @Column

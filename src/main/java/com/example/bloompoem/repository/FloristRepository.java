@@ -47,4 +47,17 @@ public interface FloristRepository extends JpaRepository<FloristEntity, Integer>
                     "and b.flower_number = c.flower_number "+
                     "AND b.florist_number = :floristNumber ", nativeQuery = true)
     List<FloristFlowerInterFace> searchFloristFlower2(@Param("floristNumber") Long floristNumber);
+
+    @Query(value =
+            "SELECT c.flower_number, c.flower_name, " +
+                    "c.flower_language, c.flower_tag, " +
+                    "c.flower_season , c.flower_color, " +
+                    "b.florist_main_image, b.florist_sub_image1, " +
+                    "b.florist_sub_image2, b.florist_product_price," +
+                    "b.florist_product_quantity " +
+                    "from florist a, florist_product b, flower c " +
+                    "WHERE a.florist_number = b.florist_number " +
+                    "and b.flower_number = c.flower_number "+
+                    "AND b.florist_number = :floristNumber ", nativeQuery = true)
+    List<FloristFlowerInterFace> searchFloristFlower3(@Param("floristNumber") Long floristNumber);
 }
