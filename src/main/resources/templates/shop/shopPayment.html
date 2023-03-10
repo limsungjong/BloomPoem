@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+  <title>구조 잡기</title>
+  <link rel="stylesheet" href="/css/shopPayment.css" />
+  <script>
+    function comma(str) {
+      str = String(str);
+      return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+    function paymentSuccess(orderId){
+      $(".orderId").val(orderId)
+      $("#paymentSuccess").submit();
+    }
+    const singleCartView = (shoppingCartNumber, cookie)=>{
+      $.ajax({
+        url : "/shopping/payment/oneview",
+        method : "post",
+        data : {shoppingCartNumber, cookie}
+      }).then(r=>{
+        $(".productArea").empty()
+        let productName = "";
+        let option = "";
+        for(let i = 1; i<= 5;i++){
+          if(i == r.shoppingCartCount){
+            option = option+ `<option value='${i}' selected>${i}</option>`
+          }
+          else{
+            option = option+ `<option value='${i}'>${i}</option>`
+          }
+        }
+        const msg = `      <div class="oneProductArea">
+              <div class="oneProductBox">
+              <img src="/image/product/${r.product.productMainImage}" alt="productImage" class="productImage" />
+              <div class="productName" >${r.product.productName}</div>
+              <div class="productQuantity"> 수량 :
+              <select class="selectCount" data-no="${r.shoppingCartNumber}">
+                    ${option}
+              </select>
+              개
+              </div>
+              <div class="productPrice">
+              가격 : <span class="price"> ${comma(r.product.productPrice * r.shoppingCartCount)} </span> 원
+              </div>
+              <div class="deleteButtonBox"><button class="btn btn-outline-danger deleteButton" data-no="${r.shoppingCartNumber}">삭제</button></div>
+            </div>
+          </div>`
+        productName = r.product.productName
+        $(".productArea").append(msg);
+        $("#itemName").val(productName);
+        $(".totalPrice").append(comma(r.product.productPrice * r.shoppingCartCount));
+        $("#totalPrice").val(r.product.productPrice * r.shoppingCartCount);
+
+      })
+    }
+    const allCartView = (cookie)=>{
+      $(".navArea").css("display", "block");
+      $.ajax({
+        url : "/shopping/viewCart",
+        method : "post",
+        data : {cookie}
+      }).then(r=> {
+        $(".productArea").empty()
+        let totalPrice = 0;
+        let productName = "";
+        $.each(r , (i,p)=>{
+          let option = "";
+          for(let i = 1; i<= 5;i++){
+            if(i == p.shoppingCartCount){
+              option = option+ `<option value='${i}' selected>${i}</option>`
+            }
+            else{
+              option = option+ `<option value='${i}'>${i}</option>`
+            }
+          }
+          const msg = `      <div class="oneProductArea">
+              <div class="oneProductBox">
+              <img src="/image/product/${p.product.productMainImage}" alt="productImage" class="productImage" />
+              <div class="productName" >${p.product.productName}</div>
+              <div class="productQuantity"> 수량 :
+              <select class="selectCount" data-no="${p.shoppingCartNumber}">
+                    ${option}
+              </select>
+              개
+              </div>
+              <div class="productPrice">
+              가격 : <span class="price"> ${comma(p.product.productPrice * p.shoppingCartCount)} </span> 원
+              </div>
+              <div class="deleteButtonBox"><button class="btn btn-outline-danger deleteButton" data-no="${p.shoppingCartNumber}">삭제</button></div>
+            </div>
+          </div>`
+          productName = productName + p.product.productName +","
+          totalPrice = totalPrice + p.product.productPrice * p.shoppingCartCount
+          $(".productArea").append(msg);
+        })
+        $("#totalPrice").val(totalPrice);
+        $(".totalPrice").append(comma(totalPrice));
+        $("#itemName").val(productName);
+        $.ajax({
+          url : "/shopping/cartCount",
+          method : "post",
+          data : {cookie}
+        }).then(r=>{
+          $(".totalCount").empty();
+          $(".totalCount").append(r)
+        })
+      }).catch(err=>console.log(err))
+    }
+
+
+    $(document).ready(()=>{
+      const cookie= document.cookie.split("=")[1]
+      $(".logo").on("click" ,()=>{
+        location.href="/shopping"
+      })
+      if($(".shoppingCartNumber").val() == 0){
+        allCartView(cookie)
+      }else{
+        const shoppingCartNumber = $(".shoppingCartNumber").val()
+        singleCartView(shoppingCartNumber, cookie)
+      }
+
+      //수량 변경하는 기능 시작
+      $(".productArea").on("change",".selectCount",(e)=>{
+        const shoppingCartNumber = e.target.dataset.no
+        const count = e.target.value
+        $.ajax({
+          url : "/shopping/cart/update_count",
+          method : "put",
+          data : {cookie, shoppingCartNumber , count}
+        }).then(r=> {
+          location.reload();
+        }).catch(err=> console.log(err))
+      })
+      //수량 변경하는 기능 끝
+      //삭제하는 기능 시작
+      $(".productArea").on("click", ".deleteButton" ,(e)=>{
+        const shoppingCartNumber = e.target.dataset.no
+        $.ajax({
+          url : "/shopping/cart/delete",
+          method : "delete",
+          data : {cookie, shoppingCartNumber}
+        }).then( r=>{
+          if(shoppingCartNumber> 0){
+            alert("결제 할 상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
+            location.href = "/shopping";
+          }
+          $.ajax({
+            url : "/shopping/cartCount",
+            method : "post",
+            data : {cookie}
+          }).then(r=>{
+            console.log(shoppingCartNumber);
+            if(r == 0){
+              alert("상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
+              location.href="/shopping"
+            }else{
+              location.reload();
+            }
+          })
+        })
+      })
+      //삭제하는 기능 끝
+      //카카오페이 기능 시작
+      $(".kakaoPageImage").on("click", ()=>{
+        const shoppingTotalPrice = $("#totalPrice").val();
+        const itemName = $("#itemName").val();
+        console.log(itemName)
+        $.ajax({
+          url : "/shopping/payment/insert_order",
+          method : "put",
+          data : {cookie, shoppingTotalPrice, itemName}
+        }).then(r=> {
+          console.log(r)
+          window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
+          $("#orderId").val(r.orderId);
+          $("#tId").val(r.tId);
+          $("#pcUrl").val(r.pcUrl);
+          console.log($("#orderId").val());
+          console.log($("#tId").val());
+          console.log($("#pcUrl").val());
+          $("#kakaoForm").submit();
+        }).catch(err=>console.log(err))
+      })
+
+
+      //document ready 끝나는 선
+    })
+  </script>
+
+</head>
+<body>
+<header class="header">
+  <img src="/image/logo최종.png" alt="logo" class="logo" />
+  <menu>
+    <div class="mainText">Payment</div>
+  </menu>
+  <nav class="userBox">
+    <span class='logout'><a href='/sign/sign_out'>logOut</a></span>
+    <span class="cart"><a href='/shopping/cart'>Cart</a></span>
+    <span class="myPage">MyPage</span>
+  </nav>
+</header>
+<main>
+
+  <input type="hidden" class="shoppingCartNumber" name="shoppingCartNumber" th:value="${shoppingCartNumber}">
+  <input type="hidden" id="totalPrice" name="totalPrice" value="">
+  <input type="hidden" id="itemName" name="itemName" value="">
+  <input type="hidden" id="quantity" name="quantity" value="">
+  <div class="orderInfo">
+    <label class="navArea">Page<br/>Down
+      <div class="scroll">
+        <span class="scroll-dot"></span>
+      </div>
+    </label>
+    <div class="productArea">
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+  <div class="userInfo">
+    <div>이름 : </div><div th:text="${user.userName}">$</div>
+    <div>연락처 : </div><div th:text="${user.userPhoneNumber}"></div>
+    <div>주소 : </div><div class="address" th:text="${user.userAddress}"></div>
+    <div>상세주소 : </div><div th:text="${user.userAddressDetail}"></div>
+  </div>
+
+  </div>
+  <div class="payment">
+    <div> 총 물품 : <span class="totalCount">1</span> 개 </div>
+    <div> 총 금액 : <span class="totalPrice"></span> 원 </div>
+    <div>
+      <img src="/image/kakaoPay.png" alt="kakaoPayImage" class="kakaoPageImage">
+    </div>
+  </div>
+  <form name="kakaoForm" id="kakaoForm" method="post" target="kakaoPopUp" action="/shopping/kakao/payPopUp">
+    <input type="hidden" name="orderId" id="orderId" value="" />
+    <input type="hidden" name="tId" id="tId" value="" />
+    <input type="hidden" name="pcUrl" id="pcUrl" value="" />
+  </form>
+  <form nema="paymentSuccess" id="paymentSuccess" action="/shopping/payment/success" method ="post">
+    <input type="hidden" name="orderId" class="orderId" value="">
+  </form>
+</main>
+<footer>
+</footer>
+</body>
+</html>
+</html>
