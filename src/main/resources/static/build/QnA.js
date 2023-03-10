@@ -1,5 +1,4 @@
-$("#QnA_write_button").on("click", function () {
-  document.QnAForm.qnaNumber.value = "";
-  document.QnAForm.action = "/QnA/write";
-  document.QnAForm.submit();
-});
+//$("#QnA_write_button").on("click", function () {
+//  document.QnAForm.action = "http://localhost:9000/QnA/write";
+//  document.QnAForm.submit();
+//});
