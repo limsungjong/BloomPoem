@@ -25,7 +25,7 @@ public class SignController {
         return "/signUp";
     }
 
-    @GetMapping("/sing_out")
+    @GetMapping("/sign_out")
     public String singOut(HttpServletResponse res) {
 
         Cookie cookie = new Cookie("Authorization", null);
