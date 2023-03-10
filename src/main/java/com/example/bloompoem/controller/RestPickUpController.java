@@ -1,13 +1,17 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.FloristEntity;
 import com.example.bloompoem.entity.FlowerEntity;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
+import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristProductRepository;
 import com.example.bloompoem.repository.FloristRepository;
 import com.example.bloompoem.repository.FlowerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -62,6 +66,17 @@ public class RestPickUpController {
         arrayList = flowerRepository.findAll();
 
         return ResponseEntity.ok(arrayList);
+    }
+
+    @PostMapping (value = "/florist")
+    @ResponseBody
+    public ResponseEntity<?> florist(@RequestParam Integer floristNumber) {
+        if(ObjectUtils.isEmpty(floristNumber)) {
+            throw new CustomException(ResponseCode.INVALID_REQUEST);
+        }
+        floristRepository.findById(floristNumber);
+
+        return ResponseEntity.ok("정상!");
     }
 
     @PostMapping(value = "/florist_product_list")

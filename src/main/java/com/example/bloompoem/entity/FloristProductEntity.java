@@ -16,15 +16,15 @@ public class FloristProductEntity {
 
     @Id
     @Column
-    private long floristNumber;
+    private int floristNumber;
     @Id
     @Column
-    private long flowerNumber;
+    private int flowerNumber;
     @Column
-    private long floristProductPrice;
+    private int floristProductPrice;
 
     @Column
-    private long floristProductQuantity;
+    private int floristProductQuantity;
 
     @Column
     private String floristMainImage;

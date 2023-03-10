@@ -26,13 +26,13 @@ public class FloristReviewEntity{
                 strategy = GenerationType.SEQUENCE,
                 generator = "SEQ_FLORIST_REVIEW_NUMBER"
         )
-        private long floristReviewNumber;
+        private int floristReviewNumber;
         @Column
         private String userEmail;
         @Column
-        private long pickUpOrderNumber;
+        private int pickUpOrderNumber;
         @Column
-        private long floristNumber;
+        private int floristNumber;
         @Column
         private String floristReviewContent;
         @Column

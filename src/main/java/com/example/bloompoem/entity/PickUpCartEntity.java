@@ -26,11 +26,11 @@ public class PickUpCartEntity {
             strategy = GenerationType.SEQUENCE,
             generator = "SEQ_PICK_UP_CART_NUMBER"
     )
-    private long pickUpCartNumber;
+    private int pickUpCartNumber;
     @Column
     private String userEmail;
     @Column
-    private long flowerNumber;
+    private int flowerNumber;
     @Column
-    private long flowerCount;
+    private int flowerCount;
 }

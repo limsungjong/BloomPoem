@@ -23,7 +23,7 @@ public class FlowerEntity {
             strategy = GenerationType.SEQUENCE,
             generator = "SEQ_FLOWER_NUMBER"
     )
-    private long flowerNumber;
+    private int flowerNumber;
 
     @Column
     private String flowerName;
