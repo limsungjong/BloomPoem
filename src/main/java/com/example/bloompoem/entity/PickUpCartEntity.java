@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.java.Log;
 
 import javax.persistence.*;
 
@@ -29,6 +28,8 @@ public class PickUpCartEntity {
     private int pickUpCartNumber;
     @Column
     private String userEmail;
+    @Column
+    private int floristNumber;
     @Column
     private int flowerNumber;
     @Column
