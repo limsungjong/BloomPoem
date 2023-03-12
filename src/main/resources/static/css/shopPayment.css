@@ -1,5 +1,3 @@
-
-    /*      Root         */
 :root {
     /*    Color    */
     --color-true-black: #000000;
@@ -74,14 +72,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
     font-family: "나눔스퀘어 네오";
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 100px 2650px 100px;
-    /*overflow-x: hidden;*/
 
-}
-::-webkit-scrollbar {
-    display: none;
 }
 ol,
 ul {
@@ -103,7 +94,7 @@ table {
 
 /* style css start */
 header {
-    background-color: var(--color-true-white);
+    background-color: #fff3d4;
     height: 100px;
     width: 100vw;
     display: grid;
@@ -120,6 +111,7 @@ header {
     height: 80px;
     width: 254px;
     margin-left: 20px;
+    cursor: pointer;
 }
 .logoBox {
     width: 15%;
@@ -142,7 +134,7 @@ menu {
     font-weight: 400;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 nav span {
     color: #000;
@@ -169,196 +161,187 @@ nav .fromLeft:after {
 }
 
 footer {
-    bottom: 0;
     height: 100px;
     width: 100vw;
     font-weight: 400;
-    background-color: var(--color-true-white);
-    border-top: 2px solid var(--color-light-gray);
-    background-color: #191919;
+    background-color: #000;
 }
-.searchBox {
-    width: 25vw;
-    height: 7vh;
-    position: relative;
-    display: flex;
-    padding: 15px 0 15px 0;
-    background-color: rgba(128, 128, 128, 0.302);
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    opacity: 85%;
+::-webkit-scrollbar {
+    display: none;
 }
 main{
-    /* background-color: #3ea4f8; */
+    width: 100vw;
+    height: 81.1vh;
+    display: grid;
+    grid-template-columns: 900px 500px ;
+    grid-template-rows: 450px 250px;
+    grid-row-gap: 30px;
+    justify-content: center;
+    align-content: center;
 }
-.searchButton {
-    width: 40px;
-    height: 45px;
-    border: 1px solid #ffffff;
-    background: #ffffff;
+.payment{
+    grid-column: 1/3;
+}
+.oneProductArea{
+    width: 100%;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center
+
+}
+.oneProductBox{
+    width: 1500px;
+    display: grid;
+    grid-template-columns: 300px 400px 100px ;
+    grid-template-rows: repeat(3, 50px);
+    justify-content: center;
+    grid-gap : 10px;
+    grid-template-areas:
+  " productImage productName  ."
+  " productImage productQuantity  deleteButton"
+  " productImage productPrice  .";
+
+}
+.checkBox{
+    width: 20px;
+    height: 20px;
+}
+.productImage{
+    grid-area: productImage;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+.productName{
+    grid-area:  productName;
+    font-size: 1.6rem;
     text-align: center;
-    color: #000000;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
-.searchTerm {
-    width: 20vw;
-    border: 3px solid #ffffff;
-    border-right: none;
-    padding: 5px;
-    height: 45px;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-    color: #000000;
-    font-size: 15px;
+.productQuantity{
+    grid-area: productQuantity;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+.payButtonBox{
+    grid-area: payButton;
+
+}
+.payButton{
+    height: 100%;
+}
+.deleteButtonBox{
+    grid-area: deleteButton;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
 }
 
-.searchTerm:focus {
-    color: #000000;
-}
-.categoryBar {
-    width: 100vw;
-    height: 70px;
-    display: flex;
-    flex-direction: row;
+.productPrice{
+    grid-area: productPrice;
+    text-align: center;
     align-items: center;
+    display: flex;
     justify-content: space-evenly;
-    font-size: var(--font-regular);
-    background-color: #fff3d4 ;
-}
-.categoryBar ul{
-    width: 80vw;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
     align-items: center;
 }
-main{
-    height: 100%;
-}
-.categoryBar li{
-    padding: 10px;
-    border-radius: 10px;
-}
-.categoryBar li:hover{
-    background-color: pink;
-    font-weight: bold;
-}
-.mainImgDiv{
-    width : 300vw;
-    height: 60vh;
-    background-color: wheat;
+.checkBoxBox{
     display: flex;
-    flex-direction: row;
+    grid-area: checkBox;
+    align-items: center;
+}
+.productQuantity option{
+    font-size: medium;
+}
+.productQuantity select{
+    width: 70px;
+}
+.orderInfo {
+    overflow-x: scroll;
+    width: 100%;
+    height: 100%;
+
+}
+.navArea{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+}
+.productArea{
+
+}
+.scroll{
+    margin-top: 30px;
+    width: 2rem;
+    height: 4rem;
+    border: 2px solid black;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.scroll span{
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: black;
+    display: block;
+    animation: cursor 1.5s linear infinite;
+}
+@keyframes cursor{
+    0%{
+        opacity: 0;
+        transform: translateY(-1rem);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(1rem);
+    }
 }
 .mainText{
-    width: 100vw;
-    text-align: center;
-}
-.mainBar{
-    background-color: gray;
-    width: 100vw;
-    height: 40px;
-}
-.mainBar1Product{
-    background-color: #dcf8e4;
-    display: grid;
-    width: 100vw;
-    grid-template-columns: 400px 400px 400px;
-    grid-template-rows: 250px 250px 250px;
-    grid-gap: 15px;
-    justify-content: center;
-}
-.subArea{
-    background-color: #ffe062;
-    width: 100vw;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(6, 200px);
-    grid-template-rows: repeat(2, 250px);
-}
-.subArea2{
-    background-color: violet;
-    width: 100vw;
-    justify-content: center;
-
-    display: grid;
-    grid-template-columns: repeat(3,400px);
-    grid-template-rows: 500px;
-    grid-gap: 30px;
-}
-.material-symbols-outlined{
-    position: relative;
-    cursor: pointer;
-    font-size: 40px;
-    opacity: 70%;
-}
-.left{
-    bottom: 300px;
-}
-.right{
-    left: 95vw;
-    bottom: 300px;
-
-}
-.subMenu{
-    width: 100vw;
-    display: flex;
-    justify-content: space-around;
-
-}
-.subMenu div{
-    padding: 10px;
-    font-size: medium;
-    background-color: white;
-    cursor: pointer;
-
-}
-.subMenu div :hover{
-    background-color: pink;
+    font-size: 1.6rem;
     font-weight: bold;
 }
-.subMenu .plant{
-    display: none;
-    position: absolute;
-    left: 279px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    z-index: 3;
+.userInfo{
+    display: grid;
+    grid-template-columns: 150px 350px;
+    grid-template-rows: 100px 100px 70px 50px;
+    align-content: center;
+    justify-items: center;
+    border-left: 1px solid rgba(0, 0, 0, 0.493);
 }
-.subMenu .wreath{
-    display: none;
-    position: absolute;
-    left: 552px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    z-index: 3;
+.payment{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
-.subMenu .flowerBasket{
-    display: none;
-    position: absolute;
-    left: 840px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    z-index: 3;
+a {
+    text-decoration: none;
+    color: #191919;
 }
-.logo{
-    cursor: pointer;
+a:hover{
+    color: #191919;
 }
-.mainImage{
-    width: 100vw;
-    height: 100%;
-}
+.kakaoPageImage{
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 36px;
+    height: 70px;
 
-.soil{
-    cursor: pointer;
 }
-.vase{
-    cursor: pointer;
+.address{
+    font-size: 1rem;
 }
-    a {
-        text-decoration: none;
-        color: #191919;
-    }
-    a:hover{
-        color: #191919;
-    }
+.productArea{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}

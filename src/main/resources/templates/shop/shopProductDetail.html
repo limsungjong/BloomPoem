@@ -9,46 +9,303 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-  <title>구조 잡기</title>
+  <title>상세정보</title>
   <link rel="stylesheet" href="/css/shopProductDetail.css" />
   <script>
+    function comma(str) {
+      str = String(str);
+      return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+    const payment = (cartNumber, cookie)=>{
+      $(".shoppingCartNumber").val(parseInt(cartNumber));
+      $("#cookie").val(cookie);
+      document.payment.submit();
+    }
     $(document).ready(function (){
+      const cookie= document.cookie.split("=")[1]
+      const category =$("#category").val();
+      //쿠키가 있으면 header 변경 시작
+
+      const header =  (cookie != null)
+              ?"<span class='logout'><a href='/sign/sign_out'>logOut</a></span><span class=\"cart\"><a href='/shopping/cart'>Cart</a></span> <span class=\"myPage\"><a href='/my_page'>MyPage</a></span> "
+              :"<span class=\"signin\"><a href='/sign/sign_in'>SignIn</a></span> <span class=\"signup\"><a href='/sign/sign_up'>SignUp</a></span>"
+      if(cookie != null ){
+        $(".userBox").append(header);
+      }else {
+        $(".userBox").append(header);
+      }
+      //쿠기가 있으면 header 변경 끝
+      if(category == 1 || category == 2){
+        $(".plantMenu").css("backgroundColor" , "#afffba");
+      }else if(category == 3 || category == 4){
+        $(".wreathMenu").css("backgroundColor" , "#afffba");
+      }else if(category == 5 || category == 6){
+        $(".flowerBasketMenu").css("backgroundColor" , "#afffba");
+      }else if(category == 7){
+        $(".soil").css("backgroundColor" , "#afffba");
+      }else if(category == 8){
+        $(".vase").css("backgroundColor" , "#afffba");
+      }
       $(".logo").on("click" ,()=>{
         location.href="/shopping"
       })
+
+      //한 개 구매하기 버튼 기능 시작
+      $(".productBuy").on("click",(e)=>{
+        const count = $(".quantitySelect").val();
+        const productNumber = e.target.dataset.no
+        $.ajax({
+          url : "/shopping/cart_exists_product",
+          method : "post",
+          data : {cookie, productNumber}
+        }).then(r=>{
+          console.log(r);
+          if(r == 'success' ){
+            $.ajax({
+              url : "/shopping/cartSave",
+              method : "put",
+              data : {"cookie" : cookie, "productNumber" : productNumber, "count" : count}
+            }).then(r=>{
+              $.ajax({
+                url : "/shoping/payment/find_cartNumber",
+                method : "post",
+                data :{productNumber, cookie}
+              }).then(r=>{
+                payment(r,cookie)
+              })
+            }).catch(err=>console.log(err))
+          }else if(r== 'alreadyProduct'){
+            $.ajax({
+              url : "/shoping/payment/find_cartNumber",
+              method : "post",
+              data :{productNumber, cookie}
+            }).then(r=>{
+              payment(r,cookie)
+            })
+          }
+        }).catch(err=>console.log(err))
+
+      })
+      //한 개 구매하기 버튼 기능 끝
+
+      // 메뉴바 보이게하는 제이쿼리
+      $(".plantMenu").on("mouseenter", ()=> {
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","block");
+        $(".wreath").css("display","none")});
+      $(".plant").on("mouseleave", ()=> $(".plant").css("display", "none"));
+      $(".wreathMenu").on("mouseenter", ()=> {
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","block")});
+      $(".wreath").on("mouseleave", ()=> $(".wreath").css("display", "none"));
+      $(".flowerBasketMenu").on("mouseenter", ()=> {
+        $(".flowerBasket").css("display", "block");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none");
+      })
+      $(".flowerBasket").on("mouseleave", ()=> $(".flowerBasket").css("display", "none"))
+      $(".soil").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".vase").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".mainImg").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".mainArea").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".subImageBox").on("mouseenter", ()=>{
+        $(".flowerBasket").css("display", "none");
+        $(".plant").css("display","none");
+        $(".wreath").css("display","none")
+      })
+      $(".orientalOrchid").on("click", ()=>{
+        $(".category").val(1);
+        document.categorySelect.submit();
+      })
+      $(".westernOrchid").on("click" ,()=>{
+        $(".category").val(2);
+        document.categorySelect.submit();
+      })
+      $(".funeralWreath").on("click", ()=>{
+        $(".category").val(3);
+        document.categorySelect.submit();
+      })
+      $(".congratulatoryWreath").on("click",()=>{
+        $(".category").val(4);
+        document.categorySelect.submit();
+      })
+      $(".bloomBasket").on("click",()=> {
+        $(".category").val(5);
+        document.categorySelect.submit();
+      })
+      $(".bloomBox").on("click",()=> {
+        $(".category").val(6);
+        document.categorySelect.submit();
+      })
+      $(".soil").on("click",()=> {
+        $(".category").val(7);
+        document.categorySelect.submit();
+      })
+      $(".vase").on("click",()=> {
+        $(".category").val(8);
+        document.categorySelect.submit();
+      })
+
+      $(".quantitySelect").change(()=>{
+        const selectQuantity =parseInt($(".quantitySelect").val());
+        const productNumber = parseInt($("#productNumber").val());
+        $.ajax({
+          url:"/shopping/product_info",
+          method : "get",
+          data : {productNumber}
+        }).then(r =>{
+          if(r.productQuantity < selectQuantity){
+            $(".quantitySelect").val("");
+            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);
+            return;
+          }else{
+            $("#totalPrice").text(comma(selectQuantity*r.productPrice));
+            $(".sideQuantity").val(selectQuantity).prop("selected", true);
+            $(".sideTotalPrice").text(comma(selectQuantity*r.productPrice));
+          }
+        }).catch(err => console.log(err))
+      })
+      $(".sideQuantity").change(()=>{
+        const selectQuantity =parseInt($(".sideQuantity").val());
+        const productNumber = parseInt($("#productNumber").val());
+        $.ajax({
+          url:"/shopping/product_info",
+          method : "get",
+          data : {productNumber}
+        }).then(r =>{
+          if(r.productQuantity < selectQuantity){
+            $(".quantitySelect").val("");
+            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);
+            return;
+          }else{
+            $(".sideTotalPrice").text(comma(selectQuantity*r.productPrice));
+            $(".quantitySelect").val(selectQuantity).prop("selected", true);
+            $("#totalPrice").text(comma(selectQuantity*r.productPrice));
+          }
+        }).catch(err=>console.log(err));
+      })
+      $("main").on("wheel" , ()=>{
+        $(".sideStickyArea").css("display", "block")
+      })
+        //장바구니 넣는 스크립트 시작
+      $(".productBasket").on("click" , (e)=>{
+          const productNumber = e.target.dataset.no
+          const count = $(".quantitySelect").val();
+          console.log(count);
+          if(cookie == null){
+            alert("로그인이 필요합니다.");
+            location.href="/sign/sign_in"
+            return
+          }
+          $.ajax({
+            url : "/shopping/cart_exists_product",
+            method : "post",
+            data : {productNumber, cookie}
+          }).then(r =>{
+            if(r == "success"){
+              $.ajax({
+                url : "/shopping/cartCount",
+                method : "post",
+                data : {cookie}
+              }).then(r =>{
+                if(r<=5){
+                  $.ajax({
+                    url : "/shopping/cartSave",
+                    method : "put",
+                    data : {"cookie" : cookie, "productNumber" : productNumber, "count" : count}
+                  }).then(r=> {
+                    alert("장바구니에 담겼습니다.")
+                  }).catch(err => console.log(err));
+                }else{
+                  alert("장바구니에는 물건을 5개까지 담을 수 있습니다.")
+                }
+              }).catch(err=> console.log(err))
+            }else if(r== "alreadyProduct"){
+              alert("장바구니안에 이미 상품이 존재합니다.");
+              return
+            }
+          }).catch(err => console.log(err))
+        })
+        //장바구니 넣는 스크립트 끝
+        //구매하기 스크립트 시작
+
+
+    //document.ready 끝나는 선
     })
   </script>
 </head>
 <body>
+
+<form action="/shopping/payment/oneProduct" method ="post" name="payment" >
+  <input type="hidden" id="cookie" class="cookie" name="cookie" value="">
+  <input type="hidden" class="shoppingCartNumber" name="shoppingCartNumber" value="">
+</form>
   <input type="hidden" name="category" id="category" th:value="${category}">
   <input type="hidden" name="curPage" id="curPage" th:value="${curPage}">
   <input type="hidden" name="productNumber" id="productNumber" th:value="${productNumber}">
 
+  <form name="categorySelect" action="/shopping/category">
+    <input type="hidden" name="category" class="category" value="">
+  </form>
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
   <menu>
-
+    <div class="categoryBar">
+      <ul>
+        <li class="plantMenu">식물</li>
+        <li class="wreathMenu">화환</li>
+        <li class="flowerBasketMenu">꽃 바구니</li>
+        <li class="soil">흙, 식물영양제</li>
+        <li class="vase">화병, 화분</li>
+      </ul>
+    </div>
+    <div class="subMenu">
+      <div class="plant"><div class="orientalOrchid">동양란</div><div class="westernOrchid">서양란</div></div>
+      <div class="wreath"><div class="congratulatoryWreath">축하 화환</div><div class="funeralWreath">근조 화환</div></div>
+      <div class="flowerBasket"><div class="bloomBasket">꽃 바구니</div><div class="bloomBox">꽃 상자</div></div>
+    </div>
   </menu>
   <nav class="userBox">
-    <span class="signin">SignIn</span>
-    <span class="signup">SignUp</span>
+
   </nav>
 </header>
 <main>
   <div class="mainArea">
+    <br/>
     <img  class ="productMainImage" th:src="@{/image/product/}+${product.productMainImage}" >
-    <div class="ProductName" th:text="${product.productName}">
+    <div class="productName" th:text="${product.productName}">
     </div>
     <div class="productQuantity"> 수량 :
-      </div><div><select class="form-select form-select-sm">
-    <option>수량</option>
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-  </select></div>
-    <div class="productPrice">가격 : <span th:text="${product.productPrice}"></span>원</div>
+      <select class="form-select form-select-sm quantitySelect">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      개
+    </div>
+
+    <div class="productPrice">가격 : <span id="totalPrice"><script th:inline="javascript">
+      $("#totalPrice").append(comma([[${product.productPrice}]]))
+    </script></span>원</div>
     <button class="btn btn-outline-primary productBasket" th:data-no="${productNumber}">장바구니</button>
     <button class="btn btn-outline-success productBuy" th:data-no="${productNumber}">구매하기</button>
   </div>
@@ -58,20 +315,21 @@
   </div>
   <div class="sideStickyArea">
     <div class="sideStickyBox">
-      <div>수량<select class="form-select form-select-sm">
-          <option>수량</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
+      <div class="sideQuantityBox">수량<select class="sideQuantity form-select form-select-sm">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
         </select>
       </div>
     </div>
-    <div>가격 : <span th:text="${product.productPrice}"></span>원</div>
-    <div>
-      <button class="btn btn-outline-primary " th:data-no="${productNumber}">Basket</button>
-      <button class="btn btn-outline-success " th:data-no="${productNumber}">Buy</button>
+    <div class="sidePriceBox">가격 : <span class="sideTotalPrice"><script th:inline="javascript">
+      $(".sideTotalPrice").append(comma([[${product.productPrice}]]))
+    </script></span>원</div>
+    <div class="sideButtonBox">
+      <button class="btn btn-outline-primary " th:data-no="${productNumber}">장바구니</button>
+      <button class="btn btn-outline-success " th:data-no="${productNumber}">구매</button>
     </div>
   </div>
 </div>
