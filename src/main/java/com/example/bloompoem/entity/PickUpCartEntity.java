@@ -1,9 +1,6 @@
 package com.example.bloompoem.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,7 +9,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
+@ToString
 @AllArgsConstructor
+@Setter
 @SequenceGenerator(
         name = "SEQ_PICK_UP_CART_NUMBER",
         sequenceName = "SEQ_PICK_UP_CART_NUMBER",
