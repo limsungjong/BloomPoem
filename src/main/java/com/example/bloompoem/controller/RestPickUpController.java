@@ -1,108 +1,69 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.PickUpCartRequest;
+import com.example.bloompoem.domain.dto.PickUpCartResponse;
 import com.example.bloompoem.domain.dto.ResponseCode;
-import com.example.bloompoem.entity.FloristEntity;
-import com.example.bloompoem.entity.FlowerEntity;
-import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
+import com.example.bloompoem.entity.PickUpCartEntity;
+import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.exception.CustomException;
-import com.example.bloompoem.repository.FloristProductRepository;
-import com.example.bloompoem.repository.FloristRepository;
-import com.example.bloompoem.repository.FlowerRepository;
-import lombok.AllArgsConstructor;
+import com.example.bloompoem.repository.PickUpCartRepository;
+import com.example.bloompoem.service.PickUpService;
+import com.example.bloompoem.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequestMapping(value = "/api/v1/pick_up")
+@RequiredArgsConstructor
 @RestController
-@AllArgsConstructor
-@CrossOrigin("http://172.28.16.1:5500")
-@RequestMapping("/api/v1/pick_up")
+@CrossOrigin(value = "http://192.168.45.66:5500")
 public class RestPickUpController {
+    private final UserService userService;
 
-    private final FloristRepository floristRepository;
+    private final PickUpCartRepository pickUpCartRepository;
 
-    private final FlowerRepository flowerRepository;
+    private final PickUpService pickUpService;
 
-    private final FloristProductRepository floristProductRepository;
-
-    @GetMapping(value = "/pick_up_list")
-    @ResponseBody
-    public ResponseEntity<?> pick() {
-        List<FloristEntity> arrayList;
-        arrayList = floristRepository.findAll();
-        return ResponseEntity.ok(arrayList);
+    @GetMapping  (value = "/get_pick_up_cart")
+    public ResponseEntity<?> getPickUpCart(@CookieValue(value = "Authorization") String token) {
+        UserEntity user =  userService.tokenToUserEntity(token);
+        List<PickUpCartResponse> pickUpCartResponseList = new ArrayList<>();
+        List<PickUpCartEntity> pickUpCartEntities = pickUpCartRepository.findByUserEmail(user.getUserEmail());
+        pickUpCartEntities.forEach(data -> {
+            pickUpCartResponseList
+                    .add(
+                            PickUpCartResponse
+                                    .builder()
+                                    .flowerNumber(data.getFlowerNumber())
+                                    .floristNumber(data.getFloristNumber())
+                                    .flowerCount(data.getFlowerCount())
+                                    .build());
+        });
+        return ResponseEntity.ok().body(pickUpCartEntities);
     }
 
-    @PostMapping(value = "/pick_up_list_query")
-    @ResponseBody
-    public ResponseEntity<?> pickQuery(@RequestParam String x, @RequestParam String y) {
-        List<FloristEntity> arrayList;
-        BigDecimal aadd = new BigDecimal("0.01");
-        BigDecimal badd = new BigDecimal("0.005");
+    @PostMapping  (value = "/pick_up_cart_update")
+    public ResponseEntity<?> getPickUpCart(@RequestBody List<PickUpCartRequest> pickUpCartRequestList) {
+//        @CookieValue(value = "Authorization") String token
+//        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
 
-        BigDecimal xa = new BigDecimal(x).subtract(aadd);
-        BigDecimal xb = new BigDecimal(x).add(aadd);
-        System.out.println(xa);
-        System.out.println(xb);
+        String userEmail = "sung8881@naver.com";
+        if(pickUpCartRequestList.isEmpty()) throw new CustomException(ResponseCode.INVALID_REQUEST);
 
-        BigDecimal ya = new BigDecimal(y).subtract(badd);
-        BigDecimal yb = new BigDecimal(y).add(badd);
-        System.out.println(ya);
-        System.out.println(yb);
-        arrayList = floristRepository.searchXY(xa, xb, ya, yb);
-        return ResponseEntity.ok(arrayList);
+        pickUpCartRequestList.forEach(request -> {
+            pickUpService.pickUpCartInsert(request,userEmail);
+        });
+
+        return ResponseEntity.ok().body("성공");
     }
 
-    @PostMapping(value = "/flower_list")
-    @ResponseBody
-    public ResponseEntity<?> flowerList() {
-        List<FlowerEntity> arrayList;
-        arrayList = flowerRepository.findAll();
+    @DeleteMapping (value = "/pick_up_cart_delete")
+    public ResponseEntity<?> deleteUserCart(@RequestParam String userEmail) {
+        pickUpService.pickUpCartDelete(userEmail);
 
-        return ResponseEntity.ok(arrayList);
+        return ResponseEntity.ok().body("성공");
     }
-
-    @PostMapping (value = "/florist")
-    @ResponseBody
-    public ResponseEntity<?> florist(@RequestParam Integer floristNumber) {
-        if(ObjectUtils.isEmpty(floristNumber)) {
-            throw new CustomException(ResponseCode.INVALID_REQUEST);
-        }
-        floristRepository.findById(floristNumber);
-
-        return ResponseEntity.ok("정상!");
-    }
-
-    @PostMapping(value = "/florist_product_list")
-    @ResponseBody
-    public ResponseEntity<?> floristList(@RequestParam Long floristNumber) {
-        List<BigInteger> arrayList;
-        arrayList = floristRepository.searchFloristFlower(floristNumber);
-
-        return ResponseEntity.ok().body(arrayList);
-    }
-
-    @PostMapping(value = "/florist_product_list_detail")
-    @ResponseBody
-    public ResponseEntity<List<FloristFlowerInterFace>> floristList3(@RequestParam Long floristNumber) {
-        List<FloristFlowerInterFace> arrayList = floristRepository.searchFloristFlower3(floristNumber);
-        List<FlowerEntity> flowerList = new ArrayList<>();
-        return ResponseEntity.ok().body(arrayList);
-    }
-
-    @PostMapping(value = "/florist_search_name")
-    @ResponseBody
-    public ResponseEntity<?> floristSearchName(@RequestParam String floristName) {
-        System.out.println(floristName);
-        FloristEntity floristEntity = floristRepository.findFloristEntityByFloristName(floristName);
-        return ResponseEntity.ok().body(floristEntity);
-    }
-
-
 }
