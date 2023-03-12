@@ -68,8 +68,8 @@ public class RestPickUpController {
     }
 
     @DeleteMapping (value = "/pick_up_cart_delete")
-    public ResponseEntity<?> deletePickUpCart(@RequestParam String userEmail) {
-        pickUpService.pickUpCartDelete(userEmail);
+    public ResponseEntity<?> deletePickUpCart(@CookieValue(value = "Authorization") String token) {
+        pickUpService.pickUpCartDelete(userService.tokenToUserEntity(token).getUserEmail());
 
         return ResponseEntity.ok().body("성공");
     }
