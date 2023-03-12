@@ -41,7 +41,7 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
         .then((response) => response.json())
         .then((result) => {
             {
-                var myHeaders = new Headers();
+                const myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
                 const urlencoded = new URLSearchParams();
@@ -119,7 +119,7 @@ class sideItemObj {
             iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
         // 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({
+        const infowindow = new kakao.maps.InfoWindow({
             content: iwContent,
             removable: iwRemoveable,
         });
@@ -356,6 +356,8 @@ class sideItemObj {
                     if (this.bucketDataArr.length == 0) {
                         this.bucketDataArr.push(bucketData);
                         alert("장바구니로 이동되었습니다.");
+                        this.bucketToFetch();
+                        return;
                     }
                     if (
                         !this.bucketDataArr.find(
@@ -364,12 +366,14 @@ class sideItemObj {
                     ) {
                         alert("장바구니로 이동되었습니다.");
                         this.bucketDataArr.push(bucketData);
+                        this.bucketToFetch();
+                        return;
                     }
                     const duplicateFlowerNumber = this.bucketDataArr.findIndex(
                         (v) => v.flowerNumber == bucketData.flowerNumber
                     );
-                    if (duplicateFlowerNumber == 0 || duplicateFlowerNumber > 0) {
-                        console.log(duplicateFlowerNumber);
+                    if (duplicateFlowerNumber >= 0) {
+                        alert("장바구니에 추가되었습니다.");
                         this.bucketDataArr[duplicateFlowerNumber].flowerCount =
                             this.bucketDataArr[duplicateFlowerNumber].flowerCount +
                             bucketData.flowerCount;
@@ -382,13 +386,13 @@ class sideItemObj {
         this.modalContainer.querySelector(".content").append(this.tabContent);
     }
 
-    bucketToFetch(inFlowerData) {
-        var myHeaders = new Headers();
+    bucketToFetch() {
+        const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         console.log(this.bucketDataArr);
-        var raw = JSON.stringify(this.bucketDataArr);
+        const raw = JSON.stringify(this.bucketDataArr);
 
-        var requestOptions = {
+        const requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: raw,
@@ -461,6 +465,29 @@ class sideItemObj {
         this.tabContent = bucketListTab;
         this.modalContainer.querySelector(".content").append(this.tabContent);
     }
+
+    fetchToBucket() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        console.log(this.bucketDataArr);
+        const raw = JSON.stringify(this.bucketDataArr);
+
+        const requestOptions = {
+            method: "Get",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+
+        fetch(
+            "http://localhost:9000/api/v1/pick_up/pick_up_cart_update",
+            requestOptions
+        )
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.log("error", error));
+    }
+
 }
 
 
@@ -477,7 +504,7 @@ window.addEventListener("DOMContentLoaded", getList);
 
 // 드래그 하면 리스트 띄우기 // root 사용됨
 function moveGetList(x, y) {
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
     const urlencoded = new URLSearchParams();
