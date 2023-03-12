@@ -37,29 +37,27 @@ public class RestPickUpController {
         List<PickUpCartResponse> pickUpCartResponseList = new ArrayList<>();
         List<PickUpCartEntity> pickUpCartEntities = pickUpCartRepository.findByUserEmail(user.getUserEmail());
 
-        Integer floristNumber = 5;
-        Integer flowerNumber = 5;
-        FloristFlowerInterFace arrayList = floristRepository.searchFloristFlowerDetail(floristNumber,flowerNumber);
-
-//        pickUpCartEntities.forEach(data -> {
-//            pickUpCartResponseList
-//                    .add(
-//                            PickUpCartResponse
-//                                    .builder()
-//                                    .flowerNumber(data.getFlowerNumber())
-//                                    .floristNumber(data.getFloristNumber())
-//                                    .flowerCount(data.getFlowerCount())
-//                                    .build());
-//        });
-        return ResponseEntity.ok().body(pickUpCartEntities);
+        pickUpCartEntities.forEach(data -> {
+            FloristFlowerInterFace detail = floristRepository.searchFloristFlowerDetail(data.getFloristNumber(),data.getFlowerNumber());
+            pickUpCartResponseList
+                    .add(
+                            PickUpCartResponse
+                                    .builder()
+                                    .userEmail(data.getUserEmail())
+                                    .flowerName(detail.getFlowerName())
+                                    .flowerNumber(data.getFlowerNumber())
+                                    .floristNumber(data.getFloristNumber())
+                                    .flowerCount(data.getFlowerCount())
+                                    .floristMainImage(detail.getFloristMainImage())
+                                    .floristProductPrice(detail.getFloristProductPrice())
+                                    .build());
+        });
+        return ResponseEntity.ok().body(pickUpCartResponseList);
     }
 
     @PostMapping  (value = "/pick_up_cart_update")
     public ResponseEntity<?> updatePickUpCart(@CookieValue(value = "Authorization") String token,@RequestBody List<PickUpCartRequest> pickUpCartRequestList) {
         if(pickUpCartRequestList.isEmpty()) throw new CustomException(ResponseCode.INVALID_REQUEST);
-
-
-
 
         pickUpService.pickUpCartDelete(userService.tokenToUserEntity(token).getUserEmail());
         pickUpCartRequestList.forEach(request -> {
