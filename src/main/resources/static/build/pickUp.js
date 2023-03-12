@@ -11,7 +11,7 @@ let markers = [];
 // 공통된 하나의 글로벌 객체로 사용함. 추가 금지
 const map = new kakao.maps.Map(document.querySelector("#map"), mapOption);
 
-// 마커 전부 제거 markers에 있는 모든 marker 제거
+// 카카오 맵 마커 전부 제거 // markers에 있는 모든 marker 제거
 function removeMarker() {
     for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
@@ -149,6 +149,7 @@ class sideItemObj {
 
     // fetch florist_product_list_detail 에 보내서 모달 만들기
     fetchToCreateModal() {
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -177,8 +178,14 @@ class sideItemObj {
     // modal 컨테이너 핸들링
     modalHandler() {
         // 모달창 위의 close btn
-        document.querySelector(".close-area").addEventListener("click", () => {
-            document.querySelector("body").removeChild(this.modalContainer);
+        this.modalContainer.querySelector(".close-area").addEventListener("click", () => {
+            if(this.bucketDataArr.length > 0) {
+                this.createCheckModal();
+
+                return;
+            } else {
+                document.querySelector("body").removeChild(this.modalContainer);
+            }
         });
 
         // 모달창 위의 4개 탭 전환하기
@@ -198,7 +205,7 @@ class sideItemObj {
                                     this.createModalFlower();
                                     break;
                                 case "장바구니":
-                                    this.createModalBucket();
+                                    this.fetchToBucket();
                                     break;
                                 case "매장 정보":
                                     this.createModalFlower();
@@ -227,7 +234,9 @@ class sideItemObj {
             <div class="title">
               <h2>${this.floristData.floristName}</h2>
             </div>
-            <div class="close-area">X</div>
+            <div class="close-area">
+                <i class="fas fa-times"></i>
+            </div>
             <ul class="modal-nav">
               <li class="active">아름다운 꽃</li>
               <li>장바구니</li>
@@ -345,6 +354,8 @@ class sideItemObj {
             flowerLiBox
                 .querySelector(".flowerBasketBtn")
                 .addEventListener("click", (e) => {
+
+                    if(this.loginChecker() === false) return;
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
@@ -354,8 +365,8 @@ class sideItemObj {
                         floristNumber: this.floristData.floristNumber,
                     };
                     if (this.bucketDataArr.length == 0) {
-                        this.bucketDataArr.push(bucketData);
                         alert("장바구니로 이동되었습니다.");
+                        this.bucketDataArr.push(bucketData);
                         this.bucketToFetch();
                         return;
                     }
@@ -386,7 +397,10 @@ class sideItemObj {
         this.modalContainer.querySelector(".content").append(this.tabContent);
     }
 
+    // 장바구니에 있는 물품 서버로 전송
     bucketToFetch() {
+        if(this.loginChecker() === false) return;
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         console.log(this.bucketDataArr);
@@ -403,12 +417,17 @@ class sideItemObj {
             "http://localhost:9000/api/v1/pick_up/pick_up_cart_update",
             requestOptions
         )
-            .then((response) => response.text())
+            .then((response) => {
+                console.log(response);
+                return response.text();
+            })
             .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
     }
 
+    // 장바구니 modal 만듬
     createModalBucket() {
+        console.log(this.bucketDataArr)
         const bucketListTab = document.createElement("ul");
         bucketListTab.setAttribute('class', 'bucketList');
 
@@ -427,9 +446,9 @@ class sideItemObj {
           <div class="flowerDetailContent">
             <span class="flowerDetailSpan">${bucket.flowerName}</span>
               <br />
-            <span class="flowerDetailSpan">가격 : ${flower.floristProductPrice}</span>
+            <span class="flowerDetailSpan">가격 : ${bucket.floristProductPrice}</span>
               <br />
-            <span class="flowerDetailSpan">가격 : ${flower.floristProductPrice}</span>
+            <span class="flowerDetailSpan">가격 : ${bucket.floristProductPrice}</span>
           </div>
           <div class="flowerDetailBuy">
             <div class="flowerCountBox">
@@ -439,18 +458,11 @@ class sideItemObj {
                     type="number"
                     min="1"
                     max="100"
-                    value="1"
-                    data-flowerNumber=${flower.flowerNumber}
+                    value=${bucket.flowerCount}
+                    data-flowerNumber=${bucket.flowerNumber}
                   />
-
-              <button class="btn btn-outline-secondary productBasket">
-                10개 추가하기
-              </button>
             </div>
             <div class="flowerBuyBox">
-              <button class="btn btn-outline-primary productBasket">
-                장바구니
-              </button>
               <button class="btn btn-outline-success productBuy">
                 구매하기
               </button>
@@ -458,38 +470,135 @@ class sideItemObj {
           </div>
         `;
             const bucketLi = document.createElement('li');
-            bucketLi.setAttribute('class', 'flowerContent');
+            bucketLi.setAttribute('class', 'bucketContent');
             bucketLi.innerHTML = liBucketHtml;
             bucketListTab.append(bucketLi);
         }))
+        this.modalContainer.querySelector('.flowerCount').addEventListener('change', e => {
+            console.log(e);
+        })
+
         this.tabContent = bucketListTab;
         this.modalContainer.querySelector(".content").append(this.tabContent);
     }
 
+    // 서버에 있는 장바구니 받아옴
     fetchToBucket() {
+        if(document.cookie == "") {
+            return;
+        }
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        console.log(this.bucketDataArr);
-        const raw = JSON.stringify(this.bucketDataArr);
-
         const requestOptions = {
-            method: "Get",
+            method: "GET",
             headers: myHeaders,
-            body: raw,
             redirect: "follow",
         };
 
+
         fetch(
-            "http://localhost:9000/api/v1/pick_up/pick_up_cart_update",
+            "http://localhost:9000/api/v1/pick_up/get_pick_up_cart",
             requestOptions
         )
-            .then((response) => response.text())
-            .then((result) => console.log(result))
-            .catch((error) => console.log("error", error));
+            .then((response) => {
+                return response.json();
+            })
+            .then((result) => {
+                if(result == undefined) return;
+                this.bucketDataArr = result;
+                this.createModalBucket();
+            })
     }
 
-}
+    createCheckModal() {
+        const checkModal = document.createElement("div");
+        checkModal.innerHTML = `
+    <div id="checkModal" class="modal-overlay">
+      <div id="checkModal">
+        <div class="head">
+          <div class="close-btn">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+        <div class="middle">
+          <div class="textBox">
+            <span>다른 가게의 물품이 있습니다.</span> <br />
+            <span>지금 장바구니에 있는 가게의 물품과</span> <br />
+            <span>함께 담을 수 없습니다.</span><br />
+            <span>지금 장바구니 물품을 모두 제거 할까요?</span>
+          </div>
+        </div>
+        <div class="checkBox">
+          <div class="okBox">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="noBox">
+            <i class="fas fa-times-circle"></i>
+          </div>
+        </div>
+      </div>
+    </div>`;
 
+        checkModal.querySelector(".close-btn").addEventListener("click", (e) => {
+            document.querySelector("body").removeChild(checkModal);
+        });
+
+        checkModal.querySelector(".okBox").addEventListener("click", (e) => {
+            if (confirm("정말로 모두 제거할까요?")) {
+                this.bucketDataArr = [];
+                document.querySelector("body").removeChild(checkModal);
+                if(!this.modalContainer.querySelector('.bucketList') == false) {
+                    this.modalContainer.querySelector('.bucketList').remove();
+                }
+                this.bucketDeleteFetch();
+            }
+        });
+
+        checkModal.querySelector(".okBox").addEventListener('click',() => {
+            document.querySelector("body").removeChild(checkModal);
+        });
+
+        document.querySelector("body").append(checkModal);
+    }
+
+    bucketDeleteFetch() {
+        if(this.loginChecker() === false) return;
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        fetch("http://localhost:9000/api/v1/pick_up/pick_up_cart_delete", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    }
+
+    loginChecker() {
+        const cookie = document.cookie;
+
+        let check = false;
+        if (cookie == "") {
+            alert("로그인이 필요합니다.");
+            location.href = "http://localhost:9000/sign/sign_in";
+        }
+        if (cookie == undefined) {
+            alert("로그인이 필요합니다.");
+            location.href = "http://localhost:9000/sign/sign_in";
+        }
+        if (cookie == null) {
+            alert("로그인이 필요합니다.");
+            location.href = "http://localhost:9000/sign/sign_in";
+        }
+
+        if(cookie.split("=")[0] == "Authorization") check = true;
+        return check;
+    }
+}
 
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
@@ -547,5 +656,3 @@ kakao.maps.event.addListener(map, 'dragend', function (data) {
     let center = map.getCenter();
     moveGetList(center.La, center.Ma);
 });
-
-// input number 체크
