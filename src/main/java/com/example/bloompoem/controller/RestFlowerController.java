@@ -6,6 +6,7 @@ import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FlowerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -22,6 +23,9 @@ public class RestFlowerController {
     @PostMapping(value = "/flower_list")
     @ResponseBody
     public ResponseEntity<?> flowerList(Integer flowerNumber) {
+        if(flowerNumber > 0) throw new CustomException(ResponseCode.INVALID_REQUEST);
+        if(ObjectUtils.isEmpty(flowerRepository.findById(flowerNumber))) throw new CustomException(ResponseCode.INVALID_REQUEST);
+
         Optional<FlowerEntity> flowerEntity = flowerRepository.findById(flowerNumber);
         if(flowerEntity.isPresent()) {
         return ResponseEntity.ok(flowerEntity.get());

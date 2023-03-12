@@ -6,9 +6,9 @@ import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.UserRepository;
 import com.example.bloompoem.service.SignService;
 import com.example.bloompoem.service.UserService;
+import com.example.bloompoem.util.JwtUtil;
 import com.example.bloompoem.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +47,8 @@ public class RestSignController {
 
     @GetMapping("/sign_check")
     public ResponseEntity<?> signCheck(@CookieValue(value = "Authorization") String token) {
-
-        System.out.println(token);
+        String userEmail = JwtUtil.getUserName(token,secretKey);
+        if(!userRepository.findById(userEmail).isPresent()) throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
         return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 
