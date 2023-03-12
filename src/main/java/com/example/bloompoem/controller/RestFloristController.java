@@ -78,4 +78,6 @@ public class RestFloristController {
         FloristEntity floristEntity = floristRepository.findFloristEntityByFloristName(floristName);
         return ResponseEntity.ok().body(floristEntity);
     }
+
+
 }
