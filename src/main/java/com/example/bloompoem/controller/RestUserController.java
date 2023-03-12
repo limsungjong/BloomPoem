@@ -24,7 +24,6 @@ public class RestUserController {
     private String secretKey;
     @PostMapping("/get_user")
     public ResponseEntity<?> user(@CookieValue(value = "Authorization") String token) throws RuntimeException {
-        System.out.println(token);
         String userEmail = JwtUtil.getUserName(token,secretKey);
 
         UserDTO userDTO = UserDTO.toDTO(userRepository.findByUserEmail(userEmail).get());

@@ -1,10 +1,13 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.FloristEntity;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
+import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -30,6 +33,7 @@ public class RestFloristController {
     @PostMapping(value = "/florist_list_query_x_y")
     @ResponseBody
     public ResponseEntity<?> pickQuery(@RequestParam String x, @RequestParam String y) {
+
         List<FloristEntity> arrayList;
         BigDecimal aadd = new BigDecimal("0.01");
         BigDecimal badd = new BigDecimal("0.005");
@@ -49,7 +53,9 @@ public class RestFloristController {
 
     @PostMapping(value = "/florist_product_list")
     @ResponseBody
-    public ResponseEntity<?> floristList(@RequestParam Long floristNumber) {
+    public ResponseEntity<?> floristList(@RequestParam Integer floristNumber) {
+        if(ObjectUtils.isEmpty(floristRepository.findById(floristNumber))) throw new CustomException(ResponseCode.INVALID_REQUEST);
+
         List<BigInteger> arrayList;
         arrayList = floristRepository.searchFloristFlower(floristNumber);
         return ResponseEntity.ok().body(arrayList);
@@ -57,7 +63,9 @@ public class RestFloristController {
 
     @PostMapping(value = "/florist_product_list_detail")
     @ResponseBody
-    public ResponseEntity<List<FloristFlowerInterFace>> floristList3(@RequestParam Long floristNumber) {
+    public ResponseEntity<List<FloristFlowerInterFace>> floristList3(@RequestParam Integer floristNumber) {
+        if(floristNumber < 0) throw new CustomException(ResponseCode.INVALID_REQUEST);
+
         List<FloristFlowerInterFace> arrayList = floristRepository.searchFloristFlowerDetail(floristNumber);
         return ResponseEntity.ok().body(arrayList);
     }
@@ -65,6 +73,8 @@ public class RestFloristController {
     @PostMapping(value = "/florist_search_name")
     @ResponseBody
     public ResponseEntity<?> floristSearchName(@RequestParam String floristName) {
+        if(ObjectUtils.isEmpty(floristRepository.findByFloristName(floristName))) throw new CustomException(ResponseCode.INVALID_REQUEST);
+
         FloristEntity floristEntity = floristRepository.findFloristEntityByFloristName(floristName);
         return ResponseEntity.ok().body(floristEntity);
     }
