@@ -1,13 +1,16 @@
 package com.example.bloompoem.service;
 
 import com.example.bloompoem.domain.dto.PickUpCartRequest;
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.PickUpCartEntity;
+import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristProductRepository;
 import com.example.bloompoem.repository.PickUpCartRepository;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -15,15 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PickUpService {
     private final FloristProductRepository floristProductRepository;
+
     private final PickUpCartRepository pickUpCartRepository;
+
     private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
 
     private final UserService userService;
-
-    @Transactional
-    public void pickUpCartUpdate(PickUpCartRequest request, String userEmail) {
-        System.out.println();
-    }
 
     @Transactional
     public void pickUpCartInsert(PickUpCartRequest request, String userEmail) {
@@ -51,5 +51,12 @@ public class PickUpService {
        pickUpCartEntities.forEach(v -> {
            pickUpCartRepository.deleteById(v.getPickUpCartNumber());
        });
+       pickUpCartRepository.flush();
+    }
+
+    public void pickUpCartReqCheck(PickUpCartRequest request) {
+        if(ObjectUtils.isEmpty(request)) {
+
+        }
     }
 }

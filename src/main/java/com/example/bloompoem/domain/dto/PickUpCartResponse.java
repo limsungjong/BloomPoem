@@ -8,9 +8,15 @@ import lombok.Getter;
 public class PickUpCartResponse {
     String userEmail;
 
+    String flowerName;
+
     Integer flowerNumber;
 
     Integer flowerCount;
 
     Integer floristNumber;
+
+    String floristMainImage;
+
+    Integer floristProductPrice;
 }

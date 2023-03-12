@@ -6,7 +6,7 @@ public interface FloristFlowerInterFace {
 
 
  @Value("#{target.flower_number}")
-     long getFlowerNumber();
+     Integer getFlowerNumber();
 
 
  @Value("#{target.flower_name}")
@@ -38,8 +38,8 @@ public interface FloristFlowerInterFace {
     String getFloristSubImage2();
 
  @Value("#{target.florist_product_price}")
-    long getFloristProductPrice();
+    Integer getFloristProductPrice();
 
  @Value("#{target.florist_product_quantity}")
-    long getFloristProductQuantity();
+    Integer getFloristProductQuantity();
 }

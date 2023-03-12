@@ -35,7 +35,7 @@ public interface FloristRepository extends JpaRepository<FloristEntity, Integer>
                     "from florist a, florist_product b " +
                     "WHERE a.florist_number = b.florist_number " +
                     "AND b.florist_number = :floristNumber ", nativeQuery = true)
-    List<BigInteger> searchFloristFlower(@Param("floristNumber") Long floristNumber);
+    List<BigInteger> searchFloristFlower(@Param("floristNumber") Integer floristNumber);
 
     @Query(value =
             "SELECT c.flower_number, c.flower_name, " +
@@ -46,7 +46,22 @@ public interface FloristRepository extends JpaRepository<FloristEntity, Integer>
                     "b.florist_product_quantity " +
                     "from florist a, florist_product b, flower c " +
                     "WHERE a.florist_number = b.florist_number " +
-                    "and b.flower_number = c.flower_number "+
+                    "and b.flower_number = c.flower_number " +
                     "AND b.florist_number = :floristNumber ", nativeQuery = true)
-    List<FloristFlowerInterFace> searchFloristFlowerDetail(@Param("floristNumber") Long floristNumber);
+    List<FloristFlowerInterFace> searchFloristFlowerDetail(@Param("floristNumber") Integer floristNumber);
+
+
+    @Query(value =
+            "SELECT c.flower_number, c.flower_name, " +
+                    "c.flower_language, c.flower_tag, " +
+                    "c.flower_season , c.flower_color, " +
+                    "b.florist_main_image, b.florist_sub_image1, " +
+                    "b.florist_sub_image2, b.florist_product_price," +
+                    "b.florist_product_quantity " +
+                    "from florist a, florist_product b, flower c " +
+                    "WHERE a.florist_number = b.florist_number " +
+                    "and b.flower_number = c.flower_number " +
+                    "AND b.florist_number = :floristNumber " +
+                    "AND c.flower_number = :flowerNumber ", nativeQuery = true)
+    FloristFlowerInterFace searchFloristFlowerDetail(@Param("floristNumber") Integer floristNumber, @Param("flowerNumber") Integer flowerNumber);
 }
