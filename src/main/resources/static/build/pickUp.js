@@ -179,10 +179,10 @@ class sideItemObj {
     modalHandler() {
         // 모달창 위의 close btn
         this.modalContainer.querySelector(".close-area").addEventListener("click", () => {
-            if(this.bucketDataArr.length > 0) {
+            if (this.bucketDataArr.length > 0) {
                 this.createCheckModal();
 
-                return;
+
             } else {
                 document.querySelector("body").removeChild(this.modalContainer);
             }
@@ -208,10 +208,8 @@ class sideItemObj {
                                     this.fetchToBucket();
                                     break;
                                 case "매장 정보":
-                                    this.createModalFlower();
                                     break;
                                 case "리뷰":
-                                    this.createModalFlower();
                                     break;
                             }
                             ele.setAttribute("class", "active");
@@ -355,7 +353,7 @@ class sideItemObj {
                 .querySelector(".flowerBasketBtn")
                 .addEventListener("click", (e) => {
 
-                    if(this.loginChecker() === false) return;
+                    if (this.loginChecker() === false) return;
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
@@ -399,7 +397,7 @@ class sideItemObj {
 
     // 장바구니에 있는 물품 서버로 전송
     bucketToFetch() {
-        if(this.loginChecker() === false) return;
+        if (this.loginChecker() === false) return;
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -427,7 +425,6 @@ class sideItemObj {
 
     // 장바구니 modal 만듬
     createModalBucket() {
-        console.log(this.bucketDataArr)
         const bucketListTab = document.createElement("ul");
         bucketListTab.setAttribute('class', 'bucketList');
 
@@ -461,6 +458,7 @@ class sideItemObj {
                     value=${bucket.flowerCount}
                     data-flowerNumber=${bucket.flowerNumber}
                   />
+                  
             </div>
             <div class="flowerBuyBox">
               <button class="btn btn-outline-success productBuy">
@@ -474,9 +472,11 @@ class sideItemObj {
             bucketLi.innerHTML = liBucketHtml;
             bucketListTab.append(bucketLi);
         }))
-        this.modalContainer.querySelector('.flowerCount').addEventListener('change', e => {
-            console.log(e);
-        })
+        if (!bucketListTab.querySelector('.flowerCount') == null) {
+            bucketListTab.querySelector('.flowerCount').addEventListener('change', e => {
+                console.log(e);
+            })
+        }
 
         this.tabContent = bucketListTab;
         this.modalContainer.querySelector(".content").append(this.tabContent);
@@ -484,7 +484,7 @@ class sideItemObj {
 
     // 서버에 있는 장바구니 받아옴
     fetchToBucket() {
-        if(document.cookie == "") {
+        if (document.cookie == "") {
             return;
         }
         const myHeaders = new Headers();
@@ -504,7 +504,7 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
-                if(result == undefined) return;
+                if (result == undefined) return;
                 this.bucketDataArr = result;
                 this.createModalBucket();
             })
@@ -547,14 +547,14 @@ class sideItemObj {
             if (confirm("정말로 모두 제거할까요?")) {
                 this.bucketDataArr = [];
                 document.querySelector("body").removeChild(checkModal);
-                if(!this.modalContainer.querySelector('.bucketList') == false) {
+                if (!this.modalContainer.querySelector('.bucketList') == false) {
                     this.modalContainer.querySelector('.bucketList').remove();
                 }
                 this.bucketDeleteFetch();
             }
         });
 
-        checkModal.querySelector(".okBox").addEventListener('click',() => {
+        checkModal.querySelector(".noBox").addEventListener('click', () => {
             document.querySelector("body").removeChild(checkModal);
         });
 
@@ -562,7 +562,7 @@ class sideItemObj {
     }
 
     bucketDeleteFetch() {
-        if(this.loginChecker() === false) return;
+        if (this.loginChecker() === false) return;
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -595,7 +595,7 @@ class sideItemObj {
             location.href = "http://localhost:9000/sign/sign_in";
         }
 
-        if(cookie.split("=")[0] == "Authorization") check = true;
+        if (cookie.split("=")[0] == "Authorization") check = true;
         return check;
     }
 }
