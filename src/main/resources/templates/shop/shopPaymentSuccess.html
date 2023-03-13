@@ -21,7 +21,7 @@
     }
   </style>
   <script>
-    $(document).ready( async function () {
+    $(document).ready(  function () {
       const cookie= document.cookie.split("=")[1]
       //닫기 버튼 기능 시작
       $(".close").on("click", ()=>{
@@ -33,7 +33,7 @@
 
       //이름으로 카트 찾은 후 삭제& orderDetail 추가 시작
       const productNames = $("#productName").val().split(",")
-      try{
+
        for(let i = 0 ; productNames.length>i ; i++){
          if(productNames[i] != ""){
            $.ajax({
@@ -45,10 +45,10 @@
       }
       //이름으로 카트 찾은 후 삭제& orderDetail 추가 끝
       //원래있던 페이지에 성공 order번호 보내기 시작
-      await opener.parent.paymentSuccess(orderId);
-      }catch (e){
+      setTimeout(()=>opener.parent.paymentSuccess(orderId) , 1000 )
 
-      }
+
+
       //원래있던 페이지에 order번호 보내기 끝
     })
   </script>
