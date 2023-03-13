@@ -25,19 +25,14 @@ public class QnaController {
 
     // 문의 글쓰기
     @GetMapping("/qna/write")
-    public String write(Model model){
-        return "/qnaWrite";
-    }
+    public String writeForm(){ return "/qnaWrite"; }
 
     @PostMapping("/qna/write")
     public String write(@ModelAttribute QnaDTO qnaDTO){
+        System.out.println("QnaDTO = " + qnaDTO);
         qnaService.write(qnaDTO);
-
-        return "/qnaWrite";
+        return "/qna";
     }
-
-    //
-
 
     // 문의 글 보기
     @GetMapping("/qna/view")

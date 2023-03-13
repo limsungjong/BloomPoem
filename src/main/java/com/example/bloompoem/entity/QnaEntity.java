@@ -1,14 +1,17 @@
 package com.example.bloompoem.entity;
 
 import com.example.bloompoem.dto.QnaDTO;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -22,42 +25,46 @@ import java.util.Date;
 public class QnaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_QNA_NUMBER")
-    private int qnaNumber;
+    private Integer qnaNumber;
 
-    @Column(length = 40, nullable = false)
+    @Column(length = 40)
     private String userEmail;
 
-    @Column(length = 40, nullable = false)
+//    @Column(length = 40, nullable = false)
+//    private Date qnaDate;
+
+    @CreationTimestamp
+    @Column
     private Date qnaDate;
 
-    @Column(nullable = false)
+    @Column
     private char qnaStatus;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100)
     private String qnaTitle;
 
-    @Column(nullable = false)
+    @Column
     private int qnaGroup;
 
-    @Column(nullable = false)
+    @Column
     private int qnaIndent;
 
-    @Column(nullable = false)
+    @Column
     private int qnaParent;
 
-    @Column(nullable = false)
+    @Column
     private int qnaOrder;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String qnaImage1;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String qnaImage2;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String qnaImage3;
 
-    @Column(length = 300, nullable = false)
+    @Column(length = 500)
     private String qnaContent;
 
     // 1:1 문의 목록에 띄울 문의번호, 상태, 제목, 등록일만 가져오기
