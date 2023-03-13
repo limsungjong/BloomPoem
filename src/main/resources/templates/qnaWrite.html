@@ -62,8 +62,8 @@
                   placeholder="제목을 입력해주세요."
                 />
               </div>
-              <!-- QnA 제목 종료 -->
-              <!-- QnA 내용 입력 -->
+              <!-- Qna 제목 종료 -->
+              <!-- Qna 내용 입력 -->
               <div>
                 <textarea
                   name="qnaContent"
@@ -73,40 +73,43 @@
                   placeholder="내용을 입력해주세요."
                 ></textarea>
               </div>
-              <!-- QnA 내용 종료 -->
-              <!-- QnA 첨부파일 입력 -->
+              <!-- Qna 내용 종료 -->
+              <!-- Qna 첨부파일 입력 -->
               <div>
-                <input type="file" name="qnaImage1" id="qnaImage1" />
+<!--                <input type="file" name="qnaImage1" id="qnaImage1" />-->
+<!--                <input type="file" name="qnaImage2" id="qnaImage2" />-->
+<!--                <input type="file" name="qnaImage3" id="qnaImage3" />-->
               </div>
-              <!-- QnA 첨부파일 종료 -->
+              <!-- Qna 첨부파일 종료 -->
               <!-- 버튼들 감싸는 태그 -->
-              <div class="QnA_buttons">
-                <!-- QnA 저장 버튼 -->
+              <div class="Qna_buttons">
+                <!-- Qna 저장 버튼 -->
                 <div>
-                  <button
-                    type="button"
-                    name="QnA_save_button"
-                    id="QnA_save_button"
-                  >
-                    저장
-                  </button>
+                  <input type="submit" value="저장">
+<!--                  <button-->
+<!--                    type="button"-->
+<!--                    name="Qna_save_button"-->
+<!--                    id="Qna_save_button"-->
+<!--                  >-->
+<!--                    저장-->
+<!--                  </button>-->
                 </div>
-                <!-- QnA 저장 버튼 종료 -->
-                <!-- QnA 목록 버튼 -->
+                <!-- Qna 저장 버튼 종료 -->
+                <!-- Qna 목록 버튼 -->
                 <a
-                  href="http://localhost:9000/QnA"
-                  name="QnA_list_button"
-                  id="QnA_list_button"
+                  href="http://localhost:9000/qna"
+                  name="Qna_list_button"
+                  id="Qna_list_button"
                 >
                   목록
                 </a>
-                <!-- QnA 목록 버튼 종료 -->
+                <!-- Qna 목록 버튼 종료 -->
               </div>
               <!-- 버튼들 감싸는 태그 종료 -->
             </form>
-            <!-- QnA 작성 폼 종료 -->
+            <!-- Qna 작성 폼 종료 -->
           </div>
-          <!-- QnA 작성 폼 div 종료 -->
+          <!-- Qna 작성 폼 div 종료 -->
         </div>
         <!-- 바디 컨텐츠 종료 -->
       </div>
@@ -114,7 +117,7 @@
     </main>
     <footer></footer>
     <!-- hidden 타입 폼 태그 시작 -->
-    <!-- form name="QnAForm" id="QnAForm" method="post">
+    <!-- form name="QnaForm" id="QnaForm" method="post">
       <input type="hidden" name="qnaNumber" value="" />
       <input type="hidden" name="searchType" value="${searchType}" />
       <input type="hidden" name="searchValue" value="${searchValue}" />
