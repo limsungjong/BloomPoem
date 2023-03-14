@@ -16,7 +16,7 @@ public class QnaDTO {
 
     private String userEmail;
 
-    private Date qnaDate;
+    private LocalDateTime qnaDate;
 
     private char qnaStatus;
 

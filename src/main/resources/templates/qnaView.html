@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <title>나의 문의 내역</title>
+    <link rel="stylesheet" type="text/css" href="/css/qna.css" />
+    <script src="/build/qna.js" defer></script>
+</head>
+<body>
+<header class="header">
+    <a href="http://localhost:9000"><img src="/image/logo최종.png" alt="logo" class="logo" /></a>
+    <menu>
+        <span class="fromLeft">Pick Up</span>
+        <span class="fromLeft">Shop</span>
+        <span class="fromLeft">recommend</span>
+    </menu>
+    <nav class="userBox">
+        <span class="signin">SignIn</span>
+        <span class="signup">SignUp</span>
+    </nav>
+</header>
+<main>
+    <!-- 바디 레이아웃 시작 -->
+    <div class="body_layout">
+        <!-- 바디 컨텐츠 시작 -->
+        <div class="body_contents">
+            <!-- 좌측 메뉴바 시작 -->
+            <div class="top_menu">
+                <li>공지사항</li>
+                <li>자주 묻는 질문</li>
+                <li>나의 문의 내역</li>
+            </div>
+            <!-- 좌측 메뉴바 종료 -->
+            <h2>나의 문의 내역</h2>
+            <!-- Qna 리스트 시작 -->
+            <div class="Qna_list">
+                <button>수정</button>
+                <button>삭제</button>
+                <!-- Qna 테이블 시작 -->
+                <table class="Qna_Table">
+                    <!-- Qna 테이블 헤드 시작 -->
+                    <thead>
+                    <th>번호</th>
+                    <th>상태</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>등록일</th>
+                    </thead>
+                    <!-- Qna 테이블 헤드 종료-->
+                    <!-- Qna 테이블 바디 시작-->
+                    <tbody>
+                    <tr th:each="qna:${QnaList}">
+                        <td th:text="${qna.qnaNumber}"></td>
+                        <td th:text="${qna.qnaStatus}"></td>
+                        <td th:text="${qna.qnaTitle}"></td>
+                        <td th:text="${qna.qnaContent}"></td>
+                        <td th:text="${qna.qnaDate}"></td>
+                    </tr>
+                    </tbody>
+                    <!-- Qna 테이블 바디 종료-->
+                </table>
+                <!-- Qna 테이블 종료 -->
+            </div>
+            <!-- Qna 리스트 종료 -->
+        </div>
+        <!-- 바디 컨텐츠 종료 -->
+    </div>
+    <!-- 바디 레이아웃 종료 -->
+</main>
+<footer></footer>
+<!-- hidden 타입 폼 태그 시작 -->
+<!-- form name="QnaForm" id="QnaForm" method="get">
+  <input type="hidden" name="qnaNumber" value="" />
+  <input type="hidden" name="searchType" value="${searchType}" />
+  <input type="hidden" name="searchValue" value="${searchValue}" />
+  <input type="hidden" name="curPage" value="${curPage}" />
+</form -->
+<!-- hidden 타입 폼 태그 종료 -->
+</body>
+</html>
