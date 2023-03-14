@@ -36,7 +36,7 @@ public class QnaEntity {
 
     @CreationTimestamp
     @Column
-    private Date qnaDate;
+    private LocalDateTime qnaDate;
 
     @Column
     private char qnaStatus;

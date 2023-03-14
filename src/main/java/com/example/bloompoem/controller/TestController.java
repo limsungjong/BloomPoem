@@ -1,8 +1,13 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.entity.QnaEntity;
+import com.example.bloompoem.repository.QnaRepository;
 import com.example.bloompoem.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +18,10 @@ import java.util.ArrayList;
 @CrossOrigin(origins = "http://192.168.45.148:5500/")
 @Controller
 @PropertySource("classpath:app.properties")
+@RequiredArgsConstructor
 public class TestController {
+
+//    private final QnaRepository qnaRepository;
 
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
@@ -33,4 +41,11 @@ public class TestController {
         arrayList.add("cherryBlossom.jpg");
         return arrayList;
     }
+
+//    @PostMapping(value = "/test/qna/write")
+//    @ResponseBody
+//    public ResponseEntity<String> testWrite(@ModelAttribute QnaEntity qnaEntity){
+////        System.out.println(qnaRepository.getQnaSequence());
+//        return ResponseEntity.ok().body("성공");
+//    }
 }
