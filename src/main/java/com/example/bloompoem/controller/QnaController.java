@@ -25,10 +25,11 @@ public class QnaController {
         return "/qna";
     }
 
-    // 문의 글쓰기
+    // 문의 글쓰기 페이지
     @GetMapping("/qna/write")
     public String writeForm(){ return "/qnaWrite"; }
 
+    // 문의 글쓰기
     @PostMapping("/qna/write")
     public String write(@ModelAttribute QnaEntity qnaDTO){
         qnaDTO.setQnaDate(new Date());
@@ -37,6 +38,8 @@ public class QnaController {
         qnaDTO.setQnaIndent(0);
         qnaDTO.setQnaParent(0);
         qnaDTO.setQnaOrder(0);
+
+        // if(){}
         qnaDTO.setQnaImage1("");
         qnaDTO.setQnaImage2("");
         qnaDTO.setQnaImage3("");
