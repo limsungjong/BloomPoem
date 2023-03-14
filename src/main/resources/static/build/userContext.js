@@ -49,7 +49,7 @@ let userContext = {};
                                 .addEventListener('click', (e) => {
                                     document.cookie = "Authorization" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                                     let requestOptions = {
-                                        method: 'POST',
+                                        method: 'GET',
                                         redirect: 'follow'
                                     };
                                     fetch("http://localhost:9000/api/v1/sign/sign_out", requestOptions)
