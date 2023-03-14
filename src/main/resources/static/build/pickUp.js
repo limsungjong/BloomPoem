@@ -742,40 +742,13 @@ class sideItemObj {
         this.footerBuyHandler();
     }
 
-    bucketFetchToBuy() {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        const raw = JSON.stringify(this.bucketDataArr);
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body:raw,
-            redirect: "follow",
-        };
-
-
-        fetch(
-            "http://localhost:9000/api/v1/pick_up_order/startBuy",
-            requestOptions
-        )
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                if (result == undefined) return;
-                console.log(result);
-                console.log(this.bucketDataArr)
-            })
-    }
-
     // flower 탭에 있는 꽃 구매 핸들링
     flowerBuyHandler(flowerLiBox, v) {
         const buyBtn = flowerLiBox.querySelector("#flowerBuyBtn");
         buyBtn.addEventListener("click", () => {
             const asd = flowerLiBox.querySelector(".flowerCount").value;
-            console.log(asd);
-            console.log(v);
             this.buyBucket = {};
+            this.createBuyModal();
         });
     }
 
@@ -811,6 +784,119 @@ class sideItemObj {
         allBuy.addEventListener("click", () => {});
 
         return this;
+    }
+
+    createBuyModal() {
+        if (document.querySelector("#buyModal")) {
+            document.removeChild(document.querySelector("#buyModal"));
+        }
+        const buyModalContainer = document.createElement("div");
+        buyModalContainer.setAttribute("id", "buyModal");
+        buyModalContainer.setAttribute("class", "modal-overlay");
+        const buyModalHtml = `
+      <div class="modal-window">
+      <div class="contentBox">
+        <div class="closeBtn">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="titleBox">
+          <h2>어느 가게에서 주문하고 있습니다.</h2>
+        </div>
+        <div class="middleBox">
+          <div class="middleLeftBox">
+          </div>
+          <div class="middleRightBox">
+            <div class="userSelectBox">
+              <label for="selectDate">날짜를 선택</label>
+              <div class="dateSelectBox">
+                <input type="date" name="selectDate" id="selectDate" />
+              </div>
+              <label for="selectTime">시간을 선택</label>
+              <div class="timeSelectBox">
+                <input type="time" name="selectTime" id="selectTime" />
+              </div>
+              <div class="buyBox">
+                <div class="priceBox">
+                  <span class="priceSpan">총 금액 : 30000</span>
+                </div>
+                <div class="buyBtnBox">카카오 페이로 구매하기</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      `;
+        console.log(this.buyBucket);
+        buyModalContainer.innerHTML = buyModalHtml;
+        this.modalContainer.append(buyModalContainer);
+        this.buyModalContainer = buyModalContainer;
+        this.createBuyProductBox();
+        this.buyModalHandler();
+    }
+
+    createBuyProductBox() {
+        console.log(this.buyBucketArr);
+        if (this.buyBucketArr == null) {
+            return;
+        }
+        this.buyBucketArr.forEach((product) => {
+            const buyProduct = document.createElement("div");
+            buyProduct.setAttribute(".productBox");
+            const productHtml = `
+        <div class="flowerImageBox">
+          <img
+            class="flowerMainImg"
+            src="../image/FP_53_01.jpg"
+            alt="꽃 이미지"
+          />
+        </div>
+        <div class="flowerDetailTextBox">
+          <span class="flowerDetailSpan">작약</span>
+        </div>
+        <div class="flowerDetailCountBox">
+          <span class="flowerDetailCountSpan">4 송이</span>
+        </div>
+      `;
+            buyProduct.innerHTML = productHtml;
+        });
+    }
+
+    createBuyDateBox() {
+        const dateBox = document.createElement("div");
+        dateBox.setAttribute();
+    }
+
+    buyModalHandler() {
+        const closeBtn = this.buyModalContainer.querySelector(".closeBtn");
+        closeBtn.addEventListener("click", () => {
+            console.log(this.bucketDataArr);
+            document.querySelector("#modal").removeChild(this.buyModalContainer);
+        });
+
+        // const
+    }
+
+    bucketFetchToBuy() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const raw = JSON.stringify(this.bucketDataArr);
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+
+        fetch("http://localhost:9000/api/v1/pick_up_order/startBuy", requestOptions)
+            .then((response) => {
+                return response.json();
+            })
+            .then((result) => {
+                if (result == undefined) return;
+                console.log(result);
+                console.log(this.bucketDataArr);
+            });
     }
 }
 
