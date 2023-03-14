@@ -21,9 +21,10 @@ public class QnaService {
     }
 
     // Qna 글작성
-    public void write(QnaDTO qnaDTO){
-        QnaEntity qnaEntity = QnaEntity.toEntity(qnaDTO);
-        qnaRepository.save(qnaEntity);
+    public void write(QnaEntity qnaDTO){
+//        QnaEntity qnaEntity = QnaEntity.toEntity(qnaDTO);
+
+        qnaRepository.save(qnaDTO);
     }
 
     // Qna 글수정

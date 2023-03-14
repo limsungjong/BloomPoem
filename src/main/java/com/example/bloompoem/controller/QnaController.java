@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @Controller
 public class QnaController {
     @Autowired
@@ -28,7 +30,16 @@ public class QnaController {
     public String writeForm(){ return "/qnaWrite"; }
 
     @PostMapping("/qna/write")
-    public String write(@ModelAttribute QnaDTO qnaDTO){
+    public String write(@ModelAttribute QnaEntity qnaDTO){
+        qnaDTO.setQnaDate(new Date());
+        qnaDTO.setQnaStatus('N');
+        qnaDTO.setQnaGroup(0);
+        qnaDTO.setQnaIndent(0);
+        qnaDTO.setQnaParent(0);
+        qnaDTO.setQnaOrder(0);
+        qnaDTO.setQnaImage1("");
+        qnaDTO.setQnaImage2("");
+        qnaDTO.setQnaImage3("");
         System.out.println("QnaDTO = " + qnaDTO);
         qnaService.write(qnaDTO);
         return "/qna";

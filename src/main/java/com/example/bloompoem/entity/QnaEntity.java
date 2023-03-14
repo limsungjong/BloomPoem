@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.Date;
 @SequenceGenerator(
         name = "SEQ_QNA_NUMBER",
         sequenceName = "SEQ_QNA_NUMBER",
-        initialValue = 1,
+        initialValue = 2,
         allocationSize = 1
 )
 public class QnaEntity {
