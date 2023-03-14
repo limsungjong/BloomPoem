@@ -265,7 +265,7 @@ class sideItemObj {
       <div class="flowerDetailContent">
         <span class="flowerDetailSpan">${flower.flowerColor} ${flower.flowerName}</span>
           <br />
-        <span class="flowerDetailSpan">가격 : ${flower.floristProductPrice}</span>
+        <span class="flowerDetailSpan">가격 : ${numberAddComa(flower.floristProductPrice)}</span>
       </div>
       <div class="flowerDetailBuy">
         <div class="flowerCountBox">
@@ -453,7 +453,7 @@ class sideItemObj {
         <span class="bucketDetailSpan">${bucket.flowerName}</span>
           <br />
         <span class="bucketDetailSpan">가격 : ${
-                bucket.floristProductPrice
+                numberAddComa(bucket.floristProductPrice)
             }</span>
       </div>
       <div class="bucketDetailBuy">
@@ -478,7 +478,7 @@ class sideItemObj {
         <div class="bucketBuyBox">
           <span>총 가격 : 
             <span class="bucketTotalPrice">
-              ${bucket.flowerCount * bucket.floristProductPrice}
+              ${numberAddComa(bucket.flowerCount * bucket.floristProductPrice)}
             </span>
           </span>
           <button class="btn btn-outline-success bucketBuy">
@@ -500,7 +500,7 @@ class sideItemObj {
                             v.flowerCount = 100;
                         }
                         bucketLi.querySelector(".bucketTotalPrice").textContent =
-                            bucketInput.value * bucket.floristProductPrice;
+                            numberAddComa(bucketInput.value * bucket.floristProductPrice);
                     });
                     this.createBucketFooter();
                 }
@@ -513,7 +513,7 @@ class sideItemObj {
                             v.flowerCount = 100;
                         }
                         bucketLi.querySelector(".bucketTotalPrice").textContent =
-                            bucketInput.value * bucket.floristProductPrice;
+                            numberAddComa(bucketInput.value * bucket.floristProductPrice);
                     });
                     this.createBucketFooter();
                 }
@@ -530,7 +530,7 @@ class sideItemObj {
                             v.flowerCount = 100;
                         }
                         bucketLi.querySelector(".bucketTotalPrice").textContent =
-                            bucketInput.value * bucket.floristProductPrice;
+                            numberAddComa(bucketInput.value * bucket.floristProductPrice);
                     });
                     this.createBucketFooter();
                     return;
@@ -543,7 +543,7 @@ class sideItemObj {
                 this.createBucketFooter();
                 bucketInput.value++;
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
-                    bucketInput.value * bucket.floristProductPrice;
+                    numberAddComa(bucketInput.value * bucket.floristProductPrice);
             });
 
             bucketLi.querySelector(".bucketCntDec").addEventListener("click", (e) => {
@@ -561,7 +561,7 @@ class sideItemObj {
                 bucketInput.value--;
 
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
-                    bucketInput.value * bucket.floristProductPrice;
+                    numberAddComa(bucketInput.value * bucket.floristProductPrice);
             });
             bucketListTab.append(bucketLi);
         });
@@ -724,9 +724,9 @@ class sideItemObj {
       </div>
       <div class="flowerFullPriceBox">
         <span>
-          전체 가격 : ${this.bucketDataArr.reduce((acc, cur) => {
+          전체 가격 : ${numberAddComa(this.bucketDataArr.reduce((acc, cur) => {
             return (acc += cur.flowerCount * cur.floristProductPrice);
-        }, 0)}
+        }, 0))}
         </span>
       </div>
       <div class="allBuy">
