@@ -58,6 +58,13 @@ time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
 }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, /**/
 footer, header, hgroup, menu, nav, section {
@@ -384,8 +391,7 @@ main {
     height: 90vh;
 }
 
-#modal .flowerContent,
-#modal .bucketContent {
+#modal .flowerContent {
     margin: 10px;
     border: 1px solid var(--color-sun-gray);
     display: flex;
@@ -398,14 +404,16 @@ main {
     object-fit: contain;
 }
 
-#modal .flowerDetailContent {
+#modal .flowerDetailContent,
+#modal .bucketDetailContent {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
-#modal .flowerDetailBuy {
+#modal .flowerDetailBuy,
+#modal .bucketDetailBuy {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -419,7 +427,8 @@ main {
     height: 50px;
 }
 
-#modal .flowerCount {
+#modal .flowerCount,
+#modal .bucketCount {
     border: 1px solid var(--color-light-gray);
     border-radius: 10px;
     text-align: center;
@@ -428,7 +437,8 @@ main {
     width: 50px;
 }
 
-#modal .flowerCountBox {
+#modal .flowerCountBox,
+#modal .bucketCountBox {
     display: flex;
     margin: 10px;
     align-items: center;
@@ -459,6 +469,11 @@ main {
 
 #modal .flowerBuyBox button {
     margin-right: 5px;
+}
+#modal .checkBox {
+    display: flex;
+    width: 200px;
+    justify-content: center;
 }
 
 .flowerContent .flowerCheck {
@@ -546,4 +561,57 @@ main {
     position: relative;
     top: -20px;
     padding: 10px;
+}
+
+#modal .bucketCountBox {
+    flex-direction: row-reverse;
+}
+
+#modal .bucketCntInc,
+#modal .bucketCntDec {
+    margin: 5px;
+}
+
+#modal .bucketContent {
+    margin: 10px;
+    border: 1px solid var(--color-sun-gray);
+    display: flex;
+    justify-items: center;
+}
+
+#modal .bucketBuyBox {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#modal .bucketBuy {
+    margin-top: 10px;
+}
+
+#modal .bucketFooter {
+    border: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 2px solid var(--color-black);
+    height: 110px;
+    padding: 10px;
+    background-color: var(--color-white);
+    border-radius: 0 0 12px 12px;
+}
+
+#modal .content {
+    padding: 0;
+}
+
+#modal .selectBox button {
+    margin: 5px;
+}
+.content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
