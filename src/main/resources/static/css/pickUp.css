@@ -364,7 +364,6 @@ main {
 .floristImg {
     width: 200px;
     height: 150px;
-    background-image: url("./image/flowerGift.jpg");
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -614,4 +613,130 @@ main {
 }
 .content::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+}
+
+input[type="checkBox"] {
+    width: 15px;
+}
+
+#buyModal.modal-overlay {
+    z-index: 50;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+#buyModal .modal-window {
+    background: var(--color-true-white);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(13.5px);
+    -webkit-backdrop-filter: blur(13.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 80vw;
+    height: 91vh;
+    position: relative;
+    top: -20px;
+    padding: 10px;
+}
+
+#buyModal h2 {
+    font-size: 3rem;
+}
+
+#buyModal .titleBox {
+    display: flex;
+    height: 17vh;
+    align-items: center;
+}
+
+#buyModal .contentBox {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+#buyModal .closeBtn {
+    top: 20px;
+    position: absolute;
+    right: 40px;
+    font-size: 3rem;
+    cursor: pointer;
+}
+
+#buyModal .middleBox {
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    justify-content: space-around;
+}
+
+#buyModal .middleLeftBox {
+    overflow-x: scroll;
+}
+
+#buyModal .middleRightBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#buyModal .flowerMainImg {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+}
+
+#buyModal .productBox {
+    height: 25vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 40vw;
+}
+
+#buyModal .buyBox {
+    display: flex;
+    height: 20vh;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    flex-direction: column;
+}
+
+#buyModal .userSelectBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#buyModal .dateSelectBox,
+#buyModal .timeSelectBox {
+    display: flex;
+    justify-content: center;
+    width: 300px;
+    margin: 15px;
+    height: 50px;
+}
+#buyModal input {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    border: 2px solid var(--color-sun-gray);
+}
+
+option {
+    font-size: 1rem;
 }
