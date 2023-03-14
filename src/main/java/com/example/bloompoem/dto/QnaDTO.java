@@ -3,6 +3,7 @@ package com.example.bloompoem.dto;
 import com.example.bloompoem.entity.QnaEntity;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -44,6 +45,23 @@ public class QnaDTO {
         qnaDTO.setQnaStatus(qnaEntity.getQnaStatus());
         qnaDTO.setQnaTitle(qnaEntity.getQnaTitle());
         qnaDTO.setQnaDate(qnaEntity.getQnaDate());
+        return qnaDTO;
+    }
+
+    public static QnaDTO toDTO(QnaEntity qnaEntity){
+        QnaDTO qnaDTO = new QnaDTO();
+        qnaDTO.setUserEmail(qnaEntity.getUserEmail());
+        qnaDTO.setQnaDate(qnaEntity.getQnaDate());
+        qnaDTO.setQnaStatus(qnaEntity.getQnaStatus());
+        qnaDTO.setQnaTitle(qnaEntity.getQnaTitle());
+        qnaDTO.setQnaGroup(qnaEntity.getQnaGroup());
+        qnaDTO.setQnaIndent(qnaEntity.getQnaIndent());
+        qnaDTO.setQnaParent(qnaEntity.getQnaParent());
+        qnaDTO.setQnaOrder(qnaEntity.getQnaOrder());
+        qnaDTO.setQnaImage1(qnaEntity.getQnaImage1());
+        qnaDTO.setQnaImage2(qnaEntity.getQnaImage2());
+        qnaDTO.setQnaImage3(qnaEntity.getQnaImage3());
+        qnaDTO.setQnaContent(qnaEntity.getQnaContent());
         return qnaDTO;
     }
 }
