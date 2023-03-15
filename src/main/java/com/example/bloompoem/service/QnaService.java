@@ -31,6 +31,7 @@ public class QnaService {
         qnaRepository.save(qnaEntity);
 
 
+
     }
 
     // Qna 글수정
