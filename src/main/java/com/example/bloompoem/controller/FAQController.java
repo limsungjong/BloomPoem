@@ -3,6 +3,8 @@ package com.example.bloompoem.controller;
 import com.example.bloompoem.entity.FAQEntity;
 import com.example.bloompoem.service.FAQService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 public class FAQController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     FAQService faqService;
