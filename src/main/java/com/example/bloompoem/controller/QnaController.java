@@ -43,25 +43,30 @@ public class QnaController {
     // 문의 글쓰기
     @PostMapping("/qna/write")
     public String write(@ModelAttribute QnaEntity qnaEntity){
+        char reply = qnaEntity.getQnaStatus();
 
         qnaEntity.setQnaDate(LocalDateTime.now());
 
         // 답글이 없는 경우
-//        if(답글없음){
+        if(reply == 'N'){
             qnaEntity.setQnaStatus('N');
             qnaEntity.setQnaGroup(0);
             qnaEntity.setQnaIndent(0);
             qnaEntity.setQnaParent(0);
             qnaEntity.setQnaOrder(0);
-//        }
+        }
         // 답글이 있는 경우
-//        else if(답글있음){
-//            qnaEntity.setQnaStatus('Y');
-//            qnaEntity.setQnaGroup(0);   //부모 게시글의 그룹
-//            qnaEntity.setQnaIndent(0);  //
-//            qnaEntity.setQnaParent(0);  //부모 게시글의 시퀀스
-//            qnaEntity.setQnaOrder(0);   //부모의 Order + 1
-//        }
+        else if(reply == 'Y'){
+            qnaEntity.setQnaStatus('Y');
+            qnaEntity.setQnaGroup(0);   //부모 게시글의 그룹
+            qnaEntity.setQnaIndent(qnaEntity.getQnaIndent() + 1);  //부모의 Indent + 1
+            qnaEntity.setQnaParent(qnaEntity.getQnaNumber());  //부모 게시글의 시퀀스(넘버)
+
+//            if(){
+                qnaEntity.setQnaOrder(0);
+//            }
+
+        }
 
         qnaEntity.setQnaImage1("");
         qnaEntity.setQnaImage2("");
