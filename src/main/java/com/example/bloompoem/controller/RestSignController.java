@@ -88,7 +88,7 @@ public class RestSignController {
         return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 
-    @PostMapping("/sign_out")
+    @GetMapping ("/sign_out")
     public HttpServletResponse signOut(HttpServletRequest request, HttpServletResponse response) {
         Cookie myCookie = new Cookie("Authorization", null);
         myCookie.setMaxAge(0);  // 남은 만료시간을 0으로 설정

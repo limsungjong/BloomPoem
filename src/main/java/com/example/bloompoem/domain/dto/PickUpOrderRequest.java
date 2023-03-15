@@ -5,20 +5,17 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PickUpCartResponse {
-    String userEmail;
+public class PickUpOrderRequest {
 
-    String flowerName;
+    String userEmail;
 
     Integer flowerNumber;
 
     Integer flowerCount;
 
+    Integer orderPrice;
+
     Integer floristNumber;
-
-    String floristMainImage;
-
-    Integer floristProductPrice;
 
     Integer pickUpCartNumber;
 }

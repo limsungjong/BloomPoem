@@ -32,7 +32,7 @@ public class WebSecurityConfigure {
                 .csrf().disable()
                 .cors().and().headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/api/v1/sign/sign_out").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/v1/sign/sign_out").permitAll()
 //                .antMatchers("/","/shopping/**","/api/**","/sign/**").permitAll()
                 .antMatchers("/user").authenticated()
 //                .antMatchers("/pick_up").authenticated()
