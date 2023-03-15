@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping(value = "/api/v1/pick_up")
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(value = "http://192.168.45.66:5500")
+@CrossOrigin(value = "http://192.168.1.135:5500")
 public class RestPickUpController {
     private final UserService userService;
 
@@ -50,6 +50,7 @@ public class RestPickUpController {
                                     .flowerCount(data.getFlowerCount())
                                     .floristMainImage(detail.getFloristMainImage())
                                     .floristProductPrice(detail.getFloristProductPrice())
+                                    .pickUpCartNumber(data.getPickUpCartNumber())
                                     .build());
         });
         return ResponseEntity.ok().body(pickUpCartResponseList);

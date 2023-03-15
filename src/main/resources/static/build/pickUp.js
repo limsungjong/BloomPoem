@@ -258,14 +258,14 @@ class sideItemObj {
       <div class="flowerImageBox">
         <img
           class="flowerMainImg"
-              src="/image/florist_product/${flower.floristMainImage}"
+          src="/image/florist_product/${flower.floristMainImage}"
           alt="꽃 이미지"
         />
       </div>
       <div class="flowerDetailContent">
-        <span class="flowerDetailSpan">${flower.flowerName}</span>
+        <span class="flowerDetailSpan">${flower.flowerColor} ${flower.flowerName}</span>
           <br />
-        <span class="flowerDetailSpan">가격 : ${flower.floristProductPrice}</span>
+        <span class="flowerDetailSpan">가격 : ${numberAddComa(flower.floristProductPrice)}</span>
       </div>
       <div class="flowerDetailBuy">
         <div class="flowerCountBox">
@@ -293,7 +293,7 @@ class sideItemObj {
           <button class="btn btn-outline-primary flowerBasketBtn">
             장바구니
           </button>
-          <button class="btn btn-outline-success flowerBuyBtn">
+          <button class="btn btn-outline-success flowerBuyBtn" id="flowerBuyBtn">
             구매하기
           </button>
         </div>
@@ -352,8 +352,7 @@ class sideItemObj {
             flowerLiBox
                 .querySelector(".flowerBasketBtn")
                 .addEventListener("click", (e) => {
-
-                    if (this.loginChecker() === false) return;
+                    console.log(flowerCntInput.value);
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
@@ -361,13 +360,18 @@ class sideItemObj {
                         flowerNumber: flower.flowerNumber,
                         flowerCount: parseInt(flowerCntInput.value),
                         floristNumber: this.floristData.floristNumber,
+                        floristMainImage: flower.floristMainImage,
+                        flowerName: flower.flowerName,
+                        floristProductPrice: flower.floristProductPrice,
                     };
+                    console.log(bucketData);
                     if (this.bucketDataArr.length == 0) {
-                        alert("장바구니로 이동되었습니다.");
                         this.bucketDataArr.push(bucketData);
+                        alert("장바구니로 이동되었습니다.");
                         this.bucketToFetch();
                         return;
                     }
+
                     if (
                         !this.bucketDataArr.find(
                             (v) => v.flowerNumber == bucketData.flowerNumber
@@ -375,20 +379,22 @@ class sideItemObj {
                     ) {
                         alert("장바구니로 이동되었습니다.");
                         this.bucketDataArr.push(bucketData);
-                        this.bucketToFetch();
-                        return;
                     }
+
+                    console.log(this.bucketDataArr);
                     const duplicateFlowerNumber = this.bucketDataArr.findIndex(
                         (v) => v.flowerNumber == bucketData.flowerNumber
                     );
-                    if (duplicateFlowerNumber >= 0) {
-                        alert("장바구니에 추가되었습니다.");
+
+                    console.log(duplicateFlowerNumber);
+                    if (duplicateFlowerNumber == 0 || duplicateFlowerNumber > 0) {
                         this.bucketDataArr[duplicateFlowerNumber].flowerCount =
                             this.bucketDataArr[duplicateFlowerNumber].flowerCount +
                             bucketData.flowerCount;
                     }
                     this.bucketToFetch();
                 });
+            this.flowerBuyHandler(flowerLiBox, flower);
             flowerListTab.append(flowerLiBox);
         });
         this.tabContent = flowerListTab;
@@ -426,60 +432,142 @@ class sideItemObj {
     // 장바구니 modal 만듬
     createModalBucket() {
         const bucketListTab = document.createElement("ul");
-        bucketListTab.setAttribute('class', 'bucketList');
+        bucketListTab.setAttribute("class", "bucketList");
 
         if (!this.bucketDataArr) {
             return;
         }
-        this.bucketDataArr.forEach((bucket => {
+        this.bucketDataArr.forEach((bucket) => {
             const liBucketHtml = `
-          <div class="flowerImageBox">
-              <img
-                class="flowerMainImg"
-                src="/image/florist_product/${bucket.floristMainImage}"
-                alt="꽃 이미지"
-              />
-          </div>
-          <div class="flowerDetailContent">
-            <span class="flowerDetailSpan">${bucket.flowerName}</span>
-              <br />
-            <span class="flowerDetailSpan">가격 : ${bucket.floristProductPrice}</span>
-              <br />
-            <span class="flowerDetailSpan">가격 : ${bucket.floristProductPrice}</span>
-          </div>
-          <div class="flowerDetailBuy">
-            <div class="flowerCountBox">
-
-                  <input
-                    class="flowerCount"
-                    type="number"
-                    min="1"
-                    max="100"
-                    value=${bucket.flowerCount}
-                    data-flowerNumber=${bucket.flowerNumber}
-                  />
-                  
-            </div>
-            <div class="flowerBuyBox">
-              <button class="btn btn-outline-success productBuy">
-                구매하기
-              </button>
-            </div>
-          </div>
-        `;
-            const bucketLi = document.createElement('li');
-            bucketLi.setAttribute('class', 'bucketContent');
+      <div class="checkBox">
+        <input type="checkbox" name="${bucket.flowerNumber}"/>
+      </div>
+      <div class="flowerImageBox">
+          <img
+            class="flowerMainImg"
+            src="/image/florist_product/${bucket.floristMainImage}"
+            alt="꽃 이미지"
+          />
+      </div>
+      <div class="bucketDetailContent">
+        <span class="bucketDetailSpan">${bucket.flowerName}</span>
+          <br />
+        <span class="bucketDetailSpan">가격 : ${
+                numberAddComa(bucket.floristProductPrice)
+            }</span>
+      </div>
+      <div class="bucketDetailBuy">
+        <div class="bucketCountBox">
+        <button class="btn btn-outline-primary bucketCntInc">
+        +
+        </button>
+        <input
+          class="bucketCount"
+          type="number"
+          min="1"
+          max="100"
+          value="1"
+          data-flowerNumber=${bucket.flowerNumber}
+          />
+          
+        <button class="btn btn-outline-danger bucketCntDec">
+        -
+        </button>
+              
+        </div>
+        <div class="bucketBuyBox">
+          <span>총 가격 : 
+            <span class="bucketTotalPrice">
+              ${numberAddComa(bucket.flowerCount * bucket.floristProductPrice)}
+            </span>
+          </span>
+          <button class="btn btn-outline-success bucketBuy">
+            구매하기
+          </button>
+        </div>
+      </div>
+    `;
+            const bucketLi = document.createElement("li");
+            bucketLi.setAttribute("class", "bucketContent");
             bucketLi.innerHTML = liBucketHtml;
-            bucketListTab.append(bucketLi);
-        }))
-        if (!bucketListTab.querySelector('.flowerCount') == null) {
-            bucketListTab.querySelector('.flowerCount').addEventListener('change', e => {
-                console.log(e);
-            })
-        }
 
+            const bucketInput = bucketLi.querySelector(".bucketCount");
+            bucketInput.addEventListener("change", (e) => {
+                if (e.target.value <= 0) {
+                    e.target.value = 1;
+                    this.bucketDataArr.map((v) => {
+                        if (v.flowerNumber == bucket.flowerNumber) {
+                            v.flowerCount = 100;
+                        }
+                        bucketLi.querySelector(".bucketTotalPrice").textContent =
+                            numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                    });
+                    this.createBucketFooter();
+                }
+
+                if (e.target.value > 100) {
+                    alert("최대 구매 수령은 100송이 입니다.");
+                    e.target.value = 100;
+                    this.bucketDataArr.map((v) => {
+                        if (v.flowerNumber == bucket.flowerNumber) {
+                            v.flowerCount = 100;
+                        }
+                        bucketLi.querySelector(".bucketTotalPrice").textContent =
+                            numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                    });
+                    this.createBucketFooter();
+                }
+            });
+
+            bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {});
+
+            bucketLi.querySelector(".bucketCntInc").addEventListener("click", (e) => {
+                if (bucketInput.value > 99) {
+                    alert("최대 갯수는 100개입니다.");
+                    e.target.value = 100;
+                    this.bucketDataArr.map((v) => {
+                        if (v.flowerNumber == bucket.flowerNumber) {
+                            v.flowerCount = 100;
+                        }
+                        bucketLi.querySelector(".bucketTotalPrice").textContent =
+                            numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                    });
+                    this.createBucketFooter();
+                    return;
+                }
+                this.bucketDataArr.map((v) => {
+                    if (v.flowerNumber == bucket.flowerNumber) {
+                        v.flowerCount++;
+                    }
+                });
+                this.createBucketFooter();
+                bucketInput.value++;
+                bucketLi.querySelector(".bucketTotalPrice").textContent =
+                    numberAddComa(bucketInput.value * bucket.floristProductPrice);
+            });
+
+            bucketLi.querySelector(".bucketCntDec").addEventListener("click", (e) => {
+                if (bucketInput.value <= 1) {
+                    return;
+                }
+
+                this.bucketDataArr.map((v) => {
+                    if (v.flowerNumber == bucket.flowerNumber) {
+                        v.flowerCount--;
+                    }
+                });
+                this.createBucketFooter();
+
+                bucketInput.value--;
+
+                bucketLi.querySelector(".bucketTotalPrice").textContent =
+                    numberAddComa(bucketInput.value * bucket.floristProductPrice);
+            });
+            bucketListTab.append(bucketLi);
+        });
         this.tabContent = bucketListTab;
         this.modalContainer.querySelector(".content").append(this.tabContent);
+        this.createBucketFooter();
     }
 
     // 서버에 있는 장바구니 받아옴
@@ -507,9 +595,11 @@ class sideItemObj {
                 if (result == undefined) return;
                 this.bucketDataArr = result;
                 this.createModalBucket();
+                console.log(this.bucketDataArr)
             })
     }
 
+    // 확인용 모달 만들기
     createCheckModal() {
         const checkModal = document.createElement("div");
         checkModal.innerHTML = `
@@ -561,6 +651,7 @@ class sideItemObj {
         document.querySelector("body").append(checkModal);
     }
 
+    // 장바구니 지우는 fetch
     bucketDeleteFetch() {
         if (this.loginChecker() === false) return;
 
@@ -578,6 +669,7 @@ class sideItemObj {
             .catch(error => console.log('error', error));
     }
 
+    // 로그인 되었는지 확인함 boolean
     loginChecker() {
         const cookie = document.cookie;
 
@@ -597,6 +689,214 @@ class sideItemObj {
 
         if (cookie.split("=")[0] == "Authorization") check = true;
         return check;
+    }
+
+    // 장바구니 footer 만듬
+    createBucketFooter() {
+        console.log("asd");
+        const footer = this.modalContainer.querySelector(".bucketFooter");
+        if (footer) {
+            footer.remove();
+            // this.modalContainer.removeChild(footer);
+        }
+        const bucketFooter = document.createElement("div");
+        bucketFooter.setAttribute("class", "bucketFooter");
+
+        const bucketFooterHtml = `
+      <div class="selectBox">
+        <div class="allSelect">
+          <button type="button" class="btn btn-outline-success" id="allChoice">
+              모두 선택
+          </button>
+        </div>
+        <div class="deleteSelect">
+          <button type="button" class="btn btn-outline-danger" id="deleteChoice">
+              선택 삭제
+          </button>
+        </div>
+      </div>
+      <div class="flowerCountBox">
+        <span>
+          전체 꽃 : ${this.bucketDataArr.reduce((acc, cur) => {
+            return (acc += cur.flowerCount);
+        }, 0)}
+        </span>
+      </div>
+      <div class="flowerFullPriceBox">
+        <span>
+          전체 가격 : ${numberAddComa(this.bucketDataArr.reduce((acc, cur) => {
+            return (acc += cur.flowerCount * cur.floristProductPrice);
+        }, 0))}
+        </span>
+      </div>
+      <div class="allBuy">
+        <button type="button" class="btn btn-outline-primary" id="allBuy">
+            전체 구매
+        </button>
+      </div>
+    `;
+        bucketFooter.innerHTML = bucketFooterHtml;
+        this.tabContent.append(bucketFooter);
+
+        console.log("605");
+        this.footerBuyHandler();
+    }
+
+    // flower 탭에 있는 꽃 구매 핸들링
+    flowerBuyHandler(flowerLiBox, v) {
+        const buyBtn = flowerLiBox.querySelector("#flowerBuyBtn");
+        buyBtn.addEventListener("click", () => {
+            const asd = flowerLiBox.querySelector(".flowerCount").value;
+            this.buyBucket = {};
+            this.createBuyModal();
+        });
+    }
+
+    // 장바구니 푸터 구매 핸들링
+    footerBuyHandler() {
+        console.log(this.tabContent);
+
+        const allBtn = this.tabContent.querySelector("#allChoice");
+        const delBtn = this.tabContent.querySelector("#deleteChoice");
+        const allBuy = this.tabContent.querySelector("#allBuy");
+
+        allBtn.addEventListener("click", () => {
+            this.tabContent
+                .querySelectorAll(`input[type="checkbox"]`)
+                .forEach((v) => (v.checked = true));
+        });
+
+        delBtn.addEventListener("click", () => {
+            this.tabContent
+                .querySelectorAll(`input[type="checkbox"]:checked`)
+                .forEach((element) => {
+                    console.log(element.name);
+                    this.bucketDataArr.splice(
+                        this.bucketDataArr.findIndex(
+                            (data) => data.flowerNumber == element.name
+                        )
+                    );
+                    this.tabContent.removeChild(element.parentNode.parentElement);
+                });
+            this.createBucketFooter();
+        });
+
+        allBuy.addEventListener("click", () => {});
+
+        return this;
+    }
+
+    createBuyModal() {
+        if (document.querySelector("#buyModal")) {
+            document.removeChild(document.querySelector("#buyModal"));
+        }
+        const buyModalContainer = document.createElement("div");
+        buyModalContainer.setAttribute("id", "buyModal");
+        buyModalContainer.setAttribute("class", "modal-overlay");
+        const buyModalHtml = `
+      <div class="modal-window">
+      <div class="contentBox">
+        <div class="closeBtn">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="titleBox">
+          <h2>어느 가게에서 주문하고 있습니다.</h2>
+        </div>
+        <div class="middleBox">
+          <div class="middleLeftBox">
+          </div>
+          <div class="middleRightBox">
+            <div class="userSelectBox">
+              <label for="selectDate">날짜를 선택</label>
+              <div class="dateSelectBox">
+                <input type="date" name="selectDate" id="selectDate" />
+              </div>
+              <label for="selectTime">시간을 선택</label>
+              <div class="timeSelectBox">
+                <input type="time" name="selectTime" id="selectTime" />
+              </div>
+              <div class="buyBox">
+                <div class="priceBox">
+                  <span class="priceSpan">총 금액 : 30000</span>
+                </div>
+                <div class="buyBtnBox">카카오 페이로 구매하기</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      `;
+        console.log(this.buyBucket);
+        buyModalContainer.innerHTML = buyModalHtml;
+        this.modalContainer.append(buyModalContainer);
+        this.buyModalContainer = buyModalContainer;
+        this.createBuyProductBox();
+        this.buyModalHandler();
+    }
+
+    createBuyProductBox() {
+        console.log(this.buyBucketArr);
+        if (this.buyBucketArr == null) {
+            return;
+        }
+        this.buyBucketArr.forEach((product) => {
+            const buyProduct = document.createElement("div");
+            buyProduct.setAttribute(".productBox");
+            const productHtml = `
+        <div class="flowerImageBox">
+          <img
+            class="flowerMainImg"
+            src="../image/FP_53_01.jpg"
+            alt="꽃 이미지"
+          />
+        </div>
+        <div class="flowerDetailTextBox">
+          <span class="flowerDetailSpan">작약</span>
+        </div>
+        <div class="flowerDetailCountBox">
+          <span class="flowerDetailCountSpan">4 송이</span>
+        </div>
+      `;
+            buyProduct.innerHTML = productHtml;
+        });
+    }
+
+    createBuyDateBox() {
+        const dateBox = document.createElement("div");
+        dateBox.setAttribute();
+    }
+
+    buyModalHandler() {
+        const closeBtn = this.buyModalContainer.querySelector(".closeBtn");
+        closeBtn.addEventListener("click", () => {
+            console.log(this.bucketDataArr);
+            document.querySelector("#modal").removeChild(this.buyModalContainer);
+        });
+
+        // const
+    }
+
+    bucketFetchToBuy() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const raw = JSON.stringify(this.bucketDataArr);
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+
+        fetch("http://localhost:9000/api/v1/pick_up_order/startBuy", requestOptions)
+            .then((response) => {
+                return response.json();
+            })
+            .then((result) => {
+                if (result == undefined) return;
+                console.log(result);
+                console.log(this.bucketDataArr);
+            });
     }
 }
 
