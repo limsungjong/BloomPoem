@@ -207,7 +207,7 @@ main{
     height: 600px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 .pickUpArea{
     /* 경계구분용 */
@@ -218,4 +218,199 @@ main{
     /* 경계구분용 */
     background-color: #ffe06257;
     height: 290px;
+}
+.sideBox{
+    width: 100%;
+}
+.period{
+    text-align:  right;
+    font-size: 1.1rem;
+    margin-right: 30px;
+}
+.period span {
+    font-size: 1.1rem;
+}
+.oneProductArea{
+    display: flex;
+}
+.result{
+    font-size: 2rem;
+    font-weight: bold;
+}
+.oneProductArea{
+
+    display:grid;
+    grid-template-columns: 230px 150px 50px;
+    grid-template-rows: repeat(3, 80px);
+    grid-template-areas:
+  "productImage productName productName"
+  "productImage productQuantity review"
+  "productImage productPrice productPrice";
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    font-size: medium;
+    margin: 5px;
+}
+.productArea{
+    overflow-y: scroll;
+    grid-area: productArea;
+    border-right: 1px solid rgba(0, 0, 0, 0.204);
+}
+a {
+    text-decoration: none;
+    color: #191919;
+}
+a:hover{
+    color: #191919;
+}
+.oneProductImage{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.oneProductName{
+    font-weight: bold;
+    grid-area: productName;
+}
+.oneProductImage{
+    grid-area: productImage;
+}
+.oneProductQuantity{
+    grid-area: productQuantity;
+}
+.oneProductPrice{
+    grid-area: productPrice;
+}
+.productArea::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+.productArea::-webkit-scrollbar-thumb {
+    height: 30px;
+    background: black;
+}
+.orderBox{
+    margin: 30px 0px 20px 30px;
+    width: 1250px;
+    height: 250px;
+    display: grid;
+    grid-template-columns: 450px 800px ;
+    grid-template-rows: 60px 100px 90px;
+    grid-template-areas:
+  "productArea orderInfoBox"
+  "productArea orderStatusBox"
+  "productArea orderTotalBox";
+    border-top: 1px solid black;
+
+}
+.reviewButton{
+    grid-area: review;
+    width: 100%;
+    height: 90%;
+    font-size: 0.75rem;
+}
+.orderInfoBox{
+    grid-area: orderInfoBox;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.orderInfoBox div{
+    margin-left: 40px;
+    font-size: 0.8rem;
+}
+.orderStatusBox{
+    grid-area:  orderStatusBox;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.orderTotalBox{
+    grid-area: orderTotalBox;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.question{
+    font-size: medium;
+    display: flex;
+    flex-direction: column;
+}
+.btn{
+    margin-top: 10px;
+    padding: 3px;
+}
+.sideBox{
+    border-right: 1px solid black ;
+    width: 100%;
+}
+/* 모달 관련 css  */
+.inputLabel{
+    padding: 5px;
+    background-color: #fff3d4;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0px 0px 1px 0px 1px rgba(0, 0, 0, 0.45);
+}
+input[type=text] {
+    border : 2px solid skyblue;
+    border-radius : 5px;
+}
+.inputText{
+    width: 300px;
+    height: 50px;
+}
+.modalHeader{
+    height: 50px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.area1 span, .area1 option{
+    font-size: 1.1rem;
+}
+
+.modalBody{
+    display: flex;
+    justify-content: space-evenly;
+}
+.modalBox{
+    width: 450px;
+    height: 130px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+.modalArea{
+    background-color: #00000030;
+}
+.close{
+    cursor: pointer;
+}
+.modal{
+    display: none;
+    position: absolute;
+    z-index: 1;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content{
+    background-color: white;
+    /* left +60px  top -10px*/
+}
+.pagingButton{
+    display: flex;
+    justify-content: center;
+}
+.pagingButton button{
+    padding: 6px;
+    margin: 0 0 0 10px;
+}
+.orderTotalBox{
+    padding: 0 150px 0 200px;
 }

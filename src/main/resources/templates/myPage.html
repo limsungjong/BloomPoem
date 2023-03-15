@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,9 +10,249 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <title>구조 잡기</title>
   <link rel="stylesheet" href="/css/myPage.css" />
-  <style>
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
-  </style>
+  <script th:inline="javascript">
+    // model에 담긴  user 담아두는 변수
+    const user = [[${user}]]
+    let shoppingOrder ;
+    let shoppingOrderDetail0;
+    let shoppingOrderDetail1;
+    function comma(str) {
+      str = String(str);
+      return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+    function close_pop(){
+      $(".modal").hide();
+    }
+    $(document).ready(()=>{
+      const cookie= document.cookie.split("=")[1]
+
+
+
+
+      $(".shoppingOrderHistory").on("click", ()=>{
+       let  now = new Date();
+       let  date = new Date()
+       let  periodEndDate = new Intl.DateTimeFormat("ko-KR").format(now)
+       let threeMonth = new Date(date.setMonth(date.getMonth()-3));
+       let periodStartDate = new Intl.DateTimeFormat("ko-KR").format(threeMonth);
+        $.ajax({
+          url : "/my_page/orders_view",
+          method : "post",
+          data : {"userEmail" : user.userEmail , "startDate" : now , "endDate" : threeMonth}
+        }).then(r=>{
+          shoppingOrder = r;
+          console.log(r)
+          $(".mainBox").empty();
+          $(".mainBox").append(`<div class="period">기간 : <span>${periodStartDate}</span> ~ <span>${periodEndDate}</span> </div>`);
+
+          $.each(r.content , (i,p)=>{
+            let status ;
+            if(p.shoppingOrderStatus == 3){
+              status = '결제 완료';
+            }else if(p.shoppingOrderStatus == 4) {
+              status = "배송 중";
+            }else if(p.shoppingOrderStatus == 5){
+              status="배송 완료";
+            }
+            const msg = `
+              <div class="orderBox">
+                <div class="productArea p${p.shoppingOrderNumber}">
+
+
+                </div>
+                <div class="orderInfoBox">
+                  <div>주문날짜 : <span>${p.shoppingOrderDate}</span></div>
+                  <div>주문번호 : <span>${p.shoppingOrderNumber}</span></div>
+                </div>
+                <div class="orderStatusBox">
+                  <div>상태 : <span>${status}</span></div>
+                  <div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="orderStatus" data-no="${p.shoppingOrderNumber}">완료체크하기</button></div>
+                </div>
+                <div class="orderTotalBox">
+                  <div>총 물품 : <span class="t${p.shoppingOrderNumber}"></span>개</div>
+                  <div>총 가격 : <span>${comma(p.shoppingTotalPrice)}</span>원</div>
+                </div>
+              </div>
+            `
+            $(".mainBox").append(msg);
+
+            $.ajax({
+              url : "/shopping/success/orderDetailView",
+              method : "post",
+              data : {"orderNumber" : p.shoppingOrderNumber, "cookie" : cookie}
+            }).then(r=>{
+              if(i == 1){
+                shoppingOrderDetail1 = r
+              }else{
+                shoppingOrderDetail0 = r
+              }
+              $(`.t${p.shoppingOrderNumber}`).empty();
+              $(`.t${p.shoppingOrderNumber}`).append(r.length);
+              $.each(r, (i,t)=>{
+
+
+              const products =
+                `<div class="oneProductArea ${t.shoppingOrder.shoppingOrderNumber}">
+                  <img src ="/image/product/${t.product.productMainImage}" alt="productImage" class="oneProductImage" />
+                  <div class="oneProductName">${t.product.productName}</div>
+                  <div>수량 : <span class="oneProductQuantity">${t.shoppingOrderDetailCount}</span> 개</div>
+                  <div class="oneProductPrice">가격 : <span >${comma(t.shoppingOrderDetailCount * t.product.productPrice)}</span> 원</div>
+                  <button class="btn btn-outline-primary reviewButton"  data-no="${t.product.productNumber}">리뷰<br/>쓰기</button>
+                </div>`
+                $(`.p${t.shoppingOrder.shoppingOrderNumber}`).append(products);
+              })
+            })
+          })
+          if(r.totalPages>1){
+            const page = $("#page").val();
+            $(".pagingButton").empty();
+            for(let i=1;r.totalPages>=i; i++){
+              const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+              $(".pagingButton").append(msg);
+            }
+          }
+        })
+        //page 넘기는 스크립트
+        $(".pagingButton").on("click","button", function (e){
+          const page = parseInt(e.target.textContent)-1;
+          $("#page").val(e.target.textContent);
+
+          $.ajax({
+            url : "/my_page/orders_view",
+            method : "post",
+            data : {"userEmail" : user.userEmail , "startDate" : now , "endDate" : threeMonth, page},
+          }).then(r => {
+            // 위의 상품 띄어주는 함수 다시 시작
+            shoppingOrder = r;
+            $(".mainBox").empty();
+            $(".mainBox").append(`      <div class="period">기간 : <span>${periodStartDate}</span> ~ <span>${periodEndDate}</span> </div>`);
+
+            $.each(r.content , (i,p)=>{
+              let status ;
+              if(p.shoppingOrderStatus == 3){
+                status = '결제 완료';
+              }else if(p.shoppingOrderStatus == 4) {
+                status = "배송 중";
+              }else if(p.shoppingOrderStatus == 5){
+                status="배송 완료";
+              }
+              const msg = `
+              <div class="orderBox">
+                <div class="productArea p${p.shoppingOrderNumber}">
+
+
+                </div>
+                <div class="orderInfoBox">
+                  <div>주문날짜 : <span>${p.shoppingOrderDate}</span></div>
+                  <div>주문번호 : <span>${p.shoppingOrderNumber}</span></div>
+                </div>
+                <div class="orderStatusBox">
+                  <div>상태 : <span>${status}</span></div>
+                  <div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" data-no="${p.shoppingOrderNumber}">완료체크하기</button></div>
+                </div>
+                <div class="orderTotalBox">
+                  <div>총 물품 : <span class="totalKind t${p.shoppingOrderNumber}"></span>개</div>
+                  <div>총 가격 : <span>${comma(p.shoppingTotalPrice)}</span>원</div>
+                </div>
+              </div>
+            `
+              $(".mainBox").append(msg);
+
+              $.ajax({
+                url : "/shopping/success/orderDetailView",
+                method : "post",
+                data : {"orderNumber" : p.shoppingOrderNumber, "cookie" : cookie}
+              }).then(r=>{
+
+                if(i == 1){
+                  shoppingOrderDetail1 = r
+                }else{
+                  shoppingOrderDetail0 = r
+                }
+                $(`.p${p.shoppingOrderNumber}`).empty();
+                $(`.t${p.shoppingOrderNumber}`).empty();
+                $(`.t${p.shoppingOrderNumber}`).append(r.length);
+                $.each(r, (i,t)=>{
+
+
+                  const products =
+                          `<div class="oneProductArea ${t.shoppingOrder.shoppingOrderNumber}">
+                  <img src ="/image/product/${t.product.productMainImage}" alt="productImage" class="oneProductImage" />
+                  <div class="oneProductName">${t.product.productName}</div>
+                  <div>수량 : <span class="oneProductQuantity">${t.shoppingOrderDetailCount}</span> 개</div>
+                  <div class="oneProductPrice">가격 : <span >${comma(t.shoppingOrderDetailCount * t.product.productPrice)}</span> 원</div>
+                  <button class="btn btn-outline-primary reviewButton"  data-no="${t.product.productNumber}">리뷰<br/>쓰기</button>
+                </div>`
+                  $(`.p${t.shoppingOrder.shoppingOrderNumber}`).append(products);
+
+                })
+              })
+            })
+            if(r.totalPages>1){
+              const page = $("#page").val();
+              $(".pagingButton").empty();
+              for(let i=1;r.totalPages>=i; i++){
+                const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                $(".pagingButton").append(msg);
+              }
+            }
+            // 위의 상품 띄어주는 함수 끝
+          })
+        })
+        //page넘기는 스크립트 끝
+      })
+      // 상품을 받았는지 체크하기 버튼 처리 시작
+      $(".mainArea").on("click", "#orderStatus" , (e)=>{
+        const shoppingOrderNumber = e.target.dataset.no;
+
+        $.ajax({
+          url : "/my_page/order_status_update",
+          method : "post",
+          data : {shoppingOrderNumber}
+        })
+      })
+      // 상품을 받았는지 체크하기 버튼 처리 시작
+      // modal 시작
+      $(".mainArea").on("click",".reviewButton", (e)=>{
+        const targetNo = e.target.dataset.no
+        const target = e.target
+        const targetLeft = parseInt(target.getBoundingClientRect().left +60);
+        const targetTop = parseInt(target.getBoundingClientRect().top -10);
+        let productName;
+        $(".modal-content").css("left",`${targetLeft}px` )
+        $(".modal-content").css("top",`${targetTop}px` )
+
+        for(let i= 0;shoppingOrderDetail0.length>i; i++){
+          if(targetNo == shoppingOrderDetail0[i].product.productNumber){
+            productName = shoppingOrderDetail0[i].product.productName
+            break;
+          }
+          for(let i= 0;shoppingOrderDetail1.length>i; i++){
+            if(targetNo == shoppingOrderDetail1[i].product.productNumber){
+              productName = shoppingOrderDetail1[i].product.productName
+              break;
+            }
+          }
+        }
+
+
+        $("#productName").text(productName);
+
+        $(".modal").show();
+      })
+      $(".close").on("click", ()=>close_pop())
+      $(document).keydown((e)=>{
+        if(e.keyCode == 27){
+          close_pop();
+        }
+      })
+      //modal 끝
+
+    })
+  </script>
 
 </head>
 <body>
@@ -25,7 +265,7 @@
 </header>
 <main>
   <div class="navArea">
-    <div>이범수 <span>님의 MyPage</span></div>
+    <div><span  th:text="${user.userName}"></span> <span>님의 MyPage</span></div>
   </div>
 
   <div class="sideArea">
@@ -35,10 +275,10 @@
         <li>주문내역
           <ul class="subTitle">
             <li>픽업</li>
-            <li>쇼핑</li>
+            <li class="shoppingOrderHistory">쇼핑</li>
           </ul>
         </li>
-        <li>내가 작성한 리뷰
+        <li>리뷰 관리
           <ul class="subTitle">
             <li>픽업</li>
             <li>쇼핑</li>
@@ -50,15 +290,38 @@
   </div>
   <div class="mainArea">
     <div class="mainBox">
+
       <div class="pickUpArea">
 
       </div>
+
       <div class="shoppingArea">
 
       </div>
+
+    </div>
+    <div class="pagingButton">
+
     </div>
   </div>
+  <input type="hidden" name="page" id="page" value="">
 </main>
+<!--modal 시작-->
+<div class="modalArea modal">
+  <div class="modalBox modal-content" id="reviewWriteModal">
+    <div class="modalHeader">
+      <div><span style="font-size: 1.5rem;" id="productName"></span> </div>
+      <div><select><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select>점</div>
+      <div><label class="inputLabel" for="inputFile">사진첨부<span class="material-symbols-outlined">image</span></label><input type="file" value="" id="inputFile" name="" accept=".jpg, .jpeg, .png" style="display: none;"></div>
+      <div><span class="material-symbols-outlined close">close</span></div>
+    </div>
+    <div class="modalBody">
+      <div><input type="text" class="inputText form-control" placeholder="리뷰를 입력하세요."></div>
+      <div><button class="btn btn-outline-success">작성하기</button></div>
+    </div>
+  </div>
+</div>
+<!--modal 끝-->
 <footer>
 </footer>
 </body>

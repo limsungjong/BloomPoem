@@ -20,12 +20,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.io.Console;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -231,7 +235,7 @@ public class ShoppingController {
             ShoppingOrder order = new ShoppingOrder();
             model.addAttribute("kakaoApprovar", kakaoApprovar);
             order.setShoppingOrderNumber(Integer.parseInt(orderId));
-            order.setShoppingOrderDate(kakaoApprovar.getApproved_at());
+            order.setShoppingOrderDate(LocalDate.ofInstant(kakaoApprovar.getApproved_at().toInstant(), ZoneId.systemDefault()));
             order.setShoppingOrderStatus(3);
             order.setShoppingTotalPrice(kakaoApprovar.getAmount().getTotal());
             order.setShoppingRealPrice(kakaoApprovar.getAmount().getTotal());
@@ -285,9 +289,9 @@ public class ShoppingController {
     @PostMapping("/shopping/success/orderDetailView")
     public ResponseEntity<List<ShoppingOrderDetail>> orderDetailView (int orderNumber , String cookie){
         String userEmail =JwtUtil.getUserName(cookie,secretKey);
-        logger.error(""+orderNumber);
-        logger.error(""+userEmail);
+
         return ResponseEntity.ok(productService.orderDetails(userEmail,orderNumber));
     }
+
 
 }
