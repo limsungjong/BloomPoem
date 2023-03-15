@@ -27,13 +27,13 @@
     <div class="body_layout">
         <!-- 바디 컨텐츠 시작 -->
         <div class="body_contents">
-            <!-- 좌측 메뉴바 시작 -->
+            <!-- 상단 메뉴바 시작 -->
             <div class="top_menu">
                 <li>공지사항</li>
                 <li>자주 묻는 질문</li>
                 <li>나의 문의 내역</li>
             </div>
-            <!-- 좌측 메뉴바 종료 -->
+            <!-- 상단 메뉴바 종료 -->
             <h2>나의 문의 내역</h2>
             <!-- Qna 리스트 시작 -->
             <div class="Qna_list">
@@ -41,28 +41,28 @@
                 <button>삭제</button>
                 <!-- Qna 테이블 시작 -->
                 <table class="Qna_Table">
-                    <!-- Qna 테이블 헤드 시작 -->
-                    <thead>
-                    <th>번호</th>
-                    <th>상태</th>
-                    <th>제목</th>
-                    <th>내용</th>
-                    <th>등록일</th>
                     </thead>
-                    <!-- Qna 테이블 헤드 종료-->
                     <!-- Qna 테이블 바디 시작-->
                     <tbody>
-                    <tr th:each="qna:${QnaList}">
-                        <td th:text="${qna.qnaNumber}"></td>
-                        <td th:text="${qna.qnaStatus}"></td>
-                        <td th:text="${qna.qnaTitle}"></td>
-                        <td th:text="${qna.qnaContent}"></td>
-                        <td th:text="${qna.qnaDate}"></td>
+                    <tr>
+                        <th>제목</th>
+                        <td>제목 예시</td>
+                        <th>답변 상태</th>
+                        <td>Y/N</td>
+                    </tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td>유저이메일@test.com</td>
+                        <th>등록일</th>
+                        <td>YYYY.MM.DD</td>
                     </tr>
                     </tbody>
                     <!-- Qna 테이블 바디 종료-->
                 </table>
                 <!-- Qna 테이블 종료 -->
+                <!-- Qna 문의 내용 시작 -->
+                    <div>문의 내용</div>
+                <!-- Qna 문의 내용 종료 -->
             </div>
             <!-- Qna 리스트 종료 -->
         </div>
