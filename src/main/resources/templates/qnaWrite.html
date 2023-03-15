@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <title>나의 문의 내역</title>
+    <title>문의 작성하기</title>
     <link rel="stylesheet" type="text/css" href="/css/qnaWrite.css" />
     <script src="/build/qnaWrite.js" defer></script>
   </head>
@@ -34,7 +34,7 @@
             <li>나의 문의 내역</li>
           </div>
           <!-- 상단 메뉴바 종료 -->
-          <h2>문의 작성 하기</h2>
+          <h2>문의 작성하기</h2>
           <!-- Qna 작성 폼 div -->
           <div class="Qna_write">
             <!-- Qna 작성 폼 시작 -->
@@ -73,6 +73,9 @@
                   placeholder="내용을 입력해주세요."
                 ></textarea>
               </div>
+              <!-- 답글 여부 폼 체크 hidden type(N-답글아님) 시작-->
+                <input type="hidden" value="N" name="qnaStatus">
+              <!-- 답글 여부 폼 체크 hidden type(N-답글아님) 종료-->
               <!-- Qna 내용 종료 -->
               <!-- Qna 첨부파일 입력 -->
               <div>

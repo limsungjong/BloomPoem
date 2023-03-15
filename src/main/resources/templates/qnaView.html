@@ -47,14 +47,18 @@
                     <tr>
                         <th>제목</th>
                         <td>제목 예시</td>
+<!--                        th:text="${qna.Title}"-->
                         <th>답변 상태</th>
                         <td>Y/N</td>
+<!--                        th:text="${qna.qnaStatus}"-->
                     </tr>
                     <tr>
                         <th>작성자</th>
                         <td>유저이메일@test.com</td>
+<!--                        th:text="${qna.userEmail}-->
                         <th>등록일</th>
                         <td>YYYY.MM.DD</td>
+<!--                        th:text="${qna.qnaDate}-->
                     </tr>
                     </tbody>
                     <!-- Qna 테이블 바디 종료-->
@@ -62,6 +66,7 @@
                 <!-- Qna 테이블 종료 -->
                 <!-- Qna 문의 내용 시작 -->
                     <div>문의 내용</div>
+<!--                th:text="${qna.qnaContent}"-->
                 <!-- Qna 문의 내용 종료 -->
             </div>
             <!-- Qna 리스트 종료 -->

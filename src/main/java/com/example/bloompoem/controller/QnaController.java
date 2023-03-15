@@ -45,7 +45,6 @@ public class QnaController {
     @PostMapping("/qna/write")
     public String write(@ModelAttribute QnaEntity qnaEntity){
         char reply = qnaEntity.getQnaStatus();
-        int order = qnaEntity.getQnaOrder();
 
         qnaEntity.setQnaDate(LocalDateTime.now());
 
@@ -73,7 +72,6 @@ public class QnaController {
             // 날짜는 크고 작은게 아니라 선후관계 비교인데... 정렬??
 
             // Order 값이 +1될때(나중에 작성된 댓글 or 대댓글)
-
 //            if(order > ){
 ////                for(){}
 //                qnaEntity.setQnaOrder(qnaEntity.getQnaOrder() + 1);
