@@ -18,6 +18,7 @@
           src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5596461f82340fc96fa11b43a06cb7c1&libraries=services"
   ></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
   <title>Pick-Up</title>
   <link rel="stylesheet" type="text/css" href="/css/onReady.css"/>
   <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
@@ -58,5 +59,10 @@
   </div>
 </main>
 </body>
+<form name="kakaoForm" id="kakaoForm" method="post" target="kakaoPopUp" action="/shopping/kakao/payPopUp">
+  <input type="hidden" name="orderId" id="orderId" value="" />
+  <input type="hidden" name="tId" id="tId" value="" />
+  <input type="hidden" name="pcUrl" id="pcUrl" value="" />
+</form>
 <script src="/build/pickUp.js"></script>
 </html>
