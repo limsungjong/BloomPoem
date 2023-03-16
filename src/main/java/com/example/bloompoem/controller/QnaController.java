@@ -38,7 +38,12 @@ public class QnaController {
     }
 
     @PostMapping("/qna")
-    public String getQnaList(){return "/qna";}
+    public String backToQnaList(Model model, Pageable pageable){
+        // 다시 기존 페이지로 돌아가는데 데이터가 안넘어감
+        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
+        model.addAttribute("QnaList", qnaEntityPage);
+        return "/qna";
+    }
 
     // 문의 글쓰기 페이지
     @GetMapping("/qna/write")
@@ -57,7 +62,8 @@ public class QnaController {
         qnaEntity.setQnaImage1("");
         qnaEntity.setQnaImage2("");
         qnaEntity.setQnaImage3("");
-        System.out.println("QnaDTO = " + qnaEntity);
+        System.out.println("QnaEntity = " + qnaEntity);
+
         qnaService.write(qnaEntity);
         return "/qna";
     }
@@ -80,7 +86,7 @@ public class QnaController {
         qnaEntity.setQnaImage1("");
         qnaEntity.setQnaImage2("");
         qnaEntity.setQnaImage3("");
-        System.out.println("QnaDTO = " + qnaEntity);
+        System.out.println("QnaEntity = " + qnaEntity);
         qnaService.write(qnaEntity);
         return "/qna";
     }
@@ -89,4 +95,10 @@ public class QnaController {
     @GetMapping("/qna/view")
     public String view(){ return "/qnaView"; }
 
+    // 문의 글 수정
+    @GetMapping("/qna/update")
+    public String updateForm(){ return "/qnaUpdate"; }
+
+    @PostMapping("/qna/update")
+    public String update() {return "/qnaUpdate"; }
 }

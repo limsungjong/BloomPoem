@@ -38,10 +38,7 @@
           <!-- Qna 작성 폼 div -->
           <div class="Qna_write">
             <!-- Qna 작성 폼 시작 -->
-            <form
-              action="/qna"
-              method="post"
-              enctype="multipart/form-data"
+            <form action="/qna/write" method="post" name="QnaForm" id="QnaForm" enctype="multipart/form-data"
             >
               <!-- Qna 사용자 이메일 입력 -->
               <div>
@@ -112,13 +109,5 @@
       <!-- 바디 레이아웃 종료 -->
     </main>
     <footer></footer>
-    <!-- hidden 타입 폼 태그 시작 -->
-    <!-- form name="QnaForm" id="QnaForm" method="post">
-      <input type="hidden" name="qnaNumber" value="" />
-      <input type="hidden" name="searchType" value="${searchType}" />
-      <input type="hidden" name="searchValue" value="${searchValue}" />
-      <input type="hidden" name="curPage" value="${curPage}" />
-    </form -->
-    <!-- hidden 타입 폼 태그 종료 -->
   </body>
 </html>

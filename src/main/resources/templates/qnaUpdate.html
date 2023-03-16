@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  <title>답글 작성하기</title>
+  <title>문의 작성하기</title>
   <link rel="stylesheet" type="text/css" href="/css/qnaWrite.css" />
   <script src="/build/qnaWrite.js" defer></script>
 </head>
@@ -34,11 +34,12 @@
         <li>나의 문의 내역</li>
       </div>
       <!-- 상단 메뉴바 종료 -->
-      <h2>답글 작성하기</h2>
-      <!-- 답글 작성 폼 div -->
+      <h2>문의 작성하기</h2>
+      <!-- Qna 작성 폼 div -->
       <div class="Qna_write">
-        <!-- 답글 작성 폼 시작 -->
-        <form action="/qna/reply" method="post" name="QnaForm" id="QnaForm" enctype="multipart/form-data">
+        <!-- Qna 작성 폼 시작 -->
+        <form action="/qna/update" method="post" name="QnaForm" id="QnaForm" enctype="multipart/form-data"
+        >
           <!-- Qna 사용자 이메일 입력 -->
           <div>
             <input
@@ -49,7 +50,7 @@
             />
           </div>
           <!-- Qna 사용자 이메일 종료 -->
-          <!-- 답글 제목 입력 -->
+          <!-- Qna 제목 입력 -->
           <div>
             <input
                     type="text"
@@ -58,8 +59,8 @@
                     placeholder="제목을 입력해주세요."
             />
           </div>
-          <!-- 답글 제목 종료 -->
-          <!-- 답글 내용 입력 -->
+          <!-- Qna 제목 종료 -->
+          <!-- Qna 내용 입력 -->
           <div>
                 <textarea
                         name="qnaContent"
@@ -69,24 +70,24 @@
                         placeholder="내용을 입력해주세요."
                 ></textarea>
           </div>
-          <!-- 답글 여부 폼 체크 hidden type(Y-답글) 시작-->
-          <input type="hidden" value="Y" name="qnaStatus">
-          <!-- 답글 여부 폼 체크 hidden type(Y-답글) 종료-->
-          <!-- 답글 내용 종료 -->
-          <!-- 답글 첨부파일 입력 -->
+          <!-- 답글 여부 폼 체크 hidden type(N-답글아님) 시작-->
+          <input type="hidden" value="N" name="qnaStatus">
+          <!-- 답글 여부 폼 체크 hidden type(N-답글아님) 종료-->
+          <!-- Qna 내용 종료 -->
+          <!-- Qna 첨부파일 입력 -->
           <div>
             <!--                <input type="file" name="qnaImage1" id="qnaImage1" />-->
             <!--                <input type="file" name="qnaImage2" id="qnaImage2" />-->
             <!--                <input type="file" name="qnaImage3" id="qnaImage3" />-->
           </div>
-          <!-- 답글 첨부파일 종료 -->
+          <!-- Qna 첨부파일 종료 -->
           <!-- 버튼들 감싸는 태그 -->
           <div class="Qna_buttons">
-            <!-- 답글 저장 버튼 -->
+            <!-- Qna 저장 버튼 -->
             <div>
               <input type="submit" name="Qna_save_button" id="Qna_save_button" value="저장">
             </div>
-            <!-- 답글 저장 버튼 종료 -->
+            <!-- Qna 저장 버튼 종료 -->
             <!-- Qna 목록 버튼 -->
             <a
                     href="http://localhost:9000/qna"

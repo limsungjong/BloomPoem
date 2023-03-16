@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>나의 문의 내역</title>
-    <link rel="stylesheet" type="text/css" href="/css/qna.css" />
-    <script src="/build/qna.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/css/qnaWrite.css" />
+    <script src="/build/qnaView.js" defer></script>
 </head>
 <body>
 <header class="header">
@@ -37,8 +37,12 @@
             <h2>나의 문의 내역</h2>
             <!-- Qna 리스트 시작 -->
             <div class="Qna_list">
-                <button>수정</button>
-                <button>삭제</button>
+                <!-- Qna 작성 폼 시작 -->
+                <form action="/qna/view" method="post" name="QnaForm" id="QnaForm" enctype="multipart/form-data">
+                    <!-- 버튼들 감싸는 태그 -->
+                    <button name="Qna_update_button" id="Qna_update_button">수정</button>
+                    <button name="Qna_delete_button" id="Qna_delete_button">삭제</button>
+                    <!-- 버튼들 감싸는 태그 -->
                 <!-- Qna 테이블 시작 -->
                 <table class="Qna_Table">
                     </thead>
@@ -64,10 +68,12 @@
                     <!-- Qna 테이블 바디 종료-->
                 </table>
                 <!-- Qna 테이블 종료 -->
-                <!-- Qna 문의 내용 시작 -->
-                    <div>문의 내용</div>
-<!--                th:text="${qna.qnaContent}"-->
-                <!-- Qna 문의 내용 종료 -->
+                    <!-- Qna 문의 내용 시작 -->
+                        <div>문의 내용</div>
+    <!--                th:text="${qna.qnaContent}"-->
+                    <!-- Qna 문의 내용 종료 -->
+                </form>
+                <!-- Qna 작성 폼 종료 -->
             </div>
             <!-- Qna 리스트 종료 -->
         </div>
@@ -76,13 +82,5 @@
     <!-- 바디 레이아웃 종료 -->
 </main>
 <footer></footer>
-<!-- hidden 타입 폼 태그 시작 -->
-<!-- form name="QnaForm" id="QnaForm" method="get">
-  <input type="hidden" name="qnaNumber" value="" />
-  <input type="hidden" name="searchType" value="${searchType}" />
-  <input type="hidden" name="searchValue" value="${searchValue}" />
-  <input type="hidden" name="curPage" value="${curPage}" />
-</form -->
-<!-- hidden 타입 폼 태그 종료 -->
 </body>
 </html>
