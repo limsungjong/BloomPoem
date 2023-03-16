@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+
+  <script>
+    $(document).ready(function() {
+
+      parent.kakaoPayResult($(".pgtoken").val());
+
+    });
+  </script>
+</head>
+
+<body>
+<input type="hidden" th:value="${pgToken}" class="pgtoken">
+</body>
+</html>

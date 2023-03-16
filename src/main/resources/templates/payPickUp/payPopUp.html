@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <title>Title</title>
+</head>
+<script>
+    function kakaoPayResult(pgToken)
+    {
+
+        $("#pgToken").val(pgToken);
+        console.log()
+        document.kakaoForm.action = "/shopping/kakao/payResult";
+        document.kakaoForm.submit();
+    }
+    $(document).ready(()=>{
+        const cookie= document.cookie.split("=")[1]
+        $("#cookie").val(cookie)
+    })
+</script>
+<body>
+<iframe width="100%" height="700px" th:src="${pcUrl}" border="0" allowfullscreen=""></iframe>
+<form name="kakaoForm" id="kakaoForm" method="post">
+    <input type="hidden" name="orderId" id="orderId" th:value="${orderId}" />
+    <input type="hidden" name="tId" id="tId" th:value="${tId}" />
+    <input type="hidden" name="cookie" id="cookie" value="" />
+    <input type="hidden" name="pgToken" id="pgToken" value="" />
+</form>
+</body>
+</html>
