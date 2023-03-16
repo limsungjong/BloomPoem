@@ -182,6 +182,9 @@ main{
     display: flex;
     align-items: center;
 }
+.pageName{
+    margin-left: 400px;
+}
 .sideArea{
     grid-area: side;
     font-size: medium;
@@ -413,4 +416,58 @@ input[type=text] {
 }
 .orderTotalBox{
     padding: 0 150px 0 200px;
+}
+.shoppingReviewArea{
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(2 , 600px);
+    grid-template-rows: repeat(3, 140px);
+    grid-gap: 25px;
+    justify-content: center;
+    align-content: center;
+}
+.shoppingReviewOneBox{
+    display: grid;
+    height: 141px;
+    grid-template-columns: 200px 280px 70px 50px;
+    grid-template-rows: 70px 70px;
+    grid-template-areas:
+  "shoppingReviewImage shoppingProductName  . shoppingReviewModify"
+  "shoppingReviewImage shoppingReviewContent shoppingReviewContent shoppingReviewDelete";
+    font-size: 1.2rem;
+    align-items: center;
+    justify-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.29) ;
+}
+.shoppingReviewImage{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.shoppingReviewImage{
+    grid-area: shoppingReviewImage;
+}
+.shoppingProductName{
+    grid-area: shoppingProductName;
+    font-weight: bold;
+}
+.shoppingReviewModify{
+    grid-area: shoppingReviewModify;
+}
+.shoppingReviewContent{
+    grid-area: shoppingReviewContent;
+}
+.shoppingReviewDelete{
+    grid-area: shoppingReviewDelete;
+}
+.btn{
+    font-size: 0.8rem;
+    padding: 10px;
+}
+.shoppingReviewScore option{
+    font-size: 1rem;
+}
+.shoppingReviewContent .form-control{
+    width: 340px;
 }

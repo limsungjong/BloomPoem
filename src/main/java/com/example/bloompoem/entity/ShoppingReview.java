@@ -3,10 +3,12 @@ package com.example.bloompoem.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@DynamicUpdate
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

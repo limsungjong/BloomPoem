@@ -10,8 +10,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <title>구조 잡기</title>
   <link rel="stylesheet" href="/css/myPage.css" />
-  <script src="https://code.jquery.com/jquery-latest.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+
+
+
 
   <script th:inline="javascript">
     // model에 담긴  user 담아두는 변수
@@ -26,13 +29,149 @@
     function close_pop(){
       $(".modal").hide();
     }
+    const  reviewView = (page)=>{
+      $(".shoppingReviewArea").empty();
+      $.ajax({
+        url : "/review/read",
+        method : "post",
+        data : {"userEmail" : user.userEmail, "page" :parseInt(page)-1}
+      }).then(r=>{
+        console.log(r)
+        $.each(r.content , (i, p)=>{
+          const photo = (p.shoppingReviewImage ==null) ?"noImage.jpg" : `${p.shoppingReviewImage}`
+          let option;
+          for(let i = 5; i>= 1;i--){
+            if(i == p.shoppingReviewScore){
+              option = option+ `<option value='${i}' selected>${i}</option>`
+            }
+            else{
+              option = option+ `<option value='${i}'>${i}</option>`
+            }
+          }
+          const msg = `<dvi class="shoppingReviewOneBox">
+                            <img src="/image/upload/${photo}" alt="" class="shoppingReviewImage" />
+                            <div class="shoppingProductName">${p.product.productName}</div>
+                            <div class="shoppingReviewScore"><select id="score${p.shoppingReviewNumber}">${option}</select>점</div>
+                            <div class="shoppingReviewContent"><input type="text" class="inputText form-control" id="content${p.shoppingReviewNumber}" value="${p.shoppingReviewContent}"> </div>
+                            <div class="shoppingReviewModify"><button class=" btn btn-outline-primary ReviewModify" data-no="${p.shoppingReviewNumber}">수정</button></div>
+                            <div class="shoppingReviewDelete"><button class="btn btn-outline-danger ReviewDelete" data-no="${p.shoppingReviewNumber}">X</button></div>
+                        </dvi>`
+          $(".shoppingReviewArea").append(msg);
+        })
+        if(r.totalPages>1) {
+          const page = $("#page").val();
+          $(".pagingButton").empty();
+          for (let i = 1; r.totalPages >= i; i++) {
+            const msg = (page == i) ? `<button class="btn btn-outline-dark shoppingReviewPaging" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingReviewPaging">${i}</button>`
+            $(".pagingButton").append(msg);
+          }
+        }
+      }).catch(err=> console.log(err))
+    }
+
+
+
     $(document).ready(()=>{
       const cookie= document.cookie.split("=")[1]
 
+      // 리뷰관리 쇼핑 클릭시 발동 이벤트
+      $(".shoppingReviewManagement").on("click", ()=>{
+        $("#page").val(0)
+        $(".pagingButton").empty();
+        $(".pageName").empty()
+        $(".pageName").append("쇼핑 리뷰 관리")
+        $(".mainBox").empty()
+        $(".mainBox").prepend("<div class='shoppingReviewArea'></div>")
+        reviewView($("#page").val());
 
+        //page 넘기는 이벤트
+        $(".pagingButton").on("click",".shoppingReviewPaging", function (e) {
+          $(".shoppingReviewArea").empty();
+          const page = parseInt(e.target.textContent) - 1;
+          $("#page").val(e.target.textContent);
+          console.log($("#page").val())
+          $.ajax({
+            url: "/review/read",
+            method: "post",
+            data: {"userEmail": user.userEmail, page}
+          }).then(r => {
+            console.log(r)
+            $(".shoppingReviewArea").empty();
+            $.each(r.content , (i, p)=>{
+              const photo = (p.shoppingReviewImage ==null) ?"noImage.jpg" : `${p.shoppingReviewImage}`
+              let option;
+              for(let i = 5; i>= 1;i--){
+                if(i == p.shoppingReviewScore){
+                  option = option+ `<option value='${i}' selected>${i}</option>`
+                }
+                else{
+                  option = option+ `<option value='${i}'>${i}</option>`
+                }
+              }
+              const msg = `<dvi class="shoppingReviewOneBox">
+                            <img src="/image/upload/${photo}" alt="" class="shoppingReviewImage" />
+                            <div class="shoppingProductName">${p.product.productName}</div>
+                            <div class="shoppingReviewScore"><select id="score${p.shoppingReviewNumber}">${option}</select>점</div>
+                            <div class="shoppingReviewContent"><input type="text" class="inputText form-control" id="content${p.shoppingReviewNumber}" value="${p.shoppingReviewContent}"> </div>
+                            <div class="shoppingReviewModify"><button class=" btn btn-outline-primary ReviewModify" data-no="${p.shoppingReviewNumber}">수정</button></div>
+                            <div class="shoppingReviewDelete"><button class="btn btn-outline-danger ReviewDelete" data-no="${p.shoppingReviewNumber}">X</button></div>
+                        </dvi>`
+              $(".shoppingReviewArea").append(msg);
+            })
+            if(r.totalPages>1) {
+              const page = $("#page").val();
+              $(".pagingButton").empty();
+              for (let i = 1; r.totalPages >= i; i++) {
+                const msg = (page == i) ? `<button class="btn btn-outline-dark shoppingReviewPaging" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingReviewPaging">${i}</button>`
+                $(".pagingButton").append(msg);
+              }
+            }
+          })
+        })
+      })
+      //리뷰 수정 클릭시 발동 이벤트
+      $(".mainBox").on("click", ".ReviewModify" ,(e)=>{
+        const page = $("#page").val()
+        console.log(page);
+        const target =e.target.dataset.no;
+        console.log(target);
+        const content =$(`#content${target}`).val();
+        const score = $(`#score${target}`).val();
+        $.ajax({
+          url : "/review/update",
+          method : "post",
+          data : {"shoppingReviewNumber": target , "shoppingReviewContent" : content, "shoppingReviewScore" : score }
+        }).then(r=>{
+          alert("수정이 완료되었습니다.")
+          reviewView(page)
+        })
+      })
+      //리뷰 삭제 클릭시 발동 이벤트
+      $(".mainBox").on("click", ".ReviewDelete", (e)=>{
+        const page = $("#page").val()
+        console.log(page);
+        const shoppingReviewNumber = e.target.dataset.no;
+        if(confirm("리뷰를 삭제하시겠습니까?")){
+            $.ajax({
+              url : "/review/delete",
+              method :"delete",
+              data : {shoppingReviewNumber}
+            }).then(r=>{
+              if(r == "success"){
+                alert("리뷰가 삭제되었습니다.")
+                reviewView(page)
+              }
+            })
+        }
+      })
 
-
+// 쇼핑 구매내역 클릭시 발동 이벤트
       $(".shoppingOrderHistory").on("click", ()=>{
+        $("#page").val(0)
+        $(".mainBox").empty();
+        $(".pagingButton").empty();
+        $(".pageName").empty();
+        $(".pageName").append("쇼핑 구매 내역");
        let  now = new Date();
        let  date = new Date()
        let  periodEndDate = new Intl.DateTimeFormat("ko-KR").format(now)
@@ -100,7 +239,7 @@
                   <div class="oneProductName">${t.product.productName}</div>
                   <div>수량 : <span class="oneProductQuantity">${t.shoppingOrderDetailCount}</span> 개</div>
                   <div class="oneProductPrice">가격 : <span >${comma(t.shoppingOrderDetailCount * t.product.productPrice)}</span> 원</div>
-                  <button class="btn btn-outline-primary reviewButton"  data-no="${t.product.productNumber}">리뷰<br/>쓰기</button>
+                  <button class="btn btn-outline-primary reviewButton" data-number="${p.shoppingOrderNumber}" data-no="${t.product.productNumber}">리뷰<br/>쓰기</button>
                 </div>`
                 $(`.p${t.shoppingOrder.shoppingOrderNumber}`).append(products);
               })
@@ -110,13 +249,13 @@
             const page = $("#page").val();
             $(".pagingButton").empty();
             for(let i=1;r.totalPages>=i; i++){
-              const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+              const msg = (page==i) ?`<button class="btn btn-outline-dark shoppingOrder" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingOrder">${i}</button>`
               $(".pagingButton").append(msg);
             }
           }
         })
         //page 넘기는 스크립트
-        $(".pagingButton").on("click","button", function (e){
+        $(".pagingButton").on("click",".shoppingOrder", function (e){
           const page = parseInt(e.target.textContent)-1;
           $("#page").val(e.target.textContent);
 
@@ -151,7 +290,7 @@
                 </div>
                 <div class="orderStatusBox">
                   <div>상태 : <span>${status}</span></div>
-                  <div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" data-no="${p.shoppingOrderNumber}">완료체크하기</button></div>
+                  <div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark"  id="orderStatus" data-no="${p.shoppingOrderNumber}">완료체크하기</button></div>
                 </div>
                 <div class="orderTotalBox">
                   <div>총 물품 : <span class="totalKind t${p.shoppingOrderNumber}"></span>개</div>
@@ -184,7 +323,7 @@
                   <div class="oneProductName">${t.product.productName}</div>
                   <div>수량 : <span class="oneProductQuantity">${t.shoppingOrderDetailCount}</span> 개</div>
                   <div class="oneProductPrice">가격 : <span >${comma(t.shoppingOrderDetailCount * t.product.productPrice)}</span> 원</div>
-                  <button class="btn btn-outline-primary reviewButton"  data-no="${t.product.productNumber}">리뷰<br/>쓰기</button>
+                  <button class="btn btn-outline-primary reviewButton" data-number="${p.shoppingOrderNumber}" data-no="${t.product.productNumber}">리뷰<br/>쓰기</button>
                 </div>`
                   $(`.p${t.shoppingOrder.shoppingOrderNumber}`).append(products);
 
@@ -195,7 +334,7 @@
               const page = $("#page").val();
               $(".pagingButton").empty();
               for(let i=1;r.totalPages>=i; i++){
-                const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                const msg = (page==i) ?`<button class="btn btn-outline-dark shoppingOrder" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingOrder">${i}</button>`
                 $(".pagingButton").append(msg);
               }
             }
@@ -207,41 +346,60 @@
       // 상품을 받았는지 체크하기 버튼 처리 시작
       $(".mainArea").on("click", "#orderStatus" , (e)=>{
         const shoppingOrderNumber = e.target.dataset.no;
-
+        console.log(shoppingOrderNumber);
         $.ajax({
           url : "/my_page/order_status_update",
           method : "post",
           data : {shoppingOrderNumber}
         })
       })
-      // 상품을 받았는지 체크하기 버튼 처리 시작
+      // 상품을 받았는지 체크하기 버튼 처리 끝
       // modal 시작
       $(".mainArea").on("click",".reviewButton", (e)=>{
         const targetNo = e.target.dataset.no
         const target = e.target
+        const shoppingOrderNumber = e.target.dataset.number;
         const targetLeft = parseInt(target.getBoundingClientRect().left +60);
         const targetTop = parseInt(target.getBoundingClientRect().top -10);
         let productName;
-        $(".modal-content").css("left",`${targetLeft}px` )
-        $(".modal-content").css("top",`${targetTop}px` )
 
-        for(let i= 0;shoppingOrderDetail0.length>i; i++){
-          if(targetNo == shoppingOrderDetail0[i].product.productNumber){
-            productName = shoppingOrderDetail0[i].product.productName
-            break;
-          }
-          for(let i= 0;shoppingOrderDetail1.length>i; i++){
-            if(targetNo == shoppingOrderDetail1[i].product.productNumber){
-              productName = shoppingOrderDetail1[i].product.productName
-              break;
+        $.ajax({
+          url : "/review/exsist_review",
+          method : "post",
+          data : {"shoppingOrderNumber" : shoppingOrderNumber, "productNumber" : targetNo}
+        }).then(r=>{
+          console.log(r);
+          if(r){
+            alert("이미 작성된 리뷰가 있습니다.")
+            return;
+          }else{
+
+            $(".modal-content").css("left",`${targetLeft}px` )
+            $(".modal-content").css("top",`${targetTop}px` )
+
+            for(let i= 0;shoppingOrderDetail0.length>i; i++){
+              if(targetNo == shoppingOrderDetail0[i].product.productNumber){
+                productName = shoppingOrderDetail0[i].product.productName
+                break;
+              }
+              for(let i= 0;shoppingOrderDetail1.length>i; i++){
+                if(targetNo == shoppingOrderDetail1[i].product.productNumber){
+                  productName = shoppingOrderDetail1[i].product.productName
+                  break;
+                }
+              }
             }
+            $("#shoppingOrderNumber").val(shoppingOrderNumber);
+            $(".inputText").val("");
+            $(".shoppingReviewScore").val(5).prop("selected", true);
+            $("#productNumber").val(targetNo);
+            $("#productName").text(productName);
+
+            $(".modal").show();
           }
-        }
+        })
 
 
-        $("#productName").text(productName);
-
-        $(".modal").show();
       })
       $(".close").on("click", ()=>close_pop())
       $(document).keydown((e)=>{
@@ -250,7 +408,43 @@
         }
       })
       //modal 끝
+      // review 등록
+      $(".write").on("click", ()=>{
+        const productNumber = parseInt($("#productNumber").val());
+        const shoppingOrderNumber = parseInt($("#shoppingOrderNumber").val());
+        if($.trim($(".inputText").val())<= 0){
+          alert("리뷰 내용이 비어있습니다.")
+          return;
+        }
+        $.ajax({
+            url : "/review/write",
+            method : "put",
+            data : {"productNumber" : productNumber, "userEmail" : user.userEmail , "shoppingOrderNumber" : shoppingOrderNumber,
+              "shoppingReviewContent" : $(".inputText").val(), "shoppingReviewScore" : $(".shoppingReviewScore").val(),
+            }
+        }).then(r =>{
+          $("#shoppingReviewNumber").val(r);
+          console.log($("#inputFile").val())
+          if($("#inputFile").val().length>1){
+            const formData = new FormData($("#form")[0])
 
+            $.ajax({
+              url : "/review/save_photo",
+              method : "post",
+              data : formData,
+              processData : false,
+              contentType : false,
+              cache : false
+            })
+          }
+
+            alert("리뷰가 작성되었습니다.")
+            close_pop();
+
+
+          }).catch(err => console.log(err))
+
+      })
     })
   </script>
 
@@ -266,6 +460,7 @@
 <main>
   <div class="navArea">
     <div><span  th:text="${user.userName}"></span> <span>님의 MyPage</span></div>
+    <div class="pageName"></div>
   </div>
 
   <div class="sideArea">
@@ -281,7 +476,7 @@
         <li>리뷰 관리
           <ul class="subTitle">
             <li>픽업</li>
-            <li>쇼핑</li>
+            <li class="shoppingReviewManagement">쇼핑</li>
           </ul>
         </li>
         <li>1:1 문의 내역</li>
@@ -311,13 +506,15 @@
   <div class="modalBox modal-content" id="reviewWriteModal">
     <div class="modalHeader">
       <div><span style="font-size: 1.5rem;" id="productName"></span> </div>
-      <div><select><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select>점</div>
-      <div><label class="inputLabel" for="inputFile">사진첨부<span class="material-symbols-outlined">image</span></label><input type="file" value="" id="inputFile" name="" accept=".jpg, .jpeg, .png" style="display: none;"></div>
+      <div><select class="shoppingReviewScore" name="shoppingReviewScore"><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select>점</div>
+      <div><label class="inputLabel" for="inputFile">사진첨부<span class="material-symbols-outlined">image</span></label><form id="form" method="post"enctype="multipart/form-data"><input type="file" value=""  id="inputFile" name="reviewImage" accept=".jpg, .jpeg, .png" style="display: none;"><input type="hidden" name="shoppingReviewNumber" id="shoppingReviewNumber"></form></div>
       <div><span class="material-symbols-outlined close">close</span></div>
     </div>
     <div class="modalBody">
-      <div><input type="text" class="inputText form-control" placeholder="리뷰를 입력하세요."></div>
-      <div><button class="btn btn-outline-success">작성하기</button></div>
+      <div><input type="text" class="inputText form-control" name="shoppingReviewContent" placeholder="리뷰를 입력하세요."></div>
+      <input type="hidden" name="shoppingOrderNumber" id="shoppingOrderNumber" value="">
+      <input type="hidden" name="productNumber" id="productNumber" value="">
+      <div><button class="btn btn-outline-success write">작성하기</button></div>
     </div>
   </div>
 </div>

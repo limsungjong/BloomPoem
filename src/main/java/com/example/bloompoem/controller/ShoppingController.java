@@ -6,6 +6,7 @@ import com.example.bloompoem.dto.KakaoReady;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.service.ProductService;
 
+import com.example.bloompoem.service.ShoppingReviewService;
 import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.JwtUtil;
 
@@ -42,6 +43,8 @@ public class ShoppingController {
     private ProductService productService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ShoppingReviewService shoppingReviewService;
 
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
@@ -235,7 +238,7 @@ public class ShoppingController {
             ShoppingOrder order = new ShoppingOrder();
             model.addAttribute("kakaoApprovar", kakaoApprovar);
             order.setShoppingOrderNumber(Integer.parseInt(orderId));
-            order.setShoppingOrderDate(LocalDate.ofInstant(kakaoApprovar.getApproved_at().toInstant(), ZoneId.systemDefault()));
+            order.setShoppingOrderDate(LocalDate.now());
             order.setShoppingOrderStatus(3);
             order.setShoppingTotalPrice(kakaoApprovar.getAmount().getTotal());
             order.setShoppingRealPrice(kakaoApprovar.getAmount().getTotal());
@@ -291,6 +294,25 @@ public class ShoppingController {
         String userEmail =JwtUtil.getUserName(cookie,secretKey);
 
         return ResponseEntity.ok(productService.orderDetails(userEmail,orderNumber));
+    }
+
+    @GetMapping("/review/avg")
+    public  ResponseEntity<Double> productScoreAvg(int productNumber){
+        return  ResponseEntity.ok(shoppingReviewService.avgReviewScore(productNumber));
+    }
+    @PostMapping("/review/read_all")
+    public ResponseEntity<Page<ShoppingReview>> reviewReadAll(int productNumber ,@PageableDefault(size = 10)Pageable pageable){
+        return  ResponseEntity.ok(shoppingReviewService.readAll(productNumber,pageable));
+    }
+    @PostMapping("/user/user_cookie")
+    public ResponseEntity<String> userFind (String cookie){
+        String userEmail = userService.tokenToUserEntity(cookie).getUserEmail();
+        if(userEmail != ""){
+            return ResponseEntity.ok(userEmail);
+        }else {
+            return ResponseEntity.ok(" ");
+        }
+
     }
 
 

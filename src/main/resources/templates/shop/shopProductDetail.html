@@ -12,6 +12,7 @@
   <title>상세정보</title>
   <link rel="stylesheet" href="/css/shopProductDetail.css" />
   <script>
+    let userEmail;
     function comma(str) {
       str = String(str);
       return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
@@ -21,11 +22,20 @@
       $("#cookie").val(cookie);
       document.payment.submit();
     }
+    let avgReview;
     $(document).ready(function (){
       const cookie= document.cookie.split("=")[1]
+      if(cookie != null){
+          $.ajax({
+            url : "/user/user_cookie",
+            method : "post",
+            data : {cookie}
+          }).then(r=>{
+            userEmail =r;
+          })
+      }
       const category =$("#category").val();
       //쿠키가 있으면 header 변경 시작
-
       const header =  (cookie != null)
               ?"<span class='logout'><a href='/sign/sign_out'>logOut</a></span><span class=\"cart\"><a href='/shopping/cart'>Cart</a></span> <span class=\"myPage\"><a href='/my_page'>MyPage</a></span> "
               :"<span class=\"signin\"><a href='/sign/sign_in'>SignIn</a></span> <span class=\"signup\"><a href='/sign/sign_up'>SignUp</a></span>"
@@ -49,7 +59,45 @@
       $(".logo").on("click" ,()=>{
         location.href="/shopping"
       })
-
+      // review 점수 보여주기 시작
+      $.ajax({
+        url : "/review/avg",
+        method : "get",
+        data :{"productNumber" : parseInt($("#productNumber").val())}
+      }).then(r=>{
+        avgReview =r;
+        $(".reviewScore").empty();
+        $(".reviewScore").append(r);
+      })
+      //review 점수 보여주기 끝
+      //review 가져오기 시작
+      $.ajax({
+        url : "/review/read_all",
+        method : "post",
+        data : {"productNumber" : $("#productNumber").val()}
+      }).then(r=>{
+        const reviewCount = r.totalElements;
+        $(".reviewCount").val(reviewCount)
+        $.each(r.content , (i, rr)=>{
+        const photo  = (rr.shoppingReviewImage ==null) ?"noImage.jpg" : `${p.shoppingReviewImage}`;
+        const deleteButton = (rr.user.userEmail == userEmail) ?'<button class="btn btn-outline-danger" data-no=`${rr.shoppingReviewNumber}`>삭제버튼</button>'  : ""
+        const regDate = new Intl.DateTimeFormat("ko-KR").format(rr.shoppingReviewRegDate)
+        const msg =`    <div class="reviewTotalBox">
+      <div>리뷰(<span>${reviewCount}</span>)</div>
+      <div>전체 평점 : ⭐<span class="reviewScore">${avgReview}</span></div>
+    </div>
+    <div class="reviewBox">
+      <div class="reviewImageBox"><img src="${photo}" alt="reviewImage" class="reviewImage"></div>
+      <div class="reviewTop">
+        <div>${rr.shoppingReviewScore}</div>
+        <div>${rr.user.userName}</div>
+        <div>${regDate}</div>
+      </div>
+      <div class="reviewContent">${rr.shoppingReviewContent}</div>
+      <div class="reviewDelete">${deleteButton}</div>`
+          $(".reviewArea").append(msg);
+        })
+      })
       //한 개 구매하기 버튼 기능 시작
       $(".productBuy").on("click",(e)=>{
         const count = $(".quantitySelect").val();
@@ -290,8 +338,8 @@
   <div class="mainArea">
     <br/>
     <img  class ="productMainImage" th:src="@{/image/product/}+${product.productMainImage}" >
-    <div class="productName" th:text="${product.productName}">
-    </div>
+    <div class="productName" th:text="${product.productName}"></div>
+    <div class="reviewScoreBox">⭐<span class="reviewScore"></span> (<span class="reviewCount"></span>)</div>
     <div class="productQuantity"> 수량 :
       <select class="form-select form-select-sm quantitySelect">
         <option value="1">1</option>
@@ -312,6 +360,10 @@
   <hr/>
   <div class="subImageBox">
     <img th:src="@{/image/product/}+${product.productSubImage1}" class="subImage" alt="subImage" />
+    <hr/>
+  </div>
+  <div class="reviewArea">
+
   </div>
   <div class="sideStickyArea">
     <div class="sideStickyBox">
