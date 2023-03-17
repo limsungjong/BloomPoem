@@ -250,7 +250,7 @@ class sideItemObj {
         document.querySelector("body").append(box);
     }
 
-    // flowerTab 만듬 =>
+    // flowerTab 만듬
     createModalFlower() {
         const flowerListTab = document.createElement("ul");
         flowerListTab.setAttribute("class", "flowerList");
@@ -353,21 +353,21 @@ class sideItemObj {
             flowerLiBox
                 .querySelector(".flowerBasketBtn")
                 .addEventListener("click", (e) => {
-                    console.log(flowerCntInput.value);
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
-                    const bucketData = {
-                        flowerNumber: flower.flowerNumber,
-                        flowerCount: parseInt(flowerCntInput.value),
-                        floristNumber: this.floristData.floristNumber,
-                        floristMainImage: flower.floristMainImage,
+                    const buyData = {
                         flowerName: flower.flowerName,
+                        flowerCount: parseInt(flowerLiBox.querySelector('.flowerCount').value),
+                        flowerNumber: flower.flowerNumber,
                         floristProductPrice: flower.floristProductPrice,
+                        floristNumber: this.floristData.floristNumber,
+                        floristName: this.floristData.floristName,
+                        floristProductTotalPrice: flower.floristProductPrice * flowerLiBox.querySelector('.flowerCount').value,
+                        floristMainImage: flower.floristMainImage
                     };
-                    console.log(bucketData);
                     if (this.bucketDataArr.length == 0) {
-                        this.bucketDataArr.push(bucketData);
+                        this.bucketDataArr.push(buyData);
                         alert("장바구니로 이동되었습니다.");
                         this.bucketToFetch();
                         return;
@@ -375,23 +375,23 @@ class sideItemObj {
 
                     if (
                         !this.bucketDataArr.find(
-                            (v) => v.flowerNumber == bucketData.flowerNumber
+                            (v) => v.flowerNumber == buyData.flowerNumber
                         )
                     ) {
                         alert("장바구니로 이동되었습니다.");
-                        this.bucketDataArr.push(bucketData);
+                        this.bucketDataArr.push(buyData);
                     }
 
                     console.log(this.bucketDataArr);
                     const duplicateFlowerNumber = this.bucketDataArr.findIndex(
-                        (v) => v.flowerNumber == bucketData.flowerNumber
+                        (v) => v.flowerNumber == buyData.flowerNumber
                     );
 
                     console.log(duplicateFlowerNumber);
                     if (duplicateFlowerNumber == 0 || duplicateFlowerNumber > 0) {
                         this.bucketDataArr[duplicateFlowerNumber].flowerCount =
                             this.bucketDataArr[duplicateFlowerNumber].flowerCount +
-                            bucketData.flowerCount;
+                            buyData.flowerCount;
                     }
                     this.bucketToFetch();
                 });
@@ -410,7 +410,6 @@ class sideItemObj {
         myHeaders.append("Content-Type", "application/json");
         console.log(this.bucketDataArr);
         const raw = JSON.stringify(this.bucketDataArr);
-
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -423,7 +422,6 @@ class sideItemObj {
             requestOptions
         )
             .then((response) => {
-                console.log(response);
                 return response.text();
             })
             .then((result) => console.log(result))
@@ -438,6 +436,7 @@ class sideItemObj {
         if (!this.bucketDataArr) {
             return;
         }
+
         this.bucketDataArr.forEach((bucket) => {
             const liBucketHtml = `
       <div class="checkBox">
@@ -467,7 +466,7 @@ class sideItemObj {
           type="number"
           min="1"
           max="100"
-          value="1"
+          value=${bucket.flowerCount}
           data-flowerNumber=${bucket.flowerNumber}
           />
           
@@ -585,7 +584,6 @@ class sideItemObj {
             redirect: "follow",
         };
 
-
         fetch(
             "http://localhost:9000/api/v1/pick_up/get_pick_up_cart",
             requestOptions
@@ -595,6 +593,7 @@ class sideItemObj {
             })
             .then((result) => {
                 if (result == undefined) return;
+                console.log(result);
                 this.bucketDataArr = result;
                 this.createModalBucket();
                 console.log(this.bucketDataArr)
@@ -695,7 +694,6 @@ class sideItemObj {
 
     // 장바구니 footer 만듬
     createBucketFooter() {
-        console.log("asd");
         const footer = this.modalContainer.querySelector(".bucketFooter");
         if (footer) {
             footer.remove();
@@ -739,8 +737,6 @@ class sideItemObj {
     `;
         bucketFooter.innerHTML = bucketFooterHtml;
         this.tabContent.append(bucketFooter);
-
-        console.log("605");
         this.footerBuyHandler();
     }
 
@@ -755,8 +751,6 @@ class sideItemObj {
 
     // 장바구니 푸터 구매 핸들링
     footerBuyHandler() {
-        console.log(this.tabContent);
-
         const allBtn = this.tabContent.querySelector("#allChoice");
         const delBtn = this.tabContent.querySelector("#deleteChoice");
         const allBuy = this.tabContent.querySelector("#allBuy");
@@ -765,12 +759,16 @@ class sideItemObj {
             this.tabContent
                 .querySelectorAll(`input[type="checkbox"]`)
                 .forEach((v) => (v.checked = true));
+            console.log(this.buyBucketArr)
+            console.log(this.bucketDataArr)
         });
 
         delBtn.addEventListener("click", () => {
             this.tabContent
                 .querySelectorAll(`input[type="checkbox"]:checked`)
                 .forEach((element) => {
+                    console.log(this.buyBucketArr)
+                    console.log(this.bucketDataArr)
                     console.log(element.name);
                     this.bucketDataArr.splice(
                         this.bucketDataArr.findIndex(
@@ -788,6 +786,7 @@ class sideItemObj {
         return this;
     }
 
+    // 구매 모달 띄우기
     createBuyModal(flowerLi, flower) {
         console.log(this.buyBucketArr)
         if (document.querySelector("#buyModal")) {
@@ -860,11 +859,11 @@ class sideItemObj {
         })
     }
 
+    // 구매 모달에서 구매 박스 만들기
     createBuyProductBox() {
         if (this.buyBucketArr == null || this.buyBucketArr == []) {
             return;
         }
-
         this.buyBucketArr.forEach((product) => {
             console.log(product)
             const buyProduct = document.createElement("div");
@@ -889,6 +888,7 @@ class sideItemObj {
         });
     }
 
+    // 구매 모달창 핸들링
     buyModalHandler() {
         const closeBtn = this.buyModalContainer.querySelector(".closeBtn");
         closeBtn.addEventListener("click", () => {
@@ -904,10 +904,10 @@ class sideItemObj {
         })
     }
 
+    // 카카오 페이 fetch
     bucketFetchToBuy() {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        const raw = JSON.stringify(this.buyBucketArr);
         const ax = this.outPutDateAndTime();
         const requestOptions = {
             method: "POST",
@@ -918,78 +918,34 @@ class sideItemObj {
 
         console.log(requestOptions)
         this.dateAndTimeController();
+        // 카카오 페이 가장 처음 시작이다.
         fetch("http://localhost:9000/kakao_pay/ready", requestOptions)
             .then((response) => {
                 return response.json();
             })
             .then((result) => {
                 if (result == undefined) return;
-                console.log(result);
-                    function open(result) {
+                console.log(result)
 
-                        const form = document.createElement('form');
-                        form.setAttribute('method','POST');
-                        console.log(result.tid)
-                        form.setAttribute('action',result.next_redirect_pc_url)
-                        form.setAttribute('target','popup_id');
+                // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
+                // 밑에 있는 폼의 이름도 kakaoPopUp이다.
+                window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
 
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'tid';
-                        input.value = result.tid;
-                        form.appendChild(input);
+                // html밑의 3개의 인풋에 result에 담긴 3개의 값을 할당한다.
+                $("#orderId").val(result.orderId);
+                $("#tId").val(result.tId);
+                $("#pcUrl").val(result.pcUrl);
+                console.log($("#orderId").val());
+                console.log($("#tId").val());
+                console.log($("#pcUrl").val());
 
-                        document.body.appendChild(form);
-
-                        window.open("", "popup_id", '_blank', 'height=500,width=400,bottom=1000,left=600');
-                        console.log(form);
-                        form.submit();
-                    }
-                    open(result);
-                console.log(this.bucketDataArr);
-            });
-
-        console.log()
-        // fetch("http://localhost:9000/kakao_pay/pavvvvv", requestOptions)
-        //     .then((response) => {
-        //         return response.json();
-        //     })
-        //     .then((result) => {
-        //         if (result == undefined) return;
-        //         console.log(result)
-        //         window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
-        //         $("#orderId").val(result.orderId);
-        //         $("#tId").val(result.tId);
-        //         $("#pcUrl").val(result.pcUrl);
-        //         console.log($("#orderId").val());
-        //         console.log($("#tId").val());
-        //         console.log($("#pcUrl").val());
-        //         $("#kakaoForm").submit();
-        //     });
-    }
-
-    flowerFetchToBuy() {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        const raw = JSON.stringify(this.bucketDataArr);
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow",
-        };
-
-        fetch("http://localhost:9000/api/v1/pick_up_order/startBuy", requestOptions)
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                if (result == undefined) return;
-                console.log(result);
-                console.log(this.bucketDataArr);
+                // html밑의 kakaoForm을 실행한다. 이 때에 action에 /pick_up/order/pay/pop_up으로 post요청이 들어간다.
+                $("#kakaoForm").submit();
+                console.log(this.buyBucketArr);
             });
     }
 
+    // 구매 모달창에 있는 시간 날짜 핸들링
     dateAndTimeController() {
         const selectTimeInput = this.buyModalContainer.querySelector('#selectTime');
         const selectDateInput = this.buyModalContainer.querySelector('#selectDate');
@@ -1003,7 +959,7 @@ class sideItemObj {
             return bool;
         }
         if(timeArr[0] > 17) {
-            alert("시간은 오후 5시부터 가능합니다.");
+            alert("시간은 오후 5시까지 가능합니다.");
             selectTimeInput.value = "09:00";
             bool = false;
             return bool;
@@ -1018,6 +974,7 @@ class sideItemObj {
         return bool;
     }
 
+    // 구매 모달창에 있는 시간 날짜 내보냄
     outPutDateAndTime() {
         const selectTimeInput = this.buyModalContainer.querySelector('#selectTime');
         const selectDateInput = this.buyModalContainer.querySelector('#selectDate');
@@ -1027,6 +984,10 @@ class sideItemObj {
             time : selectTimeInput.value,
         }
         return date;
+    }
+
+    directFlowerBuy(buyInfo) {
+
     }
 }
 
