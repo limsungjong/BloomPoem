@@ -34,7 +34,7 @@ public class OrderService {
         return pickUpOrderRepository.save(pickUpOrderEntity).getPickUpOrderNumber();
     }
 
-    public void detailSaveOrder(PickUpDateAndTImeRequest request, String userEmail, Integer totalPrice) {
+    public Integer detailSaveOrder(PickUpDateAndTImeRequest request, String userEmail, Integer totalPrice) {
         Integer pickUpOrderNum = saveOrder(request, userEmail, totalPrice);
         request.getOrderList().forEach(product -> {
             pickUpOrderDetailRepository.save(PickUpOrderDetailEntity
@@ -43,7 +43,9 @@ public class OrderService {
                     .flowerNumber(product.getFlowerNumber())
                     .pickUpOrderDetailCount(product.getFlowerCount())
                     .pickUpOrderNumber(pickUpOrderNum)
+                    .floristNumber(product.getFloristNumber())
                     .build());
         });
+        return pickUpOrderNum;
     }
 }
