@@ -3,15 +3,44 @@
 <head>
     <meta charset="UTF-8">
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <style>
+        html, body, div, span, applet, object, iframe, /**/
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre, /**/
+        a, abbr, acronym, address, big, cite, code, /**/
+        del, dfn, em, img, ins, kbd, q, s, samp, /**/
+        small, strike, strong, sub, sup, tt, var, /**/
+        b, u, i, center, /**/
+        dl, dt, dd, ol, ul, li, /**/
+        fieldset, form, label, legend, /**/
+        table, caption, tbody, tfoot, thead, tr, th, td, /**/
+        article, aside, canvas, details, embed, /**/
+        figure, figcaption, footer, header, hgroup, /**/
+        menu, nav, output, ruby, section, summary, /**/
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure, /**/
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+
+    </style>
     <title>Title</title>
 </head>
 <script>
+    // 여기 함수는 payResult html에 의하여 실행한다.
+    // pgToken은 payResult가 contoller에서 받은 pgToken이 들어가게 되고
     function kakaoPayResult(pgToken)
     {
-
+        // 밑의 폼이 실행이 되며 각각 4가지의 데이터가 전달이 된다.
         $("#pgToken").val(pgToken);
-        console.log()
-        document.kakaoForm.action = "/shopping/kakao/payResult";
+        document.kakaoForm.action = "/pick_up/order/pay/completed";
         document.kakaoForm.submit();
     }
     $(document).ready(()=>{
@@ -20,7 +49,9 @@
     })
 </script>
 <body>
+<!-- 아이프레임으로 카카오 페이 결제창이 시작된다. -->
 <iframe width="100%" height="700px" th:src="${pcUrl}" border="0" allowfullscreen=""></iframe>
+<!-- 자식 창이지만 -->
 <form name="kakaoForm" id="kakaoForm" method="post">
     <input type="hidden" name="orderId" id="orderId" th:value="${orderId}" />
     <input type="hidden" name="tId" id="tId" th:value="${tId}" />
