@@ -70,7 +70,7 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
 
 class sideItemObj {
     bucketDataArr = [];
-    buyBucketArr = [];
+    singleBuyDataArr = [];
     buyContainer = null;
 
     constructor(x, y, floristData, flowerDataArr, bucketDataArr) {
@@ -145,6 +145,7 @@ class sideItemObj {
     setAddEvent() {
         this.sideFloristItem.addEventListener("click", (e) => {
             this.fetchToCreateModal(this.floristData);
+            this.fetchToBucket();
         });
     }
 
@@ -182,8 +183,6 @@ class sideItemObj {
         this.modalContainer.querySelector(".close-area").addEventListener("click", () => {
             if (this.bucketDataArr.length > 0) {
                 this.createCheckModal();
-
-
             } else {
                 document.querySelector("body").removeChild(this.modalContainer);
             }
@@ -194,7 +193,6 @@ class sideItemObj {
         navMenus.forEach((v, i) => {
             v.addEventListener("click", (e) => {
                 if (e.target.classList.value == "active") {
-
                 } else {
                     navMenus.forEach((ele) => {
                         if (ele == e.target) {
@@ -248,6 +246,7 @@ class sideItemObj {
         `;
         this.modalContainer = box;
         document.querySelector("body").append(box);
+        this.fetchToBucket(true);
     }
 
     // flowerTab 만듬
@@ -408,7 +407,6 @@ class sideItemObj {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        console.log(this.bucketDataArr);
         const raw = JSON.stringify(this.bucketDataArr);
         const requestOptions = {
             method: "POST",
@@ -424,7 +422,6 @@ class sideItemObj {
             .then((response) => {
                 return response.text();
             })
-            .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
     }
 
@@ -523,13 +520,21 @@ class sideItemObj {
                 });
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
                     numberAddComa(bucketInput.value * bucket.floristProductPrice);
-                this.targetUpdateCart(bucket);
             });
 
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
                 console.log("장바구니 탭에서 단건 구매")
-                this.updateBucketDataArr();
-                this.createBuyModal();
+                const buyData = {
+                    flowerName: bucket.flowerName,
+                    flowerCount: bucketLi.querySelector('.bucketCount').value,
+                    flowerNumber: bucket.flowerNumber,
+                    floristProductPrice: bucket.floristProductPrice,
+                    floristNumber: this.floristData.floristNumber,
+                    floristName: this.floristData.floristName,
+                    floristProductTotalPrice: bucket.floristProductPrice * bucketLi.querySelector('.bucketCount').value,
+                    floristMainImage: bucket.floristMainImage
+                };
+                this.singleCreateBuyModal(buyData);
             });
 
             bucketLi.querySelector(".bucketCntInc").addEventListener("click", (e) => {
@@ -581,7 +586,7 @@ class sideItemObj {
     }
 
     // 서버에 있는 장바구니 받아옴
-    fetchToBucket() {
+    fetchToBucket(first) {
         if (document.cookie == "") {
             return;
         }
@@ -601,15 +606,15 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
+                console.log("받아")
                 if (result == undefined) return;
                 this.bucketDataArr = result;
-                this.createModalBucket();
-                this.updateBucketDataArr();
+                if (!first) this.createModalBucket();
             })
     }
 
     // 확인용 모달 만들기
-    createCheckModal() {
+    createCheckModal(text) {
         const checkModal = document.createElement("div");
         checkModal.innerHTML = `
     <div id="checkModal" class="modal-overlay">
@@ -674,7 +679,6 @@ class sideItemObj {
         };
         fetch("http://localhost:9000/api/v1/pick_up/pick_up_cart_delete", requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result))
             .catch(error => console.log('error', error));
     }
 
@@ -754,7 +758,17 @@ class sideItemObj {
         const buyBtn = flowerLiBox.querySelector("#flowerBuyBtn");
         buyBtn.addEventListener("click", () => {
             console.log("꽃 탭에서 단건 구매")
-            this.createBuyModal(flowerLiBox, flowerData);
+            const buyData = {
+                flowerName: flowerData.flowerName,
+                flowerCount: flowerLiBox.querySelector('.flowerCount').value,
+                flowerNumber: flowerData.flowerNumber,
+                floristProductPrice: flowerData.floristProductPrice,
+                floristNumber: this.floristData.floristNumber,
+                floristName: this.floristData.floristName,
+                floristProductTotalPrice: flowerData.floristProductPrice * flowerLiBox.querySelector('.flowerCount').value,
+                floristMainImage: flowerData.floristMainImage
+            }
+            this.singleCreateBuyModal(buyData);
         });
     }
 
@@ -768,7 +782,6 @@ class sideItemObj {
             this.tabContent
                 .querySelectorAll(`input[type="checkbox"]`)
                 .forEach((v) => (v.checked = true));
-            console.log(this.buyBucketArr)
             console.log(this.bucketDataArr)
         });
 
@@ -776,7 +789,6 @@ class sideItemObj {
             this.tabContent
                 .querySelectorAll(`input[type="checkbox"]:checked`)
                 .forEach((element) => {
-                    console.log(this.bucketDataArr)
                     const target = this.bucketDataArr.splice(
                         this.bucketDataArr.findIndex(
                             (data) => data.flowerNumber == element.name
@@ -789,8 +801,6 @@ class sideItemObj {
         });
 
         allBuy.addEventListener("click", () => {
-            console.log("전체 구매 버튼")
-            this.updateBucketDataArr();
             this.createBuyModal();
         });
 
@@ -798,25 +808,10 @@ class sideItemObj {
     }
 
     // 구매 모달 띄우기
-    createBuyModal(flowerLi, flower) {
+    createBuyModal() {
         if (document.querySelector("#buyModal")) {
             document.removeChild(document.querySelector("#buyModal"));
         }
-        console.log(this.buyBucketArr)
-        if (this.buyBucketArr.length == 0) {
-            const buyData = {
-                flowerName: flower.flowerName,
-                flowerCount: flowerLi.querySelector('.flowerCount').value,
-                flowerNumber: flower.flowerNumber,
-                floristProductPrice: flower.floristProductPrice,
-                floristNumber: this.floristData.floristNumber,
-                floristName: this.floristData.floristName,
-                floristProductTotalPrice: flower.floristProductPrice * flowerLi.querySelector('.flowerCount').value,
-                floristMainImage: flower.floristMainImage
-            };
-            this.buyBucketArr.push(buyData);
-        }
-        console.log(this.buyBucketArr)
         const buyModalContainer = document.createElement("div");
         buyModalContainer.setAttribute("id", "buyModal");
         buyModalContainer.setAttribute("class", "modal-overlay");
@@ -845,9 +840,9 @@ class sideItemObj {
               </div>
               <div class="buyBox">
                 <div class="priceBox">
-                  <span class="priceSpan">총 금액 : ${numberAddComa(this.buyBucketArr.reduce((acc, cur) => {
-                                                    return (acc += cur.flowerCount * cur.floristProductPrice);
-                                                    }, 0))}</span>
+                  <span class="priceSpan">총 금액 : ${numberAddComa(this.bucketDataArr.reduce((acc, cur) => {
+            return (acc += cur.flowerCount * cur.floristProductPrice);
+        }, 0))}</span>
                 </div>
                 <div class="buyBtnBox" id="kakaoPayBtn">카카오 페이로 구매하기</div>
               </div>
@@ -874,12 +869,93 @@ class sideItemObj {
         })
     }
 
+    singleCreateBuyModal(buyData) {
+        if (document.querySelector("#buyModal")) {
+            document.removeChild(document.querySelector("#buyModal"));
+        }
+        const buyModalContainer = document.createElement("div");
+        buyModalContainer.setAttribute("id", "buyModal");
+        buyModalContainer.setAttribute("class", "modal-overlay");
+        const buyModalHtml = `
+      <div class="modal-window">
+      <div class="contentBox">
+        <div class="closeBtn">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="titleBox">
+          <h2>${buyData.floristName}에서 주문하고 있습니다.</h2>
+        </div>
+        <div class="middleBox">
+          <div class="middleLeftBox">
+          </div>
+          <div class="middleRightBox">
+            <div class="userSelectBox">
+              <label for="selectDate">날짜를 선택</label>
+              <div class="dateSelectBox">
+                <input type="date" name="selectDate" id="selectDate" required />
+              </div>
+              <label for="selectTime">시간을 선택</label>
+              <span class="timeSpan" >시간은 오전 9시부터 오후 5시까지만 가능합니다.</span>
+              <div class="timeSelectBox">
+                <input type="time" name="selectTime" id="selectTime" min="09:00" max="17:00" step="900" required />
+              </div>
+              <div class="buyBox">
+                <div class="priceBox">
+                  <span class="priceSpan">총 금액 : ${numberAddComa(buyData.floristProductTotalPrice)}</span>
+                </div>
+                <div class="buyBtnBox" id="kakaoPayBtn">카카오 페이로 구매하기</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      `;
+        buyModalContainer.innerHTML = buyModalHtml;
+        this.modalContainer.append(buyModalContainer);
+        this.buyModalContainer = buyModalContainer;
+        this.createBuyProductBox(buyData);
+        this.buyModalHandler();
+
+        const now_utc = Date.now() // 지금 날짜를 밀리초로
+        // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
+        const timeOff = new Date().getTimezoneOffset() * 60000; // 분단위를 밀리초로 변환
+        // new Date(now_utc-timeOff).toISOString()은 '2022-05-11T18:09:38.134Z'를 반환
+        const today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+        this.buyModalContainer.querySelector('#selectDate').setAttribute("min", today);
+        this.buyModalContainer.querySelector('#selectTime').addEventListener('change', () => {
+            this.dateAndTimeController();
+        })
+    }
+
     // 구매 모달에서 구매 박스 만들기
-    createBuyProductBox() {
-        if (this.buyBucketArr == null || this.buyBucketArr == []) {
+    createBuyProductBox(buyData) {
+        if (buyData) {
+            const buyProduct = document.createElement("div");
+            buyProduct.setAttribute("class", "productBox");
+            const productHtml = `
+        <div class="flowerImageBox">
+          <img
+            class="flowerMainImg"
+            src="/image/florist_product/${buyData.floristMainImage}"
+            alt="꽃 이미지"
+          />
+        </div>
+        <div class="flowerDetailTextBox">
+          <span class="flowerDetailSpan">${buyData.flowerName}</span>
+        </div>
+        <div class="flowerDetailCountBox">
+          <span class="flowerDetailCountSpan">${buyData.flowerCount}송이</span>
+        </div>
+      `;
+            buyProduct.innerHTML = productHtml;
+            this.buyModalContainer.querySelector('.middleLeftBox').append(buyProduct);
             return;
         }
-        this.buyBucketArr.forEach((product) => {
+        if (this.bucketDataArr == null) {
+            return;
+        }
+        this.bucketDataArr.forEach((product) => {
             console.log(product)
             const buyProduct = document.createElement("div");
             buyProduct.setAttribute("class", "productBox");
@@ -909,8 +985,6 @@ class sideItemObj {
         closeBtn.addEventListener("click", () => {
             console.log(this.bucketDataArr);
             document.querySelector("#modal").removeChild(this.buyModalContainer);
-            this.buyBucketArr = []
-            this.bucketDataArr = []
         });
 
         const kakaoPayBtn = this.buyModalContainer.querySelector('#kakaoPayBtn');
@@ -923,14 +997,22 @@ class sideItemObj {
 
     ////////////////// 카카오 페이 fetch /////////////
 
-    bucketFetchToBuy() {
+    bucketFetchToBuy(buyData) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        const ax = this.outPutDateAndTime();
+        const dateTime = this.outPutDateAndTime();
+        console.log(dateTime)
+        console.log(this.bucketDataArr)
+        let data;
+        if(buyData) {
+            data = buyData;
+        } else {
+            data = this.bucketDataArr;
+        }
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
-            body: JSON.stringify({'date': ax.date, 'time': ax.time, 'orderList': this.buyBucketArr}),
+            body: JSON.stringify({'date': dateTime.date, 'time': dateTime.time, 'orderList': data}),
             redirect: "follow",
         };
 
@@ -1038,10 +1120,6 @@ class sideItemObj {
         fetch("http://localhost:9000/api/v1/pick_up/pick_up_cart_update_target", requestOptions)
             .then(response => response.text())
             .catch(error => console.log('error', error));
-    }
-
-    updateBucketDataArr() {
-        this.buyBucketArr = [...this.bucketDataArr];
     }
 }
 
