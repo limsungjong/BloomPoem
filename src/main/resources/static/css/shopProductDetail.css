@@ -368,6 +368,8 @@ a:hover{
   "reviewImage reviewTop reviewDelete"
   "reviewImage reviewContent .";
     margin-top: 20px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.524) ;
+
 }
 .reviewImageBox{
     grid-area: reviewImage;

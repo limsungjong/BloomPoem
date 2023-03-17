@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <title>구조 잡기</title>
+  <link rel="stylesheet" href="/css/flowerRecommend.css" />
+  <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+  <script th:inline="javascript">
+  const flower = [[${flower}]];
+  console.log(flower);
+  </script>
+  <script>
+    $(document).ready(()=>{
+      //로고 누를시 움직이는 스크립트 시작
+      $(".logo").on("click" ,()=>{
+        location.href="/"
+      })
+      //로고 누를시 움직이는 스크립트 끝
+      //paging button 클릭시 이벤트 시작
+      $(".paging").on("click", ".page", (e)=>{
+        const target = parseInt(e.target.textContent)-1;
+        location.href=`http://localhost:9000/recommend?page=${target}`
+      })
+    })
+  </script>
+
+</head>
+<body>
+<header class="header">
+  <img src="/image/logo최종.png" alt="logo" class="logo" />
+  <menu>
+    <div>PickUp</div>
+    <div>Shopping</div>
+  </menu>
+  <nav class="userBox">
+    <!-- signIn signOut 자바스크립트로 들어 올 예정 -->
+  </nav>
+</header>
+<main>
+  <div class="Box">
+    <!-- sort 할 지  search를 할 지 결정하지 못했음-->
+  </div>
+  <div class="flowerArea">
+    <div class="flowerBox">
+
+      <div class="oneFlower" th:each = "f : ${flower.content}">
+        <div class="flowerImageDiv"><img th:src="@{/image/flower/}+${f.flowerImage}" alt="flowerImage" class="flowerImage"></div>
+        <div class="flowerNameDiv"th:text="${f.flowerName}"></div>
+        <div class="flowerColorDiv">(<span th:text="${f.flowerColor}"></span>)</div>
+        <div class="flowerTagDiv" th:text="${f.flowerTag}"></div>
+        <div class="flowerBuyDiv"><button class="btn btn-outline-primary" th:data-no="${f.flowerNumber}">buy</button></div>
+        <div class="flowerLanguageDiv" th:text="${f.flowerLanguage}"></div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+  <div class="paging" >
+    <div ><button class="btn btn-outline-dark page" th:each = "page : ${#numbers.sequence(1,(flower.totalPages)-1)}" th:text="${page}"></button></div>
+    <!--  if문써서 6번이상을 > 처리를 할지 고민  -->
+  </div>
+</main>
+<footer>
+</footer>
+</body>
+</html>
