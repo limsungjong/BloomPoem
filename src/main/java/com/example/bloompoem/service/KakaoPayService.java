@@ -2,7 +2,6 @@ package com.example.bloompoem.service;
 
 import com.example.bloompoem.domain.dto.PickUpDateAndTImeRequest;
 import com.example.bloompoem.domain.kakaoPay.PayApprove;
-import com.example.bloompoem.domain.kakaoPay.PayOrderProduct;
 import com.example.bloompoem.domain.kakaoPay.PayReady;
 import com.example.bloompoem.entity.PickUpCartEntity;
 import com.example.bloompoem.repository.FlowerRepository;
@@ -42,29 +41,17 @@ public class KakaoPayService {
 
     private final OrderService orderService;
 
-    public PayReady payReady(PickUpDateAndTImeRequest request, String userEmail) {
+    public PayReady payReady(
+            PickUpDateAndTImeRequest request,
+            Integer totalAmount,
+            Integer orderSeq,
+            String userEmail) {
+
         PayReady payReady = null;
         RestTemplate template = new RestTemplate();
         String url = "https://kapi.kakao.com/v1/payment/ready";
 
-        Integer totalAmount = 0;
-        // 물품 총액을 계산
-        for (PayOrderProduct product : request.getOrderList()) {
-            totalAmount += (product.getFloristProductPrice() * product.getFlowerCount());
-        }
         logger.info("결제 총액 : " + totalAmount);
-
-        List<Integer> cartSeqNumbers = new ArrayList<>();
-
-        request.getOrderList().forEach(flower -> {
-            cartSeqNumbers.add(pickUpCartRepository.save(PickUpCartEntity
-                    .builder()
-                    .flowerNumber(flower.getFlowerNumber())
-                    .flowerCount(flower.getFlowerCount())
-                    .floristNumber(flower.getFloristNumber())
-                    .userEmail(userEmail)
-                    .build()).getPickUpCartNumber());
-        });
 
         String itemName = "";
         List<String> itemNames = new ArrayList<>();
@@ -73,19 +60,19 @@ public class KakaoPayService {
         });
 
         for (int i = 0; i < itemNames.size(); i++) {
-            itemName = itemName + ',' + itemNames.get(i);
+            if (i == 0) {
+                itemName = itemNames.get(i);
+            } else {
+                itemName = ", " + itemNames.get(i);
+            }
         }
 
-        logger.info(itemName);
 
-
-
-        itemName = userEmail + itemName;
         // 카카오가 요구한 결제요청request값을 담아줍니다.
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("partner_order_id", itemName);
-        parameters.add("partner_user_id", "bloomPoem");
+        parameters.add("partner_order_id", String.valueOf(orderSeq));
+        parameters.add("partner_user_id", userEmail);
         parameters.add("item_name", itemName);
         parameters.add("quantity", String.valueOf(request.getOrderList().size()));
         parameters.add("total_amount", String.valueOf(totalAmount));
@@ -95,55 +82,37 @@ public class KakaoPayService {
         parameters.add("cancel_url", "http://localhost:9000/pick_up/order/pay/cancel"); // 결제취소시 넘어갈 url
         parameters.add("fail_url", "http://localhost:9000/pick_up/order/pay/fail"); // 결제 실패시 넘어갈 url
 
-        logger.info("수량 : " + String.valueOf(request.getOrderList().size()));
+        logger.info("수량 : " + request.getOrderList().size());
         logger.info("파트너ID : " + parameters.get("partner_order_id"));
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
 
-        // 여기서 외부로 연결 됨
+        // restTemplate 사용하여 외부로 연결
         try {
             payReady = template.postForObject(url, requestEntity, PayReady.class);
-
-            if(payReady != null) {
-                orderService.detailSaveOrder(request,userEmail,totalAmount);
-            } else {
-                request.getOrderList().forEach(flower -> {
-                    pickUpCartRepository
-                            .delete(
-                                    pickUpCartRepository
-                                            .findByUserEmailAndFlowerNumberAndFloristNumber(
-                                                    userEmail
-                                                    ,flower.getFlowerNumber()
-                                                    ,flower.getFloristNumber()).get());
-                });
-            }
         } catch (RestClientException e) {
-            logger.error("[KakaoPayService] kakao");
+            logger.error("[KakaoPayService] template Error");
+        } catch (Exception e) {
+            logger.error("[KakaoPayService] any Error");
         }
-
         logger.info("결제준비 응답객체" + payReady);
         return payReady;
     }
 
-    public PayApprove payApprove(String tid, String pgToken, String userEmail) {
+    public PayApprove payApprove(String tid, String pgToken, String orderId, String userEmail) {
         String user = userEmail;
+        PayApprove payApprove = null;
         List<PickUpCartEntity> carts = pickUpCartRepository.findByUserEmail(user);
-        System.out.println("tid"+tid);
+        System.out.println("tid" + tid);
 
-        String itemName = "";
-        for (PickUpCartEntity cart : carts) {
-            for (int i = 0; i < carts.size(); i++) {
-                itemName = itemName + "," + flowerRepository.findById(cart.getFlowerNumber()).get().getFlowerName();
-            }
-        }
-        String order_id = userEmail + itemName;
+        logger.info("orderId" + orderId);
 
         // request값 담기.
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
         parameters.add("cid", "TC0ONETIME");
         parameters.add("tid", tid);
-        parameters.add("partner_order_id", order_id); // 주문명
-        parameters.add("partner_user_id", "회사명");
+        parameters.add("partner_order_id", orderId); // 주문명
+        parameters.add("partner_user_id", userEmail);
         parameters.add("pg_token", pgToken);
 
         // 하나의 map안에 header와 parameter값을 담아줌
@@ -153,7 +122,16 @@ public class KakaoPayService {
         RestTemplate template = new RestTemplate();
         String url = "https://kapi.kakao.com/v1/payment/approve";
         // 보낼 외부 url, 요청 메시지(header, parameter), 처리후 값을 받아올 클래스
-        PayApprove payApprove = template.postForObject(url, requestEntity, PayApprove.class);
+
+        try {
+            payApprove = template.postForObject(url, requestEntity, PayApprove.class);
+            if (payApprove != null) {
+                logger.info("결제 완료");
+                pickUpService.pickUpCartDeleteByPickOrderSeq(Integer.valueOf(orderId));
+            }
+        } catch (Exception e) {
+            logger.error("[payApprove] restTemplate Error");
+        }
 
         return payApprove;
     }
