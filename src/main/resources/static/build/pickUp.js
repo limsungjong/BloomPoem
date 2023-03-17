@@ -367,8 +367,8 @@ class sideItemObj {
                         floristMainImage: flower.floristMainImage
                     };
                     if (this.bucketDataArr.length == 0) {
-                        this.bucketDataArr.push(buyData);
                         alert("장바구니로 이동되었습니다.");
+                        this.bucketDataArr.push(buyData);
                         this.bucketToFetch();
                         return;
                     }
@@ -380,9 +380,9 @@ class sideItemObj {
                     ) {
                         alert("장바구니로 이동되었습니다.");
                         this.bucketDataArr.push(buyData);
+                        this.bucketToFetch();
+                        return;
                     }
-
-                    console.log(this.bucketDataArr);
                     const duplicateFlowerNumber = this.bucketDataArr.findIndex(
                         (v) => v.flowerNumber == buyData.flowerNumber
                     );
@@ -433,7 +433,7 @@ class sideItemObj {
         const bucketListTab = document.createElement("ul");
         bucketListTab.setAttribute("class", "bucketList");
 
-        if (!this.bucketDataArr) {
+        if (this.bucketDataArr.length === 0) {
             return;
         }
 
@@ -504,7 +504,6 @@ class sideItemObj {
                     });
                     this.createBucketFooter();
                 }
-
                 if (e.target.value > 100) {
                     alert("최대 구매 수령은 100송이 입니다.");
                     e.target.value = 100;
@@ -517,9 +516,20 @@ class sideItemObj {
                     });
                     this.createBucketFooter();
                 }
+                this.bucketDataArr.map((v) => {
+                    if (v.flowerNumber == bucket.flowerNumber) {
+                        v.flowerCount = parseInt(bucketLi.querySelector(".bucketCount").value)
+                    }
+                });
+                bucketLi.querySelector(".bucketTotalPrice").textContent =
+                    numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                this.targetUpdateCart(bucket);
             });
 
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
+                console.log("장바구니 탭에서 단건 구매")
+                this.updateBucketDataArr();
+                this.createBuyModal();
             });
 
             bucketLi.querySelector(".bucketCntInc").addEventListener("click", (e) => {
@@ -545,24 +555,23 @@ class sideItemObj {
                 bucketInput.value++;
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
                     numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                this.targetUpdateCart(bucket);
             });
 
             bucketLi.querySelector(".bucketCntDec").addEventListener("click", (e) => {
                 if (bucketInput.value <= 1) {
                     return;
                 }
-
                 this.bucketDataArr.map((v) => {
                     if (v.flowerNumber == bucket.flowerNumber) {
                         v.flowerCount--;
                     }
                 });
                 this.createBucketFooter();
-
                 bucketInput.value--;
-
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
                     numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                this.targetUpdateCart(bucket);
             });
             bucketListTab.append(bucketLi);
         });
@@ -593,10 +602,9 @@ class sideItemObj {
             })
             .then((result) => {
                 if (result == undefined) return;
-                console.log(result);
                 this.bucketDataArr = result;
                 this.createModalBucket();
-                console.log(this.bucketDataArr)
+                this.updateBucketDataArr();
             })
     }
 
@@ -745,6 +753,7 @@ class sideItemObj {
 
         const buyBtn = flowerLiBox.querySelector("#flowerBuyBtn");
         buyBtn.addEventListener("click", () => {
+            console.log("꽃 탭에서 단건 구매")
             this.createBuyModal(flowerLiBox, flowerData);
         });
     }
@@ -767,20 +776,22 @@ class sideItemObj {
             this.tabContent
                 .querySelectorAll(`input[type="checkbox"]:checked`)
                 .forEach((element) => {
-                    console.log(this.buyBucketArr)
                     console.log(this.bucketDataArr)
-                    console.log(element.name);
-                    this.bucketDataArr.splice(
+                    const target = this.bucketDataArr.splice(
                         this.bucketDataArr.findIndex(
                             (data) => data.flowerNumber == element.name
-                        )
+                        ), 1
                     );
+                    this.targetDeleteCart(target);
                     this.tabContent.removeChild(element.parentNode.parentElement);
                 });
             this.createBucketFooter();
         });
 
         allBuy.addEventListener("click", () => {
+            console.log("전체 구매 버튼")
+            this.updateBucketDataArr();
+            this.createBuyModal();
         });
 
         return this;
@@ -788,22 +799,24 @@ class sideItemObj {
 
     // 구매 모달 띄우기
     createBuyModal(flowerLi, flower) {
-        console.log(this.buyBucketArr)
         if (document.querySelector("#buyModal")) {
             document.removeChild(document.querySelector("#buyModal"));
         }
-        const buyData = {
-            flowerName: flower.flowerName,
-            flowerCount: flowerLi.querySelector('.flowerCount').value,
-            flowerNumber: flower.flowerNumber,
-            floristProductPrice: flower.floristProductPrice,
-            floristNumber: this.floristData.floristNumber,
-            floristName: this.floristData.floristName,
-            floristProductTotalPrice: flower.floristProductPrice * flowerLi.querySelector('.flowerCount').value,
-            floristMainImage: flower.floristMainImage
-        };
-        this.buyBucketArr.push(buyData);
-
+        console.log(this.buyBucketArr)
+        if (this.buyBucketArr.length == 0) {
+            const buyData = {
+                flowerName: flower.flowerName,
+                flowerCount: flowerLi.querySelector('.flowerCount').value,
+                flowerNumber: flower.flowerNumber,
+                floristProductPrice: flower.floristProductPrice,
+                floristNumber: this.floristData.floristNumber,
+                floristName: this.floristData.floristName,
+                floristProductTotalPrice: flower.floristProductPrice * flowerLi.querySelector('.flowerCount').value,
+                floristMainImage: flower.floristMainImage
+            };
+            this.buyBucketArr.push(buyData);
+        }
+        console.log(this.buyBucketArr)
         const buyModalContainer = document.createElement("div");
         buyModalContainer.setAttribute("id", "buyModal");
         buyModalContainer.setAttribute("class", "modal-overlay");
@@ -814,7 +827,7 @@ class sideItemObj {
           <i class="fas fa-times"></i>
         </div>
         <div class="titleBox">
-          <h2>${buyData.floristName}에서 주문하고 있습니다.</h2>
+          <h2>${this.floristData.floristName}에서 주문하고 있습니다.</h2>
         </div>
         <div class="middleBox">
           <div class="middleLeftBox">
@@ -832,7 +845,9 @@ class sideItemObj {
               </div>
               <div class="buyBox">
                 <div class="priceBox">
-                  <span class="priceSpan">총 금액 : ${numberAddComa(buyData.floristProductTotalPrice)}</span>
+                  <span class="priceSpan">총 금액 : ${numberAddComa(this.buyBucketArr.reduce((acc, cur) => {
+                                                    return (acc += cur.flowerCount * cur.floristProductPrice);
+                                                    }, 0))}</span>
                 </div>
                 <div class="buyBtnBox" id="kakaoPayBtn">카카오 페이로 구매하기</div>
               </div>
@@ -850,9 +865,9 @@ class sideItemObj {
 
         const now_utc = Date.now() // 지금 날짜를 밀리초로
         // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
-        const timeOff = new Date().getTimezoneOffset()*60000; // 분단위를 밀리초로 변환
+        const timeOff = new Date().getTimezoneOffset() * 60000; // 분단위를 밀리초로 변환
         // new Date(now_utc-timeOff).toISOString()은 '2022-05-11T18:09:38.134Z'를 반환
-        const today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+        const today = new Date(now_utc - timeOff).toISOString().split("T")[0];
         this.buyModalContainer.querySelector('#selectDate').setAttribute("min", today);
         this.buyModalContainer.querySelector('#selectTime').addEventListener('change', () => {
             this.dateAndTimeController();
@@ -894,17 +909,20 @@ class sideItemObj {
         closeBtn.addEventListener("click", () => {
             console.log(this.bucketDataArr);
             document.querySelector("#modal").removeChild(this.buyModalContainer);
+            this.buyBucketArr = []
+            this.bucketDataArr = []
         });
 
         const kakaoPayBtn = this.buyModalContainer.querySelector('#kakaoPayBtn');
         kakaoPayBtn.addEventListener('click', () => {
-            if(this.dateAndTimeController()) {
+            if (this.dateAndTimeController()) {
                 this.bucketFetchToBuy();
             }
         })
     }
 
-    // 카카오 페이 fetch
+    ////////////////// 카카오 페이 fetch /////////////
+
     bucketFetchToBuy() {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -912,7 +930,7 @@ class sideItemObj {
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
-            body: JSON.stringify({'date':ax.date,'time':ax.time,'orderList':this.buyBucketArr}),
+            body: JSON.stringify({'date': ax.date, 'time': ax.time, 'orderList': this.buyBucketArr}),
             redirect: "follow",
         };
 
@@ -945,6 +963,7 @@ class sideItemObj {
             });
     }
 
+    ////////////////////////////////////////////////
     // 구매 모달창에 있는 시간 날짜 핸들링
     dateAndTimeController() {
         const selectTimeInput = this.buyModalContainer.querySelector('#selectTime');
@@ -952,20 +971,20 @@ class sideItemObj {
         const timeArr = selectTimeInput.value.split(":") // ['시간','분']
         let bool = true;
         // 시간 막기
-        if(timeArr[0] < 9) {
+        if (timeArr[0] < 9) {
             alert("시간은 오전 9시부터 가능합니다.");
             selectTimeInput.value = "09:00";
             bool = false;
             return bool;
         }
-        if(timeArr[0] > 17) {
+        if (timeArr[0] > 17) {
             alert("시간은 오후 5시까지 가능합니다.");
             selectTimeInput.value = "09:00";
             bool = false;
             return bool;
         }
 
-        if(selectDateInput.value == "") {
+        if (selectDateInput.value == "") {
             alert("날짜를 입렵해주세요.");
             selectDateInput.focus();
             bool = false;
@@ -980,14 +999,49 @@ class sideItemObj {
         const selectDateInput = this.buyModalContainer.querySelector('#selectDate');
 
         const date = {
-            date : selectDateInput.value,
-            time : selectTimeInput.value,
+            date: selectDateInput.value,
+            time: selectTimeInput.value,
         }
         return date;
     }
 
-    directFlowerBuy(buyInfo) {
+    // 선택 삭제 버튼 핸들링
+    targetDeleteCart(target) {
+        if (this.loginChecker() === false) return;
 
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const raw = JSON.stringify(target);
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+        fetch("http://localhost:9000/api/v1/pick_up/pick_up_cart_delete_target", requestOptions)
+            .then(response => response.text())
+            .catch(error => console.log('error', error));
+    }
+
+    targetUpdateCart(target) {
+        if (this.loginChecker() === false) return;
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const raw = JSON.stringify(target);
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+        fetch("http://localhost:9000/api/v1/pick_up/pick_up_cart_update_target", requestOptions)
+            .then(response => response.text())
+            .catch(error => console.log('error', error));
+    }
+
+    updateBucketDataArr() {
+        this.buyBucketArr = [...this.bucketDataArr];
     }
 }
 
