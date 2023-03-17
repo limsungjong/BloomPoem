@@ -1,27 +1,62 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.PickUpCartRequest;
+import com.example.bloompoem.entity.FloristEntity;
+import com.example.bloompoem.entity.FloristProductEntity;
+import com.example.bloompoem.entity.FlowerEntity;
+import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
+import com.example.bloompoem.entity.PickUpCartEntity;
+import com.example.bloompoem.repository.FloristProductRepository;
+import com.example.bloompoem.repository.FlowerRepository;
+import com.example.bloompoem.repository.PickUpCartRepository;
+import com.example.bloompoem.repository.PickUpOrderRepository;
+import com.example.bloompoem.service.PickUpService;
+import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://192.168.45.148:5500/")
 @Controller
 @PropertySource("classpath:app.properties")
 public class TestController {
 
+    @Autowired
+    PickUpOrderRepository pickUpOrderRepository;
+
+    @Autowired
+    FlowerRepository flowerRepository;
+
+    @Autowired
+    PickUpService pickUpService;
+
+    @Autowired
+    FloristProductRepository floristProductRepository;
+
+    @Autowired
+    PickUpCartRepository pickUpCartRepository;
+
+    @Autowired
+    UserService userService;
+
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
+
     @GetMapping(value = "/test")
     public String testCall(HttpServletRequest request, @CookieValue(value = "Authorization") String token) {
 
         System.out.println(token);
-        System.out.println(JwtUtil.getUserName(token,secretKey));
+        System.out.println(JwtUtil.getUserName(token, secretKey));
         System.out.println(request.getSession());
         return "test";
     }
@@ -32,5 +67,11 @@ public class TestController {
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add("cherryBlossom.jpg");
         return arrayList;
+    }
+
+    @GetMapping(value = "/test/api")
+    public @ResponseBody String test(@RequestBody List<PickUpCartRequest> pick, @CookieValue(value = "Authorization") String token) {
+        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+        return "성공";
     }
 }
