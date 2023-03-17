@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -38,7 +38,7 @@
             <!-- Qna 리스트 시작 -->
             <div class="Qna_list">
                 <!-- Qna 작성 폼 시작 -->
-                <form action="/qna/view" method="post" name="QnaForm" id="QnaForm" enctype="multipart/form-data">
+                <form action="/qna/view" method="post" name="QnaForm" id="QnaForm">
                     <!-- 버튼들 감싸는 태그 -->
                     <!-- Qna 목록 버튼 -->
                     <a href="http://localhost:9000/qna" name="Qna_list_button" id="Qna_list_button">목록</a>
@@ -51,20 +51,18 @@
                     <!-- Qna 테이블 바디 시작-->
                     <tbody>
                     <tr>
+                        <th>번호</th>
+                        <td th:text="${qna.qnaNumber}"></td>
                         <th>제목</th>
-                        <td>제목 예시</td>
-<!--                        th:text="${qna.Title}"-->
+                        <td th:text="${qna.Title}"></td>
                         <th>답변 상태</th>
-                        <td>Y/N</td>
-<!--                        th:text="${qna.qnaStatus}"-->
+                        <td th:text="${qna.qnaStatus}"></td>
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td>유저이메일@test.com</td>
-<!--                        th:text="${qna.userEmail}-->
+                        <td th:text="${qna.userEmail}"></td>
                         <th>등록일</th>
-                        <td>YYYY.MM.DD</td>
-<!--                        th:text="${qna.qnaDate}-->
+                        <td th:text="${qna.qnaDate}"></td>
                     </tr>
                     </tbody>
                     <!-- Qna 테이블 바디 종료-->

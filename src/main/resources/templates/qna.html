@@ -57,11 +57,11 @@
               <!-- Qna 테이블 바디 시작-->
               <tbody>
                 <tr th:each="qna:${QnaList}">
-<!--                  <a th:href="@{/qna/view}+${}">-->
-<!--              th:src="@{/image/product/}+${product.productMainImage}" -->
                   <td th:text="${qna.qnaNumber}"></td>
                   <td th:text="${qna.qnaStatus}"></td>
-                  <td th:text="${qna.qnaTitle}"></td>
+                  <td>
+                      <a th:href="@{/qna/view}+${qna.qnaNumber}" th:text="${qna.qnaTitle}"></a>
+                  </td>
                   <td th:text="${qna.qnaDate}"></td>
                   </a>
                 </tr>

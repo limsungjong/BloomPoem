@@ -33,6 +33,14 @@ public class QnaController {
         return "/qna";
     }
 
+    @PostMapping("/qna")
+    public String backToQnaList(Model model, Pageable pageable){
+//        // 다시 기존 페이지로 돌아가는데 데이터가 안넘어감
+//        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
+//        model.addAttribute("QnaList", qnaEntityPage);
+        return "/qna";
+    }
+
     // 문의 글쓰기 페이지
     @GetMapping("/qna/write")
     public String writeForm(){ return "/qnaWrite"; }
@@ -80,8 +88,11 @@ public class QnaController {
     }
 
     // 문의 글 보기
-    @GetMapping("/qna/view")
-    public String view(){ return "/qnaView"; }
+    @GetMapping("/qna/view{qnaNumber}")
+    public String view(){
+
+        return "/qnaView";
+    }
 
     // 문의 글 수정
     @GetMapping("/qna/update")
