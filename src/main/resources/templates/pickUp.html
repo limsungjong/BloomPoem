@@ -18,6 +18,7 @@
           src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5596461f82340fc96fa11b43a06cb7c1&libraries=services"
   ></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
   <title>Pick-Up</title>
   <link rel="stylesheet" type="text/css" href="/css/onReady.css"/>
   <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
@@ -58,5 +59,22 @@
   </div>
 </main>
 </body>
+
+<!-- 카카오 페이 결제창을 실행하는 폼 여기를 실행한다. -->
+<form name="kakaoForm" id="kakaoForm" method="post" target="kakaoPopUp" action="/pick_up/order/pay/pop_up">
+  <input type="hidden" name="orderId" id="orderId" value="" />
+  <input type="hidden" name="tId" id="tId" value="" />
+  <input type="hidden" name="pcUrl" id="pcUrl" value="" />
+</form>
+
+<form nema="paymentSuccess" id="paymentSuccess" action="/shopping/payment/success" method ="post">
+  <input type="hidden" name="orderId" class="orderId" value="">
+</form>
 <script src="/build/pickUp.js"></script>
+<script>
+  function paymentSuccess(orderId){
+    $(".orderId").val(orderId)
+    $("#paymentSuccess").submit();
+  }
+</script>
 </html>

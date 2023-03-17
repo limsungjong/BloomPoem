@@ -31,6 +31,8 @@ public class PickUpOrderDetailEntity {
     @Column
     private int flowerNumber;
     @Column
+    private int floristNumber;
+    @Column
     private String userEmail;
     @Column
     private int pickUpOrderNumber;

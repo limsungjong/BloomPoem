@@ -31,14 +31,14 @@ public class RestPickUpController {
 
     private final FloristRepository floristRepository;
 
-    @GetMapping  (value = "/get_pick_up_cart")
+    @GetMapping(value = "/get_pick_up_cart")
     public ResponseEntity<?> getPickUpCart(@CookieValue(value = "Authorization") String token) {
-        UserEntity user =  userService.tokenToUserEntity(token);
+        UserEntity user = userService.tokenToUserEntity(token);
         List<PickUpCartResponse> pickUpCartResponseList = new ArrayList<>();
         List<PickUpCartEntity> pickUpCartEntities = pickUpCartRepository.findByUserEmail(user.getUserEmail());
 
         pickUpCartEntities.forEach(data -> {
-            FloristFlowerInterFace detail = floristRepository.searchFloristFlowerDetail(data.getFloristNumber(),data.getFlowerNumber());
+            FloristFlowerInterFace detail = floristRepository.searchFloristFlowerDetail(data.getFloristNumber(), data.getFlowerNumber());
             pickUpCartResponseList
                     .add(
                             PickUpCartResponse
@@ -56,22 +56,36 @@ public class RestPickUpController {
         return ResponseEntity.ok().body(pickUpCartResponseList);
     }
 
-    @PostMapping  (value = "/pick_up_cart_update")
-    public ResponseEntity<?> updatePickUpCart(@CookieValue(value = "Authorization") String token,@RequestBody List<PickUpCartRequest> pickUpCartRequestList) {
-        if(pickUpCartRequestList.isEmpty()) throw new CustomException(ResponseCode.INVALID_REQUEST);
+    @PostMapping(value = "/pick_up_cart_update")
+    public ResponseEntity<?> updatePickUpCart(@CookieValue(value = "Authorization") String token, @RequestBody List<PickUpCartRequest> pickUpCartRequestList) {
+        if (pickUpCartRequestList.isEmpty()) throw new CustomException(ResponseCode.INVALID_REQUEST);
 
         pickUpService.pickUpCartDelete(userService.tokenToUserEntity(token).getUserEmail());
         pickUpCartRequestList.forEach(request -> {
-            pickUpService.pickUpCartInsert(request,userService.tokenToUserEntity(token).getUserEmail());
+            pickUpService.pickUpCartInsert(request, userService.tokenToUserEntity(token).getUserEmail());
         });
 
         return ResponseEntity.ok().body("성공");
     }
 
-    @DeleteMapping (value = "/pick_up_cart_delete")
+    @DeleteMapping(value = "/pick_up_cart_delete")
     public ResponseEntity<?> deletePickUpCart(@CookieValue(value = "Authorization") String token) {
         pickUpService.pickUpCartDelete(userService.tokenToUserEntity(token).getUserEmail());
 
         return ResponseEntity.ok().body("성공");
+    }
+
+    @PostMapping(value = "/pick_up_cart_delete_target")
+    public ResponseEntity<?> deleteTargetCart(@CookieValue(value = "Authorization") String token, @RequestBody List<PickUpCartRequest> requestList) {
+        for (PickUpCartRequest pickUpCartRequest : requestList) {
+            pickUpService.pickUpCartTargetDelete(pickUpCartRequest, userService.tokenToUserEntity(token).getUserEmail());
+        }
+        return ResponseEntity.ok().body("성공");
+    }
+
+    @PostMapping(value = "/pick_up_cart_update_target")
+    public ResponseEntity<?> updateTargetCart(@CookieValue(value = "Authorization") String token, @RequestBody PickUpCartRequest request) {
+        pickUpService.pickUpCartInsert(request,userService.tokenToUserEntity(token).getUserEmail());
+        return ResponseEntity.ok().body("성공!");
     }
 }

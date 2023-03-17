@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -12,5 +13,14 @@ public class PickUpController {
     @GetMapping(value = "/pick_up")
     public String pickUpPage() {
         return "/pickUp";
+    }
+
+    @PostMapping (value = "/pick_up/order/pay/cancel")
+    public String orderCancel() {
+        return "payFail";
+    }
+    @PostMapping (value = "/pick_up/order/pay/fail")
+    public String orderFail() {
+        return "payFail";
     }
 }
