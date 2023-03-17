@@ -1,11 +1,36 @@
 package com.example.bloompoem.repository;
 
+import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
 import com.example.bloompoem.entity.PickUpOrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,Long> {
+public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,Integer> {
     Optional<List<PickUpOrderEntity>> findByUserEmail(String userEmail);
+
+    @Query(value =
+            "select a.pick_up_order_reservation_time, " +
+                    "       a.pick_up_order_reservation_date, " +
+                    "       a.user_email, " +
+                    "       a.pick_up_order_date, " +
+                    "       a.pick_up_order_real_price, " +
+                    "       d.flower_name, " +
+                    "       a.pick_up_order_number, " +
+                    "       c.flower_count, " +
+                    "       c.florist_number " +
+                    " from pick_up_order a, pick_up_order_detail b, pick_up_cart c, flower d " +
+                    " where a.pick_up_order_number = b.pick_up_order_detail_number " +
+                    " and a.user_email = :userEmail " +
+                    " and a.pick_up_order_number = :pickUpOrderSeq " +
+                    " and c.flower_number = b.flower_number " +
+                    " and c.flower_number = d.flower_number " +
+                    " and c.flower_count = b.pick_up_order_detail_count ", nativeQuery = true)
+    List<PickUpOrderResponse> searchPickUpOrderResponse(
+            @Param("userEmail") String userEmail,
+            @Param("pickUpOrderSeq") Integer pickUpOrderSeq);
 }
