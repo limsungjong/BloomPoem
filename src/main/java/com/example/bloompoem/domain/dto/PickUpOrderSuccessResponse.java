@@ -11,7 +11,7 @@ public class PickUpOrderSuccessResponse {
     String flowerName;
     String flowerImage;
     String floristName;
-    String flowerCount;
+    Integer flowerCount;
     String date;
     String time;
     String partner_order_id;

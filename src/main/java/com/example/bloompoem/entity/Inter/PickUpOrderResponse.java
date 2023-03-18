@@ -1,6 +1,5 @@
 package com.example.bloompoem.entity.Inter;
 
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
