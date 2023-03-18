@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/pick_up_order")
 @RequiredArgsConstructor
+@CrossOrigin(value = "http://192.168.45.17:5500")
 public class RestPickUpOrderController {
 
     private final PickUpOrderRepository pickUpOrderRepository;
@@ -19,13 +20,12 @@ public class RestPickUpOrderController {
     private final UserService userService;
 
     @PostMapping(value = "/success/orderDetail")
-    public ResponseEntity orderDetail(@RequestParam String orderNumber,
-                                      @CookieValue String token) {
+    public ResponseEntity orderDetail(@RequestParam("orderNumber") Integer orderNumber) {
 
-        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+        System.out.println(orderNumber);
 
-        pickUpOrderDetailRepository.findById(Integer.parseInt(orderNumber));
+//        pickUpOrderDetailRepository.findById(orderNumber);
 
-        return ResponseEntity.ok().body("ㅁㄴㅇ");
+        return ResponseEntity.ok().body("성공");
     }
 }
