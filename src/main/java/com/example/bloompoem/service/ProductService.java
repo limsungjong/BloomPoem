@@ -12,6 +12,8 @@ import com.example.bloompoem.repository.ProductRepository;
 import com.example.bloompoem.repository.ShoppingCartRepository;
 import com.example.bloompoem.repository.ShoppingOrderDetailRepository;
 import com.example.bloompoem.repository.ShoppingOrderRepository;
+import org.hibernate.type.LocalDateTimeType;
+import org.hibernate.type.LocalDateType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -104,7 +112,7 @@ public class ProductService {
     }
     public String orderInsert(String userEmail, int shoppingTotalPrice){
         ShoppingOrder order = new ShoppingOrder();
-        order.setShoppingOrderDate(new Date());
+        order.setShoppingOrderDate(LocalDate.now());
         order.setShoppingOrderStatus(1);
         order.setUserEmail(userEmail);
         order.setShoppingTotalPrice(shoppingTotalPrice);
@@ -211,5 +219,13 @@ public class ProductService {
         shoppingOrder.setShoppingOrderNumber(orderNumber);
         return shoppingOrderDetailRepository.findByUserEmailAndShoppingOrder(userEmail, shoppingOrder);
     }
+    public Page<ShoppingOrder> ordersView (Date startDate, Date endDate ,String userEmail, Pageable pageable){
+
+        return shoppingOrderDao.findAllByShoppingOrderDateBetweenAndUserEmailAndShoppingOrderStatusGreaterThanEqualOrderByShoppingOrderNumberDesc(LocalDate.ofInstant(startDate.toInstant(), ZoneId.systemDefault()), LocalDate.ofInstant(endDate.toInstant(), ZoneId.systemDefault()) , pageable, userEmail, 3);
+    }
+    public ShoppingOrder orderSelect (int shoppingOrderNumber){
+        return shoppingOrderDao.findByShoppingOrderNumber(shoppingOrderNumber);
+    }
+
 
 }
