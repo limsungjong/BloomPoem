@@ -46,6 +46,9 @@
     $(document).ready(()=>{
         const cookie= document.cookie.split("=")[1]
         $("#cookie").val(cookie)
+        window.addEventListener('beforeunload', () => {
+            opener.removeSpinnerBox();
+        })
     })
 </script>
 <body>

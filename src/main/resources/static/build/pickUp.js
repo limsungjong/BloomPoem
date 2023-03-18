@@ -72,6 +72,7 @@ class sideItemObj {
     bucketDataArr = [];
     singleBuyDataArr = [];
     buyContainer = null;
+    payPopUp = null;
 
     constructor(x, y, floristData, flowerDataArr, bucketDataArr) {
         this.florist_latitude = x;
@@ -1016,6 +1017,7 @@ class sideItemObj {
         } else {
             data = this.bucketDataArr;
         }
+        console.log(data)
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -1034,7 +1036,7 @@ class sideItemObj {
                 if (result == undefined) return;
                 // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
                 // 밑에 있는 폼의 이름도 kakaoPopUp이다.
-                this.popUpControl();
+                window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
 
                 // html밑의 3개의 인풋에 result에 담긴 3개의 값을 할당한다.
                 $("#orderId").val(result.orderId);
@@ -1138,14 +1140,6 @@ class sideItemObj {
         `;
         spinner.innerHTML = spinnerHtml;
         box.append(spinner);
-    }
-
-    popUpControl() {
-        popup = window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
-
-        popup.addEventListener("beforeunload", function () {
-            removeSpinnerBox();
-        });
     }
 }
 let popup;

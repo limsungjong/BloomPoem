@@ -4,62 +4,100 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+  <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0"
+  />
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+  />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-  <title>구조 잡기</title>
-  <link rel="stylesheet" href="/css/paymentApproval.css" />
-  <style>
-
-  </style>
+  <link rel="stylesheet" type="text/css" href="/css/payCompleted.css" />
+  <title>주문 내역</title>
+  <style></style>
   <script>
-    $(document).ready(()=>{
-
+    $(document).ready( () => {
       const orderNumber = parseInt($(".orderNumber").val());
 
-      $.ajax({
-        url : "/api/v1/pick_up_order/success/orderDetail",
-        method : "post",
-        data : orderNumber
-      }).then(r=>{
-        console.log(r)
-        $.each(r, (i, p)=>{
-          console.log(i)
-          console.log(p)
-          const msg =`<div class="oneProductArea">
-          <img src ="/image/florist_product/${p.product.productMainImage}" alt="productImage" class="oneProductImage">
-          <div class="oneProductName">${p.product.productName}</div>
-          <div class="oneProductQuantity">수량 : ${p.shoppingOrderDetailCount}</div>
-          <div class="oneProductPrice">가격 : ${p.product.productPrice * p.shoppingOrderDetailCount}</div>
-            </div>`
-          $(".productArea").append(msg)
-        })
-      })
-    })
-  </script>
+      $(".close").on("click", () => {
+        window.close();
+      });
 
+      $.ajax({
+        url: "http://localhost:9000/api/v1/pick_up_order/success/orderDetail",
+        method: "post",
+        data: { orderNumber: orderNumber },
+      }).then((r) => {
+        // 주문 시간 표시
+        document.querySelector(".orderDate").textContent = `
+            주문 시간 :
+            ${new Date(r[0].pickUpOrderDate).toLocaleString()}
+            `;
+
+        document.querySelector(".pickUpOrderReservationDate").textContent = `
+            ${r[0].pickUpOrderReservationDate}
+            `;
+
+        document.querySelector(".pickUpOrderReservationTime").textContent = `
+
+            ${r[0].pickUpOrderReservationTime}
+            `;
+
+        r.forEach((element) => {
+          console.log(element);
+          const box = document.createElement("div");
+          box.setAttribute("class", "orderDetailBox");
+
+          const boxHtml = `
+            <img
+              class="flowerImg"
+              src="http://localhost:9000/image/florist_product/${element.floristMainImage}"
+              alt=""
+            />
+            <div class="flowerInfoBox">
+              <span class="flowerName">${element.flowerName}</span>
+              <span class="flowerCount">${element.pickUpOrderDetailCount} 송이</span>
+            </div>
+            `;
+          box.innerHTML = boxHtml;
+          document.querySelector(".productArea").append(box);
+        });
+      });
+    });
+  </script>
 </head>
 <body>
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
-  <menu>
-  </menu>
-  <nav class="userBox">
-  </nav>
+  <menu> </menu>
+  <nav class="userBox"></nav>
 </header>
 <main>
   <div class="resultArea">
-    <div class="result">결제가 완료 되었습니다.</div>
-    <hr/>
+    <div class="orderInfo">
+      <div class="result">결제가 완료 되었습니다.</div>
+      <br />
+      <div class="orderDate"></div>
+    </div>
+    <br />
+    <h2 class="orderPresentText">주문 내역</h2>
+    <br />
+    <div class="pickUpReservationBox">
+      <span>예약하신 날짜 : </span>
+      <span class="pickUpOrderReservationDate"></span>
+      <span class="pickUpOrderReservationTime"></span>
+    </div>
     <div class="productArea"></div>
-    <button class="btn btn-outline-dark close">닫기</button>
+    <button class="btn btn-outline-dark close"><a href="/">홈으로 돌아가기</a></button>
   </div>
-  </div>
-  <input type="hidden" class="orderNumber" th:value="${orderId}">
+  <input type="hidden" class="orderNumber" th:value="${orderId}" />
 </main>
-<footer>
-</footer>
+<footer></footer>
 </body>
 </html>

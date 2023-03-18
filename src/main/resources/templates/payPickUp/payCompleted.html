@@ -22,7 +22,7 @@
     <title>주문 내역</title>
     <style></style>
     <script>
-        $(document).ready(() => {
+        $(document).ready(async () => {
             const orderNumber = parseInt($(".orderNumber").val());
 
             $(".close").on("click", () => {
@@ -32,7 +32,7 @@
             $.ajax({
                 url: "http://localhost:9000/api/v1/pick_up_order/success/orderDetail",
                 method: "post",
-                data: { orderNumber: 53 },
+                data: { orderNumber: orderNumber },
             }).then((r) => {
                 // 주문 시간 표시
                 document.querySelector(".orderDate").textContent = `
@@ -69,6 +69,8 @@
                     document.querySelector(".productArea").append(box);
                 });
             });
+
+            await opener.paymentSuccess(orderNumber);
         });
     </script>
 </head>
@@ -96,7 +98,7 @@
         <div class="productArea"></div>
         <button class="btn btn-outline-dark close">닫기</button>
     </div>
-    <input type="hidden" class="orderNumber" th:value="${orderId}" />
+    <input type="hidden" class="orderNumber" th:value="${payApprove.getPartner_order_id()}" />
 </main>
 <footer></footer>
 </body>
