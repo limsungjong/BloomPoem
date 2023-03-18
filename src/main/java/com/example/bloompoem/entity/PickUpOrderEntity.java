@@ -1,9 +1,6 @@
 package com.example.bloompoem.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -45,5 +42,6 @@ public class PickUpOrderEntity {
     private int pickUpOrderRealPrice;
 
     @Column
-    private Character pickUpOrderStatus;
+    @Setter
+    private int pickUpOrderStatus;
 }

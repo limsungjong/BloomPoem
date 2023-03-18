@@ -3,7 +3,6 @@ package com.example.bloompoem.service;
 import com.example.bloompoem.domain.dto.PickUpCartRequest;
 import com.example.bloompoem.entity.PickUpCartEntity;
 import com.example.bloompoem.entity.PickUpOrderDetailEntity;
-import com.example.bloompoem.entity.PickUpOrderEntity;
 import com.example.bloompoem.repository.FloristProductRepository;
 import com.example.bloompoem.repository.PickUpCartRepository;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
@@ -14,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.crypto.interfaces.PBEKey;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,27 +60,30 @@ public class PickUpService {
     }
 
     public void pickUpCartDeleteByPickOrderSeq(Integer orderSeq) {
-        PickUpOrderEntity pickUpOrderEntity = pickUpOrderRepository.findById(orderSeq).orElseThrow();
-        List<PickUpOrderDetailEntity> pickUpOrderDetailEntityList = pickUpOrderDetailRepository.findByPickUpOrderNumber(pickUpOrderEntity.getPickUpOrderNumber()).orElseThrow();
-
-        // 픽업 오더 디테일 엔티티를 이용하여 픽업 카트 삭제
-        pickUpOrderDetailEntityList.forEach(pickUpOrderDetailEntity -> {
-            PickUpCartEntity entity = pickUpCartRepository
-                    .findByUserEmailAndFlowerNumberAndFlowerCountAndFloristNumber(
-                            pickUpOrderDetailEntity.getUserEmail(),
-                            pickUpOrderDetailEntity.getFlowerNumber(),
-                            pickUpOrderDetailEntity.getPickUpOrderDetailCount(),
-                            pickUpOrderDetailEntity.getFloristNumber())
-                    .orElseThrow();
-            pickUpCartRepository.delete(entity);
-        });
+        if (pickUpOrderRepository.findById(orderSeq).isPresent()) {
+            Optional<List<PickUpOrderDetailEntity>> pickUpOrderDetailEntityList = pickUpOrderDetailRepository.findByPickUpOrderNumber(orderSeq);
+            if (pickUpOrderDetailEntityList.isPresent()) {
+                // 픽업 오더 디테일 엔티티를 이용하여 픽업 카트 삭제
+                pickUpOrderDetailEntityList.get().forEach(pickUpOrderDetailEntity -> {
+                    Optional<PickUpCartEntity> entity = pickUpCartRepository
+                            .findByUserEmailAndFlowerNumberAndFlowerCountAndFloristNumber(
+                                    pickUpOrderDetailEntity.getUserEmail(),
+                                    pickUpOrderDetailEntity.getFlowerNumber(),
+                                    pickUpOrderDetailEntity.getPickUpOrderDetailCount(),
+                                    pickUpOrderDetailEntity.getFloristNumber());
+                    if (entity.isPresent()) {
+                        pickUpCartRepository.delete(entity.get());
+                    }
+                });
+            }
+        }
     }
 
     public void pickUpCartUpdate(PickUpCartRequest pick, String userEmail) {
         List<PickUpCartEntity> entityList = pickUpCartRepository.findByUserEmail(userEmail);
 
         entityList.forEach(cart -> {
-            if(pick.getFlowerNumber().equals(cart.getFlowerNumber()) &&
+            if (pick.getFlowerNumber().equals(cart.getFlowerNumber()) &&
                     pick.getFloristNumber().equals(cart.getFloristNumber())) {
                 cart.setFlowerCount(pick.getFlowerCount());
             }
@@ -93,6 +95,6 @@ public class PickUpService {
         System.out.println(pick.getFlowerNumber());
         System.out.println(pick.getFlowerCount());
         System.out.println(pick.getFloristNumber());
-        pickUpCartRepository.deleteByUserEmailAndAndFlowerNumberAndFloristNumber(userEmail,pick.getFlowerNumber(), pick.getFloristNumber());
+        pickUpCartRepository.deleteByUserEmailAndAndFlowerNumberAndFloristNumber(userEmail, pick.getFlowerNumber(), pick.getFloristNumber());
     }
 }

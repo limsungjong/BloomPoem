@@ -7,6 +7,7 @@ import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class OrderService {
                 .pickUpOrderTotalPrice(totalPrice)
                 .pickUpOrderRealPrice(totalPrice)
                 .pickUpOrderDate(new Date())
-                .pickUpOrderStatus('1')
+                .pickUpOrderStatus(1)
                 .build();
 
         return pickUpOrderRepository.save(pickUpOrderEntity).getPickUpOrderNumber();
@@ -47,5 +48,11 @@ public class OrderService {
                     .build());
         });
         return pickUpOrderNum;
+    }
+
+    @Transactional
+    public void updateOrderStatus(int orderSeq, int status){
+        PickUpOrderEntity pickUpOrderEntity = pickUpOrderRepository.findById(orderSeq).get();
+        pickUpOrderEntity.setPickUpOrderStatus(status);
     }
 }

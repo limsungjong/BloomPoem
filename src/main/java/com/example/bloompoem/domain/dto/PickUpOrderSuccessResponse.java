@@ -6,12 +6,13 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PickUpOrderSuccess {
+public class PickUpOrderSuccessResponse {
     String userName;
     String flowerName;
     String flowerImage;
+    String floristName;
+    String flowerCount;
     String date;
     String time;
-    String flowerCount;
     String partner_order_id;
 }
