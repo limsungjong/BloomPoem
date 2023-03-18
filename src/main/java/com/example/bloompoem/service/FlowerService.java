@@ -15,4 +15,8 @@ public class FlowerService {
     public Page<FlowerEntity> findFlowerAll(Pageable pageable){
         return flowerRepository.findAll(pageable);
     }
+
+    public Page<FlowerEntity> searchTag(String tag ,Pageable pageable){
+        return flowerRepository.findByFlowerTagContaining(tag,pageable);
+    }
 }

@@ -27,4 +27,5 @@ public interface ShoppingReviewRepository extends JpaRepository<ShoppingReview, 
     double avgReview(@Param("productNumber") int productNumber);
 
     Page<ShoppingReview> findAllByProduct(ProductEntity product, Pageable pageable);
+
 }

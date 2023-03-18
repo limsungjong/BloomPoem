@@ -81,12 +81,15 @@ public class MyPageController {
         ShoppingOrder shoppingOrder =new ShoppingOrder();
         ProductEntity product = new ProductEntity();
         UserEntity user = new UserEntity();
+
         review.setShoppingReviewContent(shoppingReviewContent);
         review.setShoppingReviewScore(shoppingReviewScore);
         review.setShoppingReviewRegDate(new Date());
+
         shoppingOrder.setShoppingOrderNumber(shoppingOrderNumber);
         product.setProductNumber(productNumber);
         user.setUserEmail(userEmail);
+
         review.setProduct(product);
         review.setShoppingOrder(shoppingOrder);
         review.setUser(user);
@@ -123,7 +126,7 @@ public class MyPageController {
     }
     @PostMapping("/review/update")
     public ResponseEntity<String> reviewUpdate (int shoppingReviewNumber, String shoppingReviewContent, int shoppingReviewScore){
-        ShoppingReview  shoppingReview=shoppingReviewService.reviewSelect(shoppingReviewNumber);
+        ShoppingReview  shoppingReview = shoppingReviewService.reviewSelect(shoppingReviewNumber);
         shoppingReview.setShoppingReviewContent(shoppingReviewContent);
         shoppingReview.setShoppingReviewScore(shoppingReviewScore);
         shoppingReviewService.insertReview(shoppingReview);

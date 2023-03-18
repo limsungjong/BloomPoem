@@ -14,20 +14,116 @@
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
   <script th:inline="javascript">
   const flower = [[${flower}]];
-  console.log(flower);
+
   </script>
   <script>
     $(document).ready(()=>{
+
       //로고 누를시 움직이는 스크립트 시작
       $(".logo").on("click" ,()=>{
         location.href="/"
       })
       //로고 누를시 움직이는 스크립트 끝
+
+      //현재페이지에 색상 바꾸기 스크립트 시작
+      const page = parseInt($(".page").val())+1;
+      $(`#page${page}`).css("background-color", "#cc94c4")
+      //현재페이지에 색상 바꾸기 스크립트 끝
+
       //paging button 클릭시 이벤트 시작
       $(".paging").on("click", ".page", (e)=>{
         const target = parseInt(e.target.textContent)-1;
         location.href=`http://localhost:9000/recommend?page=${target}`
+        $(".page").val(target);
       })
+      //paging button 클릭시 이벤트 끝
+
+      //tag 클릭 후 paging 클릭시 이벤트 시작
+      $(".paging").on("click" ,".flowerRecommendTagPaging" ,(e)=>{
+        const tag = e.target.dataset.tag
+        const page =parseInt(e.target.textContent)-1;
+
+        $(".page").val(page);
+        $.ajax({
+          url : "/recommend/search_tag",
+          method : "get",
+          data :{tag, page}
+        }).then(r=>{
+          $(".flowerBox").empty();
+
+          $.each(r.content ,(i,f)=>{
+            let tag ="" ;
+
+            for(let i =1;i<f.flowerTag.split("#").length ; i++){
+              tag = tag+`<span class="tag"> #${f.flowerTag.split("#")[i]}</span>`
+            }
+
+            const msg =` <div class="oneFlower">
+            <div class="flowerImageDiv"><img src="/image/flower/${f.flowerImage}" alt="flowerImage" class="flowerImage"></div>
+            <div class="flowerNameDiv">${f.flowerName}</div>
+            <div class="flowerColorDiv">(<span>${f.flowerColor}</span>)</div>
+            <div class="flowerTagDiv">${tag}</div>
+            <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">buy</button></div>
+            <div class="flowerLanguageDiv" >${f.flowerLanguage}</div>
+          </div>`
+            $(".flowerBox").append(msg)
+          })
+          $(".paging").empty();
+          const page = parseInt($(".page").val())+1;
+          for(let i =1; r.totalPages > i;i++){
+            const msg = (page == i) ? `<button class="btn btn-outline-dark flowerRecommendTagPaging" style="background-color: #cc94c4; data-tag="${tag}"  cursor: none">${i}</button>` : `<button class="btn btn-outline-dark flowerRecommendTagPaging" data-tag="${tag}">${i}</button>`
+            $(".paging").append(msg);
+          }
+
+        })
+      })
+      //태그 삭제시 이벤트 시작
+      $(".selectTagBox").on("click", ".tagDelete" ,(e)=>{
+        location.reload();
+      })
+      //태그 누를시 태그 있는 것만 보여주는 이벤트 시작
+      $(".flowerArea").on("click", ".tag", (e)=>{
+        const tag = e.target.textContent.split("#")[1]
+        $(".page").val(0);
+        $(".selectTagBox").empty();
+        $(".selectTagBox").append(`현재 선택 태그 : <span class="selectTag"></span><button class="btn btn-outline-danger tagDelete" >x</button>`)
+        $(".selectTag").empty();
+        $(".selectTag").append(tag);
+
+        $.ajax({
+          url : "/recommend/search_tag",
+          method : "get",
+          data :{tag}
+        }).then(r=>{
+
+          $(".flowerBox").empty();
+          $.each(r.content ,(i,f)=>{
+            let tag ="" ;
+
+            for(let i =1;i<f.flowerTag.split("#").length ; i++){
+                tag = tag+`<span class="tag"> #${f.flowerTag.split("#")[i]}</span>`
+            }
+
+          const msg =` <div class="oneFlower">
+            <div class="flowerImageDiv"><img src="/image/flower/${f.flowerImage}" alt="flowerImage" class="flowerImage"></div>
+            <div class="flowerNameDiv">${f.flowerName}</div>
+            <div class="flowerColorDiv">(<span>${f.flowerColor}</span>)</div>
+            <div class="flowerTagDiv">${tag}</div>
+            <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">buy</button></div>
+            <div class="flowerLanguageDiv" >${f.flowerLanguage}</div>
+          </div>`
+          $(".flowerBox").append(msg)
+          })
+          $(".paging").empty();
+          const page = parseInt($(".page").val())+1;
+          for(let i =1; r.totalPages > i;i++){
+            const msg = (page == i) ? `<button class="btn btn-outline-dark flowerRecommendTagPaging" style="background-color: #cc94c4; data-tag="${tag}"  cursor: none">${i}</button>` : `<button class="btn btn-outline-dark flowerRecommendTagPaging" data-tag="${tag}">${i}</button>`
+          $(".paging").append(msg);
+          }
+        })
+
+      })
+      //태그 누를시 태그 있는 것만 보여주는 이벤트 끝
     })
   </script>
 
@@ -45,27 +141,27 @@
 </header>
 <main>
   <div class="Box">
+    <div class="selectTagBox"></div>
     <!-- sort 할 지  search를 할 지 결정하지 못했음-->
   </div>
   <div class="flowerArea">
     <div class="flowerBox">
-
       <div class="oneFlower" th:each = "f : ${flower.content}">
         <div class="flowerImageDiv"><img th:src="@{/image/flower/}+${f.flowerImage}" alt="flowerImage" class="flowerImage"></div>
         <div class="flowerNameDiv"th:text="${f.flowerName}"></div>
         <div class="flowerColorDiv">(<span th:text="${f.flowerColor}"></span>)</div>
-        <div class="flowerTagDiv" th:text="${f.flowerTag}"></div>
+        <div class="flowerTagDiv"  ><span class="tag" th:each="ff :${#strings.listSplit(f.flowerTag, '#')}" th:text="'  #'+${ff} "></span></div>
         <div class="flowerBuyDiv"><button class="btn btn-outline-primary" th:data-no="${f.flowerNumber}">buy</button></div>
         <div class="flowerLanguageDiv" th:text="${f.flowerLanguage}"></div>
       </div>
-
-
-
-
     </div>
   </div>
+    <input type="hidden" class="page" th:value="${page}">
+
+
+
   <div class="paging" >
-    <div ><button class="btn btn-outline-dark page" th:each = "page : ${#numbers.sequence(1,(flower.totalPages)-1)}" th:text="${page}"></button></div>
+    <div ><button class="btn btn-outline-dark page" th:each = "page : ${#numbers.sequence(1,(flower.totalPages)-1)}" th:text="${page}" th:id="'page'+${page}"></button></div>
     <!--  if문써서 6번이상을 > 처리를 할지 고민  -->
   </div>
 </main>

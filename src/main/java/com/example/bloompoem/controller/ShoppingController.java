@@ -59,7 +59,7 @@ public class ShoppingController {
     }
 
     @GetMapping("/shopping/category")
-    public String shoppingCategory (Model model, int category,String searchValue){
+    public String shoppingCategory (Model model, int category, String searchValue){
         model.addAttribute("category", category);
         model.addAttribute("page" , 1);
         model.addAttribute("searchValue", searchValue);
@@ -159,8 +159,6 @@ public class ShoppingController {
         String userEmail = JwtUtil.getUserName(cookie, secretKey);
         ShoppingCartEntity cart = productService.oneCartSelect(shoppingCartNumber);
         cart.setShoppingCartCount(count);
-
-
         productService.saveCart(cart);
         return ResponseEntity.ok("success");
     }

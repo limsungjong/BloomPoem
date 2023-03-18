@@ -224,7 +224,7 @@ footer {
 }
 .flowerNameDiv{
     grid-area: flowerName;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
 }
 .flowerColorDiv{
@@ -250,4 +250,8 @@ footer {
 }
 .paging button{
     margin: 10px;
+}
+.flowerTagDiv span{
+    font-size: 1.2rem;
+    cursor: pointer;
 }
