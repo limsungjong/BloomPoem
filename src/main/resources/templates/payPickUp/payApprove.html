@@ -16,8 +16,8 @@
   </style>
   <script>
     $(document).ready(()=>{
+
       const orderNumber = parseInt($(".orderNumber").val());
-      const cookie= document.cookie.split("=")[1]
 
       $.ajax({
         url : "/api/v1/pick_up_order/success/orderDetail",
@@ -26,13 +26,15 @@
       }).then(r=>{
         console.log(r)
         $.each(r, (i, p)=>{
-          // const msg =`<div class="oneProductArea">
-          // <img src ="/image/product/${p.product.productMainImage}" alt="productImage" class="oneProductImage">
-          // <div class="oneProductName">${p.product.productName}</div>
-          // <div class="oneProductQuantity">수량 : ${p.shoppingOrderDetailCount}</div>
-          // <div class="oneProductPrice">가격 : ${p.product.productPrice * p.shoppingOrderDetailCount}</div>
-          //   </div>`
-          // $(".productArea").append(msg)
+          console.log(i)
+          console.log(p)
+          const msg =`<div class="oneProductArea">
+          <img src ="/image/florist_product/${p.product.productMainImage}" alt="productImage" class="oneProductImage">
+          <div class="oneProductName">${p.product.productName}</div>
+          <div class="oneProductQuantity">수량 : ${p.shoppingOrderDetailCount}</div>
+          <div class="oneProductPrice">가격 : ${p.product.productPrice * p.shoppingOrderDetailCount}</div>
+            </div>`
+          $(".productArea").append(msg)
         })
       })
     })
@@ -52,7 +54,7 @@
     <div class="result">결제가 완료 되었습니다.</div>
     <hr/>
     <div class="productArea"></div>
-    <button class="btn btn-outline-dark close"><a href="/shopping">홈으로 돌아가기</a></button>
+    <button class="btn btn-outline-dark close">닫기</button>
   </div>
   </div>
   <input type="hidden" class="orderNumber" th:value="${orderId}">

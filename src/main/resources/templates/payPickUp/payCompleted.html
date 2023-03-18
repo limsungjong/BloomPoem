@@ -64,15 +64,15 @@
             <hr/>
         </div>
         <div class="successArea">
-            <div>주문번호 : <span th:text="${PayApprove.partner_order_id}"></span></div>
-            <div>이름 : <span class="productName" th:text="${PayApprove.item_name}"></span></div>
-            <div>수량 : <span th:text="${PayApprove.quantity}"></span></div>
-            <div>가격 : <span th:text="${PayApprove.}"></span></div>
+
+<!--            <div>주문번호 : <span th:text="${PayApprove.partner_order_id}"></span></div>-->
+<!--            <div>이름 : <span class="productName" th:text="${PayApprove.item_name}"></span></div>-->
+<!--            <div>수량 : <span th:text="${PayApprove.quantity}"></span></div>-->
+<!--            <div>가격 : <span th:text="${PayApprove.}"></span></div>-->
         </div>
         <button class="btn btn-outline-dark close">닫기</button>
-<!--        <input type="hidden" id="orderId" th:value="${kakaoApprovar.partner_order_id}">-->
-<!--        <input type="hidden" id="productName" th:value="${kakaoApprovar.item_name}">-->
-
+        <input type="hidden" id="orderId" th:value="${payApprove.partner_order_id}">
+        <input type="hidden" id="productName" th:value="${payApprove.item_name}">
     </div>
 </main>
 
