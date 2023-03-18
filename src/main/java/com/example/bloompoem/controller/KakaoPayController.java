@@ -2,9 +2,10 @@ package com.example.bloompoem.controller;
 
 import com.example.bloompoem.domain.dto.PickUpCartRequest;
 import com.example.bloompoem.domain.dto.PickUpDateAndTImeRequest;
-import com.example.bloompoem.domain.kakaoPay.PayApprove;
 import com.example.bloompoem.domain.kakaoPay.PayOrderProduct;
 import com.example.bloompoem.domain.kakaoPay.PayReady;
+import com.example.bloompoem.dto.KakaoApprovar;
+import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
 import com.example.bloompoem.repository.PickUpCartRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import com.example.bloompoem.service.KakaoPayService;
@@ -20,8 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin(value = "http://192.168.45.17:5500")
 public class KakaoPayController {
 
     Logger logger = LoggerFactory.getLogger(KakaoPayService.class);
@@ -109,27 +113,17 @@ public class KakaoPayController {
             , String pgToken
             , String cookie) {
         String userEmail = userService.tokenToUserEntity(cookie).getUserEmail();
-        logger.info(orderId);
-        logger.info(tId);
-        logger.info(pgToken);
-        logger.info(userEmail);
-        // 카카오 결재 요청하기
-        PayApprove payApprove = kakaoPayService.payApprove(tId, pgToken, orderId, userEmail);
-        if (payApprove != null) {
-//            PickUpOrderEntity pickUpOrderEntity = pickUpOrderRepository.findById(Integer.valueOf(orderId)).orElseThrow();
-//
-//
-//
-//            model.addAttribute("payApprove", payApprove);
-//            PickUpOrderSuccess orderSuccess = PickUpOrderSuccess
-//                    .builder()
-//                    .partner_order_id(payApprove.getPartner_order_id())
-//                    .date(pickUpOrderEntity.getPickUpOrderReservationDate())
-//                    .time(pickUpOrderEntity.getPickUpOrderReservationTime())
-//                    .build();
+        // 카카오 결제 요청하기
+        KakaoApprovar payApprove = kakaoPayService.payApprove(tId, pgToken, orderId, userEmail);
+        if(payApprove != null) {
+            logger.info("payApprove 들어옴!");
+            model.addAttribute("payApprove",payApprove);
+            List<PickUpOrderResponse> asd = pickUpOrderRepository
+                    .searchPickUpOrderResponse(userEmail, Integer.valueOf(orderId));
+            model.addAttribute("resDetail",asd);
         }
 
-        return "/shop/shopPaymentSuccess";
+        return "/payPickUp/payCompleted";
     }
 
     // 결제 페이지 요청
@@ -138,5 +132,12 @@ public class KakaoPayController {
         model.addAttribute("pgToken", pg_token);
 
         return "/payPickUp/payResult";
+    }
+
+    // 결제 페이지에서 오더 아이디를 다시 채워서 payApprove 페이지로 보냄
+    @PostMapping("/pick_up/order/pay/success")
+    public String  paymentSuccess (Model model, int orderId){
+        model.addAttribute("orderId", orderId);
+        return "/payPickUp/payApprove";
     }
 }

@@ -1,9 +1,8 @@
 package com.example.bloompoem.service;
 
 import com.example.bloompoem.domain.dto.PickUpDateAndTImeRequest;
-import com.example.bloompoem.domain.kakaoPay.PayApprove;
 import com.example.bloompoem.domain.kakaoPay.PayReady;
-import com.example.bloompoem.entity.PickUpCartEntity;
+import com.example.bloompoem.dto.KakaoApprovar;
 import com.example.bloompoem.repository.FlowerRepository;
 import com.example.bloompoem.repository.PickUpCartRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +12,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,13 +101,9 @@ public class KakaoPayService {
         return payReady;
     }
 
-    public PayApprove payApprove(String tid, String pgToken, String orderId, String userEmail) {
+    public KakaoApprovar payApprove(String tid, String pgToken, String orderId, String userEmail) {
         String user = userEmail;
-        PayApprove payApprove = null;
-        List<PickUpCartEntity> carts = pickUpCartRepository.findByUserEmail(user);
-        System.out.println("tid" + tid);
-
-        logger.info("orderId" + orderId);
+        KakaoApprovar KakaoApprovar = null;
 
         // request값 담기.
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
@@ -124,23 +122,28 @@ public class KakaoPayService {
         // 보낼 외부 url, 요청 메시지(header, parameter), 처리후 값을 받아올 클래스
 
         try {
-            payApprove = template.postForObject(url, requestEntity, PayApprove.class);
-            if (payApprove != null) {
-                logger.info("결제 완료");
+            KakaoApprovar = template.postForObject(new URI("https://kapi.kakao.com/v1/payment/approve"), requestEntity, KakaoApprovar.class);
+
+            if(KakaoApprovar !=null){
                 pickUpService.pickUpCartDeleteByPickOrderSeq(Integer.valueOf(orderId));
+                orderService.updateOrderStatus(Integer.parseInt(orderId), 3);
             }
-        } catch (Exception e) {
-            logger.error("[payApprove] restTemplate Error");
+        }catch(RestClientException e)
+        {
+            logger.error("[KakaoPayService] kakaoPayApprove RestClientException", e);
+        }
+        catch(URISyntaxException e)
+        {
+            logger.error("[KakaoPayService] kakaoPayApprove URISyntaxException", e);
         }
 
-        return payApprove;
+        return KakaoApprovar;
     }
-
 
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", adminKey);
-        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.add("Authorization", adminKey);
+        headers.add("Content-type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=utf-8");
         return headers;
     }
 }
