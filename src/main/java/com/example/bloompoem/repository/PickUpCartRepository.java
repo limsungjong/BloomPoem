@@ -11,9 +11,10 @@ import java.util.Optional;
 public interface PickUpCartRepository extends JpaRepository<PickUpCartEntity, Integer> {
     List<PickUpCartEntity> findPickUpCartEntitiesByUserEmail(String userEmail);
     Optional<PickUpCartEntity> findByUserEmailAndFlowerNumber(String userEmail, int flowerNumber);
-
     List<PickUpCartEntity> findByUserEmail(String userEmail);
-
     Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFloristNumber(String userEmail, int flowerNumber, int floristNumber);
 
+    Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFlowerCountAndFloristNumber
+            (String userEmail, int flowerNumber, int flowerCount, int floristNumber);
+    void deleteByUserEmailAndAndFlowerNumberAndFloristNumber(String userEmail, int flowerNumber, int floristNumber);
 }
