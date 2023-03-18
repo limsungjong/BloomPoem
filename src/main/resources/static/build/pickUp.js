@@ -1016,15 +1016,12 @@ class sideItemObj {
         } else {
             data = this.bucketDataArr;
         }
-        console.log(data)
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: JSON.stringify({'date': dateTime.date, 'time': dateTime.time, 'orderList': data}),
             redirect: "follow",
         };
-
-        console.log(requestOptions)
         this.dateAndTimeController();
         // 카카오 페이 가장 처음 시작이다.
         fetch("http://localhost:9000/kakao_pay/ready", requestOptions)
@@ -1032,12 +1029,12 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
-                this.createBuyWatting();
+                this.createBuySpinner();
 
                 if (result == undefined) return;
                 // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
                 // 밑에 있는 폼의 이름도 kakaoPopUp이다.
-                window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
+                this.popUpControl();
 
                 // html밑의 3개의 인풋에 result에 담긴 3개의 값을 할당한다.
                 $("#orderId").val(result.orderId);
@@ -1131,16 +1128,27 @@ class sideItemObj {
     }
 
     createBuySpinner() {
+        if (this.modalContainer.querySelector(".spinnerBox")) return;
         const box = this.buyModalContainer.querySelector(".contentBox");
-        const spinner = document.createElement('div');
-        const spinnerHtml =
-            `
-            
-            `;
+        const spinner = document.createElement("div");
+        spinner.setAttribute("class", "spinnerBox");
+        const spinnerHtml = `
+    <div class="loaderText">결제 진행 중입니다</div>
+    <div class="loader">Loading...</div>
+        `;
+        spinner.innerHTML = spinnerHtml;
+        box.append(spinner);
+    }
 
+    popUpControl() {
+        popup = window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
+
+        popup.addEventListener("beforeunload", function () {
+            removeSpinnerBox();
+        });
     }
 }
-
+let popup;
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
     fetch("http://localhost:9000/api/v1/florist/florist_list")
@@ -1197,3 +1205,7 @@ kakao.maps.event.addListener(map, 'dragend', function (data) {
     let center = map.getCenter();
     moveGetList(center.La, center.Ma);
 });
+
+function removeSpinnerBox() {
+    document.querySelector(".spinnerBox").remove();
+}
