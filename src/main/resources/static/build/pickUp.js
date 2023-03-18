@@ -620,7 +620,7 @@ class sideItemObj {
     createCheckModal(text) {
         const checkModal = document.createElement("div");
         checkModal.innerHTML = `
-    <div id="checkModal" class="modal-overlay">
+    <div id="checkModal" class="modal-overlay" xmlns="http://www.w3.org/1999/html">
       <div id="checkModal">
         <div class="head">
           <div class="close-btn">
@@ -629,9 +629,8 @@ class sideItemObj {
         </div>
         <div class="middle">
           <div class="textBox">
-            <span>다른 가게의 물품이 있습니다.</span> <br />
-            <span>지금 장바구니에 있는 가게의 물품과</span> <br />
-            <span>함께 담을 수 없습니다.</span><br />
+            <span>${this.floristData.floristName}에서 담은 물품이 있습니다.</span> </br>
+            <span>이 창에서 나가면 모든 물품이 제거 됩니다.</span> </br>
             <span>지금 장바구니 물품을 모두 제거 할까요?</span>
           </div>
         </div>
@@ -849,7 +848,10 @@ class sideItemObj {
             return (acc += cur.flowerCount * cur.floristProductPrice);
         }, 0))}</span>
                 </div>
-                <div class="buyBtnBox" id="kakaoPayBtn">카카오 페이로 구매하기</div>
+                <div class="buyBtnBox" id="kakaoPayBtn">
+                    <img src="/image/kakaoPay.png" alt="kakaoPayImage" class="kakaoPageImage"> </br>
+                    <span>카카오 페이로 구매하기</span>
+                </div>
               </div>
             </div>
           </div>
@@ -909,7 +911,10 @@ class sideItemObj {
                 <div class="priceBox">
                   <span class="priceSpan">총 금액 : ${numberAddComa(buyData.floristProductTotalPrice)}</span>
                 </div>
-                <div class="buyBtnBox" id="kakaoPayBtn">카카오 페이로 구매하기</div>
+                <div class="buyBtnBox" id="kakaoPayBtn">
+                    <img src="/image/kakaoPay.png" alt="kakaoPayImage" class="kakaoPageImage"> </br>
+                    <span>카카오 페이로 구매하기</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1075,7 +1080,7 @@ class sideItemObj {
         }
 
         if (selectDateInput.value == "") {
-            alert("날짜를 입렵해주세요.");
+            alert("날짜를 입력해주세요.");
             selectDateInput.focus();
             bool = false;
             return bool;

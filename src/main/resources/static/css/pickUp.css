@@ -748,3 +748,9 @@ option {
 label {
     font-size: 2rem;
 }
+
+#kakaoPayBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
