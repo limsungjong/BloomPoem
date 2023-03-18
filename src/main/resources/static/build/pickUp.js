@@ -352,6 +352,7 @@ class sideItemObj {
             flowerLiBox
                 .querySelector(".flowerBasketBtn")
                 .addEventListener("click", (e) => {
+                    if(this.loginChecker() == false) return;
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
@@ -524,6 +525,7 @@ class sideItemObj {
 
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
                 console.log("장바구니 탭에서 단건 구매")
+                this.singleBuyDataArr = [];
                 const buyData = {
                     flowerName: bucket.flowerName,
                     flowerCount: bucketLi.querySelector('.bucketCount').value,
@@ -534,6 +536,7 @@ class sideItemObj {
                     floristProductTotalPrice: bucket.floristProductPrice * bucketLi.querySelector('.bucketCount').value,
                     floristMainImage: bucket.floristMainImage
                 };
+                this.singleBuyDataArr.push(buyData);
                 this.singleCreateBuyModal(buyData);
             });
 
@@ -754,10 +757,11 @@ class sideItemObj {
 
     // flower 탭에 있는 꽃 구매 핸들링
     flowerBuyHandler(flowerLiBox, flowerData) {
-
         const buyBtn = flowerLiBox.querySelector("#flowerBuyBtn");
         buyBtn.addEventListener("click", () => {
+            if(this.loginChecker() == false) return;
             console.log("꽃 탭에서 단건 구매")
+            this.singleBuyDataArr = [];
             const buyData = {
                 flowerName: flowerData.flowerName,
                 flowerCount: flowerLiBox.querySelector('.flowerCount').value,
@@ -768,6 +772,7 @@ class sideItemObj {
                 floristProductTotalPrice: flowerData.floristProductPrice * flowerLiBox.querySelector('.flowerCount').value,
                 floristMainImage: flowerData.floristMainImage
             }
+            this.singleBuyDataArr.push(buyData);
             this.singleCreateBuyModal(buyData);
         });
     }
@@ -807,7 +812,7 @@ class sideItemObj {
         return this;
     }
 
-    // 구매 모달 띄우기
+    // 전체 구매 모달 띄우기
     createBuyModal() {
         if (document.querySelector("#buyModal")) {
             document.removeChild(document.querySelector("#buyModal"));
@@ -869,6 +874,7 @@ class sideItemObj {
         })
     }
 
+    // 단일 구매
     singleCreateBuyModal(buyData) {
         if (document.querySelector("#buyModal")) {
             document.removeChild(document.querySelector("#buyModal"));
@@ -1004,11 +1010,13 @@ class sideItemObj {
         console.log(dateTime)
         console.log(this.bucketDataArr)
         let data;
-        if(buyData) {
-            data = buyData;
+
+        if(this.singleBuyDataArr.length > 0) {
+            data = this.singleBuyDataArr;
         } else {
             data = this.bucketDataArr;
         }
+        console.log(data)
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -1024,9 +1032,9 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
-                if (result == undefined) return;
-                console.log(result)
+                this.createBuyWatting();
 
+                if (result == undefined) return;
                 // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
                 // 밑에 있는 폼의 이름도 kakaoPopUp이다.
                 window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
@@ -1120,6 +1128,16 @@ class sideItemObj {
         fetch("http://localhost:9000/api/v1/pick_up/pick_up_cart_update_target", requestOptions)
             .then(response => response.text())
             .catch(error => console.log('error', error));
+    }
+
+    createBuySpinner() {
+        const box = this.buyModalContainer.querySelector(".contentBox");
+        const spinner = document.createElement('div');
+        const spinnerHtml =
+            `
+            
+            `;
+
     }
 }
 
