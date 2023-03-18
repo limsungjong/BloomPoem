@@ -1,22 +1,15 @@
 package com.example.bloompoem.controller;
 
 import com.example.bloompoem.domain.dto.PickUpCartRequest;
-import com.example.bloompoem.entity.FloristEntity;
-import com.example.bloompoem.entity.FloristProductEntity;
-import com.example.bloompoem.entity.FlowerEntity;
-import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
-import com.example.bloompoem.entity.PickUpCartEntity;
-import com.example.bloompoem.repository.FloristProductRepository;
-import com.example.bloompoem.repository.FlowerRepository;
-import com.example.bloompoem.repository.PickUpCartRepository;
-import com.example.bloompoem.repository.PickUpOrderRepository;
+import com.example.bloompoem.entity.PickUpOrderDetailEntity;
+import com.example.bloompoem.entity.PickUpOrderEntity;
+import com.example.bloompoem.repository.*;
 import com.example.bloompoem.service.PickUpService;
 import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +42,9 @@ public class TestController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PickUpOrderDetailRepository pickUpOrderDetailRepository;
+
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
 
@@ -70,8 +66,9 @@ public class TestController {
     }
 
     @GetMapping(value = "/test/api")
-    public @ResponseBody String test(@RequestBody List<PickUpCartRequest> pick, @CookieValue(value = "Authorization") String token) {
-        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+    public @ResponseBody String test() {
+        String orderId = "49";
+        pickUpService.pickUpCartDeleteByPickOrderSeq(Integer.valueOf(orderId));
         return "성공";
     }
 }
