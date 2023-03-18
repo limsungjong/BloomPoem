@@ -118,9 +118,10 @@ public class KakaoPayController {
         if(payApprove != null) {
             logger.info("payApprove 들어옴!");
             model.addAttribute("payApprove",payApprove);
-            List<PickUpOrderResponse> asd = pickUpOrderRepository
+
+            List<PickUpOrderResponse> responseList = pickUpOrderRepository
                     .searchPickUpOrderResponse(userEmail, Integer.valueOf(orderId));
-            model.addAttribute("resDetail",asd);
+            model.addAttribute("resDetail",responseList);
         }
 
         return "/payPickUp/payCompleted";
@@ -136,7 +137,7 @@ public class KakaoPayController {
 
     // 결제 페이지에서 오더 아이디를 다시 채워서 payApprove 페이지로 보냄
     @PostMapping("/pick_up/order/pay/success")
-    public String  paymentSuccess (Model model, int orderId){
+    public String paymentSuccess (Model model, int orderId){
         model.addAttribute("orderId", orderId);
         return "/payPickUp/payApprove";
     }
