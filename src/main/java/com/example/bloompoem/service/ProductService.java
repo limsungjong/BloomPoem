@@ -227,5 +227,8 @@ public class ProductService {
         return shoppingOrderDao.findByShoppingOrderNumber(shoppingOrderNumber);
     }
 
+    public List<ProductEntity> manyBuyProduct(){
+        return productDao.shoppingMainManyProduct();
+    }
 
 }

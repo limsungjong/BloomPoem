@@ -312,6 +312,11 @@ public class ShoppingController {
         }
 
     }
+    @GetMapping("/shopping/many_buy_product")
+    public ResponseEntity<List<ProductEntity>> manyProduct6 (){
+        return ResponseEntity.ok(productService.manyBuyProduct());
+    }
+
 
 
 }

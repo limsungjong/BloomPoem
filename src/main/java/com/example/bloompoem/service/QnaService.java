@@ -29,9 +29,6 @@ public class QnaService {
         int qnaNumber = qnaRepository.save(qnaEntity).getQnaNumber();
         qnaEntity.setQnaGroup(qnaNumber);
         qnaRepository.save(qnaEntity);
-
-
-
     }
 
     // Qna 글수정

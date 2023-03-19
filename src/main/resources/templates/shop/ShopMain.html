@@ -30,6 +30,20 @@
       }else {
         $(".userBox").append(header);
       }
+      $.ajax({
+        url : "/shopping/many_buy_product",
+        method : "get"
+      }).then(r =>{
+        $(".mainBar1Product").empty();
+        console.log(r)
+        $.each(r , (i, p)=>{
+          const msg = `<div class="oneManyBuyProductBox">
+                        <div class="ManyBuyProductImageBox"><img class="ManyBuyProductImage" data-name="${p.productName}" data-no="${p.productNumber}" src="/image/product/${p.productMainImage}"></div>
+                        <div class="ManyBuyProductName">${p.productName}</div>
+                      </div>`
+          $(".mainBar1Product").append(msg)
+        })
+      })
       //쿠기가 있으면 header 변경 끝
       // 메뉴바 보이게하는 제이쿼리
       $(".plantMenu").on("mouseenter", ()=> {
@@ -181,26 +195,24 @@
   <br/>
 
   <div class="mainArea">
-    <div class="mainBar">bar</div>
+
     <div class="mainBar1Product">
-      <!--3x3그리드 시작 -->
+      <!--3x2그리드 시작 -->
+
     </div>
   </div>
   <br/>
   <br/>
-  <div>
-    <div class="subArea">
-      <!--2X 6 그리드 시작-->
-    </div>
+  <div class="subArea">
+    <!--2X 6 그리드 시작-->
   </div>
   <br/>
-  <div>
-    <div class ="subArea2">
-      <!-- 3x1 그리드 시작 -->
-    </div>
+  <div class ="subArea2">
+    <!-- 3x1 그리드 시작 -->
   </div>
+  <footer>
+  </footer>
 </main>
-<footer>
-</footer>
+
 </body>
 </html>
