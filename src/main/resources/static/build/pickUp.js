@@ -524,6 +524,7 @@ class sideItemObj {
                 });
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
                     numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                this.createBucketFooter();
             });
 
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
