@@ -57,6 +57,7 @@ time, mark, audio, video {
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    text-decoration: none;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -65,6 +66,7 @@ input[type="number"]::-webkit-inner-spin-button {
     -moz-appearance: none;
     appearance: none;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, /**/
 footer, header, hgroup, menu, nav, section {
@@ -77,24 +79,29 @@ footer, header, hgroup, menu, nav, section {
     font-size: 1.5rem;
     user-select: none;
 }
+
 body {
     line-height: 1;
     font-family: "나눔스퀘어 네오";
     overflow: hidden;
 }
+
 ol,
 ul {
     list-style: none;
 }
+
 blockquote,
 q {
     quotes: none;
 }
+
 blockquote:before, blockquote:after, /**/
 q:before, q:after {
     content: "";
     content: none;
 }
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -122,12 +129,15 @@ header {
     align-items: center;
     background-color: #fff3d4;
 }
+
 .logoBox {
     width: 15%;
 }
+
 .logo {
     margin-left: 50px;
 }
+
 nav {
     width: 100%;
     font-size: 20px;
@@ -143,6 +153,7 @@ nav {
     background-color: var(--color-cherry-blossom);
     color: #000000;
 }
+
 .searchBox {
     height: 100px;
     display: flex;
@@ -162,9 +173,11 @@ nav {
     color: #000000;
     font-size: 23px;
 }
+
 .searchTerm:focus {
     outline: none;
 }
+
 .searchButton {
     width: 40px;
     height: 55px;
@@ -178,9 +191,12 @@ nav {
     cursor: pointer;
     font-size: 25px;
 }
+
 .userBox {
     width: 15%;
+    min-width: 252px;
 }
+
 menu {
     width: 50%;
     display: flex;
@@ -192,12 +208,14 @@ menu {
 span {
     font-size: 1.5rem;
 }
+
 nav span {
     color: #000;
     display: inline-block;
     margin: 0;
     text-transform: uppercase;
 }
+
 nav span:after {
     margin-top: 5px;
     display: block;
@@ -206,12 +224,15 @@ nav span:after {
     transform: scaleX(0);
     transition: transform 250ms ease-in-out;
 }
+
 nav span:hover:after {
     transform: scaleX(1);
 }
+
 nav span.fromRight:after {
     transform-origin: 100% 50%;
 }
+
 nav span.fromLeft:after {
     transform-origin: 0% 50%;
 }
@@ -236,6 +257,7 @@ nav span.fromLeft:after {
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
 #modal .modal-window {
     background: var(--color-true-white);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -249,6 +271,7 @@ nav span.fromLeft:after {
     top: -20px;
     padding: 10px;
 }
+
 #modal .title {
     height: 8vh;
     font-size: 3rem;
@@ -258,9 +281,11 @@ nav span.fromLeft:after {
     color: var(--color-black);
     margin-bottom: 20px;
 }
+
 #modal .title h2 {
     display: inline;
 }
+
 #modal .close-area {
     position: absolute;
     top: 15px;
@@ -270,12 +295,14 @@ nav span.fromLeft:after {
     font-size: 2rem;
     color: var(--color-black);
 }
+
 #modal .modal-nav {
     display: flex;
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
 }
+
 #modal .modal-nav li {
     border: 2px solid var(--color-dark-gray);
     border-right: none;
@@ -286,13 +313,16 @@ nav span.fromLeft:after {
     align-items: center;
     background-color: var(--color-sun-gray);
 }
+
 #modal .modal-nav .active {
     background-color: var(--color-true-white);
     border-bottom: none;
 }
+
 #modal .modal-nav li:first-child {
     border-radius: 12px 0 0 0;
 }
+
 #modal .modal-nav li:after {
     margin-top: 5px;
     display: block;
@@ -301,20 +331,25 @@ nav span.fromLeft:after {
     transform: scaleX(0);
     transition: transform 250ms ease-in-out;
 }
+
 #modal .modal-nav li:last-child {
     border-radius: 0 12px 0 0;
     border: 2px solid var(--color-dark-gray);
 }
+
 #modal .modal-nav .active:last-child {
     background-color: var(--color-true-white);
     border-bottom: none;
 }
+
 #modal .modal-nav li:hover:after {
     transform: scaleX(1);
 }
+
 #modal .modal-nav li.fromRight:after {
     transform-origin: 100% 50%;
 }
+
 #modal .modal-nav li.fromLeft:after {
     transform-origin: 0% 50%;
 }
@@ -336,10 +371,12 @@ main {
     display: flex;
     flex-direction: row;
 }
+
 .mainContainer {
     width: 70vw;
     height: 100vh;
 }
+
 .sideContainer {
     width: 30vw;
     height: 90vh;
@@ -352,30 +389,37 @@ main {
     padding: 10px 20px;
     cursor: pointer;
 }
+
 .sideItem::after {
     margin-top: 10px;
     display: block;
     content: "";
     border-bottom: solid 1px var(--color-light-gray);
 }
+
 .sideItem:last-child::after {
     border-bottom: none;
 }
+
 .floristImg {
     width: 200px;
     height: 150px;
     background-size: cover;
     background-repeat: no-repeat;
 }
+
 .floristImgBox {
     height: 160px;
 }
+
 .floristTitle span {
     font-size: 1.5rem;
 }
+
 .floristPhoneNumber span {
     font-size: 1rem;
 }
+
 .floristAddress span {
     font-size: 1rem;
 }
@@ -411,6 +455,7 @@ main {
     justify-content: center;
     flex-direction: column;
 }
+
 #modal .flowerDetailBuy,
 #modal .bucketDetailBuy {
     display: flex;
@@ -419,6 +464,7 @@ main {
     justify-content: center;
     align-items: center;
 }
+
 #modal .productBasket,
 #modal .productBuy {
     margin: 2px;
@@ -469,6 +515,7 @@ main {
 #modal .flowerBuyBox button {
     margin-right: 5px;
 }
+
 #modal .checkBox {
     display: flex;
     width: 200px;
@@ -500,28 +547,34 @@ main {
     flex-direction: row-reverse;
     height: 45px;
 }
+
 #checkModal .textBox {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 #checkModal .middle {
     display: flex;
     height: 240px;
     align-items: center;
     justify-content: center;
 }
+
 #checkModal .checkBox {
     display: flex;
     justify-content: space-evenly;
     font-size: 4rem;
 }
+
 #checkModal .okBox {
     color: var(--color-sky-blue);
 }
+
 #checkModal .noBox {
     color: var(--color-red);
 }
+
 #checkModal .okBox,
 #checkModal .noBox {
     cursor: pointer;
@@ -548,6 +601,7 @@ main {
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
 #checkModal .modal-window {
     background: var(--color-true-white);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -607,10 +661,12 @@ main {
 #modal .selectBox button {
     margin: 5px;
 }
+
 .content {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
+
 .content::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
 }
@@ -637,6 +693,7 @@ input[type="checkBox"] {
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
 #buyModal .modal-window {
     background: var(--color-true-white);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -722,6 +779,7 @@ input[type="checkBox"] {
     flex-direction: column;
     align-items: center;
 }
+
 #buyModal .dateSelectBox,
 #buyModal .timeSelectBox {
     display: flex;
@@ -730,6 +788,7 @@ input[type="checkBox"] {
     margin: 15px;
     height: 50px;
 }
+
 #buyModal input {
     width: 100%;
     text-align: center;
@@ -745,8 +804,15 @@ option {
     font-size: 1.2rem;
     padding: 5px;
 }
+
 label {
     font-size: 2rem;
+}
+
+.buyBtnBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* spinner */
@@ -767,6 +833,10 @@ label {
     left: 30%;
 }
 
+a {
+    color: #000;
+}
+
 .loader {
     color: var(--color-dark-gray);
     font-size: 90px;
@@ -783,6 +853,7 @@ label {
     -webkit-animation: load6 1.7s infinite ease, round 1.7s infinite ease;
     animation: load6 1.7s infinite ease, round 1.7s infinite ease;
 }
+
 @-webkit-keyframes load6 {
     0% {
         box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
@@ -814,6 +885,7 @@ label {
         0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
     }
 }
+
 @keyframes load6 {
     0% {
         box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
@@ -845,6 +917,7 @@ label {
         0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
     }
 }
+
 @-webkit-keyframes round {
     0% {
         -webkit-transform: rotate(0deg);
@@ -855,6 +928,7 @@ label {
         transform: rotate(360deg);
     }
 }
+
 @keyframes round {
     0% {
         -webkit-transform: rotate(0deg);
