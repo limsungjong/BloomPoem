@@ -12,6 +12,7 @@ import com.example.bloompoem.repository.ProductRepository;
 import com.example.bloompoem.repository.ShoppingCartRepository;
 import com.example.bloompoem.repository.ShoppingOrderDetailRepository;
 import com.example.bloompoem.repository.ShoppingOrderRepository;
+import jdk.jfr.Category;
 import org.hibernate.type.LocalDateTimeType;
 import org.hibernate.type.LocalDateType;
 import org.slf4j.Logger;
@@ -229,6 +230,24 @@ public class ProductService {
 
     public List<ProductEntity> manyBuyProduct(){
         return productDao.shoppingMainManyProduct();
+    }
+
+    public Page<ProductEntity> sumCategoryView(int category, Pageable pageable){
+        int startCategory ;
+        int endCategory;
+        if(category == 10){
+             startCategory = 1;
+             endCategory = 2;
+        }else if(category == 11){
+            startCategory =3 ;
+            endCategory =4 ;
+        }else if(category == 12){
+            startCategory = 5;
+            endCategory =6;
+        }else{
+            return null;
+        }
+        return productDao.findByProductCategoryBetween(startCategory, endCategory, pageable);
     }
 
 }

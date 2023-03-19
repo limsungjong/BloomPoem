@@ -10,6 +10,7 @@ import com.example.bloompoem.service.ShoppingReviewService;
 import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.JwtUtil;
 
+import jdk.jfr.Category;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -317,6 +318,15 @@ public class ShoppingController {
         return ResponseEntity.ok(productService.manyBuyProduct());
     }
 
+    @GetMapping("/shopping/category_sum_view")
+    public ResponseEntity<Page<ProductEntity>> categorySumView( int category, @PageableDefault(size = 6) Pageable pageable){
+        if(category == 10 || category == 11 || category == 12){
+            return ResponseEntity.ok(productService.sumCategoryView(category, pageable));
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        }
+
+    }
 
 
 }

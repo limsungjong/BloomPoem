@@ -35,4 +35,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
             "  FETCH FIRST 6 ROWS ONLY\n" +
             ")",nativeQuery = true)
     List<ProductEntity> shoppingMainManyProduct();
+
+    Page<ProductEntity> findByProductCategoryBetween(int startCategory , int endCategory, Pageable pageable);
 }

@@ -168,10 +168,10 @@ var _a;
     const cardFlipOnScroll = new CardFlipOnScroll(mainContent1, sticky);
     cardFlipOnScroll.init();
     cardFlipOnScroll.preLoad([
-        "./image/cherryBlossom.jpg",
-        "./image/sunFlower.jpg",
-        "./image/cosmos.jpg",
-        "./image/camelia.jpg",
+        "./image/pick.jpg",
+        "./image/Shop.jpg",
+        "./image/recommend.jpg",
+        "./image/logo.png",
     ]);
     window.addEventListener("scroll", () => {
         cardFlipOnScroll.animate();
