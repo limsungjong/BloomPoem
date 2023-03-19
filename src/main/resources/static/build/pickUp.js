@@ -353,14 +353,16 @@ class sideItemObj {
             flowerLiBox
                 .querySelector(".flowerBasketBtn")
                 .addEventListener("click", (e) => {
-                    if(this.loginChecker() == false) return;
+                    if (this.loginChecker() == false) return;
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
+                    console.log(flower)
                     const buyData = {
                         flowerName: flower.flowerName,
                         flowerCount: parseInt(flowerLiBox.querySelector('.flowerCount').value),
                         flowerNumber: flower.flowerNumber,
+                        flowerColor: flower.flowerColor,
                         floristProductPrice: flower.floristProductPrice,
                         floristNumber: this.floristData.floristNumber,
                         floristName: this.floristData.floristName,
@@ -449,7 +451,7 @@ class sideItemObj {
           />
       </div>
       <div class="bucketDetailContent">
-        <span class="bucketDetailSpan">${bucket.flowerName}</span>
+        <span class="bucketDetailSpan">${bucket.flowerColor == null ? "" : bucket.flowerColor} ${bucket.flowerName}</span>
           <br />
         <span class="bucketDetailSpan">가격 : ${
                 numberAddComa(bucket.floristProductPrice)
@@ -531,6 +533,7 @@ class sideItemObj {
                     flowerName: bucket.flowerName,
                     flowerCount: bucketLi.querySelector('.bucketCount').value,
                     flowerNumber: bucket.flowerNumber,
+                    flowerColor: bucket.flowerColor,
                     floristProductPrice: bucket.floristProductPrice,
                     floristNumber: this.floristData.floristNumber,
                     floristName: this.floristData.floristName,
@@ -610,8 +613,13 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
-                console.log("받아")
                 if (result == undefined) return;
+                result.forEach(cart => {
+                    if (cart.floristNumber != this.floristData.floristNumber) {
+                        this.bucketDeleteFetch();
+                    }
+                })
+                console.log(result)
                 this.bucketDataArr = result;
                 if (!first) this.createModalBucket();
             })
@@ -759,7 +767,7 @@ class sideItemObj {
     flowerBuyHandler(flowerLiBox, flowerData) {
         const buyBtn = flowerLiBox.querySelector("#flowerBuyBtn");
         buyBtn.addEventListener("click", () => {
-            if(this.loginChecker() == false) return;
+            if (this.loginChecker() == false) return;
             console.log("꽃 탭에서 단건 구매")
             this.singleBuyDataArr = [];
             const buyData = {
@@ -1017,7 +1025,7 @@ class sideItemObj {
         console.log(this.bucketDataArr)
         let data;
 
-        if(this.singleBuyDataArr.length > 0) {
+        if (this.singleBuyDataArr.length > 0) {
             data = this.singleBuyDataArr;
         } else {
             data = this.bucketDataArr;
@@ -1147,7 +1155,9 @@ class sideItemObj {
         box.append(spinner);
     }
 }
+
 let popup;
+
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
     fetch("http://localhost:9000/api/v1/florist/florist_list")

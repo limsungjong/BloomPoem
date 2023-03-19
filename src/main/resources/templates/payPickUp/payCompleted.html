@@ -49,25 +49,20 @@
             ${r[0].pickUpOrderReservationTime}
             `;
 
-                r.forEach((element) => {
-                    console.log(element);
-                    const box = document.createElement("div");
-                    box.setAttribute("class", "orderDetailBox");
-
-                    const boxHtml = `
+                const box = document.createElement("div");
+                box.setAttribute("class", "orderDetailBox");
+                const boxHtml = `
             <img
               class="flowerImg"
-              src="http://localhost:9000/image/florist_product/${element.floristMainImage}"
+              src="http://localhost:9000/image/florist_product/${r[0].floristMainImage}"
               alt=""
             />
             <div class="flowerInfoBox">
-              <span class="flowerName">${element.flowerName}</span>
-              <span class="flowerCount">${element.pickUpOrderDetailCount} 송이</span>
+              <span class="flowerName">${r[0].flowerName} 외 ${r.length - 1}건</span>
             </div>
             `;
-                    box.innerHTML = boxHtml;
-                    document.querySelector(".productArea").append(box);
-                });
+                box.innerHTML = boxHtml;
+                document.querySelector(".productArea").append(box);
             });
 
             await opener.paymentSuccess(orderNumber);
@@ -96,7 +91,7 @@
             <span class="pickUpOrderReservationTime"></span>
         </div>
         <div class="productArea"></div>
-        <button class="btn btn-outline-dark close">닫기</button>
+        <button class="btn btn-outline-dark success">닫기</button>
     </div>
     <input type="hidden" class="orderNumber" th:value="${payApprove.getPartner_order_id()}" />
 </main>
