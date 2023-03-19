@@ -11,10 +11,11 @@
   <title>구조 잡기</title>
   <link rel="stylesheet" href="/css/myPage.css" />
 
+
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 
-
-
+  <script src="/build/userContext.js" defer></script>
+  <script src="/build/myPage.js" defer></script>
 
   <script th:inline="javascript">
     // model에 담긴  user 담아두는 변수
@@ -68,8 +69,6 @@
         }
       }).catch(err=> console.log(err))
     }
-
-
 
     $(document).ready(()=>{
       const cookie= document.cookie.split("=")[1]
@@ -471,13 +470,13 @@
         <li>내 정보 수정 </li>
         <li>주문내역
           <ul class="subTitle">
-            <li>픽업</li>
+            <li class="pickUpOrderHistory">픽업</li>
             <li class="shoppingOrderHistory">쇼핑</li>
           </ul>
         </li>
         <li>리뷰 관리
           <ul class="subTitle">
-            <li>픽업</li>
+            <li class="pickUpReviewManagement">픽업</li>
             <li class="shoppingReviewManagement">쇼핑</li>
           </ul>
         </li>
