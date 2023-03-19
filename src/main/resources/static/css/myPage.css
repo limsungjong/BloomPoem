@@ -471,3 +471,6 @@ input[type=text] {
 .shoppingReviewContent .form-control{
     width: 340px;
 }
+#pickUpModal {
+    display: block;
+}

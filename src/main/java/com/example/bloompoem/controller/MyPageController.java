@@ -1,13 +1,12 @@
 package com.example.bloompoem.controller;
 
 import com.example.bloompoem.domain.dto.OrderReviewRequest;
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.*;
+import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
-import com.example.bloompoem.service.OrderService;
-import com.example.bloompoem.service.ProductService;
-import com.example.bloompoem.service.ShoppingReviewService;
-import com.example.bloompoem.service.UserService;
+import com.example.bloompoem.service.*;
 import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,6 +37,7 @@ public class MyPageController {
     private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
     private final PickUpOrderRepository pickUpOrderRepository;
     private final OrderService orderService;
+    private final PickUpOrderReviewService pickUpOrderReviewService;
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
     //범수 시작
@@ -148,6 +148,38 @@ public class MyPageController {
     public ResponseEntity<Page<PickUpOrderEntity>> getOrderList(String userEmail, Date startDate, Date endDate, @PageableDefault(size = 2) Pageable pageable
     ) {
         return ResponseEntity.ok().body(orderService.pickUpOrderView(endDate, startDate, userEmail, pageable));
+    }
+
+    @PostMapping("/myPage/pick_up/order_status_update")
+    public ResponseEntity<String> pickUpOrderStatusUpdate(int pickUpOrderNumber) {
+        if(pickUpOrderRepository.findById(pickUpOrderNumber).isPresent()) {
+            logger.info(pickUpOrderNumber+"");
+            orderService.updateOrderStatus(pickUpOrderNumber,5);
+            return ResponseEntity.ok("success");
+        }
+        throw new CustomException(ResponseCode.NOT_FOUND_ORDER);
+    }
+
+    @PostMapping("/review/check_review")
+    public ResponseEntity<Boolean> checkReview(int pickUpOrderNumber) {
+        return ResponseEntity.ok(pickUpOrderReviewService.checkPickUpOrderReview(pickUpOrderNumber));
+    }
+
+    @PostMapping ("/review/pick_up/write")
+    public ResponseEntity<Integer> insertPickUpReview(
+            int floristNumber,
+            String userEmail,
+            int pickUpOrderNumber,
+            String pickUpOrderContent,
+            int pickUpOrderScore) {
+
+        logger.info(floristNumber+"");
+        logger.info(userEmail+"");
+        logger.info(pickUpOrderNumber+"");
+        logger.info(pickUpOrderContent+"");
+        logger.info(pickUpOrderScore+"");
+
+        return ResponseEntity.ok(5);
     }
 
     @PostMapping("/myPage/review/post/order")
