@@ -39,7 +39,7 @@ public class FloristReviewEntity{
         private Character floristReviewScore;
         @Column
         @Temporal(TemporalType.TIMESTAMP)
-        private Date floristRegDate;
+        private Date floristReviewRegDate;
         @Column
         private String floristReviewImage;
 }
