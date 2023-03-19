@@ -72,6 +72,7 @@ class sideItemObj {
     bucketDataArr = [];
     singleBuyDataArr = [];
     buyContainer = null;
+    payPopUp = null;
 
     constructor(x, y, floristData, flowerDataArr, bucketDataArr) {
         this.florist_latitude = x;
@@ -352,14 +353,16 @@ class sideItemObj {
             flowerLiBox
                 .querySelector(".flowerBasketBtn")
                 .addEventListener("click", (e) => {
-                    if(this.loginChecker() == false) return;
+                    if (this.loginChecker() == false) return;
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
+                    console.log(flower)
                     const buyData = {
                         flowerName: flower.flowerName,
                         flowerCount: parseInt(flowerLiBox.querySelector('.flowerCount').value),
                         flowerNumber: flower.flowerNumber,
+                        flowerColor: flower.flowerColor,
                         floristProductPrice: flower.floristProductPrice,
                         floristNumber: this.floristData.floristNumber,
                         floristName: this.floristData.floristName,
@@ -448,7 +451,7 @@ class sideItemObj {
           />
       </div>
       <div class="bucketDetailContent">
-        <span class="bucketDetailSpan">${bucket.flowerName}</span>
+        <span class="bucketDetailSpan">${bucket.flowerColor == null ? "" : bucket.flowerColor} ${bucket.flowerName}</span>
           <br />
         <span class="bucketDetailSpan">가격 : ${
                 numberAddComa(bucket.floristProductPrice)
@@ -521,6 +524,7 @@ class sideItemObj {
                 });
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
                     numberAddComa(bucketInput.value * bucket.floristProductPrice);
+                this.createBucketFooter();
             });
 
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
@@ -530,6 +534,7 @@ class sideItemObj {
                     flowerName: bucket.flowerName,
                     flowerCount: bucketLi.querySelector('.bucketCount').value,
                     flowerNumber: bucket.flowerNumber,
+                    flowerColor: bucket.flowerColor,
                     floristProductPrice: bucket.floristProductPrice,
                     floristNumber: this.floristData.floristNumber,
                     floristName: this.floristData.floristName,
@@ -609,8 +614,13 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
-                console.log("받아")
                 if (result == undefined) return;
+                result.forEach(cart => {
+                    if (cart.floristNumber != this.floristData.floristNumber) {
+                        this.bucketDeleteFetch();
+                    }
+                })
+                console.log(result)
                 this.bucketDataArr = result;
                 if (!first) this.createModalBucket();
             })
@@ -758,7 +768,7 @@ class sideItemObj {
     flowerBuyHandler(flowerLiBox, flowerData) {
         const buyBtn = flowerLiBox.querySelector("#flowerBuyBtn");
         buyBtn.addEventListener("click", () => {
-            if(this.loginChecker() == false) return;
+            if (this.loginChecker() == false) return;
             console.log("꽃 탭에서 단건 구매")
             this.singleBuyDataArr = [];
             const buyData = {
@@ -1016,7 +1026,7 @@ class sideItemObj {
         console.log(this.bucketDataArr)
         let data;
 
-        if(this.singleBuyDataArr.length > 0) {
+        if (this.singleBuyDataArr.length > 0) {
             data = this.singleBuyDataArr;
         } else {
             data = this.bucketDataArr;
@@ -1028,8 +1038,6 @@ class sideItemObj {
             body: JSON.stringify({'date': dateTime.date, 'time': dateTime.time, 'orderList': data}),
             redirect: "follow",
         };
-
-        console.log(requestOptions)
         this.dateAndTimeController();
         // 카카오 페이 가장 처음 시작이다.
         fetch("http://localhost:9000/kakao_pay/ready", requestOptions)
@@ -1037,7 +1045,7 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
-                this.createBuyWatting();
+                this.createBuySpinner();
 
                 if (result == undefined) return;
                 // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
@@ -1136,15 +1144,20 @@ class sideItemObj {
     }
 
     createBuySpinner() {
+        if (this.modalContainer.querySelector(".spinnerBox")) return;
         const box = this.buyModalContainer.querySelector(".contentBox");
-        const spinner = document.createElement('div');
-        const spinnerHtml =
-            `
-            
-            `;
-
+        const spinner = document.createElement("div");
+        spinner.setAttribute("class", "spinnerBox");
+        const spinnerHtml = `
+    <div class="loaderText">결제 진행 중입니다</div>
+    <div class="loader">Loading...</div>
+        `;
+        spinner.innerHTML = spinnerHtml;
+        box.append(spinner);
     }
 }
+
+let popup;
 
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
@@ -1202,3 +1215,7 @@ kakao.maps.event.addListener(map, 'dragend', function (data) {
     let center = map.getCenter();
     moveGetList(center.La, center.Ma);
 });
+
+function removeSpinnerBox() {
+    document.querySelector(".spinnerBox").remove();
+}

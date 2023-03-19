@@ -63,9 +63,6 @@ article, aside, details, figcaption, figure, /**/
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
-a {
-  color: var(--color-sky-blue);
-}
 /* page css */
 * {
   box-sizing: border-box;
@@ -174,7 +171,7 @@ footer {
 
 .img {
   background-size: cover;
-  width: 100px px;
+  width: 100px;
   height: 100px;
 }
 .imgListBox {

@@ -67,7 +67,8 @@
   <input type="hidden" name="pcUrl" id="pcUrl" value="" />
 </form>
 
-<form nema="paymentSuccess" id="paymentSuccess" action="/shopping/payment/success" method ="post">
+<!--카카오 페이 끝난후 실행 될 폼 -->
+<form nema="paymentSuccess" id="paymentSuccess" action="/pick_up/order/pay/success" method ="post">
   <input type="hidden" name="orderId" class="orderId" value="">
 </form>
 <script src="/build/pickUp.js"></script>

@@ -43,7 +43,10 @@ let userContext = {};
                             navBox.innerHTML = signInBox;
                         } else {
                             navBox.innerHTML =
-                                `<span id="logOutBtn">Sign Out</span>`;
+                                `
+                                <span id="MyPage"><a href="/my_page">My Page</a></span>
+                                <span id="logOutBtn">Sign Out</span>
+                                `;
 
                             navBox.querySelector('#logOutBtn')
                                 .addEventListener('click', (e) => {

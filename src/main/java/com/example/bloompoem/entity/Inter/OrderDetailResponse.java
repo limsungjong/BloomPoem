@@ -1,10 +1,12 @@
 package com.example.bloompoem.entity.Inter;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
-public interface PickUpOrderResponse {
+
+public interface OrderDetailResponse {
     @Value("#{target.pick_up_order_reservation_time}")
     String getPickUpOrderReservationTime();
 
@@ -23,12 +25,18 @@ public interface PickUpOrderResponse {
     @Value("#{target.flower_name}")
     String getFlowerName();
 
+    @Value("#{target.flower_number}")
+    Integer getFlowerNumber();
+
     @Value("#{target.pick_up_order_number}")
     Integer getPickUpOrderNumber();
 
-    @Value("#{target.flower_count}")
-    Integer getFlowerCount();
+    @Value("#{target.pick_up_order_detail_count}")
+    Integer getPickUpOrderDetailCount();
 
     @Value("#{target.florist_number}")
     Integer getFloristNumber();
+
+    @Value("#{target.florist_main_image}")
+    String getFloristMainImage();
 }

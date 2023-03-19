@@ -9,8 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface PickUpCartRepository extends JpaRepository<PickUpCartEntity, Integer> {
-    List<PickUpCartEntity> findPickUpCartEntitiesByUserEmail(String userEmail);
-    Optional<PickUpCartEntity> findByUserEmailAndFlowerNumber(String userEmail, int flowerNumber);
     List<PickUpCartEntity> findByUserEmail(String userEmail);
     Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFloristNumber(String userEmail, int flowerNumber, int floristNumber);
 
