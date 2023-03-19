@@ -10,6 +10,8 @@ public class PickUpCartResponse {
 
     String flowerName;
 
+    String flowerColor;
+
     Integer flowerNumber;
 
     Integer flowerCount;

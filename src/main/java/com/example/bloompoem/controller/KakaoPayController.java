@@ -6,7 +6,6 @@ import com.example.bloompoem.domain.kakaoPay.PayOrderProduct;
 import com.example.bloompoem.domain.kakaoPay.PayReady;
 import com.example.bloompoem.dto.KakaoApprovar;
 import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
-import com.example.bloompoem.repository.PickUpCartRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import com.example.bloompoem.service.KakaoPayService;
 import com.example.bloompoem.service.OrderService;
@@ -35,8 +34,6 @@ public class KakaoPayController {
     private final UserService userService;
 
     private final OrderService orderService;
-
-    private final PickUpCartRepository pickUpCartRepository;
 
     private final PickUpService pickUpService;
 
@@ -129,7 +126,8 @@ public class KakaoPayController {
 
     // 결제 페이지 요청
     @GetMapping("/pick_up/order/pay/completed")
-    public String payResult(Model model, String pg_token) {
+    public String payResult(Model model,
+                            String pg_token) {
         model.addAttribute("pgToken", pg_token);
 
         return "/payPickUp/payResult";
@@ -137,7 +135,10 @@ public class KakaoPayController {
 
     // 결제 페이지에서 오더 아이디를 다시 채워서 payApprove 페이지로 보냄
     @PostMapping("/pick_up/order/pay/success")
-    public String paymentSuccess (Model model, int orderId){
+    public String paymentSuccess (Model model,
+                                  int orderId,
+                                  @CookieValue(value = "Authorization") String token){
+        userService.tokenToUserEntity(token);
         model.addAttribute("orderId", orderId);
         return "/payPickUp/payApprove";
     }

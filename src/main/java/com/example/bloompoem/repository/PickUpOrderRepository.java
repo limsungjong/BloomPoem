@@ -24,7 +24,7 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
                     "       c.flower_count, " +
                     "       c.florist_number " +
                     " from pick_up_order a, pick_up_order_detail b, pick_up_cart c, flower d " +
-                    " WHERE a.pick_up_order_number = b.pick_up_order_detail_number " +
+                    " WHERE a.pick_up_order_number = b.pick_up_order_number " +
                     " and c.flower_number = b.flower_number " +
                     " and c.flower_number = d.flower_number " +
                     " and c.flower_count = b.pick_up_order_detail_count " +
@@ -47,7 +47,7 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
                     "       b.florist_number, " +
                     "       d.florist_main_image " +
                     " from pick_up_order a, pick_up_order_detail b, flower c, florist_product d " +
-                    " where a.pick_up_order_number = b.pick_up_order_detail_number " +
+                    " where a.pick_up_order_number = b.pick_up_order_number " +
                     " and c.flower_number = b.flower_number " +
                     " and c.flower_number = d.flower_number " +
                     " and d.florist_number = b.florist_number " +
@@ -56,4 +56,25 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
     List<OrderDetailResponse> searchPickUpOrderSuccessResponse(
             @Param("userEmail") String userEmail,
             @Param("pickUpOrderSeq") Integer pickUpOrderSeq);
+
+    @Query(value =
+            "select a.pick_up_order_reservation_time, " +
+                    "       a.pick_up_order_reservation_date, " +
+                    "       a.user_email, " +
+                    "       a.pick_up_order_date, " +
+                    "       a.pick_up_order_real_price, " +
+                    "       c.flower_name, " +
+                    "       c.flower_number, " +
+                    "       a.pick_up_order_number, " +
+                    "       b.pick_up_order_detail_count, " +
+                    "       b.florist_number, " +
+                    "       d.florist_main_image " +
+                    " from pick_up_order a, pick_up_order_detail b, flower c, florist_product d " +
+                    " where a.pick_up_order_number = b.pick_up_order_number " +
+                    " and c.flower_number = b.flower_number " +
+                    " and c.flower_number = d.flower_number " +
+                    " and d.florist_number = b.florist_number " +
+                    " and a.user_email = :userEmail " , nativeQuery = true)
+    List<OrderDetailResponse> searchPickUpOrderSuccessResponse(
+            @Param("userEmail") String userEmail);
 }

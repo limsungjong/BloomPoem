@@ -3,8 +3,8 @@ package com.example.bloompoem.controller;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.Inter.OrderDetailResponse;
 import com.example.bloompoem.exception.CustomException;
-import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
+import com.example.bloompoem.service.OrderService;
 import com.example.bloompoem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +20,18 @@ public class RestPickUpOrderController {
 
     private final PickUpOrderRepository pickUpOrderRepository;
 
-    private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
-
     private final UserService userService;
+
+    private final OrderService orderService;
 
     @PostMapping(value = "/success/orderDetail")
     @ResponseBody
     public ResponseEntity<List<OrderDetailResponse>> orderDetail(@RequestParam Integer orderNumber
-//            ,@CookieValue(value = "Authorization") String token
+            ,@CookieValue(value = "Authorization") String token
     ) {
-//        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
         if(pickUpOrderRepository.findById(orderNumber).isPresent()) {
-            System.out.println(orderNumber);
-            List<OrderDetailResponse> arrayList = pickUpOrderRepository.searchPickUpOrderSuccessResponse("sung8881@naver.com", orderNumber);
-            return ResponseEntity.ok().body(arrayList);
+            return ResponseEntity.ok().body(orderService.getOderDetailResponseList(orderNumber, userEmail));
         }
         throw new CustomException(ResponseCode.NOT_FOUND_ORDER);
     }
