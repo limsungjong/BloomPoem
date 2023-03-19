@@ -47,8 +47,9 @@
       <div class="tr" th:each="qna:${QnaList}">
         <div class="qnaNumber" th:text="${qna.qnaNumber}"></div>
         <div class="qnaStatus" th:text="${qna.qnaStatus}"></div>
-        <div class="qnaTitle"  th:href="@{/qna/view?}+${qna.qnaNumber}"
-             th:text="${qna.qnaTitle}"></div>
+        <div class="qnaTitle" th:text="${qna.qnaTitle}"
+             th:href="@{http://localhost:9000/qna/view(qnaNumber=${qna.qnaNumber})}">
+        </div>
         <div class="qnaRegDate" th:text="${qna.qnaDate}"></div>
       </div>
     </div>

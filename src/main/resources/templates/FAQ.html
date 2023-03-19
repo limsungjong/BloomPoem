@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -39,12 +39,13 @@
     </div>
   </div>
   <div class="mainArea">
-    <div class="mainBox">
+    <div class="mainBox" th:each="faq:${FAQList}">
       <div class="th">
-        <div>Q1.</div>
+        <div>Q<span th:text="${faq.faqNumber}"></span>. <span th:text="${faq.faqTitle}"></span>
+        </div>
       </div>
       <div class="tr">
-        <div>A1.</div>
+        <div>A<span th:text="${faq.faqNumber}"></span>. <span th:text="${faq.faqContent}"></span></div>
       </div>
     </div>
   </div>

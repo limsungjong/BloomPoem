@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,18 +37,18 @@
         <div class="mainBox">
             <div class="titleBox1">
                 <div class="title1">작성자</div>
-                <div class="title2">작성자 EMain@.com</div>
+                <div class="title2" th:text="${qna.userEmail}"></div>
                 <div class="title3">등록일</div>
-                <div class="title4">YYYY.MM.DD</div>
+                <div class="title4" th:text="${qna.qnaDate}"></div>
             </div>
             <div class="titleBox2">
                 <div class="title1">제목</div>
-                <div class="title2">문의1</div>
+                <div class="title2" th:text="${qna.qnaTitle}"></div>
                 <div class="title3">답변상태</div>
-                <div class="title4">답변완료(Y)</div>
+                <div class="title4" th:text="${qna.qnaStatus}"></div>
             </div>
             <div class="content">
-                <div>문의 내용</div>
+                <div th:text="${qna.qnaContent}"></div>
             </div>
         </div>
         <div class="buttons">
