@@ -742,3 +742,7 @@ span.fromLeft:after {
 menu span{
   cursor: pointer;
 }
+
+.userBox {
+  margin-right: 50px;
+}
