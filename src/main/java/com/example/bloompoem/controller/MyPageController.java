@@ -1,11 +1,7 @@
 package com.example.bloompoem.controller;
 
 import com.example.bloompoem.domain.dto.OrderReviewRequest;
-import com.example.bloompoem.entity.Inter.OrderDetailResponse;
-import com.example.bloompoem.entity.ProductEntity;
-import com.example.bloompoem.entity.ShoppingOrder;
-import com.example.bloompoem.entity.ShoppingReview;
-import com.example.bloompoem.entity.UserEntity;
+import com.example.bloompoem.entity.*;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import com.example.bloompoem.service.OrderService;
@@ -28,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -150,10 +145,9 @@ public class MyPageController {
     //성종 시작
     @PostMapping("/myPage/get/reviewList")
     @ResponseBody
-    public ResponseEntity<List<OrderDetailResponse>> getOrderList(@CookieValue(value = "Authorization") String token
+    public ResponseEntity<Page<PickUpOrderEntity>> getOrderList(String userEmail, Date startDate, Date endDate, @PageableDefault(size = 2) Pageable pageable
     ) {
-        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
-        return ResponseEntity.ok().body(orderService.getOderDetailResponseList(userEmail));
+        return ResponseEntity.ok().body(orderService.pickUpOrderView(endDate, startDate, userEmail, pageable));
     }
 
     @PostMapping("/myPage/review/post/order")
