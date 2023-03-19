@@ -88,8 +88,11 @@ public class QnaController {
     }
 
     // 문의 글 보기
-    @GetMapping("/qna/view{qnaNumber}")
-    public String view(){
+    @GetMapping("/qna/view")
+    public String view(Model model, Integer qnaNumber){
+        QnaEntity  qnaEntity= qnaService.findById(qnaNumber);
+        logger.error(""+qnaEntity);
+        model.addAttribute("qna", qnaEntity);
 
         return "/qnaView";
     }
