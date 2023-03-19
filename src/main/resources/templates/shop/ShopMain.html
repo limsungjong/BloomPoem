@@ -23,7 +23,7 @@
       const cookie= document.cookie.split("=")[1]
       //쿠키가 있으면 header 변경 시작
       const header =  (cookie != null)
-              ?"<span class='logout'><a href='/sign/sign_out'>logOut</a></span><span class=\"cart\"><a href='/shopping/cart'>Cart</a></span> <span class=\"myPage\"><a href='/my_page'>MyPage</a></span> "
+              ?"<span class='logout'><a href='/sign_out'>logOut</a></span><span class=\"cart\"><a href='/shopping/cart'>Cart</a></span> <span class=\"myPage\"><a href='/my_page'>MyPage</a></span> "
               :"<span class=\"signin\"><a href='/sign/sign_in'>SignIn</a></span> <span class=\"signup\"><a href='/sign/sign_up'>SignUp</a></span>"
       if(cookie != null ){
         $(".userBox").append(header);

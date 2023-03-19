@@ -149,7 +149,7 @@
           method : "delete",
           data : {cookie, shoppingCartNumber}
         }).then( r=>{
-          if(shoppingCartNumber> 0){
+          if(shoppingCartNumber< 1){
             alert("결제 할 상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
             location.href = "/shopping";
           }
@@ -158,7 +158,7 @@
             method : "post",
             data : {cookie}
           }).then(r=>{
-            console.log(shoppingCartNumber);
+            console.log(r)
             if(r == 0){
               alert("상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
               location.href="/shopping"
@@ -222,15 +222,6 @@
       </div>
     </label>
     <div class="productArea">
-
-
-
-
-
-
-
-
-
 
     </div>
   </div>

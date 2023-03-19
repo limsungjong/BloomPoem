@@ -6,6 +6,7 @@ import com.example.bloompoem.dto.KakaoReady;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.service.ProductService;
 
+import com.example.bloompoem.service.ShoppingReviewService;
 import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.JwtUtil;
 
@@ -20,12 +21,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.io.Console;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +43,8 @@ public class ShoppingController {
     private ProductService productService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ShoppingReviewService shoppingReviewService;
 
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
@@ -52,7 +59,7 @@ public class ShoppingController {
     }
 
     @GetMapping("/shopping/category")
-    public String shoppingCategory (Model model, int category,String searchValue){
+    public String shoppingCategory (Model model, int category, String searchValue){
         model.addAttribute("category", category);
         model.addAttribute("page" , 1);
         model.addAttribute("searchValue", searchValue);
@@ -152,8 +159,6 @@ public class ShoppingController {
         String userEmail = JwtUtil.getUserName(cookie, secretKey);
         ShoppingCartEntity cart = productService.oneCartSelect(shoppingCartNumber);
         cart.setShoppingCartCount(count);
-
-
         productService.saveCart(cart);
         return ResponseEntity.ok("success");
     }
@@ -231,7 +236,7 @@ public class ShoppingController {
             ShoppingOrder order = new ShoppingOrder();
             model.addAttribute("kakaoApprovar", kakaoApprovar);
             order.setShoppingOrderNumber(Integer.parseInt(orderId));
-            order.setShoppingOrderDate(kakaoApprovar.getApproved_at());
+            order.setShoppingOrderDate(LocalDate.now());
             order.setShoppingOrderStatus(3);
             order.setShoppingTotalPrice(kakaoApprovar.getAmount().getTotal());
             order.setShoppingRealPrice(kakaoApprovar.getAmount().getTotal());
@@ -285,9 +290,28 @@ public class ShoppingController {
     @PostMapping("/shopping/success/orderDetailView")
     public ResponseEntity<List<ShoppingOrderDetail>> orderDetailView (int orderNumber , String cookie){
         String userEmail =JwtUtil.getUserName(cookie,secretKey);
-        logger.error(""+orderNumber);
-        logger.error(""+userEmail);
+
         return ResponseEntity.ok(productService.orderDetails(userEmail,orderNumber));
     }
+
+    @GetMapping("/review/avg")
+    public  ResponseEntity<Double> productScoreAvg(int productNumber){
+        return  ResponseEntity.ok(shoppingReviewService.avgReviewScore(productNumber));
+    }
+    @PostMapping("/review/read_all")
+    public ResponseEntity<Page<ShoppingReview>> reviewReadAll(int productNumber ,@PageableDefault(size = 10)Pageable pageable){
+        return  ResponseEntity.ok(shoppingReviewService.readAll(productNumber,pageable));
+    }
+    @PostMapping("/user/user_cookie")
+    public ResponseEntity<String> userFind (String cookie){
+        String userEmail = userService.tokenToUserEntity(cookie).getUserEmail();
+        if(userEmail != ""){
+            return ResponseEntity.ok(userEmail);
+        }else {
+            return ResponseEntity.ok(" ");
+        }
+
+    }
+
 
 }
