@@ -76,7 +76,7 @@ body {
     font-family: "나눔스퀘어 네오";
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 100px 2650px 100px;
+    grid-template-rows: 100px auto 100px;
     /*overflow-x: hidden;*/
 
 }
@@ -236,7 +236,7 @@ main{
     align-items: center;
 }
 main{
-    height: 100%;
+    height: auto;
 }
 .categoryBar li{
     padding: 10px;
@@ -256,6 +256,11 @@ main{
 .mainText{
     width: 100vw;
     text-align: center;
+    height: 50px;
+    background-color: #fff3d4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .mainBar{
     background-color: gray;
@@ -263,21 +268,26 @@ main{
     height: 40px;
 }
 .mainBar1Product{
-    background-color: #dcf8e4;
+
     display: grid;
     width: 100vw;
     grid-template-columns: 400px 400px 400px;
-    grid-template-rows: 250px 250px 250px;
+    grid-template-rows: 450px 450px ;
     grid-gap: 15px;
     justify-content: center;
 }
 .subArea{
-    background-color: #ffe062;
+    margin-top: 40px;
     width: 100vw;
     display: grid;
     justify-content: center;
-    grid-template-columns: repeat(6, 200px);
+    grid-template-columns: repeat(4, 300px);
     grid-template-rows: repeat(2, 250px);
+    grid-template-areas:
+    "subImage1 subImage1 subImage3 subImage3"
+    "subImage2 subImage2 subImage3 subImage3";
+    align-items: center;
+    justify-items: center;
 }
 .subArea2{
     background-color: violet;
@@ -355,10 +365,67 @@ main{
 .vase{
     cursor: pointer;
 }
-    a {
-        text-decoration: none;
-        color: #191919;
-    }
-    a:hover{
-        color: #191919;
-    }
+a {
+    text-decoration: none;
+    color: #191919;
+}
+a:hover{
+    color: #191919;
+}
+.ManyBuyProductBox{
+    width: 100%;
+    height: 100%;
+}
+.ManyBuyProductImage{
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.ManyBuyProductName{
+    text-align: center;
+    margin-top: 25px;
+}
+.ManyBuyProductImageBox{
+    display: flex;
+    justify-content: center;
+}
+.subImage1{
+    grid-area: subImage1;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.49);
+}
+.subImage1 img{
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    cursor: pointer;
+}
+.subImage2{
+    grid-area: subImage2;
+}
+.subImage2 img{
+    object-fit: contain;
+    width: 90%;
+    height: 90%;
+    cursor: pointer;
+}
+.subImage3{
+    grid-area: subImage3;
+    border-left: 1px solid rgba(0, 0, 0, 0.45);
+}
+.subImage3 img{
+    object-fit: contain;
+    width: 90%;
+    height: 90%;
+    cursor: pointer;
+}
+.subImage1 img:hover{
+    transform: scale(1.1);
+}
+.subImage2 img:hover{
+    transform: scale(1.1);
+}
+.subImage3 img:hover{
+    transform: scale(1.1);
+}
