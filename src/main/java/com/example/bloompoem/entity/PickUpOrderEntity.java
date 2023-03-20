@@ -3,7 +3,7 @@ package com.example.bloompoem.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "PICK_UP_ORDER")
@@ -32,8 +32,7 @@ public class PickUpOrderEntity {
     private String pickUpOrderReservationDate;
 
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date pickUpOrderDate;
+    private LocalDate pickUpOrderDate;
 
     @Column
     private int pickUpOrderTotalPrice;

@@ -18,6 +18,7 @@ let userContext = {};
             .then((response) => response.json())
             .then((result) => {
                 console.log(result);
+                userContext = result;
                 if (result.status == 500) {
                     alert("접속 시간 초과로 인해 로그 아웃 되었습니다.");
                     document.cookie = "Authorization" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

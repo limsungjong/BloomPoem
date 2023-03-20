@@ -1126,6 +1126,7 @@ class sideItemObj {
             .catch(error => console.log('error', error));
     }
 
+    // 타겟 카트 업데이트
     targetUpdateCart(target) {
         if (this.loginChecker() === false) return;
 
@@ -1143,6 +1144,7 @@ class sideItemObj {
             .catch(error => console.log('error', error));
     }
 
+    // 구매창 스피너 만들기
     createBuySpinner() {
         if (this.modalContainer.querySelector(".spinnerBox")) return;
         const box = this.buyModalContainer.querySelector(".contentBox");
@@ -1154,6 +1156,17 @@ class sideItemObj {
         `;
         spinner.innerHTML = spinnerHtml;
         box.append(spinner);
+    }
+
+    //
+    createFloristModal() {
+        const florisDataBox = document.createElement('div');
+        florisDataBox.setAttribute('class','floristDataBox');
+        const boxHtml =
+            `
+            
+            `;
+
     }
 }
 

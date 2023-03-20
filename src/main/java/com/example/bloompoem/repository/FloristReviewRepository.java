@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FloristReviewRepository extends JpaRepository<FloristReviewEntity, Long> {
+public interface FloristReviewRepository extends JpaRepository<FloristReviewEntity, Integer> {
 }
