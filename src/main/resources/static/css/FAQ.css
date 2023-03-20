@@ -185,6 +185,7 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: 30px;
+    flex-direction: column;
 }
 .mainBox{
   width: 1000px;
@@ -217,7 +218,7 @@ footer {
 }
 .tr{
   display: flex;
-  height: 60px;
+  height: 10vh;
   align-items: center;
   border-bottom: 1px solid black;
 }
@@ -232,4 +233,8 @@ footer {
   width: 300px;
   display: flex;
   justify-content: space-evenly;
+}
+.td{
+display: flex;
+justify-content: center;
 }
