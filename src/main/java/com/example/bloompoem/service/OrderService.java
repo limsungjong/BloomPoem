@@ -7,9 +7,13 @@ import com.example.bloompoem.entity.PickUpOrderEntity;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +34,7 @@ public class OrderService {
                 .pickUpOrderReservationTime(request.getTime())
                 .pickUpOrderTotalPrice(totalPrice)
                 .pickUpOrderRealPrice(totalPrice)
-                .pickUpOrderDate(new Date())
+                .pickUpOrderDate(LocalDate.now())
                 .pickUpOrderStatus(1)
                 .build();
 
@@ -64,5 +68,14 @@ public class OrderService {
 
     public List<OrderDetailResponse> getOderDetailResponseList(String userEmail) {
         return pickUpOrderRepository.searchPickUpOrderSuccessResponse(userEmail);
+    }
+
+    public Page<PickUpOrderEntity> pickUpOrderView(Date startDate, Date endDate ,String userEmail, Pageable pageable) {
+        return pickUpOrderRepository.findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc(
+                LocalDate.ofInstant(startDate.toInstant(), ZoneId.systemDefault()),
+                LocalDate.ofInstant(endDate.toInstant(), ZoneId.systemDefault()) ,
+                pageable,
+                userEmail,
+                3);
     }
 }

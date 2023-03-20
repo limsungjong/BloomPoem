@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/build/userContext.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,10 +12,10 @@
   <title>구조 잡기</title>
   <link rel="stylesheet" href="/css/myPage.css" />
 
+
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 
-
-
+  <script src="/build/myPage.js" defer></script>
 
   <script th:inline="javascript">
     // model에 담긴  user 담아두는 변수
@@ -68,8 +69,6 @@
         }
       }).catch(err=> console.log(err))
     }
-
-
 
     $(document).ready(()=>{
       const cookie= document.cookie.split("=")[1]
@@ -256,6 +255,7 @@
             }
           }
         })
+
         //page 넘기는 스크립트
         $(".pagingButton").on("click",".shoppingOrder", function (e){
           const page = parseInt(e.target.textContent)-1;
@@ -471,13 +471,13 @@
         <li>내 정보 수정 </li>
         <li>주문내역
           <ul class="subTitle">
-            <li>픽업</li>
+            <li class="pickUpOrderHistory">픽업</li>
             <li class="shoppingOrderHistory">쇼핑</li>
           </ul>
         </li>
         <li>리뷰 관리
           <ul class="subTitle">
-            <li>픽업</li>
+            <li class="pickUpReviewManagement">픽업</li>
             <li class="shoppingReviewManagement">쇼핑</li>
           </ul>
         </li>

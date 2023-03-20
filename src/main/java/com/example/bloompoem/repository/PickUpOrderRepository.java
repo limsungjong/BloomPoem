@@ -3,10 +3,13 @@ package com.example.bloompoem.repository;
 import com.example.bloompoem.entity.Inter.OrderDetailResponse;
 import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
 import com.example.bloompoem.entity.PickUpOrderEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,4 +80,6 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
                     " and a.user_email = :userEmail " , nativeQuery = true)
     List<OrderDetailResponse> searchPickUpOrderSuccessResponse(
             @Param("userEmail") String userEmail);
+
+    Page<PickUpOrderEntity> findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc(LocalDate startDate, LocalDate endDate , Pageable pageable, String userEmail , int status);
 }

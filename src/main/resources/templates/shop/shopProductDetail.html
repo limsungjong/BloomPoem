@@ -229,6 +229,18 @@
         $(".category").val(8);
         document.categorySelect.submit();
       })
+      $(".plantMenu").on("click", ()=>{
+        $(".category").val(10);
+        document.categorySelect.submit();
+      })
+      $(".wreathMenu").on("click", ()=>{
+        $(".category").val(11);
+        document.categorySelect.submit();
+      })
+      $(".flowerBasketMenu").on("click", ()=>{
+        $(".category").val(12);
+        document.categorySelect.submit();
+      })
 
       $(".quantitySelect").change(()=>{
         const selectQuantity =parseInt($(".quantitySelect").val());

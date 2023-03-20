@@ -76,7 +76,7 @@ body {
     font-family: "나눔스퀘어 네오";
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 100px 2650px 100px;
+    grid-template-rows: 100px auto 100px;
     overflow-x: hidden;
 
 }
