@@ -1,6 +1,5 @@
 package com.example.bloompoem.entity.Inter;
 
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
@@ -39,4 +38,10 @@ public interface OrderDetailResponse {
 
     @Value("#{target.florist_main_image}")
     String getFloristMainImage();
+
+    @Value("#{target.florist_product_price}")
+    String getFloristProductPrice();
+
+    @Value("#{target.florist_name}")
+    String getFloristName();
 }
