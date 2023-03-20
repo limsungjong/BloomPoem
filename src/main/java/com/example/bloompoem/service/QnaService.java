@@ -36,4 +36,9 @@ public class QnaService {
       return qnaRepository.findByQnaNumber(qnaNumber);
     }
 
+    public QnaEntity deleteById(){
+        qnaRepository.deleteById(deleteById().getQnaNumber());
+        return null;
+    }
+
 }

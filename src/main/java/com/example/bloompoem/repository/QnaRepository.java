@@ -11,4 +11,6 @@ public interface QnaRepository extends JpaRepository<QnaEntity, Integer> {
 //    public Integer getQnaSequence();
 
     QnaEntity findByQnaNumber(int qnaNumber);
+
+
 }
