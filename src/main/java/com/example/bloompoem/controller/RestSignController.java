@@ -77,6 +77,10 @@ public class RestSignController {
                 .orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
 
 
+        if("N".equals(userEntity.getUserStatus())) {
+            throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
+        }
+
         String xx = signService.login(request);
 
         Cookie cookie = new Cookie("Authorization", xx);
