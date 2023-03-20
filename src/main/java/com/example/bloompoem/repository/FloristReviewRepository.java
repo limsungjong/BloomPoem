@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FloristReviewRepository extends JpaRepository<FloristReviewEntity, Integer> {
+    boolean existsByPickUpOrderNumber(int pickUpOrderNumber);
 }
