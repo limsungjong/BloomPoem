@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,6 +28,7 @@ import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
+@PropertySource("classpath:app.properties")
 public class MyPageController {
 
     @Value("#{environment['jwt.secret']}")
@@ -39,6 +41,9 @@ public class MyPageController {
     private final OrderService orderService;
     private final PickUpOrderReviewService pickUpOrderReviewService;
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
+
+    @Value("#{environment['file.path']}")
+    private String FILE_PATH;
 
     //범수 시작
     //myPage로 보내는 기능 보내면서 쿠키를 읽어 모델에 user를 담아서 보냄
@@ -100,10 +105,9 @@ public class MyPageController {
     @PostMapping("/review/save_photo")
     public ResponseEntity<String> insertPhoto(MultipartFile reviewImage, Integer shoppingReviewNumber) {
         logger.error("" + reviewImage);
-        String path = "C:/project/BloomPoem/src/main/resources/static/image/upload";
         //이미지 파일 생성 후 이름 저장 시키기
         String imageName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
-        File imageFile = new File(path, imageName);
+        File imageFile = new File(FILE_PATH, imageName);
         try {
             reviewImage.transferTo(imageFile);
         } catch (Exception e) {
@@ -171,16 +175,43 @@ public class MyPageController {
             String userEmail,
             int pickUpOrderNumber,
             String pickUpOrderContent,
-            int pickUpOrderScore) {
+            char pickUpOrderScore) {
 
-        logger.info(floristNumber+"");
-        logger.info(userEmail+"");
-        logger.info(pickUpOrderNumber+"");
-        logger.info(pickUpOrderContent+"");
-        logger.info(pickUpOrderScore+"");
+        logger.info("floristNumber : " + floristNumber);
+        logger.info("userEmail : " +userEmail);
+        logger.info("pickUpOrderNumber : "+pickUpOrderNumber);
+        logger.info("pickUpOrderContent : " + pickUpOrderContent);
+        logger.info("pickUpOrderScore : " + pickUpOrderScore);
+        FloristReviewEntity reviewEntity =  pickUpOrderReviewService.saveOrderReview(
+                floristNumber,
+                userEmail,
+                pickUpOrderNumber,
+                pickUpOrderContent,
+                pickUpOrderScore
+        );
 
-        return ResponseEntity.ok(5);
+        return ResponseEntity.ok().body(reviewEntity.getFloristReviewNumber());
     }
+
+    @PostMapping(value = "/review/pick_up/save_photo")
+    public ResponseEntity<String> pickUpReviewSavePhoto(
+            MultipartFile reviewImage, Integer reviewSeq) {
+
+        logger.error("reviewImage : " + reviewImage);
+        logger.info("reviewSeq : "+reviewSeq);
+        //이미지 파일 생성 후 이름 저장 시키기
+        String imageName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
+        File imageFile = new File(FILE_PATH, imageName);
+        try {
+            reviewImage.transferTo(imageFile);
+        } catch (Exception e) {
+            logger.error("[insertReview] Error : " + e);
+        }
+        pickUpOrderReviewService.saveOrderReviewImage(reviewSeq,imageName);
+
+        return ResponseEntity.ok().body("이미지 저장");
+    }
+
 
     @PostMapping("/myPage/review/post/order")
     @ResponseBody
