@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "FLORIST_REVIEW")
@@ -38,8 +38,7 @@ public class FloristReviewEntity{
         @Column
         private Character floristReviewScore;
         @Column
-        @Temporal(TemporalType.TIMESTAMP)
-        private Date floristReviewRegDate;
+        private LocalDate floristReviewRegDate;
         @Column
         private String floristReviewImage;
 }
