@@ -4,7 +4,6 @@ import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristReviewRepository;
-import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import com.example.bloompoem.service.*;
 import com.example.bloompoem.util.JwtUtil;
@@ -37,7 +36,6 @@ public class MyPageController {
     private final UserService userService;
     private final ProductService productService;
     private final ShoppingReviewService shoppingReviewService;
-    private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
     private final PickUpOrderRepository pickUpOrderRepository;
     private final OrderService orderService;
     private final PickUpOrderReviewService pickUpOrderReviewService;
@@ -50,14 +48,16 @@ public class MyPageController {
     //범수 시작
     //myPage로 보내는 기능 보내면서 쿠키를 읽어 모델에 user를 담아서 보냄
     @GetMapping("/my_page")
-    public String MyPageGo(@CookieValue(value = "Authorization") String cookie, Model model) {
+    public String MyPageGo(@CookieValue(value = "Authorization", required = false) String cookie, Model model) {
+        if(cookie == null) return "/signIn";
+
         String userEmail = JwtUtil.getUserName(cookie, secretKey);
         if (userEmail != null) {
             UserEntity user = userService.tokenToUserEntity(cookie);
             model.addAttribute("user", user);
             return "/myPage";
         } else {
-            return "/signin";
+            return "/signIn";
         }
     }
 
