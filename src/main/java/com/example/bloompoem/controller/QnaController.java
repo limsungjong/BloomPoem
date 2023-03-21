@@ -30,10 +30,17 @@ public class QnaController {
 
     // 나의 문의 내역 리스트
     @GetMapping("/qna")
-    public String getQnaList(Model model, Pageable pageable){
-        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
-        model.addAttribute("QnaList", qnaEntityPage);
-        return "/qna";
+    public String getQnaList(Model model, Pageable pageable, @CookieValue(value = "Authorization") String token){
+        userService.tokenToUserEntity(token).getUserEmail();
+
+        if(token != null){
+            Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
+            model.addAttribute("QnaList", qnaEntityPage);
+            return "/qna";
+        }
+        else {
+            return "/signIn";
+        }
     }
 
     @PostMapping("/qna")
@@ -50,13 +57,13 @@ public class QnaController {
 
         if(token != null){
             logger.debug("token11111 : " + token);
-            userService.tokenToUserEntity(token);
+            userService.tokenToUserEntity(token).getUserEmail();
             logger.debug("token22222 : " + token);
             return "/qnaWrite";
         }
         else {
             logger.error("token33333 : " + token);
-            return "/sign/sign_in";
+            return "/signIn";
         }
     }
 
@@ -125,4 +132,5 @@ public class QnaController {
         QnaEntity qnaEntity = qnaService.deleteById();
         return "/qna";
     }
+
 }
