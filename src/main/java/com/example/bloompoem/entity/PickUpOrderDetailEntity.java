@@ -38,4 +38,7 @@ public class PickUpOrderDetailEntity {
     private int pickUpOrderNumber;
     @Column
     private int pickUpOrderDetailCount;
+    @ManyToOne
+    @JoinColumn(name="bouquetNumber")
+    private BouquetEntity bouquet;
 }

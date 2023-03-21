@@ -21,8 +21,7 @@ public class FAQController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    FAQService faqService;
+    private final FAQService faqService;
 
     // FAQ
     @GetMapping("/FAQ")
