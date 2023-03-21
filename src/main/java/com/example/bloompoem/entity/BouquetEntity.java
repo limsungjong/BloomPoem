@@ -34,4 +34,8 @@ public class BouquetEntity {
     private UserEntity user;
     private int bouquetPrice;
     private String bouquetMainImage;
+    @ManyToOne
+    @JoinColumn(name="bouquetColorRgb")
+    private BouquetColor bouquetColor;
+
 }
