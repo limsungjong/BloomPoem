@@ -763,3 +763,21 @@ menu span{
   display: flex;
   width: 90%;
 }
+.bestProductImage{
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  border-radius: 15px;
+}
+.bestProductImageBox{
+  display: flex;
+  justify-content: center;
+}
+.oneProduct{
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  justify-content: space-around;
+
+}
+
