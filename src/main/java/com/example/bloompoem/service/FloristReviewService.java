@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-public class PickUpOrderReviewService {
+public class FloristReviewService {
 
     private final FloristReviewRepository floristReviewRepository;
 

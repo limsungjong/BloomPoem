@@ -5,6 +5,7 @@ import com.example.bloompoem.entity.FloristEntity;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristRepository;
+import com.example.bloompoem.repository.FloristReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -21,6 +22,8 @@ import java.util.List;
 public class RestFloristController {
 
     private final FloristRepository floristRepository;
+
+    private final FloristReviewRepository floristReviewRepository;
 
     @GetMapping(value = "/florist_list")
     @ResponseBody
@@ -54,7 +57,8 @@ public class RestFloristController {
     @PostMapping(value = "/florist_product_list")
     @ResponseBody
     public ResponseEntity<?> floristList(@RequestParam Integer floristNumber) {
-        if(ObjectUtils.isEmpty(floristRepository.findById(floristNumber))) throw new CustomException(ResponseCode.INVALID_REQUEST);
+        if (ObjectUtils.isEmpty(floristRepository.findById(floristNumber)))
+            throw new CustomException(ResponseCode.INVALID_REQUEST);
 
         List<BigInteger> arrayList;
         arrayList = floristRepository.searchFloristFlower(floristNumber);
@@ -64,7 +68,7 @@ public class RestFloristController {
     @PostMapping(value = "/florist_product_list_detail")
     @ResponseBody
     public ResponseEntity<List<FloristFlowerInterFace>> floristList3(@RequestParam Integer floristNumber) {
-        if(floristNumber < 0) throw new CustomException(ResponseCode.INVALID_REQUEST);
+        if (floristNumber < 0) throw new CustomException(ResponseCode.INVALID_REQUEST);
 
         List<FloristFlowerInterFace> arrayList = floristRepository.searchFloristFlowerDetail(floristNumber);
         return ResponseEntity.ok().body(arrayList);
@@ -73,9 +77,20 @@ public class RestFloristController {
     @PostMapping(value = "/florist_search_name")
     @ResponseBody
     public ResponseEntity<?> floristSearchName(@RequestParam String floristName) {
-        if(ObjectUtils.isEmpty(floristRepository.findByFloristName(floristName))) throw new CustomException(ResponseCode.INVALID_REQUEST);
+        if (ObjectUtils.isEmpty(floristRepository.findByFloristName(floristName)))
+            throw new CustomException(ResponseCode.INVALID_REQUEST);
 
         FloristEntity floristEntity = floristRepository.findFloristEntityByFloristName(floristName);
         return ResponseEntity.ok().body(floristEntity);
+    }
+
+    @PostMapping(value = "/florist_review")
+    @ResponseBody
+    public ResponseEntity<?> getFloristReview(@RequestParam int floristNumber) {
+
+        if (floristReviewRepository.existsById(floristNumber)) {
+
+        } else new CustomException(ResponseCode.INVALID_REQUEST);
+        return ResponseEntity.ok().body("success");
     }
 }
