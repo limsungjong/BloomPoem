@@ -327,6 +327,10 @@ public class ShoppingController {
         }
 
     }
+    @GetMapping("/shoppping/review/rate_high")
+    public ResponseEntity<List<ShoppingReview>> rateHighListView(){
+        return ResponseEntity.ok(shoppingReviewService.reteHighProductView());
+    }
 
 
 }

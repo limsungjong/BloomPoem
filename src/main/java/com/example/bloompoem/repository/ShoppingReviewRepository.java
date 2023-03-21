@@ -28,4 +28,15 @@ public interface ShoppingReviewRepository extends JpaRepository<ShoppingReview, 
 
     Page<ShoppingReview> findAllByProduct(ProductEntity product, Pageable pageable);
 
+    @Query(value = "SELECT *\n" +
+            "FROM SHOPPING_REVIEW\n" +
+            "WHERE PRODUCT_NUMBER IN (\n" +
+            "  SELECT PRODUCT_NUMBER\n" +
+            "  FROM SHOPPING_REVIEW\n" +
+            "  GROUP BY PRODUCT_NUMBER\n" +
+            "  ORDER BY AVG(SHOPPING_REVIEW_SCORE) DESC\n" +
+            "  FETCH FIRST 3 ROWS ONLY\n" +
+            ")", nativeQuery = true)
+    List<ShoppingReview> mainPage();
+
 }

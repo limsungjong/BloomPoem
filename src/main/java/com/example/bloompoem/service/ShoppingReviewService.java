@@ -48,5 +48,10 @@ public class ShoppingReviewService {
         return shoppingReviewDao.findAllByProduct(product, pageable);
     }
 
+    public List<ShoppingReview> reteHighProductView(){
+        System.out.println("11111111111111111111111111111111111111111111111111111111111111" +shoppingReviewDao.mainPage());
+        return shoppingReviewDao.mainPage();
+    }
+
 
 }

@@ -3,13 +3,18 @@ package com.example.bloompoem.controller;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.UserResponse;
 import com.example.bloompoem.dto.UserDTO;
+import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.UserRepository;
+import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpResponse;
+import java.util.Optional;
 
 
 @ResponseBody
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class RestUserController {
 
     private final UserRepository userRepository;
+
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
     @PostMapping("/get_user")

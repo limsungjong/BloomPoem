@@ -124,6 +124,11 @@
             //10 ,11 ,12 카테고리 페이징 끝
             //한 개 구매하기 버튼 기능 시작
                 $(".productContent").on("click",".productBuy",(e)=>{
+                    if(cookie == null){
+                        alert("로그인이 필요합니다.");
+                        location.href="/sign/sign_in"
+                        return
+                    }
                     const productNumber = e.target.dataset.no
                     $.ajax({
                         url : "/shopping/cart_exists_product",
