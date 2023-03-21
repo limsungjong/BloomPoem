@@ -939,3 +939,10 @@ a {
         transform: rotate(360deg);
     }
 }
+
+.emptyBucket {
+    display: flex;
+    justify-content: center;
+    height: 50vh;
+    align-items: center;
+}

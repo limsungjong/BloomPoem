@@ -89,7 +89,7 @@ public class RestFloristController {
     public ResponseEntity<?> getFloristReview(@RequestParam int floristNumber) {
 
         if (floristReviewRepository.existsById(floristNumber)) {
-
+            floristReviewRepository.findById(floristNumber);
         } else new CustomException(ResponseCode.INVALID_REQUEST);
         return ResponseEntity.ok().body("success");
     }
