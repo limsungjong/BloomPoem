@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -71,6 +71,8 @@
 <form nema="paymentSuccess" id="paymentSuccess" action="/pick_up/order/pay/success" method ="post">
   <input type="hidden" name="orderId" class="orderId" value="">
 </form>
+<input id="kind" type="hidden" th:value="${kind}">
+<input id="target" type="hidden" th:value="${target}">
 <script src="/build/pickUp.js"></script>
 <script>
   function paymentSuccess(orderId){

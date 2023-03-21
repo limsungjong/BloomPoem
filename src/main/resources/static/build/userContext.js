@@ -3,6 +3,7 @@
 let userContext = {};
 {
     window.addEventListener("DOMContentLoaded", () => {
+
         let myHeaders = new Headers();
         const coo = document.cookie.split("=");
         if (coo[0] == "") {

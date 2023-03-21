@@ -24,6 +24,7 @@
             mailInput.focus();
             return;
         }
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const inputData = JSON.stringify({
@@ -39,6 +40,7 @@
             console.log("error");
             return;
         }
+        mailSubmitBtn.disabled = true;
         fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
             .then((data) => data.json())
             .then((data) => {
@@ -122,6 +124,7 @@
                     closeBtn.addEventListener("click", (e) => {
                         if (confirm("아직 로그인이 진행중입니다. 정말로 닫으실건가요?")) {
                             modalOver.style.display = "none";
+                            mailSubmitBtn.disabled = false;
                         }
                     });
                     const retryBtn = modal.querySelector(".retry");
@@ -186,6 +189,9 @@
                     return;
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                mailSubmitBtn.disabled = false;
+                console.log(err)
+            });
     });
 }

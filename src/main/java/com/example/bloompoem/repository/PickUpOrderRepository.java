@@ -48,12 +48,15 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
                     "       a.pick_up_order_number, " +
                     "       b.pick_up_order_detail_count, " +
                     "       b.florist_number, " +
-                    "       d.florist_main_image " +
-                    " from pick_up_order a, pick_up_order_detail b, flower c, florist_product d " +
+                    "       d.florist_main_image, " +
+                    "       d.florist_product_price, " +
+                    "       e.florist_name " +
+                    " from pick_up_order a, pick_up_order_detail b, flower c, florist_product d, florist e " +
                     " where a.pick_up_order_number = b.pick_up_order_number " +
                     " and c.flower_number = b.flower_number " +
                     " and c.flower_number = d.flower_number " +
                     " and d.florist_number = b.florist_number " +
+                    " and b.florist_number = e.florist_number " +
                     " and a.user_email = :userEmail " +
                     " and a.pick_up_order_number = :pickUpOrderSeq ", nativeQuery = true)
     List<OrderDetailResponse> searchPickUpOrderSuccessResponse(
@@ -71,7 +74,8 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
                     "       a.pick_up_order_number, " +
                     "       b.pick_up_order_detail_count, " +
                     "       b.florist_number, " +
-                    "       d.florist_main_image " +
+                    "       d.florist_main_image, " +
+                    "       d.florist_product_price " +
                     " from pick_up_order a, pick_up_order_detail b, flower c, florist_product d " +
                     " where a.pick_up_order_number = b.pick_up_order_number " +
                     " and c.flower_number = b.flower_number " +
