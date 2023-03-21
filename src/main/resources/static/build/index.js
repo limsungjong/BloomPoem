@@ -277,4 +277,15 @@ var _a;
     window.scrollBy({ top: window.innerHeight });
 });
 
+{
     const inputText = document.querySelector(".searchTerm");
+    const inputBtn = document.querySelector(".searchButton");
+    const eventHandle = (e) => {
+        console.log(inputText.value);
+    }
+
+    inputBtn.addEventListener("click",(e) => eventHandle(e));
+    inputText.addEventListener("keyup", (e) => {
+        if(e.keyCode === 13) eventHandle(e);
+    });
+}

@@ -12,46 +12,46 @@
         const text = document.querySelector(".emailTestFail");
         if (!reg.test(this.value)) {
             text.style.display = "block";
-        }
-        else {
+        } else {
             text.style.display = "none";
         }
     });
-    mailSubmitBtn.addEventListener("click", (e) => {
-        if (mailInput.value.trim().length == 0) {
-            alert("이메일을 입력해주세요.");
-            mailInput.value = "";
-            mailInput.focus();
-            return;
-        }
+    const event = (e) => {
+        {
+            if (mailInput.value.trim().length == 0) {
+                alert("이메일을 입력해주세요.");
+                mailInput.value = "";
+                mailInput.focus();
+                return;
+            }
 
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        const inputData = JSON.stringify({
-            userEmail: mailInput.value,
-        });
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: inputData,
-            redirect: "follow",
-        };
-        if (!reg.test(mailInput.value)) {
-            console.log("error");
-            return;
-        }
-        mailSubmitBtn.disabled = true;
-        fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
-            .then((data) => data.json())
-            .then((data) => {
-                if(data.status == 404) {
-                    alert(data.message);
-                    return;
-                }
-                if (data.status == 200) {
-                    const body = document.querySelector("body");
-                    const modal = document.createElement("div");
-                    const modalElement = `
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const inputData = JSON.stringify({
+                userEmail: mailInput.value,
+            });
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: inputData,
+                redirect: "follow",
+            };
+            if (!reg.test(mailInput.value)) {
+                console.log("error");
+                return;
+            }
+            mailSubmitBtn.disabled = true;
+            fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
+                .then((data) => data.json())
+                .then((data) => {
+                    if (data.status == 404) {
+                        alert(data.message);
+                        return;
+                    }
+                    if (data.status == 200) {
+                        const body = document.querySelector("body");
+                        const modal = document.createElement("div");
+                        const modalElement = `
       <div id="modal" class="modal-overlay">
       <div class="modal-window">
         <div class="userText">
@@ -117,81 +117,85 @@
       </div>
     </div>
       `;
-                    modal.innerHTML = modalElement;
-                    body === null || body === void 0 ? void 0 : body.append(modal);
-                    const closeBtn = modal.querySelector(".close-area");
-                    const modalOver = modal.querySelector(".modal-overlay");
-                    closeBtn.addEventListener("click", (e) => {
-                        if (confirm("아직 로그인이 진행중입니다. 정말로 닫으실건가요?")) {
-                            modalOver.style.display = "none";
-                            mailSubmitBtn.disabled = false;
-                        }
-                    });
-                    const retryBtn = modal.querySelector(".retry");
-                    retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => {
-                        fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
-                            .then(res => res.text())
-                            .then((data) => {
-                                alert("인증 번호를 다시 보내드렸습니다.");
-                            }).catch(err => {
-                            alert("로그인 중에 오류가 발생하였습니다. 다시 진행해주세요.");
-                            location.href = "http://localhost:9000/sign_in";
-                        })
-                    });
-                    const iList = modal.querySelectorAll(".inputOtp");
-                    iList.forEach((v, k) => {
-                        v.addEventListener("keyup", () => {
-                            var _a;
-                            if (v.value.length == 1) {
-                                if (iList[k + 1] == undefined) {
-                                    const ioBox = modal.querySelector(".inputOtpBox");
-                                    ioBox.style.display = "none";
-                                    (_a = modal.querySelector(".content")) === null || _a === void 0 ? void 0 : _a.append(loadingSpinner);
-                                    let otp = "";
-                                    iList.forEach((v) => (otp += v.value));
-                                    const myHeaders = new Headers();
-                                    myHeaders.append("Content-Type", "application/json");
-                                    const raw = JSON.stringify({
-                                        userEmail: mailInput.value,
-                                        userOtp: otp,
-                                    });
-                                    console.log(inputData);
-                                    const requestOptions = {
-                                        method: "POST",
-                                        headers: myHeaders,
-                                        body: raw,
-                                        redirect: "follow",
-                                    };
-                                    fetch("http://localhost:9000/api/v1/sign/sign_in", requestOptions)
-                                        .then((data) => {
-                                            var _a;
-                                            console.log(data);
-                                            otp = "";
-                                            if (data.status == 200) {
-                                                alert("로그인에 성공하였습니다.");
-                                                history.back();
-                                                console.log(data.headers);
-                                            }
-                                            else {
-                                                (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
-                                                ioBox.style.display = "flex";
-                                                alert("인증 번호를 다시 확인해주세요.");
-                                            }
-                                        })
-                                        .catch((err) => {
-                                            console.log(err);
-                                        });
-                                }
-                                iList[k + 1].focus();
+                        modal.innerHTML = modalElement;
+                        body === null || body === void 0 ? void 0 : body.append(modal);
+                        const closeBtn = modal.querySelector(".close-area");
+                        const modalOver = modal.querySelector(".modal-overlay");
+                        closeBtn.addEventListener("click", (e) => {
+                            if (confirm("아직 로그인이 진행중입니다. 정말로 닫으실건가요?")) {
+                                modalOver.style.display = "none";
+                                mailSubmitBtn.disabled = false;
                             }
                         });
-                    });
-                    return;
-                }
-            })
-            .catch((err) => {
-                mailSubmitBtn.disabled = false;
-                console.log(err)
-            });
+                        const retryBtn = modal.querySelector(".retry");
+                        retryBtn === null || retryBtn === void 0 ? void 0 : retryBtn.addEventListener("click", () => {
+                            fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
+                                .then(res => res.text())
+                                .then((data) => {
+                                    alert("인증 번호를 다시 보내드렸습니다.");
+                                }).catch(err => {
+                                alert("로그인 중에 오류가 발생하였습니다. 다시 진행해주세요.");
+                                location.href = "http://localhost:9000/sign_in";
+                            })
+                        });
+                        const iList = modal.querySelectorAll(".inputOtp");
+                        iList.forEach((v, k) => {
+                            v.addEventListener("keyup", () => {
+                                var _a;
+                                if (v.value.length == 1) {
+                                    if (iList[k + 1] == undefined) {
+                                        const ioBox = modal.querySelector(".inputOtpBox");
+                                        ioBox.style.display = "none";
+                                        (_a = modal.querySelector(".content")) === null || _a === void 0 ? void 0 : _a.append(loadingSpinner);
+                                        let otp = "";
+                                        iList.forEach((v) => (otp += v.value));
+                                        const myHeaders = new Headers();
+                                        myHeaders.append("Content-Type", "application/json");
+                                        const raw = JSON.stringify({
+                                            userEmail: mailInput.value,
+                                            userOtp: otp,
+                                        });
+                                        console.log(inputData);
+                                        const requestOptions = {
+                                            method: "POST",
+                                            headers: myHeaders,
+                                            body: raw,
+                                            redirect: "follow",
+                                        };
+                                        fetch("http://localhost:9000/api/v1/sign/sign_in", requestOptions)
+                                            .then((data) => {
+                                                var _a;
+                                                console.log(data);
+                                                otp = "";
+                                                if (data.status == 200) {
+                                                    alert("로그인에 성공하였습니다.");
+                                                    history.back();
+                                                    console.log(data.headers);
+                                                } else {
+                                                    (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
+                                                    ioBox.style.display = "flex";
+                                                    alert("인증 번호를 다시 확인해주세요.");
+                                                }
+                                            })
+                                            .catch((err) => {
+                                                console.log(err);
+                                            });
+                                    }
+                                    iList[k + 1].focus();
+                                }
+                            });
+                        });
+
+                    }
+                })
+                .catch((err) => {
+                    mailSubmitBtn.disabled = false;
+                    console.log(err)
+                });
+        }
+    }
+    mailSubmitBtn.addEventListener("click", (e) => event(e));
+    mailInput.addEventListener("keyup", (e) => {
+        if(e.keyCode === 13) event(e);
     });
 }
