@@ -276,3 +276,5 @@ var _a;
 (_a = document.querySelector(".moreBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (e) => {
     window.scrollBy({ top: window.innerHeight });
 });
+
+    const inputText = document.querySelector(".searchTerm");

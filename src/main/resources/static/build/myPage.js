@@ -160,6 +160,7 @@ class pickUpOrderHS {
                 <div class="orderTotalBox pickTotalBox">
                   <div>총 물품 : <span class="t${p.pickUpOrderNumber}"></span>개</div>
                   <div>총 가격 : <span>${comma(p.pickUpOrderTotalPrice)}</span>원</div>
+                  <div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>
                 </div>
               </div>
             `
@@ -222,12 +223,17 @@ class pickUpOrderHS {
         // 상품을 받았는지 체크하기 버튼 처리 시작
         $(".mainArea").on("click", "#pickUpOrderStatus", (e) => {
             const pickUpOrderNumber = e.target.dataset.no;
-            console.log(pickUpOrderNumber);
+            if(confirm("꽃 픽업 되셨나요?")) {
             $.ajax({
                 url: "/myPage/pick_up/order_status_update",
                 method: "post",
                 data: {pickUpOrderNumber}
+            }).then(r => {
+                if(r == "success") {
+                    alert("완료처리되었습니다.")
+                }
             })
+            }
         })
         // 상품을 받았는지 체크하기 버튼 처리 끝
         // modal 시작
