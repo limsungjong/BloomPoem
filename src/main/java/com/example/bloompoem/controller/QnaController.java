@@ -3,6 +3,7 @@ package com.example.bloompoem.controller;
 import com.example.bloompoem.entity.QnaEntity;
 import com.example.bloompoem.repository.QnaRepository;
 import com.example.bloompoem.service.QnaService;
+import com.example.bloompoem.service.UserService;
 import com.example.bloompoem.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,12 +26,21 @@ public class QnaController {
 
     private final QnaRepository qnaRepository;
 
+    private final UserService userService;
+
     // 나의 문의 내역 리스트
     @GetMapping("/qna")
-    public String getQnaList(Model model, Pageable pageable){
-        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
-        model.addAttribute("QnaList", qnaEntityPage);
-        return "/qna";
+    public String getQnaList(Model model, Pageable pageable, @CookieValue(value = "Authorization") String token){
+        userService.tokenToUserEntity(token).getUserEmail();
+
+        if(token != null){
+            Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
+            model.addAttribute("QnaList", qnaEntityPage);
+            return "/qna";
+        }
+        else {
+            return "/signIn";
+        }
     }
 
     @PostMapping("/qna")
@@ -43,7 +53,19 @@ public class QnaController {
 
     // 문의 글쓰기 페이지
     @GetMapping("/qna/write")
-    public String writeForm(){ return "/qnaWrite"; }
+    public String writeForm(@CookieValue(value = "Authorization") String token){
+
+        if(token != null){
+            logger.debug("token11111 : " + token);
+            userService.tokenToUserEntity(token).getUserEmail();
+            logger.debug("token22222 : " + token);
+            return "/qnaWrite";
+        }
+        else {
+            logger.error("token33333 : " + token);
+            return "/signIn";
+        }
+    }
 
     // 문의 글쓰기
     @PostMapping("/qna/write")
@@ -90,7 +112,7 @@ public class QnaController {
     // 문의 글 보기
     @GetMapping("/qna/view")
     public String view(Model model, Integer qnaNumber){
-        QnaEntity  qnaEntity= qnaService.findById(qnaNumber);
+        QnaEntity qnaEntity= qnaService.findById(qnaNumber);
         logger.error(""+qnaEntity);
         model.addAttribute("qna", qnaEntity);
 
@@ -103,4 +125,12 @@ public class QnaController {
 
     @PostMapping("/qna/update")
     public String update() {return "/qnaUpdate"; }
+
+    // 글 삭제
+    @GetMapping("/qna/delete")
+    public String delete(Integer qnaNumber) {
+        QnaEntity qnaEntity = qnaService.deleteById();
+        return "/qna";
+    }
+
 }

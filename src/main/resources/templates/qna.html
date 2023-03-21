@@ -11,6 +11,13 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/qna.css"/>
   <title>나의 문의 내역</title>
+  <script>
+  $(document).ready(function(){
+  const cookie= document.cookie.split("=")[1]
+
+    });
+  })
+  </script>
 </head>
 <body>
 <header class="header">
@@ -32,7 +39,9 @@
       <div>나의 문의내역</div>
       <div class="navButtonBox">
         <button class="btn btn-outline-primary" onclick="location.href ='http://localhost:9000/FAQ'">자주 묻는 질문 보기</button>
-        <button class="btn btn-outline-primary" onclick="location.href ='http://localhost:9000/qna/write'">문의하기</button></div>
+        <button class="btn btn-outline-primary" onclick="location.href ='http://localhost:9000/qna/write'"
+        id="btnWrite">문의하기</button>
+      </div>
     </div>
   </div>
   <div class="mainArea">
@@ -43,12 +52,12 @@
         <div class="qnaTitle">제목</div>
         <div class="qnaRegDate">등록일</div>
       </div>
+<!--        <div th:if="${cookie!=null.내가 작성한 문의글 출력}"></div>-->
+<!--        <div th:unless="${cookie==null.리스트 없음}">-->
+<!--          <div>작성된 문의글이 없습니다.</div></div>-->
       <div class="tr" th:each="qna:${QnaList}">
         <div class="qnaNumber" th:text="${qna.qnaNumber}"></div>
         <div class="qnaStatus" th:text="${qna.qnaStatus}"></div>
-<!--        <div class="qnaTitle" th:text="${qna.qnaTitle}"-->
-<!--             th:href="@{http://localhost:9000/qna/view(qnaNumber=${qna.qnaNumber})}">-->
-<!--        </div>-->
         <div>
           <a th:text="${qna.qnaTitle}"
              th:href="@{http://localhost:9000/qna/view(qnaNumber=${qna.qnaNumber})}"></a>
