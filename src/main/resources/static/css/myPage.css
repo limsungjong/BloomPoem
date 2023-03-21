@@ -551,3 +551,10 @@ userInfoBox .form-control{
     display: flex;
     justify-content: center;
 }
+
+#pickUpModal {
+    display: block;
+}
+.pickTotalBox {
+    padding: 0;
+}
