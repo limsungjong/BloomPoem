@@ -65,7 +65,9 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
             const coords = new kakao.maps.LatLng(data.y, data.x);
             map.panTo(coords);
         })
-        .catch((error) => console.log("error", error));
+        .catch((error) => {
+            alert("지역을 다시 검색해주세요.");
+        });
 });
 
 class sideItemObj {
@@ -91,12 +93,16 @@ class sideItemObj {
     }
 
     // 사이드 아이템 생성하고 추가
-    createItem(data) {
+    createItem() {
         const sideItem = document.createElement("ul");
         sideItem.setAttribute("class", "sideItem");
         sideItem.innerHTML = `
     <li class="floristTitle">
-      <span>${this.floristData.floristName}</span>
+      <span>${this.floristData.floristName}</span> 
+      <span class="reviewScore">
+        ⭐${this.floristData.floristReviewScore == null ? "0.0" : this.floristData.floristReviewScore.toFixed(1)} / 5.0
+        (${this.floristData.floristReviewCount == null ? "0" : this.floristData.floristReviewCount})
+      </span>
     </li>
     <li class="floristPhoneNumber">
       <span>${this.floristData.floristPhoneNumber}</span>
@@ -236,6 +242,10 @@ class sideItemObj {
           <div class="modal-window">
             <div class="title">
               <h2>${this.floristData.floristName}</h2>
+              <span class="reviewScore">
+                ⭐${this.floristData.floristReviewScore == null ? "0.0" : this.floristData.floristReviewScore.toFixed(1)} / 5.0
+                (${this.floristData.floristReviewCount == null ? "0" : this.floristData.floristReviewCount})
+              </span>
             </div>
             <div class="close-area">
                 <i class="fas fa-times"></i>
@@ -1434,10 +1444,32 @@ class sideItemObj {
     getReviewToFetch() {
         if (this.floristReview == null) {
             console.log(this.floristData)
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+            let urlencoded = new URLSearchParams();
+            urlencoded.append("floristNumber", this.floristData.floristNumber);
+
+            let requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:9000/api/v1/florist/florist_review", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    this.floristReview = result;
+                })
+                .catch(error => console.log('error', error));
         }
     }
 
+    // 꽃집 리뷰 모달 창 만들기
+    createFloristReviewModal() {
+        const floristReviewBox = document.createElement('div');
+        floristReviewBox.setAttribute('class', 'reviewBox');
     // 꽃집 정보 모달 창 만들기
             }
         })
@@ -1518,6 +1550,11 @@ class sideItemObj {
         const boxHtml =
             `
             
+            <div class="reviewImg"></div>
+            <div class="reviewScore"></div>
+            <div class="reviewWriter"></div>
+            <div class="reviewRegDate"></div>
+            <div class="reviewContentBox"></div>
             `;
 
     }
@@ -1585,7 +1622,7 @@ function removeSpinnerBox() {
 }
 
 const searchInput = document.querySelector('#searchInput');
-console.log(searchInput)
+// console.log(searchInput)
 
 const colorReset = ()=>{
     $("#selectColorName").val("");
