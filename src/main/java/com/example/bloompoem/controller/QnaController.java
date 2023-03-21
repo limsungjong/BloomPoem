@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,17 +32,19 @@ public class QnaController {
 
     // 나의 문의 내역 리스트
     @GetMapping("/qna")
-    public String getQnaList(Model model, Pageable pageable, @CookieValue(value = "Authorization") String token){
+    public String getQnaList(Model model, @PageableDefault(page = 0, size = 7, sort = "qnaNumber", direction = Sort.Direction.DESC)
+    Pageable pageable, @CookieValue(value = "Authorization", required = false) String token){
+        int nowPage = pageable.getPageNumber();
+        int startPage = nowPage - 4;
+        int endPage = 0;
+
+        if(token == null) return "/signIn";
         userService.tokenToUserEntity(token).getUserEmail();
 
-        if(token != null){
-            Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
-            model.addAttribute("QnaList", qnaEntityPage);
-            return "/qna";
-        }
-        else {
-            return "/signIn";
-        }
+        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
+        model.addAttribute("QnaList", qnaEntityPage);
+        return "/qna";
+
     }
 
     @PostMapping("/qna")

@@ -13,16 +13,21 @@
   <script src="/build/FAQ.js" defer></script>
   <title>자주 묻는 질문</title>
   <script>
-  $(document).ready(function(){
-  const cookie= document.cookie.split("=")[1]
-    $()
-      if(cookie == null){
-        alert("로그인이 필요합니다.");
-        location.href="/sign/sign_in"
-        return
-      }
-    });
-  })
+$(document).ready(function(){
+  const cookie = document.cookie.split("=")[1]
+
+  $("#btnQnaList").on("click", function(){
+    if(cookie == null){
+      alert("로그인이 필요합니다.");
+    }
+  });
+
+  $("#btnQnaWrite").on("click", function(){
+    if(cookie == null){
+      alert("로그인이 필요합니다.");
+    }
+  });
+})
   </script>
 </head>
 <body>
@@ -44,8 +49,8 @@
     <div class="navBox">
       <div>자주 묻는 질문</div>
       <div class="navButtonBox">
-        <button class="btn btn-outline-primary" onclick="location.href ='http://localhost:9000/qna'" id="btnQna">내 문의글 보기</button>
-        <button class="btn btn-outline-primary" onclick="location.href ='http://localhost:9000/qna/write'">문의하기</button></div>
+        <button class="btn btn-outline-primary" onclick="location.href ='http://localhost:9000/qna'" id="btnQnaList">내 문의글 보기</button>
+        <button class="btn btn-outline-primary" onclick="location.href ='http://localhost:9000/qna/write'" id="btnQnaWrite">문의하기</button></div>
       </div>
     </div>
   </div>
