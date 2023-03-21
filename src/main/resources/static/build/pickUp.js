@@ -73,6 +73,7 @@ class sideItemObj {
     singleBuyDataArr = [];
     buyContainer = null;
     payPopUp = null;
+    floristReview = null;
 
     constructor(x, y, floristData, flowerDataArr, bucketDataArr) {
         this.florist_latitude = x;
@@ -213,6 +214,7 @@ class sideItemObj {
                                     this.createBouquet();
                                     break;
                                 case "리뷰":
+                                    this.getReviewToFetch();
                                     break;
                             }
                             ele.setAttribute("class", "active");
@@ -439,6 +441,16 @@ class sideItemObj {
         bucketListTab.setAttribute("class", "bucketList");
 
         if (this.bucketDataArr.length === 0) {
+            const empty = document.createElement('ul');
+            const emptyBucketHtml = `
+            <div class="emptyBucket">
+                <span class="emptyBucketSpan">
+                  <img src="/image/img_cartnotice.jpg">
+                </span>
+            </div>
+            `;
+            empty.innerHTML = emptyBucketHtml;
+            this.modalContainer.querySelector(".content").append(empty);
             return;
         }
 
@@ -1418,6 +1430,15 @@ class sideItemObj {
                 })
 
 
+    // 꽃집 리뷰 데이터 받아오기
+    getReviewToFetch() {
+        if (this.floristReview == null) {
+            console.log(this.floristData)
+
+        }
+    }
+
+    // 꽃집 정보 모달 창 만들기
             }
         })
 
@@ -1493,7 +1514,7 @@ class sideItemObj {
     //
     createFloristModal() {
         const florisDataBox = document.createElement('div');
-        florisDataBox.setAttribute('class','floristDataBox');
+        florisDataBox.setAttribute('class', 'floristDataBox');
         const boxHtml =
             `
             
@@ -1501,6 +1522,7 @@ class sideItemObj {
 
     }
 }
+
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
     fetch("http://localhost:9000/api/v1/florist/florist_list")
@@ -1576,3 +1598,5 @@ function comma(str) {
     str = String(str);
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 }
+
+
