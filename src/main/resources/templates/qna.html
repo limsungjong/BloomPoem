@@ -11,8 +11,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/qna.css"/>
   <title>나의 문의 내역</title>
-  <script>
-  </script>
 </head>
 <body>
 <header class="header">
@@ -61,13 +59,20 @@
       </div>
     </div>
   </div>
+<!--  <th:block th:each="${#numbers.sequence(startPage, endPage)}">-->
+<!--    <a th:if="${page != nowPage}" href="@{qna/QnaList(page=${page-1})}" th:text="${page}"></a>-->
+<!--    <strong th:if="${page == nowPage}" href="@{qna/QnaList(page=${page-1})}" th:text="${page}"></strong>-->
+<!--  </th:block>-->
   <div class="paging">
     <button class="btn btn-outline-dark">1</button>
     <button class="btn btn-outline-dark">2</button>
-    <button class="btn btn-outline-dark">3</button>
   </div>
 </main>
 <footer>
 </footer>
+<script>
+    console.log("startPage : " + startPage);
+    console.log("endPage : " + endPage);
+  </script>
 </body>
 </html>

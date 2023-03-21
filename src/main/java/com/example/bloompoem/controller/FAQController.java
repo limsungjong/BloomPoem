@@ -29,7 +29,7 @@ public class FAQController {
     public String getFAQList(Model model, Pageable pageable){
         Page<FAQEntity> faqEntityPage = faqService.getFAQList(pageable);
         model.addAttribute("FAQList", faqEntityPage);
-        return "faq";
+        return "/faq";
     }
 
 }

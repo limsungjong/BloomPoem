@@ -34,26 +34,34 @@ public class QnaController {
     @GetMapping("/qna")
     public String getQnaList(Model model, @PageableDefault(page = 0, size = 7, sort = "qnaNumber", direction = Sort.Direction.DESC)
     Pageable pageable, @CookieValue(value = "Authorization", required = false) String token){
-        int nowPage = pageable.getPageNumber();
-        int startPage = nowPage - 4;
-        int endPage = 0;
 
         if(token == null) return "/signIn";
         userService.tokenToUserEntity(token).getUserEmail();
 
         Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
+
+        int nowPage = pageable.getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1);
+        int endPage = Math.min(nowPage + 5, qnaEntityPage.getTotalPages());
+
         model.addAttribute("QnaList", qnaEntityPage);
-        return "/qna";
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
-    }
+        logger.debug("startPage : " + startPage);
+        logger.debug("endPage : " + endPage);
 
-    @PostMapping("/qna")
-    public String backToQnaList(Model model, Pageable pageable){
-//        // 다시 기존 페이지로 돌아가는데 데이터가 안넘어감
-//        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
-//        model.addAttribute("QnaList", qnaEntityPage);
         return "/qna";
     }
+
+//    @PostMapping("/qna")
+//    public String backToQnaList(Model model, Pageable pageable){
+////        // 다시 기존 페이지로 돌아가는데 데이터가 안넘어감
+////        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
+////        model.addAttribute("QnaList", qnaEntityPage);
+//        return "/qna";
+//    }
 
     // 문의 글쓰기 페이지
     @GetMapping("/qna/write")
