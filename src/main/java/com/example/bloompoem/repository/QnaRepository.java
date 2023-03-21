@@ -7,10 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QnaRepository extends JpaRepository<QnaEntity, Integer> {
-//    @Query(value = "SELECT qna_number FROM Qna ", nativeQuery = true)
-//    public Integer getQnaSequence();
 
     QnaEntity findByQnaNumber(int qnaNumber);
 
-
+    QnaEntity findByUserEmail(String userEmail);
 }

@@ -26,19 +26,22 @@ public class QnaService {
 
     // Qna 글작성
     public void write(QnaEntity qnaEntity){
-//        QnaEntity qnaEntity = QnaEntity.toEntity(qnaDTO);
         int qnaNumber = qnaRepository.save(qnaEntity).getQnaNumber();
         qnaEntity.setQnaGroup(qnaNumber);
         qnaRepository.save(qnaEntity);
     }
 
+    // 게시글 시퀀스 가져오기
     public QnaEntity findById(Integer qnaNumber){
       return qnaRepository.findByQnaNumber(qnaNumber);
     }
 
-    public QnaEntity deleteById(){
-        qnaRepository.deleteById(deleteById().getQnaNumber());
-        return null;
-    }
+    // 유저 이메일 가져오기
+
+    //게시글 삭제
+//    public QnaEntity deleteById(){
+//        qnaRepository.deleteById(deleteById().getQnaNumber());
+//        return null;
+//    }
 
 }

@@ -39,7 +39,6 @@ public class QnaController {
         userService.tokenToUserEntity(token).getUserEmail();
 
         Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
-
         int nowPage = pageable.getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, qnaEntityPage.getTotalPages());
@@ -49,39 +48,31 @@ public class QnaController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        logger.debug("startPage : " + startPage);
-        logger.debug("endPage : " + endPage);
+        logger.error("startPage : " + startPage);
+        logger.error("endPage : " + endPage);
 
         return "/qna";
     }
 
-//    @PostMapping("/qna")
-//    public String backToQnaList(Model model, Pageable pageable){
-////        // 다시 기존 페이지로 돌아가는데 데이터가 안넘어감
-////        Page<QnaEntity> qnaEntityPage = qnaService.getQnaList(pageable);
-////        model.addAttribute("QnaList", qnaEntityPage);
-//        return "/qna";
-//    }
-
     // 문의 글쓰기 페이지
     @GetMapping("/qna/write")
-    public String writeForm(@CookieValue(value = "Authorization") String token){
+    public String writeForm(@CookieValue(value = "Authorization", required = false) String token){
 
-        if(token != null){
-            logger.debug("token11111 : " + token);
-            userService.tokenToUserEntity(token).getUserEmail();
-            logger.debug("token22222 : " + token);
-            return "/qnaWrite";
-        }
-        else {
-            logger.error("token33333 : " + token);
-            return "/signIn";
-        }
+        if(token == null) return "/signIn";
+        userService.tokenToUserEntity(token).getUserEmail();
+
+        return "/qnaWrite";
     }
 
     // 문의 글쓰기
     @PostMapping("/qna/write")
-    public String write(@ModelAttribute QnaEntity qnaEntity){
+    public String write(Model model, @ModelAttribute QnaEntity qnaEntity,
+    @CookieValue(value = "Authorization", required = false) String token){
+
+        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+        model.addAttribute("userEmail", userEmail);
+        logger.error("userEmail : " + userEmail);
+
         // 답글이 아닌 경우(부모 게시글이 존재하지 않는 경우)
         qnaEntity.setQnaDate(LocalDateTime.now());
         qnaEntity.setQnaStatus('N');
@@ -116,7 +107,7 @@ public class QnaController {
         qnaEntity.setQnaImage1("");
         qnaEntity.setQnaImage2("");
         qnaEntity.setQnaImage3("");
-        System.out.println("QnaEntity = " + qnaEntity);
+        logger.debug("QnaEntity = " + qnaEntity);
         qnaService.write(qnaEntity);
         return "/qna";
     }
@@ -139,10 +130,10 @@ public class QnaController {
     public String update() {return "/qnaUpdate"; }
 
     // 글 삭제
-    @GetMapping("/qna/delete")
-    public String delete(Integer qnaNumber) {
-        QnaEntity qnaEntity = qnaService.deleteById();
-        return "/qna";
-    }
+//    @GetMapping("/qna/delete")
+//    public String delete(Integer qnaNumber) {
+//        QnaEntity qnaEntity = qnaService.deleteById();
+//        return "/qna";
+//    }
 
 }

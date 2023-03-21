@@ -27,11 +27,8 @@ public class QnaEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_QNA_NUMBER")
     private Integer qnaNumber;
 
-    @Column(length = 40)
+    @JoinColumn(name = "userEmail")
     private String userEmail;
-
-//    @Column(length = 40, nullable = false)
-//    private Date qnaDate;
 
     @CreationTimestamp
     @Column
