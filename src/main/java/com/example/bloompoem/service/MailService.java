@@ -79,7 +79,7 @@ public class MailService {
                     "                  <td style=\"padding: 20px; border: 0\" bgcolor=\"#fff\">\n" +
                     "                    <h3 style=\"text-align: center\">\n" +
                     "                      <img\n" +
-                    "                        src=\"http://localhost:9000/image/logo%EC%B5%9C%EC%A2%852.png\"\n" +
+                    "                        src=\"https://github.com/limsungjong/BloomPoem/blob/master/src/main/resources/static/image/logo2.png?raw=true\"\n" +
                     "                        style=\"width: 300px\"\n" +
                     "                        loading=\"lazy\"\n" +
                     "                      />\n" +

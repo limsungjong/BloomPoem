@@ -276,3 +276,16 @@ var _a;
 (_a = document.querySelector(".moreBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (e) => {
     window.scrollBy({ top: window.innerHeight });
 });
+
+{
+    const inputText = document.querySelector(".searchTerm");
+    const inputBtn = document.querySelector(".searchButton");
+    const eventHandle = (e) => {
+        console.log(inputText.value);
+    }
+
+    inputBtn.addEventListener("click",(e) => eventHandle(e));
+    inputText.addEventListener("keyup", (e) => {
+        if(e.keyCode === 13) eventHandle(e);
+    });
+}

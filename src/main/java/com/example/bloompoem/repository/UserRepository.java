@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Modifying
     @Query(value = "update UserEntity b set b.userOtp = :userOtp where b.userEmail = :userEmail")
     void changeOtp(@Param("userOtp") String userOtp , @Param("userEmail") String userEmail);
+
+
 }

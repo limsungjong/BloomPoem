@@ -1,17 +1,18 @@
 package com.example.bloompoem.controller;
 
-import com.example.bloompoem.domain.dto.OrderReviewRequest;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.exception.CustomException;
-import com.example.bloompoem.repository.PickUpOrderDetailRepository;
+import com.example.bloompoem.repository.FloristReviewRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import com.example.bloompoem.service.*;
 import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,6 +28,7 @@ import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
+@PropertySource("classpath:app.properties")
 public class MyPageController {
 
     @Value("#{environment['jwt.secret']}")
@@ -34,23 +36,28 @@ public class MyPageController {
     private final UserService userService;
     private final ProductService productService;
     private final ShoppingReviewService shoppingReviewService;
-    private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
     private final PickUpOrderRepository pickUpOrderRepository;
     private final OrderService orderService;
-    private final PickUpOrderReviewService pickUpOrderReviewService;
+    private final FloristReviewService floristReviewService;
+    private final FloristReviewRepository floristReviewRepository;
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
+
+    @Value("#{environment['file.path']}")
+    private String FILE_PATH;
 
     //범수 시작
     //myPage로 보내는 기능 보내면서 쿠키를 읽어 모델에 user를 담아서 보냄
     @GetMapping("/my_page")
-    public String MyPageGo(@CookieValue(value = "Authorization") String cookie, Model model) {
+    public String MyPageGo(@CookieValue(value = "Authorization", required = false) String cookie, Model model) {
+        if(cookie == null) return "/signIn";
+
         String userEmail = JwtUtil.getUserName(cookie, secretKey);
         if (userEmail != null) {
             UserEntity user = userService.tokenToUserEntity(cookie);
             model.addAttribute("user", user);
             return "/myPage";
         } else {
-            return "/signin";
+            return "/signIn";
         }
     }
 
@@ -100,10 +107,9 @@ public class MyPageController {
     @PostMapping("/review/save_photo")
     public ResponseEntity<String> insertPhoto(MultipartFile reviewImage, Integer shoppingReviewNumber) {
         logger.error("" + reviewImage);
-        String path = "C:/project/BloomPoem/src/main/resources/static/image/upload";
         //이미지 파일 생성 후 이름 저장 시키기
         String imageName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
-        File imageFile = new File(path, imageName);
+        File imageFile = new File(FILE_PATH, imageName);
         try {
             reviewImage.transferTo(imageFile);
         } catch (Exception e) {
@@ -152,9 +158,9 @@ public class MyPageController {
 
     @PostMapping("/myPage/pick_up/order_status_update")
     public ResponseEntity<String> pickUpOrderStatusUpdate(int pickUpOrderNumber) {
-        if(pickUpOrderRepository.findById(pickUpOrderNumber).isPresent()) {
-            logger.info(pickUpOrderNumber+"");
-            orderService.updateOrderStatus(pickUpOrderNumber,5);
+        if (pickUpOrderRepository.findById(pickUpOrderNumber).isPresent()) {
+            logger.info(pickUpOrderNumber + "");
+            orderService.updateOrderStatus(pickUpOrderNumber, 5);
             return ResponseEntity.ok("success");
         }
         throw new CustomException(ResponseCode.NOT_FOUND_ORDER);
@@ -162,34 +168,77 @@ public class MyPageController {
 
     @PostMapping("/review/check_review")
     public ResponseEntity<Boolean> checkReview(int pickUpOrderNumber) {
-        return ResponseEntity.ok(pickUpOrderReviewService.checkPickUpOrderReview(pickUpOrderNumber));
+        return ResponseEntity.ok(floristReviewService.checkPickUpOrderReview(pickUpOrderNumber));
     }
 
-    @PostMapping ("/review/pick_up/write")
+    @PostMapping("/review/pick_up/write")
     public ResponseEntity<Integer> insertPickUpReview(
             int floristNumber,
             String userEmail,
             int pickUpOrderNumber,
             String pickUpOrderContent,
-            int pickUpOrderScore) {
+            char pickUpOrderScore) {
 
-        logger.info(floristNumber+"");
-        logger.info(userEmail+"");
-        logger.info(pickUpOrderNumber+"");
-        logger.info(pickUpOrderContent+"");
-        logger.info(pickUpOrderScore+"");
+        logger.info("floristNumber : " + floristNumber);
+        logger.info("userEmail : " + userEmail);
+        logger.info("pickUpOrderNumber : " + pickUpOrderNumber);
+        logger.info("pickUpOrderContent : " + pickUpOrderContent);
+        logger.info("pickUpOrderScore : " + pickUpOrderScore);
+        FloristReviewEntity reviewEntity = floristReviewService.saveOrderReview(
+                floristNumber,
+                userEmail,
+                pickUpOrderNumber,
+                pickUpOrderContent,
+                pickUpOrderScore
+        );
 
-        return ResponseEntity.ok(5);
+        return ResponseEntity.ok().body(reviewEntity.getFloristReviewNumber());
     }
 
-    @PostMapping("/myPage/review/post/order")
+    @PostMapping(value = "/review/pick_up/save_photo")
+    public ResponseEntity<String> pickUpReviewSavePhoto(
+            MultipartFile reviewImage, Integer reviewSeq) {
+
+        logger.error("reviewImage : " + reviewImage);
+        logger.info("reviewSeq : " + reviewSeq);
+        //이미지 파일 생성 후 이름 저장 시키기
+        String imageName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
+        File imageFile = new File(FILE_PATH, imageName);
+        try {
+            reviewImage.transferTo(imageFile);
+        } catch (Exception e) {
+            logger.error("[insertReview] Error : " + e);
+        }
+        floristReviewService.saveOrderReviewImage(reviewSeq, imageName);
+
+        return ResponseEntity.ok().body("이미지 저장");
+    }
+
+    @PostMapping("/pick_up/review/read")
     @ResponseBody
-    public ResponseEntity<?> postOrder(@RequestBody OrderReviewRequest request, @CookieValue(value = "Authorization") String token) {
-        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
-
-
-        return ResponseEntity.ok().body("post");
+    @JsonIgnore
+    public ResponseEntity<Page<FloristReviewEntity>> pickUpReviewRead(String userEmail, @PageableDefault(size = 6) Pageable pageable) {
+        return ResponseEntity.ok(floristReviewService.floristReviewView(userEmail, pageable));
     }
 
+    @PostMapping("/pick_up/review/update")
+    public ResponseEntity<?> pickUpReviewUpdate(
+            int orderReviewNumber,
+            String pickUpOrderContent,
+            char pickUpOrderScore
+    ) {
+        if(floristReviewRepository.existsById(orderReviewNumber)) {
+            floristReviewService.floristReviewUpdate(orderReviewNumber,pickUpOrderContent,pickUpOrderScore);
+        } else throw new CustomException(ResponseCode.INVALID_REQUEST);
+        return ResponseEntity.ok().body("성공");
+    }
+
+    @DeleteMapping("/pick_up/review/delete")
+    public ResponseEntity<?> pickUpReviewDelete(int orderReviewNumber) {
+        if(floristReviewRepository.existsById(orderReviewNumber)) {
+            floristReviewService.floristReviewDelete(orderReviewNumber);
+        } else throw new CustomException(ResponseCode.INVALID_REQUEST);
+        return ResponseEntity.ok().body("success");
+    }
     //나래 시작
 }
