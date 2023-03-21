@@ -38,7 +38,7 @@ public class MyPageController {
     private final ShoppingReviewService shoppingReviewService;
     private final PickUpOrderRepository pickUpOrderRepository;
     private final OrderService orderService;
-    private final PickUpOrderReviewService pickUpOrderReviewService;
+    private final FloristReviewService floristReviewService;
     private final FloristReviewRepository floristReviewRepository;
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
@@ -168,7 +168,7 @@ public class MyPageController {
 
     @PostMapping("/review/check_review")
     public ResponseEntity<Boolean> checkReview(int pickUpOrderNumber) {
-        return ResponseEntity.ok(pickUpOrderReviewService.checkPickUpOrderReview(pickUpOrderNumber));
+        return ResponseEntity.ok(floristReviewService.checkPickUpOrderReview(pickUpOrderNumber));
     }
 
     @PostMapping("/review/pick_up/write")
@@ -184,7 +184,7 @@ public class MyPageController {
         logger.info("pickUpOrderNumber : " + pickUpOrderNumber);
         logger.info("pickUpOrderContent : " + pickUpOrderContent);
         logger.info("pickUpOrderScore : " + pickUpOrderScore);
-        FloristReviewEntity reviewEntity = pickUpOrderReviewService.saveOrderReview(
+        FloristReviewEntity reviewEntity = floristReviewService.saveOrderReview(
                 floristNumber,
                 userEmail,
                 pickUpOrderNumber,
@@ -209,7 +209,7 @@ public class MyPageController {
         } catch (Exception e) {
             logger.error("[insertReview] Error : " + e);
         }
-        pickUpOrderReviewService.saveOrderReviewImage(reviewSeq, imageName);
+        floristReviewService.saveOrderReviewImage(reviewSeq, imageName);
 
         return ResponseEntity.ok().body("이미지 저장");
     }
@@ -218,7 +218,7 @@ public class MyPageController {
     @ResponseBody
     @JsonIgnore
     public ResponseEntity<Page<FloristReviewEntity>> pickUpReviewRead(String userEmail, @PageableDefault(size = 6) Pageable pageable) {
-        return ResponseEntity.ok(pickUpOrderReviewService.floristReviewView(userEmail, pageable));
+        return ResponseEntity.ok(floristReviewService.floristReviewView(userEmail, pageable));
     }
 
     @PostMapping("/pick_up/review/update")
@@ -228,7 +228,7 @@ public class MyPageController {
             char pickUpOrderScore
     ) {
         if(floristReviewRepository.existsById(orderReviewNumber)) {
-            pickUpOrderReviewService.floristReviewUpdate(orderReviewNumber,pickUpOrderContent,pickUpOrderScore);
+            floristReviewService.floristReviewUpdate(orderReviewNumber,pickUpOrderContent,pickUpOrderScore);
         } else throw new CustomException(ResponseCode.INVALID_REQUEST);
         return ResponseEntity.ok().body("성공");
     }
@@ -236,7 +236,7 @@ public class MyPageController {
     @DeleteMapping("/pick_up/review/delete")
     public ResponseEntity<?> pickUpReviewDelete(int orderReviewNumber) {
         if(floristReviewRepository.existsById(orderReviewNumber)) {
-            pickUpOrderReviewService.floristReviewDelete(orderReviewNumber);
+            floristReviewService.floristReviewDelete(orderReviewNumber);
         } else throw new CustomException(ResponseCode.INVALID_REQUEST);
         return ResponseEntity.ok().body("success");
     }

@@ -432,7 +432,9 @@ class pickUpOrderRv {
                 const floristNameIndex = floristData.findIndex(value => value.floristNumber == p.floristNumber);
                 const msg = `<div class="shoppingReviewOneBox">
                             <img src="/image/upload/${photo}" alt="" class="shoppingReviewImage" />
-                            <div class="shoppingProductName">주문 번호 ${p.pickUpOrderNumber} | ${floristData[floristNameIndex].floristName}</div>
+                            <div class="shoppingOrderDate">주문번호 : ${p.pickUpOrderNumber}</div>
+                            <div class="shoppingReviewRegDate">주문시간 : ${p.floristReviewRegDate}</div>
+                            <div class="shoppingProductName">${floristData[floristNameIndex].floristName}</div>
                             <div class="shoppingReviewScore"><select id="score${p.floristReviewNumber}">${option}</select>점</div>
                             <div class="shoppingReviewContent"><input type="text" class="inputText form-control" id="content${p.floristReviewNumber}" value="${p.floristReviewContent}"> </div>
                             <div class="shoppingReviewModify"><button class=" btn btn-outline-primary orderReviewModify" data-no="${p.floristReviewNumber}">수정</button></div>

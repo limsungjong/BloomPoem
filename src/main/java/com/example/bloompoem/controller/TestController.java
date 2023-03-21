@@ -1,8 +1,5 @@
 package com.example.bloompoem.controller;
 
-import com.example.bloompoem.domain.dto.PickUpCartRequest;
-import com.example.bloompoem.entity.PickUpOrderDetailEntity;
-import com.example.bloompoem.entity.PickUpOrderEntity;
 import com.example.bloompoem.repository.*;
 import com.example.bloompoem.service.PickUpService;
 import com.example.bloompoem.service.UserService;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://192.168.45.148:5500/")
 @Controller
@@ -45,6 +40,9 @@ public class TestController {
     @Autowired
     PickUpOrderDetailRepository pickUpOrderDetailRepository;
 
+    @Autowired
+    FloristReviewRepository floristReviewRepository;
+
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
 
@@ -66,9 +64,8 @@ public class TestController {
     }
 
     @GetMapping(value = "/test/api")
-    public @ResponseBody String test() {
-        String orderId = "49";
-        pickUpService.pickUpCartDeleteByPickOrderSeq(Integer.valueOf(orderId));
+    public @ResponseBody String test(@RequestParam int floristNumber) {
+        floristReviewRepository.findAllByFloristNumber(floristNumber);
         return "성공";
     }
 }
