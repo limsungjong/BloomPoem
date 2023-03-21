@@ -1169,9 +1169,6 @@ class sideItemObj {
 
     }
 }
-
-let popup;
-
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
     fetch("http://localhost:9000/api/v1/florist/florist_list")
@@ -1232,3 +1229,6 @@ kakao.maps.event.addListener(map, 'dragend', function (data) {
 function removeSpinnerBox() {
     document.querySelector(".spinnerBox").remove();
 }
+
+const searchInput = document.querySelector('#searchInput');
+console.log(searchInput)
