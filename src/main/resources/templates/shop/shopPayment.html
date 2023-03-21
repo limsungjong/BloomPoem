@@ -150,6 +150,7 @@
           data : {cookie, shoppingCartNumber}
         }).then( r=>{
           if(shoppingCartNumber< 1){
+            console.log(shoppingCartNumber)
             alert("결제 할 상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
             location.href = "/shopping";
           }

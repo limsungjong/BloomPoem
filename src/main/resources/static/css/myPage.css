@@ -422,23 +422,37 @@ input[type=text] {
     width: 100%;
     height: 100%;
     grid-template-columns: repeat(2 , 600px);
-    grid-template-rows: repeat(3, 140px);
+    grid-template-rows: repeat(3, 160px);
     grid-gap: 25px;
     justify-content: center;
     align-content: center;
 }
 .shoppingReviewOneBox{
     display: grid;
-    height: 141px;
+    height: 161px;
     grid-template-columns: 200px 280px 70px 50px;
-    grid-template-rows: 70px 70px;
+    grid-template-rows: 20px 70px 70px;
     grid-template-areas:
-  "shoppingReviewImage shoppingProductName  . shoppingReviewModify"
+    "shoppingOrderNumber shoppingRegDate . ."
+  "shoppingReviewImage shoppingProductName  shoppingReviewScore shoppingReviewModify"
   "shoppingReviewImage shoppingReviewContent shoppingReviewContent shoppingReviewDelete";
     font-size: 1.2rem;
     align-items: center;
     justify-items: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.29) ;
+}
+.shoppingOrderDate{
+    grid-area:shoppingOrderNumber;
+    font-size: 1.0rem;
+    color: #6d6d6d;
+}
+.shoppingReviewRegDate{
+    grid-area:shoppingRegDate ;
+    font-size: 1.0rem;
+    color: #6d6d6d;
+}
+.shoppingReviewScore{
+    grid-area: shoppingReviewScore;
 }
 .shoppingReviewImage{
     width: 100%;
@@ -471,9 +485,69 @@ input[type=text] {
 .shoppingReviewContent .form-control{
     width: 340px;
 }
-#pickUpModal {
-    display: block;
+.withdraw{
+    cursor: pointer;
 }
-.pickTotalBox {
-    padding: 0;
+.userInfoBox{
+    width: 600px;
+    height: 600px;
+}
+userInfoBox .form-control{
+    width: 400px;
+}
+.userInfoRegDateBox{
+    font-size: 1.2rem;
+    color:gray;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.userInfoRegDateBox span{
+    font-size: 1.2rem;
+    color:gray;
+}
+.userInfoNamBox{
+    display: grid;
+    grid-template-columns: 200px 400px;
+    align-items: center;
+    padding: 30px;
+}
+.userInfoEmailBox{
+    display: grid;
+    grid-template-columns: 200px 400px;
+    align-items: center;
+    padding: 30px;
+}
+.userInfoAddressBox{
+    display: grid;
+    grid-template-columns: 200px 400px;
+    align-items: center;
+    padding: 30px;
+}
+.userInfoDetailAddressBox{
+    display: grid;
+    grid-template-columns: 200px 400px;
+    align-items: center;
+    padding: 30px;
+}
+.userInfoPhoneNumberBox{
+    display: grid;
+    grid-template-columns: 200px 400px;
+    align-items: center;
+    padding: 30px;
+}
+.userInfoButtonBox{
+    display: grid;
+    grid-template-columns: 600px;
+    justify-items: center;
+    padding: 30px;
+}
+.userInfoButtonBox button{
+    width: 50%;
+}
+.userInfoArea{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
 }

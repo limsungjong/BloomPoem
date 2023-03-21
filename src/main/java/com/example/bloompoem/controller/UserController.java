@@ -1,6 +1,9 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.repository.UserRepository;
+import com.example.bloompoem.service.UserService;
+import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -9,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,7 +25,7 @@ import java.util.Map;
 @CrossOrigin(origins = "http://172.28.16.1:5500")
 @RequiredArgsConstructor
 public class UserController {
-
+    private final UserService userService;
     private final UserRepository userRepository;
 
     @PostMapping("/user/image")
@@ -74,5 +78,24 @@ public class UserController {
         }
         // 이미지 리턴 실시 [브라우저에서 get 주소 확인 가능]
         return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+    }
+    @PostMapping("/user/withdraw")
+    public ResponseEntity<String> userWithDraw (String cookie){
+        UserEntity user = userService.tokenToUserEntity(cookie);
+        user.setUserStatus('N');
+        userService.userSave(user);
+
+        return ResponseEntity.ok("success");
+    }
+    @PostMapping("/user/info_change")
+    public  ResponseEntity<UserEntity> userInfoChange(String userEmail, String userAddress , String userAddressDetail, String userPhoneNumber, String cookie){
+        UserEntity userEntity = userService.tokenToUserEntity(cookie);
+        userEntity.setUserEmail(userEmail);
+        userEntity.setUserAddress(userAddress);
+        userEntity.setUserAddressDetail(userAddressDetail);
+        userEntity.setUserPhoneNumber(userPhoneNumber);
+        userService.userSave(userEntity);
+
+        return ResponseEntity.ok(userEntity);
     }
 }

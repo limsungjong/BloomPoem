@@ -30,6 +30,20 @@
       }else {
         $(".userBox").append(header);
       }
+      $.ajax({
+        url : "/shopping/many_buy_product",
+        method : "get"
+      }).then(r =>{
+        $(".mainBar1Product").empty();
+        console.log(r)
+        $.each(r , (i, p)=>{
+          const msg = `<div class="oneManyBuyProductBox">
+                        <div class="ManyBuyProductImageBox"><img class="ManyBuyProductImage" data-name="${p.productName}" data-no="${p.productNumber}" src="/image/product/${p.productMainImage}"></div>
+                        <div class="ManyBuyProductName">${p.productName}</div>
+                      </div>`
+          $(".mainBar1Product").append(msg)
+        })
+      })
       //쿠기가 있으면 header 변경 끝
       // 메뉴바 보이게하는 제이쿼리
       $(".plantMenu").on("mouseenter", ()=> {
@@ -105,6 +119,18 @@
         $("#searchValue").val($(".searchTerm").val());
         document.categorySelect.submit();
       })
+      $(".plantMenu").on("click", ()=>{
+        $("#category").val(10);
+        document.categorySelect.submit();
+      })
+      $(".wreathMenu").on("click", ()=>{
+        $("#category").val(11);
+        document.categorySelect.submit();
+      })
+      $(".flowerBasketMenu").on("click", ()=>{
+        $("#category").val(12);
+        document.categorySelect.submit();
+      })
       $(".searchTerm").on("keyup", key =>{
         if(key.keyCode ==13) {
           $("#category").val(9);
@@ -121,6 +147,15 @@
     $(".mainImageBox").on("click",".left",()=>{
       imageLeft()
     })
+
+    $(".mainBar1Product").on("click", ".ManyBuyProductImage", (e)=>{
+      const productNumber = e.target.dataset.no;
+      console.log(productNumber)
+      $(".category").val(9);
+      $("#productNumber").val(productNumber);
+      document.detailForm.submit();
+    })
+
 
     })
 
@@ -168,8 +203,8 @@
   <br/>
   <div class="mainImageBox">
       <div class="mainImgDiv" >
-      <img src="/image/main/shopMain1.png" alter="mainImage" class="mainImage">
       <img src="/image/main/shopMain2.png" alter="mainImage" class="mainImage">
+      <img src="/image/main/shopMain1.png" alter="mainImage" class="mainImage">
       <img src="/image/main/shopMain3.png" alter="mainImage" class="mainImage">
       </div>
       <span class="material-symbols-outlined left">chevron_left</span>
@@ -181,24 +216,30 @@
   <br/>
 
   <div class="mainArea">
-    <div class="mainBar">bar</div>
+    <form name="detailForm" action="/shopping/product_detail">
+      <input type="hidden" name="category" class="category" value="">
+      <input type="hidden" name="productNumber" id="productNumber" value="">
+    </form>
     <div class="mainBar1Product">
-      <!--3x3그리드 시작 -->
+      <!--3x2그리드 시작 -->
+
     </div>
   </div>
   <br/>
-  <br/>
-  <div>
-    <div class="subArea">
-      <!--2X 6 그리드 시작-->
-    </div>
+  <div style="background-color: #fff3d4">
+    <br/>
+  </div>
+  <div class="subArea">
+    <!--2X 6 그리드 시작-->
+    <div class="subImage1"><img class="plantMenu" src="/image/shopImage1.png" alt="subImage"> </div>
+    <div class="subImage2"><img class="wreathMenu" src="/image/shopImage2.png" alt="subImage"></div>
+    <div class="subImage3"><img class="flowerBasketMenu" src="/image/shopImage3.jpg" alt="subImage"></div>
   </div>
   <br/>
-  <div>
-    <div class ="subArea2">
-      <!-- 3x1 그리드 시작 -->
-    </div>
-  </div>
+<!--  <div class ="subArea2">-->
+<!--    &lt;!&ndash; 3x1 그리드 시작 &ndash;&gt;-->
+<!--  </div>-->
+
 </main>
 <footer>
 </footer>

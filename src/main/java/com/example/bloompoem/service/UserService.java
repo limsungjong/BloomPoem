@@ -3,6 +3,7 @@ package com.example.bloompoem.service;
 import com.example.bloompoem.domain.dto.MailDTO;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.domain.dto.UserSignUpRequest;
+import com.example.bloompoem.dto.UserDTO;
 import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.UserRepository;
@@ -117,5 +118,7 @@ public class UserService {
         }
         throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
     }
-
+    public void userSave(UserEntity user){
+        userRepository.saveAndFlush(user);
+    }
 }

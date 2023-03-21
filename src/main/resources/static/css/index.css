@@ -233,7 +233,7 @@ main {
   min-width: 800px;
 }
 .backGroundImage {
-  background-image: url("../image/mainBackImg1.jpg");
+  background-image: url("../image/main/KakaoTalk_20230210_112643394_01.jpg");
   opacity: 80%;
   width: 100vw;
   height: 80vh;
@@ -544,13 +544,9 @@ footer {
   display: flex;
   font-size: 64px;
   margin-bottom: 10px;
+  justify-content: center;
 }
-.main-content-3 .con-item-list {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  height: 100%;
-}
+
 .main-content-3 .main-con-item {
   min-width: 300px;
   min-height: 300px;
@@ -561,7 +557,6 @@ footer {
 }
 .main-content-3 .main-con-row {
   display: flex;
-  align-items: center;
   flex-direction: column;
 }
 
@@ -689,8 +684,9 @@ ul {
   width: 95%;
   font-weight: 600;
   text-align: right;
-  font-size: 1.5rem;
   position: relative;
+  font-size: 1.8rem;
+  line-height: 48px;
 }
 menu {
   font-weight: 400;
@@ -733,16 +729,55 @@ span.fromLeft:after {
 
 .moreBtn {
   position: absolute;
-  bottom: 10%;
+  bottom: 8%;
+  width: 210px;
+  height: 50px;
   left: 45%;
-  border: 2px solid;
-  padding: 20px;
+  border-radius: 10px;
   background-color: var(--color-sun-gray);
+  border: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.moreBtn button{
+  border: 0px;
+  border-radius: 10px;
+
 }
 menu span{
   cursor: pointer;
 }
-
-.userBox {
-  margin-right: 50px;
+::-webkit-scrollbar{
+  display: none;
 }
+
+.main-content-3 .con-item-list {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  height: 100%;
+}
+.con-item-Box{
+  display: flex;
+  width: 90%;
+}
+.bestProductImage{
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  border-radius: 15px;
+}
+.bestProductImageBox{
+  display: flex;
+  justify-content: center;
+}
+.oneProduct{
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  justify-content: space-around;
+
+}
+

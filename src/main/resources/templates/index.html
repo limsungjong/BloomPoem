@@ -8,12 +8,40 @@
     <link rel="stylesheet" type="text/css" href="/css/index.css" />
     <script src="/build/userContext.js" defer></script>
     <script src="/build/onRealdy.js" defer></script>
+
     <title>꽃집</title>
     <script src="/build/index.js" defer></script>
     <script
       src="https://kit.fontawesome.com/8e31ecfd50.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script>
+      function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+      }
+      $(document).ready(()=>{
+        $.ajax({
+          url : "/shoppping/review/rate_high",
+          method : "get",
+        }).then(r=>{
+          console.log(r);
+          $("#productBox").empty();
+          $.each(r, (i, p) =>{
+            const msg = `<div className="main-con-item" id="oneProduct">
+                      <div class="bestProductImageBox"><img src="/image/product/${p.product.productMainImage}" alt="productImage" class="bestProductImage"></div>
+                      <div>${p.product.productName}</div>
+                      <div>${comma(p.product.productPrice)}</div>
+                      <div>⭐<span></span>/5(<span>5</span>)</div>
+                      <div>${p.shoppingReviewContent}</div>
+                    </div>`
+            $("#productBox").append(msg)
+          })
+          })
+        })
+
+    </script>
   </head>
   <body>
   <div id="loading"></div>
@@ -42,28 +70,28 @@
         </button>
       </div>
       <div class="mainText">
-        사랑하는 사람에게 <br />꽃으로 마음을 전달해보세요.
+        사랑하는 사람에게 <br />꽃으로 <br/>마음을 전달해보세요
       </div>
-      <div class="moreBtn"><span> More </span></div>
+      <div class="moreBtn"><button class="btn btn-outline-white"> More Information </button></div>
       <div class="main-content-1">
         <div class="sticky">
           <div class="sticky-background">BLOOM FOEM</div>
           <div class="card-frame">
             <div class="card">
               <div class="front spring"></div>
-              <div class="back">Cherry Blossom</div>
+              <div class="back">PickUp</div>
             </div>
             <div class="card">
               <div class="front summer"></div>
-              <div class="back">Sun Flower</div>
+              <div class="back">SHOP</div>
             </div>
             <div class="card">
               <div class="front fall"></div>
-              <div class="back">Cosmos</div>
+              <div class="back">Recommend</div>
             </div>
             <div class="card">
               <div class="front winter"></div>
-              <div class="back">Camellia</div>
+              <div class="back">And</div>
             </div>
           </div>
         </div>
@@ -78,13 +106,13 @@
             </div>
           </div>
           <div class="section">
-            <div class="title">Delivery</div>
+            <div class="title">Shop</div>
             <div class="contentWrap">
               <div class="content"></div>
             </div>
           </div>
           <div class="section">
-            <div class="title">Recommendation</div>
+            <div class="title">Recommend</div>
             <div class="contentWrap">
               <div class="content"></div>
             </div>
@@ -103,9 +131,29 @@
             <span>Best Shop</span>
           </div>
           <div class="con-item-list">
-            <div class="main-con-item"></div>
-            <div class="main-con-item"></div>
-            <div class="main-con-item"></div>
+            <div class="con-item-Box">
+              <div class="main-con-item">
+                <div>floRistName</div>
+                <div>floRistAddress</div>
+                <div>floRistPhoneNumber</div>
+                <div>⭐<span>4.6</span>/5(<span>5</span>)</div>
+                <div>reviewContent</div>
+              </div>
+              <div class="main-con-item">
+                <div>floRistName</div>
+                <div>floRistAddress</div>
+                <div>floRistPhoneNumber</div>
+                <div>⭐<span>4.6</span>/5(<span>5</span>)</div>
+                <div>reviewContent</div>
+              </div>
+              <div class="main-con-item">
+                <div>floRistName</div>
+                <div>floRistAddress</div>
+                <div>floRistPhoneNumber</div>
+                <div>⭐<span>4.6</span>/5(<span>5</span>)</div>
+                <div>reviewContent</div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="main-con-row">
@@ -113,9 +161,10 @@
             <span>Best Product</span>
           </div>
           <div class="con-item-list">
-            <div class="main-con-item"></div>
-            <div class="main-con-item"></div>
-            <div class="main-con-item"></div>
+            <div  class="con-item-Box" id="productBox">
+
+
+            </div>
           </div>
         </div>
       </div>

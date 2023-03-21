@@ -17,7 +17,42 @@
             var value = document.cookie.match('^[^\;]+' + name + '=([^;]*)(;|$)');
             return value? value[2] : null;
         };
-
+        //10~12 카테고리 보여주는 스크립트 시작
+         const sumCategoryView = (category, page, sort)=>{
+             if(sort == null){
+                 sort = "";
+             }
+             $(".productContent").empty();
+             $.ajax({
+                 url : "/shopping/category_sum_view",
+                 data : {category, page ,sort},
+             }).then(suc => {
+                 console.log(suc)
+                 if(suc.content == null){
+                     alert("상품이 없습니다.");
+                     location.href="/shopping";
+                     return;
+                 }else{
+                     $.each(suc.content, function (i, m){
+                         const msg  = `<div class="productView">
+                            <img src="/image/product/${m.productMainImage}" alter="product" class="productImage" data-no="${m.productNumber}" >
+                            <div class="text productNameText">${m.productName}</div>
+                            <div class="text">가격 :<span class="text productPrice">${comma(m.productPrice)}</span>원</div>
+                            <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
+                                <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
+                            </div>`
+                         $(".productContent").append(msg);
+                     })}
+                 if(suc.totalPages>1){
+                     const page = $("#page").val();
+                     $(".pagingButton").empty();
+                     for(let i=1;suc.totalPages>=i; i++){
+                         const msg = (page==i) ?`<button class="btn btn-outline-dark sumCategoryPaging" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark sumCategoryPaging">${i}</button>`
+                         $(".pagingButton").append(msg);
+                     }
+                 }
+             }).catch(err => console.log(err))
+         }
         //검색하는 스크립트 시작
         const search = function (){
             const searchValue = $(".searchValue").val();
@@ -41,6 +76,7 @@
                                 <div><button class="btn btn-outline-primary productBasket" data-no="${m.productNumber}">장바구니</button>
                                     <button class="btn btn-outline-success productBuy" data-no="${m.productNumber}">구매하기</button></div>
                                 </div>`
+                        $(".productContent").append(1);
                         $(".productContent").append(msg);
                     })
                     if(r.totalPages>1){
@@ -76,8 +112,23 @@
                 $(".userBox").append(header);
             }
             //쿠기가 있으면 header 변경 끝
+            //10 ,11 ,12 카테고리 페이징 시작
+            $(".pagingButton").on("click", ".sumCategoryPaging" ,(e)=>{
+                const page = parseInt(e.target.textContent) -1 ;
+                const category = $("#category").val();
+                console.log(page);
+                console.log(category);
+                $("#page").val(e.target.textContent)
+                sumCategoryView(category, page);
+            })
+            //10 ,11 ,12 카테고리 페이징 끝
             //한 개 구매하기 버튼 기능 시작
                 $(".productContent").on("click",".productBuy",(e)=>{
+                    if(cookie == null){
+                        alert("로그인이 필요합니다.");
+                        location.href="/sign/sign_in"
+                        return
+                    }
                     const productNumber = e.target.dataset.no
                     $.ajax({
                         url : "/shopping/cart_exists_product",
@@ -236,6 +287,18 @@
                     $(".category").val(8);
                     document.categorySelect.submit();
                 })
+                $(".plantMenu").on("click", ()=>{
+                    $(".category").val(10);
+                    document.categorySelect.submit();
+                })
+                $(".wreathMenu").on("click", ()=>{
+                    $(".category").val(11);
+                    document.categorySelect.submit();
+                })
+                $(".flowerBasketMenu").on("click", ()=>{
+                    $(".category").val(12);
+                    document.categorySelect.submit();
+                })
                 $(".logo").on("click" ,()=>{
                     location.href="/shopping"
                 })
@@ -253,7 +316,7 @@
         })
         const viewCart = function (page, sort){
             const category = $("#category").val();
-            if(category != 9){
+            if(category <= 8 && category>0){
                 $.ajax({
                     url : "/shopping/productListView",
                     data : {category},
@@ -276,14 +339,20 @@
                     if(suc.totalPages>1){
                         const page = $("#page").val();
                         for(let i=1;suc.totalPages>=i; i++){
-                            const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                            const msg = (page==i) ?`<button class="btn btn-outline-dark category" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark category">${i}</button>`
                             $(".pagingButton").append(msg);
                         }
                     }
 
                 }).catch(err => console.log(err))
-            }else{
+            }else if(category == 9){
                 search();
+            }else if(category >=10 && category <=12){
+                const page= parseInt($("#page").val())-1
+                sumCategoryView(category,page);
+            }else{
+                alert("비정상적인 접근입니다.");
+                location.href = "/shopping"
             }
 
             //viewCart 끝
@@ -297,7 +366,7 @@
             })
             //상세정보로 넘기는 스크립트 끝
             //page 넘기는 스크립트
-            $(".pagingButton").on("click","button", function (e){
+            $(".pagingButton").on("click",".category", function (e){
                 const page = parseInt(e.target.textContent)-1;
                 $("#page").val(e.target.textContent);
                 const category = $("#category").val();
@@ -325,7 +394,7 @@
                             const page = $("#page").val();
                             $(".pagingButton").empty();
                             for(let i=1;suc.totalPages>=i; i++){
-                                const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                                const msg = (page==i) ?`<button class="btn btn-outline-dark category" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark category">${i}</button>`
                                 $(".pagingButton").append(msg);
                             }
                         }
@@ -338,7 +407,7 @@
             $("#sort").change(function (){
                 const sort = $("#sort option:selected").val();
                 const category =$("#category").val();
-                if(category != 0){
+                if(category >=1 &&  category <9){
                     $.ajax({
                         url : "/shopping/productListView",
                         data : {category, sort},
@@ -363,14 +432,14 @@
                                 const page = $("#page").val();
                                 $(".pagingButton").empty();
                                 for(let i=1;suc.totalPages>=i; i++){
-                                    const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                                    const msg = (page==i) ?`<button class="btn btn-outline-dark category" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark category">${i}</button>`
                                     $(".pagingButton").append(msg);
                                 }
                             }
                         }
 
                     })
-                }else{
+                }else if(category ==9){
                     const searchValue = $(".searchTerm").val();
                     $("#category").val(0);
                     $.ajax({
@@ -390,15 +459,19 @@
                                 $(".productContent").append(msg);
                             })
                             if(r.totalPages>1){
-                                const page = $("#page").val();
+                                const page = $("#page").val()-1;
                                 $(".pagingButton").empty();
-                                for(let i=1;r.totalPages>=i; i++){
-                                    const msg = (page==i) ?`<button class="btn btn-outline-dark" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark">${i}</button>`
+                                for(let i=0;r.totalPages>=i; i++){
+                                    const msg = (page==i) ?`<button class="btn btn-outline-dark category" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark category">${i}</button>`
                                     $(".pagingButton").append(msg);
                                 }
                             }
                         }
                     ).catch(err =>console.log(err));
+                }else if(category >9 && category <=12){
+                    sumCategoryView(category, page, sort)
+
+                    $("#page").val(1)
                 }
             })
             //sort하는 스크립트 끝

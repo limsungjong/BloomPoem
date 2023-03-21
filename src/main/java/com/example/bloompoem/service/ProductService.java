@@ -4,14 +4,9 @@ package com.example.bloompoem.service;
 import com.example.bloompoem.dto.KakaoApprovar;
 import com.example.bloompoem.dto.KakaoOrder;
 import com.example.bloompoem.dto.KakaoReady;
-import com.example.bloompoem.entity.ProductEntity;
-import com.example.bloompoem.entity.ShoppingCartEntity;
-import com.example.bloompoem.entity.ShoppingOrder;
-import com.example.bloompoem.entity.ShoppingOrderDetail;
-import com.example.bloompoem.repository.ProductRepository;
-import com.example.bloompoem.repository.ShoppingCartRepository;
-import com.example.bloompoem.repository.ShoppingOrderDetailRepository;
-import com.example.bloompoem.repository.ShoppingOrderRepository;
+import com.example.bloompoem.entity.*;
+import com.example.bloompoem.repository.*;
+import jdk.jfr.Category;
 import org.hibernate.type.LocalDateTimeType;
 import org.hibernate.type.LocalDateType;
 import org.slf4j.Logger;
@@ -225,6 +220,28 @@ public class ProductService {
     }
     public ShoppingOrder orderSelect (int shoppingOrderNumber){
         return shoppingOrderDao.findByShoppingOrderNumber(shoppingOrderNumber);
+    }
+
+    public List<ProductEntity> manyBuyProduct(){
+        return productDao.shoppingMainManyProduct();
+    }
+
+    public Page<ProductEntity> sumCategoryView(int category, Pageable pageable){
+        int startCategory ;
+        int endCategory;
+        if(category == 10){
+             startCategory = 1;
+             endCategory = 2;
+        }else if(category == 11){
+            startCategory =3 ;
+            endCategory =4 ;
+        }else if(category == 12){
+            startCategory = 5;
+            endCategory =6;
+        }else{
+            return null;
+        }
+        return productDao.findByProductCategoryBetween(startCategory, endCategory, pageable);
     }
 
 
