@@ -144,6 +144,8 @@
       })
       // 회원 정보 수정 보여주는 이벤트 시작
       $(".changeInformation").on("click", ()=>{
+        $(".pagingButton").empty();
+        $(".pageName").empty();
         $(".mainBox").empty();
           const msg = `<div class="userInfoArea">
                         <div class="userInfoBox">
