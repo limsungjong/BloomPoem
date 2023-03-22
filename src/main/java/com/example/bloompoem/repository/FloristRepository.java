@@ -2,6 +2,7 @@ package com.example.bloompoem.repository;
 
 import com.example.bloompoem.entity.FloristEntity;
 import com.example.bloompoem.entity.Inter.FloristAndReviewScore;
+import com.example.bloompoem.entity.Inter.FloristAndReviewScoreAndFlowerName;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -47,8 +48,8 @@ public interface FloristRepository extends JpaRepository<FloristEntity, Integer>
                     " where a.florist_number = b.florist_number(+) " +
                     " and florist_latitude > :xa " +
                     " and florist_latitude < :xb " +
-                    " and florist_latitude > :ya " +
-                    " and florist_latitude > :yb " +
+                    " and florist_longtitude > :ya " +
+                    " and florist_longtitude < :yb " +
                     " group by      " +
                     "    a.florist_number, " +
                     "    a.florist_name, " +
@@ -121,4 +122,37 @@ public interface FloristRepository extends JpaRepository<FloristEntity, Integer>
                     "    a.user_email, "+
                     "    b.florist_number ", nativeQuery = true)
     List<FloristAndReviewScore> getFloristListAndReviewScore();
+
+    @Query(value =
+            "select " +
+                    "    a.florist_number, " +
+                    "    a.florist_name, " +
+                    "    a.florist_address, " +
+                    "    a.florist_phone_number, " +
+                    "    a.florist_latitude, " +
+                    "    a.florist_longtitude, " +
+                    "    a.user_email, " +
+                    "    c.flower_name, " +
+                    "    c.flower_color, " +
+                    "    avg(b.florist_review_score) as florist_review_score, " +
+                    "    count(b.florist_number) as florist_review_count " +
+                    " from " +
+                    "    florist a, florist_review b, flower c, florist_product d " +
+                    " where a.florist_number = b.florist_number(+) " +
+                    " and a.florist_number = d.florist_number " +
+                    " and c.flower_number = d.flower_number " +
+                    " and c.flower_name = :flowerName " +
+                    " group by      " +
+                    "    a.florist_number, " +
+                    "    a.florist_name, " +
+                    "    a.florist_address, " +
+                    "    a.florist_phone_number, " +
+                    "    a.florist_latitude, " +
+                    "    a.florist_longtitude, " +
+                    "    a.user_email, "+
+                    "    b.florist_number, " +
+                    "    c.flower_name, " +
+                    "    c.flower_color "
+                    , nativeQuery = true)
+    List<FloristAndReviewScoreAndFlowerName> getFloristListAndReviewScoreAndFlowerColor(@Param("flowerName") String flowerName);
 }
