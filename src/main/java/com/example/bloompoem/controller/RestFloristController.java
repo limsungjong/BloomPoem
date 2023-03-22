@@ -1,9 +1,11 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.FloristAndReviewAndFlowerNameResponse;
 import com.example.bloompoem.domain.dto.FloristAndReviewResponse;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.FloristEntity;
 import com.example.bloompoem.entity.Inter.FloristAndReviewScore;
+import com.example.bloompoem.entity.Inter.FloristAndReviewScoreAndFlowerName;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristRepository;
@@ -47,6 +49,15 @@ public class RestFloristController {
                     .floristReviewCount(florist.getFloristReviewCount())
                     .build());
         });
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/florist_list/search/flowerName")
+    @ResponseBody
+    public ResponseEntity<?> listSearchFlowerName(String flowerName) {
+        List<FloristAndReviewScoreAndFlowerName> floristListAndReviewScore = floristRepository.getFloristListAndReviewScoreAndFlowerColor(flowerName);
+        List<FloristAndReviewAndFlowerNameResponse> list = new ArrayList<>();
+
         return ResponseEntity.ok().body(list);
     }
 
@@ -101,5 +112,10 @@ public class RestFloristController {
     @ResponseBody
     public ResponseEntity<?> getFloristReview(@RequestParam int floristNumber) {
         return ResponseEntity.ok().body(floristReviewRepository.findAllByFloristNumber(floristNumber));
+    }
+
+    @PostMapping(value = "/florist/query")
+    public @ResponseBody ResponseEntity<?> getFloristReviewAndFlowerName(String query) {
+        return ResponseEntity.ok().body(floristRepository.getFloristListAndReviewScoreAndFlowerColor(query));
     }
 }

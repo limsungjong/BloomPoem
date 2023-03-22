@@ -4,7 +4,7 @@ const mapOption = {
     center: new kakao.maps.LatLng(37.442928, 126.670556), // 지도의 중심좌표
     level: 4, // 지도의 확대 레벨
 };
-
+let searchFlowerNameFloristList = [];
 let markers = [];
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
@@ -150,6 +150,7 @@ class sideItemObj {
 
     // 사이드 아이템 생성하고 추가
     createItem() {
+        console.log(this.floristData)
         const sideItem = document.createElement("ul");
         sideItem.setAttribute("class", "sideItem");
         sideItem.innerHTML = `
@@ -1281,14 +1282,53 @@ class sideItemObj {
 
 const lat = document.querySelector('#lat');
 const long = document.querySelector('#long');
+const flowerName = document.querySelector('#flowerName');
+
+if (flowerName) {
+    document.querySelector('#flowerTargetName').textContent =
+        `${flowerName.value}`;
+}
+document.querySelector('#resetBtn').addEventListener('click', () => {
+    console.log("버튼 눌림")
+    if (flowerName) {
+        flowerName.value = ""
+        searchFlowerNameFloristList = [];
+        document.querySelector('#flowerTargetName').textContent = ``;
+        getList();
+    }
+})
 
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
-    fetch("http://localhost:9000/api/v1/florist/florist_list")
-        .then((data) => data.json())
-        .then(list => {
-            rootFloristListPrint(list);
-        }).catch(err => console.log(err));
+    if (flowerName.value) {
+        console.log("있는 버전")
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        let urlencoded = new URLSearchParams();
+        urlencoded.append("query", flowerName.value);
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:9000/api/v1/florist/florist/query", requestOptions)
+            .then(response => response.json())
+            .then(list => {
+                searchFlowerNameFloristList = list;
+                rootFloristListPrint(list);
+            })
+            .catch(error => console.log('error', error));
+    } else {
+
+        fetch("http://localhost:9000/api/v1/florist/florist_list")
+            .then((data) => data.json())
+            .then(list => {
+                rootFloristListPrint(list);
+            }).catch(err => console.log(err));
+    }
 }
 
 if (lat === null) {
@@ -1320,7 +1360,13 @@ function moveGetList(x, y) {
     };
     fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
         .then(data => data.json())
-        .then((list) => rootFloristListPrint(list))
+        .then((list) => {
+            if (searchFlowerNameFloristList.length > 0) {
+                list = transFormList(searchFlowerNameFloristList, list)
+            }
+            rootFloristListPrint(list);
+
+        })
         .catch(err => console.log(err));
     if (lat !== null && long !== null) {
         lat.value = "";
@@ -1353,6 +1399,6 @@ kakao.maps.event.addListener(map, 'dragend', function (data) {
     moveGetList(center.La, center.Ma);
 });
 
-function removeSpinnerBox() {
-    document.querySelector(".spinnerBox").remove();
+function transFormList(obj1, obj2) {
+    return obj1.filter(arr1 => obj2.some(arr2 => arr1.floristName === arr2.floristName))
 }
