@@ -39,9 +39,8 @@ public class QnaService {
     // 유저 이메일 가져오기
 
     //게시글 삭제
-//    public QnaEntity deleteById(){
-//        qnaRepository.deleteById(deleteById().getQnaNumber());
-//        return null;
-//    }
+    public void deleteById(Integer qnaNumber){
+        qnaRepository.deleteById(qnaNumber);
+    }
 
 }

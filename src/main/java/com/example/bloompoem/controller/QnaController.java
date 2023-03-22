@@ -56,10 +56,13 @@ public class QnaController {
 
     // 문의 글쓰기 페이지
     @GetMapping("/qna/write")
-    public String writeForm(@CookieValue(value = "Authorization", required = false) String token){
+    public String writeForm(Model model, @CookieValue(value = "Authorization", required = false) String token){
 
         if(token == null) return "/signIn";
-        userService.tokenToUserEntity(token).getUserEmail();
+
+        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+        model.addAttribute("userEmail", userEmail);
+        logger.error("userEmail : " + userEmail);
 
         return "/qnaWrite";
     }
@@ -68,10 +71,6 @@ public class QnaController {
     @PostMapping("/qna/write")
     public String write(Model model, @ModelAttribute QnaEntity qnaEntity,
     @CookieValue(value = "Authorization", required = false) String token){
-
-        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
-        model.addAttribute("userEmail", userEmail);
-        logger.error("userEmail : " + userEmail);
 
         // 답글이 아닌 경우(부모 게시글이 존재하지 않는 경우)
         qnaEntity.setQnaDate(LocalDateTime.now());
@@ -86,7 +85,7 @@ public class QnaController {
         System.out.println("QnaEntity = " + qnaEntity);
 
         qnaService.write(qnaEntity);
-        return "/qna";
+        return "redirect:/qna";
     }
 
     // 답글 쓰기 페이지
@@ -130,10 +129,10 @@ public class QnaController {
     public String update() {return "/qnaUpdate"; }
 
     // 글 삭제
-//    @GetMapping("/qna/delete")
-//    public String delete(Integer qnaNumber) {
-//        QnaEntity qnaEntity = qnaService.deleteById();
-//        return "/qna";
-//    }
+    @GetMapping("/qna/delete")
+    public String delete(Integer qnaNumber) {
+        qnaService.deleteById(qnaNumber);
+        return "redirect:/qna";
+    }
 
 }
