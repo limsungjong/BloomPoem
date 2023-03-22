@@ -12,6 +12,7 @@
   <title>구조 잡기</title>
   <link rel="stylesheet" href="/css/flowerRecommend.css" />
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+
   <script th:inline="javascript">
   const flower = [[${flower}]];
 
@@ -167,5 +168,10 @@
 </main>
 <footer>
 </footer>
+<script src="/build/flowerRecommend.js" defer></script>
 </body>
+<!-- pickUp Post 보내기 -->
+<form name="postPickUp" id="postPickForm" action="pick_up" method="post">
+  <input name="flowerName" id="flowerName" type="hidden">
+</form>
 </html>
