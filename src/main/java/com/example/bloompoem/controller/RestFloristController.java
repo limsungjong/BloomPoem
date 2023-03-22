@@ -55,7 +55,7 @@ public class RestFloristController {
     public ResponseEntity<?> pickQuery(@RequestParam String x, @RequestParam String y) {
 
         List<FloristAndReviewScore> arrayList;
-        BigDecimal aadd = new BigDecimal("0.01");
+        BigDecimal aadd = new BigDecimal("0.02");
         BigDecimal badd = new BigDecimal("0.005");
 
         BigDecimal xa = new BigDecimal(x).subtract(aadd);
