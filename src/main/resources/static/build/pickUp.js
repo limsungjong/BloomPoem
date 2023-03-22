@@ -19,56 +19,113 @@ function removeMarker() {
     markers = [];
 }
 
-document.querySelector(".searchButton").addEventListener("click", (e) => {
-    const queryInput = document.querySelector(".searchTerm");
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    myHeaders.append("Cookie", "kd_lang=ko");
+document.querySelector("#searchInput").addEventListener('focus', () => {
+    document.querySelector(".searchButton").addEventListener("click", (e) => {
+        const queryInput = document.querySelector(".searchTerm");
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeaders.append("Cookie", "kd_lang=ko");
 
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("query", `${queryInput.value}`);
-    urlencoded.append("size", 1);
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("query", `${queryInput.value}`);
+        urlencoded.append("size", 1);
+        urlencoded.append("category_group_code", "PO3");
 
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: "follow",
-    };
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: "follow",
+        };
 
-    fetch("https://dapi.kakao.com/v2/local/search/keyword.json", requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-            {
-                const myHeaders = new Headers();
-                myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        fetch("https://dapi.kakao.com/v2/local/search/keyword.json", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                {
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-                const urlencoded = new URLSearchParams();
-                urlencoded.append("x", result.documents[0].x);
-                urlencoded.append("y", result.documents[0].y);
-                console.log(result.documents[0]);
+                    const urlencoded = new URLSearchParams();
+                    urlencoded.append("x", result.documents[0].x);
+                    urlencoded.append("y", result.documents[0].y);
+                    console.log(result.documents[0]);
 
-                const requestOptions = {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: urlencoded,
-                    redirect: "follow",
-                };
-                fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
-                    .then((response) => response.json())
-                    .then((result) => rootFloristListPrint(result))
-                    .catch((error) => console.log("error", error));
-            }
-            removeMarker();
-            const data = result.documents[0];
-            const coords = new kakao.maps.LatLng(data.y, data.x);
-            map.panTo(coords);
-        })
-        .catch((error) => {
-            alert("지역을 다시 검색해주세요.");
-        });
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: urlencoded,
+                        redirect: "follow",
+                    };
+                    fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => rootFloristListPrint(result))
+                        .catch((error) => console.log("error", error));
+                }
+                removeMarker();
+                const data = result.documents[0];
+                const coords = new kakao.maps.LatLng(data.y, data.x);
+                map.panTo(coords);
+            })
+            .catch((error) => {
+                alert("지역을 다시 검색해주세요.");
+            });
+    });
+    document.querySelector("#searchInput").addEventListener("keyup", (e) => {
+        if (e.keyCode === 13) {
+            const queryInput = document.querySelector(".searchTerm");
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            myHeaders.append("Cookie", "kd_lang=ko");
+
+            const urlencoded = new URLSearchParams();
+            urlencoded.append("query", `${queryInput.value}`);
+            urlencoded.append("size", 1);
+            urlencoded.append("category_group_code", "PO3");
+
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: "follow",
+            };
+
+            fetch("https://dapi.kakao.com/v2/local/search/keyword.json", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    {
+                        const myHeaders = new Headers();
+                        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+                        const urlencoded = new URLSearchParams();
+                        urlencoded.append("x", result.documents[0].x);
+                        urlencoded.append("y", result.documents[0].y);
+                        console.log(result.documents[0]);
+
+                        const requestOptions = {
+                            method: "POST",
+                            headers: myHeaders,
+                            body: urlencoded,
+                            redirect: "follow",
+                        };
+                        fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
+                            .then((response) => response.json())
+                            .then((result) => rootFloristListPrint(result))
+                            .catch((error) => console.log("error", error));
+                    }
+                    removeMarker();
+                    const data = result.documents[0];
+                    const coords = new kakao.maps.LatLng(data.y, data.x);
+                    map.panTo(coords);
+                })
+                .catch((error) => {
+                    alert("지역을 다시 검색해주세요.");
+                });
+        }
+    });
 });
+
 
 class sideItemObj {
     bucketDataArr = [];
@@ -647,7 +704,6 @@ class sideItemObj {
                         this.bucketDeleteFetch();
                     }
                 })
-                console.log(result)
                 this.bucketDataArr = result;
                 if (!first) this.createModalBucket();
             })
@@ -1560,6 +1616,9 @@ class sideItemObj {
     }
 }
 
+const lat = document.querySelector('#lat');
+const long = document.querySelector('#long');
+
 // 시작과 함께 리스트 띄우기 // root 사용됨
 function getList() {
     fetch("http://localhost:9000/api/v1/florist/florist_list")
@@ -1569,7 +1628,17 @@ function getList() {
         }).catch(err => console.log(err));
 }
 
-window.addEventListener("DOMContentLoaded", getList);
+if (lat === null) {
+    window.addEventListener("DOMContentLoaded", getList);
+} else {
+    if (lat.value && lat.value) {
+        const coords = new kakao.maps.LatLng(lat.value, long.value);
+        map.panTo(coords);
+        moveGetList(long.value, lat.value);
+    } else {
+        window.addEventListener("DOMContentLoaded", getList);
+    }
+}
 
 // 드래그 하면 리스트 띄우기 // root 사용됨
 function moveGetList(x, y) {
@@ -1590,6 +1659,10 @@ function moveGetList(x, y) {
         .then(data => data.json())
         .then((list) => rootFloristListPrint(list))
         .catch(err => console.log(err));
+    if (lat !== null && long !== null) {
+        lat.value = "";
+        long.value = "";
+    }
 }
 
 // map , sideModalCon create

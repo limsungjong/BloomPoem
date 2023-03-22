@@ -280,12 +280,18 @@ var _a;
 {
     const inputText = document.querySelector(".searchTerm");
     const inputBtn = document.querySelector(".searchButton");
-    const eventHandle = (e) => {
-        console.log(inputText.value);
-    }
 
-    inputBtn.addEventListener("click",(e) => eventHandle(e));
-    inputText.addEventListener("keyup", (e) => {
-        if(e.keyCode === 13) eventHandle(e);
-    });
+    inputText.addEventListener('focus', () => {
+        inputBtn.addEventListener("click", (e) => {
+            postPickUpMap(inputText.value);
+        });
+        inputText.addEventListener("keyup", (e) => {
+            if (e.keyCode === 13) postPickUpMap(inputText.value);
+        });
+    })
+
+    function postPickUpMap(query) {
+        document.querySelector("#target").value = query;
+        document.querySelector('#postPickForm').submit();
+    }
 }

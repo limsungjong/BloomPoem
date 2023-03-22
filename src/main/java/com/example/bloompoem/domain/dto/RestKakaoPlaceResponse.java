@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlaceRes {
+public class RestKakaoPlaceResponse {
     private String name;
     private String address;
     private double latitude;

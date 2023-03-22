@@ -31,20 +31,19 @@ public class PickUpController {
 
     @PostMapping(value = "/pick_up")
     public String postPickUpPage(
-            @RequestParam String kind,
-            @RequestParam String target,
+            @RequestParam String flowerName,
             Model model
     ) {
-        model.addAttribute("kind",kind);
-        model.addAttribute("target",target);
+        model.addAttribute("flowerName", flowerName);
         return "/pickUp";
     }
 
-    @PostMapping (value = "/pick_up/order/pay/cancel")
+    @PostMapping(value = "/pick_up/order/pay/cancel")
     public String orderCancel() {
         return "payFail";
     }
-    @PostMapping (value = "/pick_up/order/pay/fail")
+
+    @PostMapping(value = "/pick_up/order/pay/fail")
     public String orderFail() {
         return "payFail";
     }
