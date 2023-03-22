@@ -73,8 +73,16 @@
   <input type="hidden" name="orderId" class="orderId" value="">
 </form>
 
-<input id="kind" type="hidden" th:value="${kind}">
-<input id="target" type="hidden" th:value="${target}">
+<!-- pickUp Post place 받기 -->
+<th:block th:if="${search}">
+  <input id="lat" type="hidden" th:value="${search.latitude}">
+  <input id="long" type="hidden" th:value="${search.longitude}">
+</th:block>
+
+<!-- pickUp Post flower Name 받기-->
+<th:block th:if="${flowerName}">
+  <input id="flowerName" type="hidden" th:value="${flowerName}">
+</th:block>
 
 <script src="/build/pickUp.js"></script>
 <script>
