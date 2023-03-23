@@ -58,7 +58,7 @@ $(document).ready(function(){
         <div class="titleBox1">
           <div class="title1">작성자</div>
           <div class="title2">
-            <input type="text" name="userEmail" id="userEmail" th:value="${userEmail}" readonly/></div>
+            <input type="text" name="userEmail" id="userEmail" th:value="${qna.userEmail}" readonly/></div>
         </div>
         <div class="titleBox2">
           <div class="title1">제목</div>
@@ -69,6 +69,8 @@ $(document).ready(function(){
           <div>
             <textarea name="qnaContent" id="qnaContent" cols="70" rows="10" th:text="${qna.qnaContent}"></textarea>
             <input type="hidden" value="N" name="qnaStatus">
+            <input type="hidden" th:value="${qna.qnaNumber}" name="qnaNumber">
+<!--            <input type="hidden" th:value="${qna.qnaDate}" name="qnaDate">-->
           </div>
         </div>
       </div>
