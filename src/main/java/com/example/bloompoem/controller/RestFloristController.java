@@ -4,6 +4,7 @@ import com.example.bloompoem.domain.dto.FloristAndReviewAndFlowerNameResponse;
 import com.example.bloompoem.domain.dto.FloristAndReviewResponse;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.FloristEntity;
+import com.example.bloompoem.entity.FloristReviewEntity;
 import com.example.bloompoem.entity.Inter.FloristAndReviewScore;
 import com.example.bloompoem.entity.Inter.FloristAndReviewScoreAndFlowerName;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
@@ -11,6 +12,9 @@ import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristRepository;
 import com.example.bloompoem.repository.FloristReviewRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -114,6 +118,11 @@ public class RestFloristController {
         return ResponseEntity.ok().body(floristReviewRepository.findAllByFloristNumber(floristNumber));
     }
 
+    @GetMapping(value = "/florist_review")
+    public ResponseEntity<?> getFloristPageReview(int floristNumber, @PageableDefault(value = 4) Pageable pageable) {
+        return ResponseEntity.ok().body(floristReviewRepository.findByFloristNumber(floristNumber,pageable));
+    }
+
     @PostMapping(value = "/florist/query")
     public @ResponseBody ResponseEntity<?> getFloristReviewAndFlowerName(String query) {
         return ResponseEntity.ok().body(floristRepository.getFloristListAndReviewScoreAndFlowerColor(query));
@@ -121,9 +130,7 @@ public class RestFloristController {
 
     @GetMapping(value = "/bestFlorist")
     public ResponseEntity<?> getBestFlorist() {
-
-
-        
-        return ResponseEntity.ok().body("성공");
+        List<FloristAndReviewScore> floristListAndReviewScoreAndTopThree = floristRepository.getFloristListAndReviewScoreAndTopThree();
+        return ResponseEntity.ok().body(floristListAndReviewScoreAndTopThree);
     }
 }
