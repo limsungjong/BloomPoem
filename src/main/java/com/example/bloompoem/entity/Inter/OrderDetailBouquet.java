@@ -3,11 +3,8 @@ package com.example.bloompoem.entity.Inter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
-
-public interface OrderDetailResponse {
+public interface OrderDetailBouquet {
     @Value("#{target.pick_up_order_reservation_time}")
     String getPickUpOrderReservationTime();
 
@@ -38,12 +35,12 @@ public interface OrderDetailResponse {
     @Value("#{target.florist_number}")
     Integer getFloristNumber();
 
-    @Value("#{target.florist_main_image}")
+    @Value("#{target.bouquet_main_image}")
     String getFloristMainImage();
-
-    @Value("#{target.florist_product_price}")
-    String getFloristProductPrice();
 
     @Value("#{target.florist_name}")
     String getFloristName();
+
+    @Value("#{target.bouquet_price}")
+    String getFloristProductPrice();
 }

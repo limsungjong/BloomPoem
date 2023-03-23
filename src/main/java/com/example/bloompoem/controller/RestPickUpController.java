@@ -3,15 +3,19 @@ package com.example.bloompoem.controller;
 import com.example.bloompoem.domain.dto.PickUpCartRequest;
 import com.example.bloompoem.domain.dto.PickUpCartResponse;
 import com.example.bloompoem.domain.dto.ResponseCode;
+import com.example.bloompoem.entity.BouquetEntity;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
 import com.example.bloompoem.entity.PickUpCartEntity;
 import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristRepository;
+import com.example.bloompoem.repository.FlowerRepository;
 import com.example.bloompoem.repository.PickUpCartRepository;
+import com.example.bloompoem.service.BouquetService;
 import com.example.bloompoem.service.PickUpService;
 import com.example.bloompoem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +34,10 @@ public class RestPickUpController {
     private final PickUpService pickUpService;
 
     private final FloristRepository floristRepository;
+    @Autowired
+    private  FlowerRepository flowerRepository;
+    @Autowired
+    private BouquetService bouquetService;
 
     @GetMapping(value = "/get_pick_up_cart")
     public ResponseEntity<?> getPickUpCart(@CookieValue(value = "Authorization") String token) {
@@ -38,20 +46,37 @@ public class RestPickUpController {
         List<PickUpCartEntity> pickUpCartEntities = pickUpCartRepository.findByUserEmail(user.getUserEmail());
 
         pickUpCartEntities.forEach(data -> {
-            FloristFlowerInterFace detail = floristRepository.searchFloristFlowerDetail(data.getFloristNumber(), data.getFlowerNumber());
-            pickUpCartResponseList
-                    .add(
-                            PickUpCartResponse
-                                    .builder()
-                                    .userEmail(data.getUserEmail())
-                                    .flowerName(detail.getFlowerName())
-                                    .flowerNumber(data.getFlowerNumber())
-                                    .floristNumber(data.getFloristNumber())
-                                    .flowerCount(data.getFlowerCount())
-                                    .floristMainImage(detail.getFloristMainImage())
-                                    .floristProductPrice(detail.getFloristProductPrice())
-                                    .pickUpCartNumber(data.getPickUpCartNumber())
-                                    .build());
+            if(data.getFlowerNumber() != 99999){
+                FloristFlowerInterFace detail = floristRepository.searchFloristFlowerDetail(data.getFloristNumber(), data.getFlowerNumber());
+                pickUpCartResponseList
+                        .add(
+                                PickUpCartResponse
+                                        .builder()
+                                        .userEmail(data.getUserEmail())
+                                        .flowerName(detail.getFlowerName())
+                                        .flowerNumber(data.getFlowerNumber())
+                                        .floristNumber(data.getFloristNumber())
+                                        .flowerCount(data.getFlowerCount())
+                                        .floristMainImage(detail.getFloristMainImage())
+                                        .floristProductPrice(detail.getFloristProductPrice())
+                                        .pickUpCartNumber(data.getPickUpCartNumber())
+                                        .build());
+            }else{
+                BouquetEntity bouquet = bouquetService.selelctBouquet(data.getBouquet().getBouquetNumber());
+                pickUpCartResponseList.add(
+                        PickUpCartResponse
+                                .builder()
+                                .userEmail(data.getUserEmail())
+                                .flowerName("나만의 꽃다발")
+                                .flowerNumber(data.getFlowerNumber())
+                                .floristNumber(data.getFloristNumber())
+                                .flowerCount(data.getFlowerCount())
+                                .floristMainImage(bouquet.getBouquetMainImage())
+                                .floristProductPrice(bouquet.getBouquetPrice())
+                                .pickUpCartNumber(data.getPickUpCartNumber())
+                                .build()
+                );
+            }
         });
         return ResponseEntity.ok().body(pickUpCartResponseList);
     }
