@@ -20,11 +20,10 @@ public class QnaService {
     // Qna 리스트 가져오기
     public Page<QnaEntity> getQnaList(Pageable pageable){
         Page<QnaEntity> qnaEntityPage = qnaRepository.findAll(pageable);
-
         return qnaEntityPage;
     }
 
-    // Qna 글작성
+    // 게시글 작성
     public void write(QnaEntity qnaEntity){
         int qnaNumber = qnaRepository.save(qnaEntity).getQnaNumber();
         qnaEntity.setQnaGroup(qnaNumber);
@@ -33,14 +32,17 @@ public class QnaService {
 
     // 게시글 시퀀스 가져오기
     public QnaEntity findById(Integer qnaNumber){
-      return qnaRepository.findByQnaNumber(qnaNumber);
+        return qnaRepository.findByQnaNumber(qnaNumber);
     }
 
-    // 유저 이메일 가져오기
-
-    //게시글 삭제
+    // 게시글 삭제
     public void deleteById(Integer qnaNumber){
         qnaRepository.deleteById(qnaNumber);
+    }
+
+    // 게시글 수정
+    public void update(QnaEntity qnaEntity){
+
     }
 
 }

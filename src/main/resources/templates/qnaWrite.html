@@ -58,7 +58,6 @@ $(document).ready(function(){
       <div class="titleBox1">
         <div class="title1">작성자</div>
         <div class="title2">
-<!--          <input type="text" name="userEmail" id="userEmail" placeholder="사용자 이메일"/></div>-->
           <input type="text" name="userEmail" id="userEmail" th:value="${userEmail}" readonly/></div>
       </div>
       <div class="titleBox2">
@@ -75,7 +74,6 @@ $(document).ready(function(){
     </div>
     <div class="buttons">
       <button class="btn btn-outline-success" id="btnSave" name="btnSave" type="submit">저장</button>
-      <button class="btn btn-outline-danger" id="btnDelete" name="btnDelete">삭제</button>
       <button class="btn btn-outline-dark" type="button" onclick="location.href ='http://localhost:9000/qna'">목록</button>
     </div>
     </form>

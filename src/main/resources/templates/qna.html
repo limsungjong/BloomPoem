@@ -60,12 +60,12 @@
     </div>
   </div>
   <div class="paging">
-<!--    <th:block th:each=" page : ${#numbers.sequence(startPage , endPage)}">-->
-<!--      <a th:if="${page != nowPage}" th:href="@{/qna?page=} + ${page-1}" th:text="${page}"></a>-->
-<!--      <strong th:if="${page == nowPage}" th:text="${page}"></strong>-->
-<!--    </th:block>-->
-    <button class="btn btn-outline-dark">1</button>
-    <button class="btn btn-outline-dark">2</button>
+    <th:block th:each=" page : ${#numbers.sequence(startPage , endPage)}">
+      <a th:if="${page != nowPage}" th:href="@{/qna?page=} + ${page-1}" th:text="${page}"></a>
+      <strong th:if="${page == nowPage}" th:text="${page}"></strong>
+    </th:block>
+<!--    <button class="btn btn-outline-dark">1</button>-->
+<!--    <button class="btn btn-outline-dark">2</button>-->
   </div>
 </main>
 <footer>
