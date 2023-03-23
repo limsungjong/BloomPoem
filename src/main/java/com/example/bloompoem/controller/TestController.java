@@ -7,6 +7,7 @@ import com.example.bloompoem.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,9 @@ public class TestController {
     @Autowired
     FloristReviewRepository floristReviewRepository;
 
+    @Autowired
+    FloristRepository floristRepository;
+
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
 
@@ -63,9 +67,8 @@ public class TestController {
         return arrayList;
     }
 
-    @GetMapping(value = "/test/api")
-    public @ResponseBody String test(@RequestParam int floristNumber) {
-        floristReviewRepository.findAllByFloristNumber(floristNumber);
-        return "성공";
+    @PostMapping(value = "/test/api")
+    public @ResponseBody ResponseEntity<?> test(String query) {
+        return ResponseEntity.ok().body(floristRepository.getFloristListAndReviewScoreAndFlowerColor(query));
     }
 }

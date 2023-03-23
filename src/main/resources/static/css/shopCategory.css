@@ -160,7 +160,6 @@ nav .fromLeft:after {
 }
 
 footer {
-    height: 100px;
     width: 100vw;
     font-weight: 400;
     background-color: var(--color-true-white);

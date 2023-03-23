@@ -163,7 +163,6 @@ nav .fromLeft:after {
 }
 
 footer {
-    height: 100px;
     width: 100vw;
     font-weight: 400;
     background-color: #000;
@@ -254,4 +253,13 @@ footer {
 .flowerTagDiv span{
     font-size: 1.2rem;
     cursor: pointer;
+}
+.selectTagBox {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tagDelete {
+    margin: 10px;
 }

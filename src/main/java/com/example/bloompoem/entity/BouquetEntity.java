@@ -27,11 +27,12 @@ public class BouquetEntity {
     @JoinColumn(name="floristNumber")
     private FloristEntity florist;
     @ManyToOne
-    @JoinColumn(name="flowerNumber")
-    private FlowerEntity flower;
-    @ManyToOne
     @JoinColumn(name="userEmail")
     private UserEntity user;
     private int bouquetPrice;
     private String bouquetMainImage;
+    @ManyToOne
+    @JoinColumn(name="bouquetColorRgb")
+    private BouquetColor bouquetColor;
+
 }

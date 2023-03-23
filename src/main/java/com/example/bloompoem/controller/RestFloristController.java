@@ -1,7 +1,11 @@
 package com.example.bloompoem.controller;
 
+import com.example.bloompoem.domain.dto.FloristAndReviewAndFlowerNameResponse;
+import com.example.bloompoem.domain.dto.FloristAndReviewResponse;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.FloristEntity;
+import com.example.bloompoem.entity.Inter.FloristAndReviewScore;
+import com.example.bloompoem.entity.Inter.FloristAndReviewScoreAndFlowerName;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristRepository;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,29 +33,48 @@ public class RestFloristController {
     @GetMapping(value = "/florist_list")
     @ResponseBody
     public ResponseEntity<?> pick() {
-        List<FloristEntity> arrayList;
-        arrayList = floristRepository.findAll();
-        return ResponseEntity.ok(arrayList);
+        List<FloristAndReviewScore> floristListAndReviewScore = floristRepository.getFloristListAndReviewScore();
+        List<FloristAndReviewResponse> list = new ArrayList<>();
+        floristListAndReviewScore.forEach(florist -> {
+            list.add(FloristAndReviewResponse
+                    .builder()
+                    .userEmail(florist.getUserEmail())
+                    .floristPhoneNumber(florist.getFloristPhoneNumber())
+                    .floristNumber(florist.getFloristNumber())
+                    .floristAddress(florist.getFloristAddress())
+                    .floristLatitude(florist.getFloristLatitude())
+                    .floristLongtitude(florist.getFloristLongtitude())
+                    .floristName(florist.getFloristName())
+                    .floristReviewScore(florist.getFloristReviewScore())
+                    .floristReviewCount(florist.getFloristReviewCount())
+                    .build());
+        });
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/florist_list/search/flowerName")
+    @ResponseBody
+    public ResponseEntity<?> listSearchFlowerName(String flowerName) {
+        List<FloristAndReviewScoreAndFlowerName> floristListAndReviewScore = floristRepository.getFloristListAndReviewScoreAndFlowerColor(flowerName);
+        List<FloristAndReviewAndFlowerNameResponse> list = new ArrayList<>();
+
+        return ResponseEntity.ok().body(list);
     }
 
     @PostMapping(value = "/florist_list_query_x_y")
     @ResponseBody
     public ResponseEntity<?> pickQuery(@RequestParam String x, @RequestParam String y) {
 
-        List<FloristEntity> arrayList;
-        BigDecimal aadd = new BigDecimal("0.01");
+        List<FloristAndReviewScore> arrayList;
+        BigDecimal aadd = new BigDecimal("0.02");
         BigDecimal badd = new BigDecimal("0.005");
 
         BigDecimal xa = new BigDecimal(x).subtract(aadd);
         BigDecimal xb = new BigDecimal(x).add(aadd);
-        System.out.println(xa);
-        System.out.println(xb);
 
         BigDecimal ya = new BigDecimal(y).subtract(badd);
         BigDecimal yb = new BigDecimal(y).add(badd);
-        System.out.println(ya);
-        System.out.println(yb);
-        arrayList = floristRepository.searchXY(xa, xb, ya, yb);
+        arrayList = floristRepository.searchXY2(xa, xb, ya, yb);
         return ResponseEntity.ok(arrayList);
     }
 
@@ -87,10 +111,19 @@ public class RestFloristController {
     @PostMapping(value = "/florist_review")
     @ResponseBody
     public ResponseEntity<?> getFloristReview(@RequestParam int floristNumber) {
+        return ResponseEntity.ok().body(floristReviewRepository.findAllByFloristNumber(floristNumber));
+    }
 
-        if (floristReviewRepository.existsById(floristNumber)) {
-            floristReviewRepository.findById(floristNumber);
-        } else new CustomException(ResponseCode.INVALID_REQUEST);
-        return ResponseEntity.ok().body("success");
+    @PostMapping(value = "/florist/query")
+    public @ResponseBody ResponseEntity<?> getFloristReviewAndFlowerName(String query) {
+        return ResponseEntity.ok().body(floristRepository.getFloristListAndReviewScoreAndFlowerColor(query));
+    }
+
+    @GetMapping(value = "/bestFlorist")
+    public ResponseEntity<?> getBestFlorist() {
+
+
+        
+        return ResponseEntity.ok().body("성공");
     }
 }

@@ -19,7 +19,7 @@
   ></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-  <title>Pick-Up</title>
+  <title>Bloom Poem Pick-Up</title>
   <link rel="stylesheet" type="text/css" href="/css/onReady.css"/>
   <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
   <link rel="stylesheet" type="text/css" href="/css/pickUp.css"/>
@@ -43,6 +43,10 @@
     <button type="submit" class="searchButton">
       <i class="fa fa-search"></i>
     </button>
+  </div>
+  <div class="flowerChoiceBox">
+    <span type="text" id="flowerTargetName" placeholder="꽃 이름"></span>
+    <button class="resetBtnBox"><img id="resetBtn" src="/image/resetBtn.png" alt=""></button>
   </div>
   <nav class="userBox">
     <a href="http://localhost:9000/sign/sign_in"><span class="signin">SignIn</span></a>
@@ -73,8 +77,16 @@
   <input type="hidden" name="orderId" class="orderId" value="">
 </form>
 
-<input id="kind" type="hidden" th:value="${kind}">
-<input id="target" type="hidden" th:value="${target}">
+<!-- pickUp Post place 받기 -->
+<th:block th:if="${search}">
+  <input id="lat" type="hidden" th:value="${search.latitude}">
+  <input id="long" type="hidden" th:value="${search.longitude}">
+</th:block>
+
+<!-- pickUp Post flower Name 받기-->
+<th:block th:if="${flowerName}">
+  <input id="flowerName" type="hidden" th:value="${flowerName}">
+</th:block>
 
 <script src="/build/pickUp.js"></script>
 <script>

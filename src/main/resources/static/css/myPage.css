@@ -161,7 +161,6 @@ nav .fromLeft:after {
     transform-origin: 0% 50%;
 }
 footer {
-    height: 100px;
     width: 100vw;
     font-weight: 400;
     background-color: #000;

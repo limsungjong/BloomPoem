@@ -4,7 +4,7 @@ const mapOption = {
     center: new kakao.maps.LatLng(37.442928, 126.670556), // 지도의 중심좌표
     level: 4, // 지도의 확대 레벨
 };
-
+let searchFlowerNameFloristList = [];
 let markers = [];
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
@@ -19,54 +19,111 @@ function removeMarker() {
     markers = [];
 }
 
-document.querySelector(".searchButton").addEventListener("click", (e) => {
-    const queryInput = document.querySelector(".searchTerm");
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    myHeaders.append("Cookie", "kd_lang=ko");
+document.querySelector("#searchInput").addEventListener('focus', () => {
+    document.querySelector(".searchButton").addEventListener("click", (e) => {
+        const queryInput = document.querySelector(".searchTerm");
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeaders.append("Cookie", "kd_lang=ko");
 
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("query", `${queryInput.value}`);
-    urlencoded.append("size", 1);
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("query", `${queryInput.value}`);
+        urlencoded.append("size", 1);
+        urlencoded.append("category_group_code", "PO3");
 
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: "follow",
-    };
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: "follow",
+        };
 
-    fetch("https://dapi.kakao.com/v2/local/search/keyword.json", requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-            {
-                const myHeaders = new Headers();
-                myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        fetch("https://dapi.kakao.com/v2/local/search/keyword.json", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                {
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-                const urlencoded = new URLSearchParams();
-                urlencoded.append("x", result.documents[0].x);
-                urlencoded.append("y", result.documents[0].y);
-                console.log(result.documents[0]);
+                    const urlencoded = new URLSearchParams();
+                    urlencoded.append("x", result.documents[0].x);
+                    urlencoded.append("y", result.documents[0].y);
 
-                const requestOptions = {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: urlencoded,
-                    redirect: "follow",
-                };
-                fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
-                    .then((response) => response.json())
-                    .then((result) => rootFloristListPrint(result))
-                    .catch((error) => console.log("error", error));
-            }
-            removeMarker();
-            const data = result.documents[0];
-            const coords = new kakao.maps.LatLng(data.y, data.x);
-            map.panTo(coords);
-        })
-        .catch((error) => console.log("error", error));
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: urlencoded,
+                        redirect: "follow",
+                    };
+                    fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => rootFloristListPrint(result))
+                        .catch((error) => console.log("error", error));
+                }
+                removeMarker();
+                const data = result.documents[0];
+                const coords = new kakao.maps.LatLng(data.y, data.x);
+                map.panTo(coords);
+            })
+            .catch((error) => {
+                alert("지역을 다시 검색해주세요.");
+            });
+    });
+    document.querySelector("#searchInput").addEventListener("keyup", (e) => {
+        if (e.keyCode === 13) {
+            const queryInput = document.querySelector(".searchTerm");
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            myHeaders.append("Cookie", "kd_lang=ko");
+
+            const urlencoded = new URLSearchParams();
+            urlencoded.append("query", `${queryInput.value}`);
+            urlencoded.append("size", 1);
+            urlencoded.append("category_group_code", "PO3");
+
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: "follow",
+            };
+
+            fetch("https://dapi.kakao.com/v2/local/search/keyword.json", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    {
+                        const myHeaders = new Headers();
+                        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+                        const urlencoded = new URLSearchParams();
+                        urlencoded.append("x", result.documents[0].x);
+                        urlencoded.append("y", result.documents[0].y);
+
+                        const requestOptions = {
+                            method: "POST",
+                            headers: myHeaders,
+                            body: urlencoded,
+                            redirect: "follow",
+                        };
+                        fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
+                            .then((response) => response.json())
+                            .then((result) => rootFloristListPrint(result))
+                            .catch((error) => console.log("error", error));
+                    }
+                    removeMarker();
+                    const data = result.documents[0];
+                    const coords = new kakao.maps.LatLng(data.y, data.x);
+                    map.panTo(coords);
+                })
+                .catch((error) => {
+                    alert("지역을 다시 검색해주세요.");
+                });
+        }
+    });
 });
+
 
 class sideItemObj {
     bucketDataArr = [];
@@ -90,12 +147,16 @@ class sideItemObj {
     }
 
     // 사이드 아이템 생성하고 추가
-    createItem(data) {
+    createItem() {
         const sideItem = document.createElement("ul");
         sideItem.setAttribute("class", "sideItem");
         sideItem.innerHTML = `
     <li class="floristTitle">
-      <span>${this.floristData.floristName}</span>
+      <span>${this.floristData.floristName}</span> 
+      <span class="reviewScore">
+        ⭐${this.floristData.floristReviewScore == null ? "0.0" : this.floristData.floristReviewScore.toFixed(1)} / 5.0
+        (${this.floristData.floristReviewCount == null ? "0" : this.floristData.floristReviewCount})
+      </span>
     </li>
     <li class="floristPhoneNumber">
       <span>${this.floristData.floristPhoneNumber}</span>
@@ -233,6 +294,10 @@ class sideItemObj {
           <div class="modal-window">
             <div class="title">
               <h2>${this.floristData.floristName}</h2>
+              <span class="reviewScore">
+                ⭐${this.floristData.floristReviewScore == null ? "0.0" : this.floristData.floristReviewScore.toFixed(1)} / 5.0
+                (${this.floristData.floristReviewCount == null ? "0" : this.floristData.floristReviewCount})
+              </span>
             </div>
             <div class="close-area">
                 <i class="fas fa-times"></i>
@@ -632,7 +697,6 @@ class sideItemObj {
                         this.bucketDeleteFetch();
                     }
                 })
-                console.log(result)
                 this.bucketDataArr = result;
                 if (!first) this.createModalBucket();
             })
@@ -977,8 +1041,13 @@ class sideItemObj {
         <div class="flowerDetailTextBox">
           <span class="flowerDetailSpan">${buyData.flowerName}</span>
         </div>
-        <div class="flowerDetailCountBox">
-          <span class="flowerDetailCountSpan">${buyData.flowerCount}송이</span>
+        <div class="flowerOrderBox">
+            <div class="flowerDetailCountBox">
+              <span class="flowerDetailCountSpan">${buyData.flowerCount}송이</span>
+            </div>
+            <div class="flowerTotalPriceBox">
+              <span class="flowerTotalPrice">금액 : ${numberAddComa(buyData.floristProductPrice * buyData.flowerCount)}</span>
+            </div>
         </div>
       `;
             buyProduct.innerHTML = productHtml;
@@ -1003,8 +1072,13 @@ class sideItemObj {
         <div class="flowerDetailTextBox">
           <span class="flowerDetailSpan">${product.flowerName}</span>
         </div>
-        <div class="flowerDetailCountBox">
-          <span class="flowerDetailCountSpan">${product.flowerCount}송이</span>
+        <div class="flowerOrderBox">
+            <div class="flowerDetailCountBox">
+              <span class="flowerDetailCountSpan">${product.flowerCount}송이</span>
+            </div>
+            <div class="flowerTotalPriceBox">
+              <span class="flowerTotalPrice">금액 : ${numberAddComa(product.floristProductPrice * product.flowerCount)}</span>
+            </div>
         </div>
       `;
             buyProduct.innerHTML = productHtml;
@@ -1174,32 +1248,126 @@ class sideItemObj {
     getReviewToFetch() {
         if (this.floristReview == null) {
             console.log(this.floristData)
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+            let urlencoded = new URLSearchParams();
+            urlencoded.append("floristNumber", this.floristData.floristNumber);
+
+            let requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:9000/api/v1/florist/florist_review", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    this.floristReview = result;
+                    this.createFloristReviewModal();
+                })
+                .catch(error => console.log('error', error));
+        } else {
+            this.createFloristReviewModal();
         }
     }
 
-    // 꽃집 정보 모달 창 만들기
-    createFloristModal() {
-        const florisDataBox = document.createElement('div');
-        florisDataBox.setAttribute('class', 'floristDataBox');
-        const boxHtml =
-            `
-            
-            `;
-
+    // 꽃집 리뷰 모달 창 만들기
+    createFloristReviewModal() {
+        const reviewContainer = document.createElement("ul");
+        reviewContainer.setAttribute("class", "reviewContainer");
+        this.floristReview.forEach((data) => {
+            const floristReviewBox = document.createElement("div");
+            floristReviewBox.setAttribute("class", "reviewBoxWrapper");
+            const three = data.userEmail.slice(0, 3);
+            const last = data.userEmail.slice(3, 9).replace(/./g, "*");
+            const boxHtml = `
+          <li class="reviewBox">
+            <div class="reviewBoxLeft"> 
+              <span class="reviewScore">⭐${data.floristReviewScore}</span>
+              <span class="userEmail">${three + last}</span>
+              <span class="reviewRegDate">${data.floristReviewRegDate}</span>
+            </div>
+              <div class="reviewContentBox">
+                <p class="reviewContent">${data.floristReviewContent}</p>
+              </div>
+                <div class="reviewImgBox">
+                  ${
+                data.floristReviewImage == null
+                    ? ""
+                    : `<img class="reviewImg" src="/image/upload/${data.floristReviewImage}" alt="" />`
+            }
+              </div>
+            </li>
+          `;
+            floristReviewBox.innerHTML = boxHtml;
+            reviewContainer.append(floristReviewBox);
+        });
+        document.querySelector(".content").append(reviewContainer);
     }
 }
 
-// 시작과 함께 리스트 띄우기 // root 사용됨
+const lat = document.querySelector('#lat');
+const long = document.querySelector('#long');
+const flowerName = document.querySelector('#flowerName');
+
+if (flowerName) {
+    document.querySelector('#flowerTargetName').textContent =
+        `${flowerName.value}`;
+}
+document.querySelector('#resetBtn').addEventListener('click', () => {
+    if (flowerName) {
+        flowerName.value = ""
+        searchFlowerNameFloristList = [];
+        document.querySelector('#flowerTargetName').textContent = ``;
+        getList();
+    }
+})
+
+// flowerName 있는 경우라면 해당하는 꽃집 가져오고 아니라면 전체 긁어옴
 function getList() {
-    fetch("http://localhost:9000/api/v1/florist/florist_list")
-        .then((data) => data.json())
-        .then(list => {
-            rootFloristListPrint(list);
-        }).catch(err => console.log(err));
+    if (flowerName) {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        let urlencoded = new URLSearchParams();
+        urlencoded.append("query", flowerName.value);
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:9000/api/v1/florist/florist/query", requestOptions)
+            .then(response => response.json())
+            .then(list => {
+                searchFlowerNameFloristList = list;
+                rootFloristListPrint(list);
+            })
+            .catch(error => console.log('error', error));
+    } else {
+
+        fetch("http://localhost:9000/api/v1/florist/florist_list")
+            .then((data) => data.json())
+            .then(list => {
+                rootFloristListPrint(list);
+            }).catch(err => console.log(err));
+    }
 }
 
-window.addEventListener("DOMContentLoaded", getList);
+if (lat === null) {
+    window.addEventListener("DOMContentLoaded", getList);
+} else {
+    if (lat.value && lat.value) {
+        const coords = new kakao.maps.LatLng(lat.value, long.value);
+        map.panTo(coords);
+        moveGetList(long.value, lat.value);
+    } else {
+        window.addEventListener("DOMContentLoaded", getList);
+    }
+}
 
 // 드래그 하면 리스트 띄우기 // root 사용됨
 function moveGetList(x, y) {
@@ -1218,8 +1386,18 @@ function moveGetList(x, y) {
     };
     fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
         .then(data => data.json())
-        .then((list) => rootFloristListPrint(list))
+        .then((list) => {
+            if (searchFlowerNameFloristList.length > 0) {
+                list = transFormList(searchFlowerNameFloristList, list)
+            }
+            rootFloristListPrint(list);
+
+        })
         .catch(err => console.log(err));
+    if (lat !== null && long !== null) {
+        lat.value = "";
+        long.value = "";
+    }
 }
 
 // map , sideModalCon create
@@ -1247,10 +1425,10 @@ kakao.maps.event.addListener(map, 'dragend', function (data) {
     moveGetList(center.La, center.Ma);
 });
 
+function transFormList(obj1, obj2) {
+    return obj1.filter(arr1 => obj2.some(arr2 => arr1.floristName === arr2.floristName))
+}
+
 function removeSpinnerBox() {
     document.querySelector(".spinnerBox").remove();
 }
-
-const searchInput = document.querySelector('#searchInput');
-console.log(searchInput)
-
