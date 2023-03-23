@@ -277,6 +277,7 @@ var _a;
     window.scrollBy({ top: window.innerHeight });
 });
 
+    // search창 이벤트
 {
     const inputText = document.querySelector(".searchTerm");
     const inputBtn = document.querySelector(".searchButton");
@@ -294,4 +295,9 @@ var _a;
         document.querySelector("#target").value = query;
         document.querySelector('#postPickForm').submit();
     }
+}
+
+    // best Shop 가져오는 이벤트
+{
+
 }
