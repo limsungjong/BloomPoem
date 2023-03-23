@@ -131,11 +131,7 @@ header {
 }
 
 .logoBox {
-    width: 15%;
-}
-
-.logo {
-    margin-left: 50px;
+    width: 20%;
 }
 
 nav {
@@ -159,7 +155,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60%;
+    width: 35%;
 }
 
 .searchTerm {
@@ -445,6 +441,7 @@ main {
     width: 300px;
     height: 300px;
     object-fit: contain;
+    border: 1px solid var(--color-sun-gray);
 }
 
 #modal .flowerDetailContent,
@@ -763,6 +760,8 @@ input[type="checkBox"] {
     align-items: center;
     justify-content: space-around;
     width: 45vw;
+    border: 2px solid var(--color-sun-gray);
+    margin: 15px;
 }
 
 #buyModal .buyBox {
@@ -949,4 +948,115 @@ a {
 
 .floristTitle .reviewScore {
     font-size: 1rem;
+}
+
+.flowerChoiceBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+}
+
+#resetBtn {
+    width: 30px;
+}
+
+#flowerTargetName {
+    line-height: 180%;
+    text-align: center;
+    width: 8vw;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: solid 3px var(--color-dark-gray);
+    padding: 5px;
+    height: 55px;
+    color: #000000;
+    font-size: 23px;
+}
+.resetBtnBox {
+    width: 40px;
+    height: 55px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: solid 3px var(--color-dark-gray);
+    background: #ffffff;
+    text-align: center;
+    color: #000000;
+    cursor: pointer;
+    font-size: 25px;
+}
+#resetBtn:hover {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.reviewContainer {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.reviewBoxWrapper {
+    display: inline-block;
+    width: 45%;
+    height: 30%;
+}
+
+.reviewImg {
+    width: 120px;
+    height: 120px;
+}
+.reviewBoxLeft span {
+    position: relative;
+    margin: 0 3px;
+    font-size: 1rem;
+    text-transform: none;
+}
+
+.reviewBoxLeft {
+    padding: 5px;
+}
+
+.reviewBoxLeft span:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 15px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: black;
+    position: absolute;
+    transform: translateX(-50%);
+}
+.reviewContent {
+    margin: 5px;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: break-spaces;
+}
+.reviewBoxWrapper {
+    margin-top: 10px;
+    margin-left: 30px;
+    height: 20vh;
+    border: 2px solid var(--color-sun-gray);
+}
+.reviewImgBox {
+    width: 100px;
+    height: 100px;
+}
+
+.flowerOrderBox {
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 }

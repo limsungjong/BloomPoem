@@ -49,7 +49,6 @@ document.querySelector("#searchInput").addEventListener('focus', () => {
                     const urlencoded = new URLSearchParams();
                     urlencoded.append("x", result.documents[0].x);
                     urlencoded.append("y", result.documents[0].y);
-                    console.log(result.documents[0]);
 
                     const requestOptions = {
                         method: "POST",
@@ -101,7 +100,6 @@ document.querySelector("#searchInput").addEventListener('focus', () => {
                         const urlencoded = new URLSearchParams();
                         urlencoded.append("x", result.documents[0].x);
                         urlencoded.append("y", result.documents[0].y);
-                        console.log(result.documents[0]);
 
                         const requestOptions = {
                             method: "POST",
@@ -150,7 +148,6 @@ class sideItemObj {
 
     // 사이드 아이템 생성하고 추가
     createItem() {
-        console.log(this.floristData)
         const sideItem = document.createElement("ul");
         sideItem.setAttribute("class", "sideItem");
         sideItem.innerHTML = `
@@ -1044,8 +1041,13 @@ class sideItemObj {
         <div class="flowerDetailTextBox">
           <span class="flowerDetailSpan">${buyData.flowerName}</span>
         </div>
-        <div class="flowerDetailCountBox">
-          <span class="flowerDetailCountSpan">${buyData.flowerCount}송이</span>
+        <div class="flowerOrderBox">
+            <div class="flowerDetailCountBox">
+              <span class="flowerDetailCountSpan">${buyData.flowerCount}송이</span>
+            </div>
+            <div class="flowerTotalPriceBox">
+              <span class="flowerTotalPrice">금액 : ${numberAddComa(buyData.floristProductPrice * buyData.flowerCount)}</span>
+            </div>
         </div>
       `;
             buyProduct.innerHTML = productHtml;
@@ -1070,8 +1072,13 @@ class sideItemObj {
         <div class="flowerDetailTextBox">
           <span class="flowerDetailSpan">${product.flowerName}</span>
         </div>
-        <div class="flowerDetailCountBox">
-          <span class="flowerDetailCountSpan">${product.flowerCount}송이</span>
+        <div class="flowerOrderBox">
+            <div class="flowerDetailCountBox">
+              <span class="flowerDetailCountSpan">${product.flowerCount}송이</span>
+            </div>
+            <div class="flowerTotalPriceBox">
+              <span class="flowerTotalPrice">금액 : ${numberAddComa(product.floristProductPrice * product.flowerCount)}</span>
+            </div>
         </div>
       `;
             buyProduct.innerHTML = productHtml;
@@ -1258,6 +1265,7 @@ class sideItemObj {
                 .then(response => response.json())
                 .then(result => {
                     this.floristReview = result;
+                    this.createFloristReviewModal();
                 })
                 .catch(error => console.log('error', error));
         }
@@ -1265,18 +1273,36 @@ class sideItemObj {
 
     // 꽃집 리뷰 모달 창 만들기
     createFloristReviewModal() {
-        const floristReviewBox = document.createElement('div');
-        floristReviewBox.setAttribute('class', 'reviewBox');
-        const boxHtml =
-            `
-            
-            <div class="reviewImg"></div>
-            <div class="reviewScore"></div>
-            <div class="reviewWriter"></div>
-            <div class="reviewRegDate"></div>
-            <div class="reviewContentBox"></div>
-            `;
-
+        const reviewContainer = document.createElement("ul");
+        reviewContainer.setAttribute("class", "reviewContainer");
+        this.floristReview.forEach((data) => {
+            const floristReviewBox = document.createElement("div");
+            floristReviewBox.setAttribute("class", "reviewBoxWrapper");
+            const three = data.userEmail.slice(0, 3);
+            const last = data.userEmail.slice(3, 9).replace(/./g, "*");
+            const boxHtml = `
+          <li class="reviewBox">
+            <div class="reviewBoxLeft"> 
+              <span class="reviewScore">⭐${data.floristReviewScore}</span>
+              <span class="userEmail">${three + last}</span>
+              <span class="reviewRegDate">${data.floristReviewRegDate}</span>
+            </div>
+              <div class="reviewContentBox">
+                <p class="reviewContent">${data.floristReviewContent}</p>
+              </div>
+                <div class="reviewImgBox">
+                  ${
+                data.floristReviewImage == null
+                    ? ""
+                    : `<img class="reviewImg" src="/image/upload/${data.floristReviewImage}" alt="" />`
+            }
+              </div>
+            </li>
+          `;
+            floristReviewBox.innerHTML = boxHtml;
+            reviewContainer.append(floristReviewBox);
+        });
+        document.querySelector(".content").append(reviewContainer);
     }
 }
 
@@ -1289,7 +1315,6 @@ if (flowerName) {
         `${flowerName.value}`;
 }
 document.querySelector('#resetBtn').addEventListener('click', () => {
-    console.log("버튼 눌림")
     if (flowerName) {
         flowerName.value = ""
         searchFlowerNameFloristList = [];
@@ -1298,10 +1323,9 @@ document.querySelector('#resetBtn').addEventListener('click', () => {
     }
 })
 
-// 시작과 함께 리스트 띄우기 // root 사용됨
+// flowerName 있는 경우라면 해당하는 꽃집 가져오고 아니라면 전체 긁어옴
 function getList() {
-    if (flowerName.value) {
-        console.log("있는 버전")
+    if (flowerName) {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -1401,4 +1425,8 @@ kakao.maps.event.addListener(map, 'dragend', function (data) {
 
 function transFormList(obj1, obj2) {
     return obj1.filter(arr1 => obj2.some(arr2 => arr1.floristName === arr2.floristName))
+}
+
+function removeSpinnerBox() {
+    document.querySelector(".spinnerBox").remove();
 }
