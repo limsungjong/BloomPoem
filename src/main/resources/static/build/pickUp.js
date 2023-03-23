@@ -1232,3 +1232,5 @@ function removeSpinnerBox() {
 
 const searchInput = document.querySelector('#searchInput');
 console.log(searchInput)
+
+
