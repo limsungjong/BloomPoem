@@ -23,7 +23,6 @@
   <link rel="stylesheet" type="text/css" href="/css/onReady.css"/>
   <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
   <link rel="stylesheet" type="text/css" href="/css/pickUp.css"/>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 </head>
 <body>
@@ -72,11 +71,7 @@
   <input type="hidden" name="tId" id="tId" value="" />
   <input type="hidden" name="pcUrl" id="pcUrl" value="" />
 </form>
-<!-- 꽃 다발 커스텀 정보 -->
-<form>
-  <input type="hidedn" id="selectRgb">
-  <input type="hidedn" id="selectColorName">
-</form>
+
 <!--카카오 페이 끝난후 실행 될 폼 -->
 <form nema="paymentSuccess" id="paymentSuccess" action="/pick_up/order/pay/success" method ="post">
   <input type="hidden" name="orderId" class="orderId" value="">
@@ -94,7 +89,6 @@
 </th:block>
 
 <script src="/build/pickUp.js"></script>
-<script src="/build/dragScript.js" defer></script>
 <script>
   function paymentSuccess(orderId){
     $(".orderId").val(orderId)

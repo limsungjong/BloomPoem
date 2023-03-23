@@ -49,7 +49,9 @@ public class ShoppingReviewService {
     }
 
     public List<ShoppingReview> reteHighProductView(){
+        System.out.println("11111111111111111111111111111111111111111111111111111111111111" +shoppingReviewDao.mainPage());
         return shoppingReviewDao.mainPage();
     }
+
 
 }

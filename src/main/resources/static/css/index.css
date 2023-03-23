@@ -763,7 +763,6 @@ menu span{
 .con-item-Box{
   display: flex;
   width: 90%;
-  justify-content: space-around;
 }
 .bestProductImage{
   width: 400px;

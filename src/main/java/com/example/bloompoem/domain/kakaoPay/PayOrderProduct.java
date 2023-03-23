@@ -17,6 +17,4 @@ public class PayOrderProduct {
     Integer floristProductPrice;
 
     Integer floristNumber;
-
-    Integer bouquetNumber;
 }
