@@ -1,8 +1,10 @@
 package com.example.bloompoem.service;
 
 import com.example.bloompoem.domain.dto.PickUpCartRequest;
+import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.PickUpCartEntity;
 import com.example.bloompoem.entity.PickUpOrderDetailEntity;
+import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristProductRepository;
 import com.example.bloompoem.repository.PickUpCartRepository;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
@@ -11,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,13 +55,15 @@ public class PickUpService {
         pickUpCartRepository.save(pickUpCartEntity);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void pickUpCartDelete(String userEmail) {
-        List<PickUpCartEntity> pickUpCartEntities = pickUpCartRepository.findByUserEmail(userEmail);
-        pickUpCartEntities.forEach(v -> {
-            pickUpCartRepository.deleteById(v.getPickUpCartNumber());
-        });
-        pickUpCartRepository.flush();
+        if (StringUtils.hasLength(userEmail)) {
+
+            List<PickUpCartEntity> pickUpCartEntities = pickUpCartRepository.findByUserEmail(userEmail);
+            pickUpCartEntities.forEach(v -> {
+                pickUpCartRepository.deleteById(v.getPickUpCartNumber());
+            });
+        } else throw new CustomException(ResponseCode.INVALID_REQUEST);
     }
 
     public void pickUpCartDeleteByPickOrderSeq(Integer orderSeq) {
@@ -90,11 +97,8 @@ public class PickUpService {
         });
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void pickUpCartTargetDelete(PickUpCartRequest pick, String userEmail) {
-        System.out.println(pick.getFlowerNumber());
-        System.out.println(pick.getFlowerCount());
-        System.out.println(pick.getFloristNumber());
         pickUpCartRepository.deleteByUserEmailAndAndFlowerNumberAndFloristNumber(userEmail, pick.getFlowerNumber(), pick.getFloristNumber());
     }
 }

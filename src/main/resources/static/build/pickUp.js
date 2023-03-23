@@ -1528,6 +1528,8 @@ class sideItemObj {
                     this.createFloristReviewModal();
                 })
                 .catch(error => console.log('error', error));
+        } else {
+            this.createFloristReviewModal();
         }
     }
 
