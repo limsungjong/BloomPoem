@@ -2,8 +2,6 @@ package com.example.bloompoem.entity.Inter;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -18,7 +16,7 @@ public interface OrderDetailResponse {
     String getUserEmail();
 
     @Value("#{target.pick_up_order_date}")
-    LocalDate getPickUpOrderDate();
+    Date getPickUpOrderDate();
 
     @Value("#{target.pick_up_order_real_price}")
     Integer getPickUpOrderRealPrice();

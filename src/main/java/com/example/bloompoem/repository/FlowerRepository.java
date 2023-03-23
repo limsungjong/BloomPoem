@@ -11,6 +11,4 @@ public interface FlowerRepository extends JpaRepository<FlowerEntity, Integer> {
 
     Page<FlowerEntity> findAll(Pageable pageable);
     Page<FlowerEntity> findByFlowerTagContaining(String tag , Pageable pageable);
-
-    FlowerEntity findByFlowerNumber(int flowerNumber);
 }
