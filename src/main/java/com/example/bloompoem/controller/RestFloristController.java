@@ -118,4 +118,12 @@ public class RestFloristController {
     public @ResponseBody ResponseEntity<?> getFloristReviewAndFlowerName(String query) {
         return ResponseEntity.ok().body(floristRepository.getFloristListAndReviewScoreAndFlowerColor(query));
     }
+
+    @GetMapping(value = "/bestFlorist")
+    public ResponseEntity<?> getBestFlorist() {
+
+
+        
+        return ResponseEntity.ok().body("성공");
+    }
 }
