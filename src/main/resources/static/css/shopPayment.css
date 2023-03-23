@@ -345,3 +345,66 @@ a:hover{
     display: flex;
     flex-direction: column;
 }
+
+footer {
+    padding: 30px;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    background-color: var(--color-sun-gray);
+}
+.footerWrapper {
+    height: 200px;
+    width: 80%;
+    margin: 0 auto;
+}
+.footerTop {
+    height: 20%;
+}
+
+.footerTop .footerListText li:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    margin-top: -2px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 5px;
+    background-color: black;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.footerCenter {
+    height: 5%;
+}
+.footerBottom {
+    display: flex;
+    height: 50%;
+}
+.footerBottom .footerListText {
+    flex-direction: column;
+}
+.footerLogo {
+    height: 80px;
+    background-color: transparent;
+}
+.footerCenter .line {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    border: 0 solid black;
+    border-top-width: 1px;
+    padding-top: 1rem;
+    max-width: 80vw;
+}
+.footerListText {
+    display: flex;
+}
+.footerText {
+    margin: 10px;
+}
+
+footer li {
+    font-size: 1rem;
+}

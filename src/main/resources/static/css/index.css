@@ -528,13 +528,12 @@ main {
   height: 100%;
 }
 footer {
-  height: 100px;
   background-color: var(--color-sun-gray);
 }
 
 .main-content-3 {
   width: 100vw;
-  height: 100vh;
+  height: 115vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -558,6 +557,9 @@ footer {
 .main-content-3 .main-con-row {
   display: flex;
   flex-direction: column;
+}
+.main-con-item div {
+  margin: 10px 5px;
 }
 
 /* 범수 css  */
@@ -702,14 +704,14 @@ menu {
 
 /* 범수 css end */
 
-span {
+.header span {
   font-size: 1.5rem;
   color: #000;
   display: inline-block;
   margin: 0;
   text-transform: uppercase;
 }
-span:after {
+.header span:after {
   margin-top: 5px;
   display: block;
   content: "";
@@ -717,13 +719,13 @@ span:after {
   transform: scaleX(0);
   transition: transform 250ms ease-in-out;
 }
-span:hover:after {
+.header span:hover:after {
   transform: scaleX(1);
 }
-span.fromRight:after {
+.header span.fromRight:after {
   transform-origin: 100% 50%;
 }
-span.fromLeft:after {
+.header span.fromLeft:after {
   transform-origin: 0% 50%;
 }
 
@@ -744,7 +746,6 @@ span.fromLeft:after {
 .moreBtn button{
   border: 0px;
   border-radius: 10px;
-
 }
 menu span{
   cursor: pointer;
@@ -762,6 +763,7 @@ menu span{
 .con-item-Box{
   display: flex;
   width: 90%;
+  justify-content: center;
 }
 .bestProductImage{
   width: 400px;
@@ -770,6 +772,7 @@ menu span{
   border-radius: 15px;
 }
 .bestProductImageBox{
+  overflow: hidden;
   display: flex;
   justify-content: center;
 }
@@ -778,6 +781,7 @@ menu span{
   flex-direction: column;
   margin: 20px;
   justify-content: space-around;
-
 }
-
+.main-con-item {
+  margin: 0 20px;
+}
