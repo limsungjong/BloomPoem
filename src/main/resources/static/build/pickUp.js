@@ -1281,6 +1281,101 @@ class sideItemObj {
             const floristReviewBox = document.createElement("div");
             floristReviewBox.setAttribute("class", "reviewBoxWrapper");
             const three = data.userEmail.slice(0, 3);
+            const last = data.userEmail.slice(3, 9).replace(/./g, "*");
+            const boxHtml = `
+          <li class="reviewBox">
+            <div class="reviewBoxLeft"> 
+              <span class="reviewScore">⭐${data.floristReviewScore}</span>
+              <span class="userEmail">${three + last}</span>
+              <span class="reviewRegDate">${data.floristReviewRegDate}</span>
+            </div>
+              <div class="reviewContentBox">
+                <p class="reviewContent">${data.floristReviewContent}</p>
+              </div>
+                <div class="reviewImgBox">
+                  ${
+                data.floristReviewImage == null
+                    ? ""
+                    : `<img class="reviewImg" src="/image/upload/${data.floristReviewImage}" alt="" />`
+            }
+              </div>
+            </li>
+          `;
+            floristReviewBox.innerHTML = boxHtml;
+            reviewContainer.append(floristReviewBox);
+        });
+        document.querySelector(".content").append(this.reviewContainer);
+    }
+
+    createFloristReviewFooter(response) {
+        const floristReviewBtnBox = document.createElement('div');
+        floristReviewBtnBox.setAttribute('class','footerBtnBox');
+        // 버튼 만드는 로직 res에 totalPages만큼 버튼 만들기
+        for (let i = 0; i < response.totalPages; i++) {
+            const btnBox = document.createElement('button');
+            btnBox.setAttribute('class', 'btn btn-outline-dark');
+            btnBox.setAttribute('data-no',i);
+            btnBox.textContent = i;
+            btnBox.addEventListener('click',(e) => {
+                this.getReviewToFetch(btnBox.dataset.no);
+            })
+            floristReviewBtnBox.append(btnBox);
+        }
+        this.reviewContainer.append(floristReviewBtnBox);
+    }
+}
+
+const lat = document.querySelector('#lat');
+const long = document.querySelector('#long');
+const flowerName = document.querySelector('#flowerName');
+
+if (flowerName) {
+    document.querySelector('#flowerTargetName').textContent =
+        `${flowerName.value}`;
+}
+document.querySelector('#resetBtn').addEventListener('click', () => {
+    if (flowerName) {
+        flowerName.value = ""
+        searchFlowerNameFloristList = [];
+        document.querySelector('#flowerTargetName').textContent = ``;
+        getList();
+    }
+})
+    // 꽃집 리뷰 데이터 받아오기
+    getReviewToFetch(page) {
+        if (document.querySelector('.content ul')) {
+            document.querySelectorAll('.content ul').forEach(e => e.remove());
+        }
+        if(page == undefined) page = 0;
+        let settings = {
+            "url": "http://localhost:9000/api/v1/florist/florist_review",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            "data": {
+                "page": page,
+                "floristNumber": this.floristData.floristNumber
+            }
+        };
+
+        $.ajax(settings).done((response) => {
+            this.createFloristReviewModal(response);
+            this.createFloristReviewFooter(response);
+        });
+    }
+
+    // 꽃집 리뷰 모달 창 만들기
+    createFloristReviewModal(response) {
+        console.log(response)
+        const reviewContainer = document.createElement("ul");
+        this.reviewContainer = reviewContainer;
+        reviewContainer.setAttribute("class", "reviewContainer");
+        response.content.forEach((data) => {
+            const floristReviewBox = document.createElement("div");
+            floristReviewBox.setAttribute("class", "reviewBoxWrapper");
+            const three = data.userEmail.slice(0, 3);
         // 꽃집 정보 모달 창 만들기
             }
         })
@@ -1419,6 +1514,7 @@ document.querySelector('#resetBtn').addEventListener('click', () => {
     }
 })
 
+// flowerName 있는 경우라면 해당하는 꽃집 가져오고 아니라면 전체 긁어옴
 // flowerName 있는 경우라면 해당하는 꽃집 가져오고 아니라면 전체 긁어옴
 function getList() {
     if (flowerName) {
