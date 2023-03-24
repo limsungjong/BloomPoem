@@ -781,6 +781,17 @@ menu span{
   flex-direction: column;
   margin: 20px;
   justify-content: space-around;
+
+  justify-content: space-around;
+}
+.main-con-item {
+  margin: 0 20px;
+}
+.floristName {
+  font-size: 2rem;
+}
+.con-item-list {
+  margin-top: 30px;
 }
 .main-con-item {
   margin: 0 20px;

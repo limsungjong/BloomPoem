@@ -29,7 +29,7 @@
         }).then(r=>{
           $("#productBox").empty();
           $.each(r, (i, p) =>{
-            const msg = `<div class="main-con-item" id="oneProduct">
+            const msg = `<div className="main-con-item" id="oneProduct">
                       <div class="bestProductImageBox"><img src="/image/product/${p.product.productMainImage}" alt="productImage" class="bestProductImage"></div>
                       <div>${p.product.productName}</div>
                       <div>\\${comma(p.product.productPrice)}</div>
