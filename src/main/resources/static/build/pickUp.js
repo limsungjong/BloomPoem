@@ -271,6 +271,7 @@ class sideItemObj {
                                     this.fetchToBucket();
                                     break;
                                 case "매장 정보":
+                                    this.createBouquet();
                                     break;
                                 case "리뷰":
                                     this.getReviewToFetch();
@@ -1323,60 +1324,262 @@ class sideItemObj {
         }
         this.reviewContainer.append(floristReviewBtnBox);
     }
-}
 
-const lat = document.querySelector('#lat');
-const long = document.querySelector('#long');
-const flowerName = document.querySelector('#flowerName');
-
-if (flowerName) {
-    document.querySelector('#flowerTargetName').textContent =
-        `${flowerName.value}`;
-}
-document.querySelector('#resetBtn').addEventListener('click', () => {
-    if (flowerName) {
-        flowerName.value = ""
-        searchFlowerNameFloristList = [];
-        document.querySelector('#flowerTargetName').textContent = ``;
-        getList();
-    }
-})
-    // 꽃집 리뷰 데이터 받아오기
-    getReviewToFetch(page) {
-        if (document.querySelector('.content ul')) {
-            document.querySelectorAll('.content ul').forEach(e => e.remove());
-        }
-        if(page == undefined) page = 0;
-        let settings = {
-            "url": "http://localhost:9000/api/v1/florist/florist_review",
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            "data": {
-                "page": page,
-                "floristNumber": this.floristData.floristNumber
+    createBouquet(){
+        $(".content").off();
+        let flowerNumbers = [];
+        let flowerNames = [];
+        const bouquetTab = document.createElement("ul");
+        bouquetTab.setAttribute("class", "bouquet");
+        const viewColor = (color)=>{
+            if(color == undefined){
+                color = " ";
             }
-        };
+            const rgb = $("#selectRgb").val();
+            console.log(rgb);
+            color = $("#selectColorName").val()
 
-        $.ajax(settings).done((response) => {
-            this.createFloristReviewModal(response);
-            this.createFloristReviewFooter(response);
-        });
-    }
+            $(".content").append(bouquetTab);
+            const colorDiv= `<div class="customMainText">꽃 다발 커스텀하기(1/3)</div>
+                                <div class="customSubText">원하는 꽃 다발의 종이를 선택해주세요.</div>
+                                <div  class="customColorArea">
+                                  <div class="customColorBox">
+                                </div>
+                                      <div class="customFooterBox">
+                                        <div class="resetButtonBox"><button class="btn btn-outline-dark colorReset">색 초기화</button></div>
+                                        <div class="selectColorBox">선택 된 색 : <span class="selectColor">${color}</span></div>
+                                        <div class="buttonBox"><button class="btn btn-outline-dark colorNextButton">다음</button></div>
+                                      </div>
+                                    </div>`
+            $(".bouquet").empty();
+            $(".bouquet").append(colorDiv)
+            $(".customColorBox").css("background-color", `${rgb}`)
+            $.ajax({
+                url: "/color/read",
+                method : "get"
+            }).then(r=>{
+                $.each(r, (i, r)=>{
+                    const msg = `    
+                            <div class="oneColorBox">
+                              <div class="colorBoxBox" data-color="${r.bouquetColorName}" data-rgb="${r.bouquetColorRgb}" style="background-color: ${r.bouquetColorRgb};"></div>
+                              <div class="colorNameBox" id="color${r.bouquetColorName}">${r.bouquetColorName}</div>
+                            </div>`
+                    $(".customColorBox").append(msg);
+                })
+            })
+        }
+        viewColor()
+        const flowersView = ()=>{
+            $(".bouquet").empty();
+            $(".bouquet").append("<div class='modalFlowerSelectArea'></div>")
+            const selectFlowerBox =
+                `<div class="customMainText">꽃 다발 커스텀하기(2/3)</div>
+                  <div class="customSubText" style="margin-left: 144px;">원하는 꽃을 선택해주세요.<div style="font-size: 1rem">*수량은 뒤에서 변경 가능</div></div>
+                  <div class="customFlowerArea">
+                    <div class="customFlowerBox">
+                            </div>
+                    <div class="customFooterBox">
+                    <div class="backButtonBox"><button class="btn btn-outline-dark backButton">이전</button></div>
+                      <div class="customFlowerSelectBox">선택된 꽃 : <span class="selectFlower"></span></div>
+                      <div class="buttonBox"><button class="btn btn-outline-dark flowerNextButton">다음</button></div>
+                    </div>
+                  </div>`
+            $(".modalFlowerSelectArea").append(selectFlowerBox);
+            const rgb =$("#selectRgb").val();
+            $(".customFlowerBox").css("background-color", `${rgb}`)
+            console.log(this.flowerDataArr);
+            $(".customFlowerBox").empty();
+            $.each(this.flowerDataArr , (i, r) =>{
+                const flowers =`<div class="oneFlowerBox">
+                                        <div class="customFlowerImageBox"><img src="/image/florist_product/${r.floristMainImage}" data-flower_name="${r.flowerName}(${(r.flowerColor != null) ?r.flowerColor : ""})" data-flower_number="${r.flowerNumber}" alt="flowerImage" class="customFlowerImage"></div>
+                                        <div class="customFlowerNameBox" id="flower${r.flowerNumber}">${r.flowerName}(<span>${(r.flowerColor != null) ?r.flowerColor : ""}</span>)</div>
+                                        <div class="customFlowerPrice"><span style="font-size: 1.0rem">${comma(r.floristProductPrice)}</span> 원</div>
+                                      </div>`
+                $(".customFlowerBox").append(flowers);
 
-    // 꽃집 리뷰 모달 창 만들기
-    createFloristReviewModal(response) {
-        console.log(response)
-        const reviewContainer = document.createElement("ul");
-        this.reviewContainer = reviewContainer;
-        reviewContainer.setAttribute("class", "reviewContainer");
-        response.content.forEach((data) => {
-            const floristReviewBox = document.createElement("div");
-            floristReviewBox.setAttribute("class", "reviewBoxWrapper");
-            const three = data.userEmail.slice(0, 3);
-        // 꽃집 정보 모달 창 만들기
+            })
+            $(".modalFlowerSelectArea").on("click", ".customFlowerImage", (e)=>{
+                const flowerNumber = e.target.dataset.flower_number
+                const flowerName = e.target.dataset.flower_name
+                const flowerDiv = `<span class="span${flowerNumber}"><span>  ${flowerName} </span><span class="delete" data-flower_no="${flowerNumber}">❎ </span></span>`
+                for(let i =0 ; i< flowerNumbers.length ; i++){
+                    if(flowerNumbers[i] == ""+flowerNumber) {
+                        $(`#flower${flowerNumber}`).css("font-weight", "400")
+                        flowerNumbers.splice(i, i);
+                        $(`.span${flowerNumber}`).remove();
+                        flowerNames.splice(i,i);
+                        return;
+                    }
+                }
+                $(`#flower${flowerNumber}`).css("font-weight", "bold")
+                flowerNumbers.push(flowerNumber);
+                $(".selectFlower").append(flowerDiv);
+                flowerNames.push(flowerName);
+            })
+            //flower 이미지 클릭 시 이벤트 끝
+
+            //flower delete button 클릭 이벤트 시작
+            $(".modalFlowerSelectArea").on("click", ".delete", (e)=>{
+                const flowerNumber = e.target.dataset.flower_no
+                for(let i =0 ; i< flowerNumbers.length ; i++){
+                    if(flowerNumbers[i] == ""+flowerNumber) {
+                        $(`#flower${flowerNumber}`).css("font-weight", "400")
+                        flowerNumbers.splice(i, i);
+                        $(`.span${flowerNumber}`).remove();
+                        flowerNames.splice(i,i);
+                        return;
+                    }
+                }
+            })
+        }
+        // color의 박스를 선택했을때 선택하는 이벤트 시작
+        $(".bouquet").on("click", ".colorBoxBox" ,(e)=>{
+            const color = e.target.dataset.color
+            const rgb =e.target.dataset.rgb
+
+            $(".selectColor").empty();
+            $(".customColorBox").css("background-color", `${rgb}`)
+            $(".selectColor").text(color);
+            $(".colorNameBox").css("font-weight", "400")
+            $(`#color${color}`).css("font-weight" ,"bold" )
+            $("#selectColorName").val();
+            $("#selectRgb").val();
+            $("#selectColorName").val(color);
+            $("#selectRgb").val(rgb);
+        })
+        // color의 박스를 선택했을때 선택하는 이벤트 끝
+
+        //color에서 다음 버튼을 눌렀을때 시작하는 이벤트 시작
+        $(".bouquet").on("click" , ".colorNextButton",(e)=>{
+            const color = $("#selectColorName").val();
+            console.log(color)
+            if(color == undefined || color == ""){
+                alert("색을 선택해주세요")
+                return;
+            }else{
+                flowersView();
+                //flower 이미지 클릭 시 이벤트 시작
+
+
+            }
+        })
+        //color에서 다음 버튼을 눌렀을때 시작하는 이벤트 끝
+
+        //flowerSelect에서 next 버튼 클릭시 이벤트 시작
+        $(".content").on("click", ".flowerNextButton" ,()=>{
+            const selectColor = $("#selectColorName").val();
+            const selectRgb = $("#selectRgb").val();
+            let price =0;
+            for(let i =0 ; this.flowerDataArr.length > i ; i++){
+                for(let j = 0;flowerNumbers.length > j; j++){
+                    if(flowerNumbers[j] == this.flowerDataArr[i].flowerNumber){
+                        price += parseInt(this.flowerDataArr[i].floristProductPrice);
+                    }
+                }
+            }
+            if(flowerNumbers[0] == null){
+                alert("꽃을 선택해주세요.");
+            }else{
+                $(".bouquet").empty();
+                $(".bouquet").append("<div class='modalAllSelectArea'></div>")
+                const allSelectPage = `       <div class="customMainText">꽃 다발 커스텀하기(3/3)</div>
+                                                  <div class="customSubText">고른 꽃의 수량과 정보를 확인하세요.</div>
+                                                    <div class="allSelectArea">
+                                                    <div style="text-align: center; margin: 5px;">꽃의 위치를 움직여 원하는 위치를 꽃집에 알려주어요.</div>
+                                                      <div class="allSelectBox" id="allSelectBox">
+
+                                                      </div>
+                                                  <div class="selectFooterBox">
+                                                    <div class="selectInfoBox">
+                                                      <div>선택한 종이 색 : <span>${selectColor}</span></div>
+                                                      <div >선택한 꽃 : <span style="font-size: 1rem; width: 500px">${flowerNames.toString()}</span></div>
+                                                    </div>
+                                                    
+                                                    <div class="buyInfoBox">
+                                                      <div><button class="btn btn-outline-dark allSelectBefore">이전</button> </div>
+                                                      <div style="font-size: 1.5rem"> 총 ${flowerNumbers.length}개</div>
+                                                      <div style="font-size: 1.5rem">가격 : <span class="selectAlltotalCost">${price}</span> 원</div>
+                                                      <div class="selectButtonBox">
+                                                        <div><button class="btn btn-outline-primary allSelectBasket">장바구니</button></div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+                                    `
+                $(".modalAllSelectArea").append(allSelectPage);
+                $(".allSelectBox").css("background-color", `${selectRgb}`)
+                for(let i =0 ; this.flowerDataArr.length > i ; i++){
+                    for(let j = 0;flowerNumbers.length > j; j++){
+                        if(flowerNumbers[j] == this.flowerDataArr[i].flowerNumber){
+                            const flowers = `         
+                                            <div class="oneSelectFlowerBox mover product${i}">
+                                              <div class="selectFlowerImageBox"><img src="/image/florist_product/${this.flowerDataArr[i].floristMainImage}" class="selectFlowerImage" style="-webkit-user-drag: none; " ></div>
+                                              <div class="selectFlowerNameBox">${this.flowerDataArr[i].flowerName}(${(this.flowerDataArr[i].flowerColor == null) ? "" : this.flowerDataArr[i].flowerColor})</div>
+                                              <div class="selectFlowerPriceBox"> <span style="font-size: 1rem" id="price${this.flowerDataArr[i].flowerNumber}">${this.flowerDataArr[i].floristProductPrice}</span> 원</div>
+                                              <div class="selectFlowerCountBox">
+                                              <button class="btn btn-outline-dark decrease" data-number="${this.flowerDataArr[i].flowerNumber}">-</button>
+                                               <span style="font-size: 1rem" id="flowerCount${this.flowerDataArr[i].flowerNumber}">1</span> 송이 
+                                               <button class="btn btn-outline-dark increase" data-number="${this.flowerDataArr[i].flowerNumber}">+</button></div>
+                                            </div>`
+                            $(".allSelectBox").append(flowers);
+                        }
+
+                    }
+                }
+                $(".content").on("mouseenter", ".mover", (e=>{
+                    const $target =e.target.closest(".mover")
+                    $($target).css("z-index" , "3");
+                    draggable($target);
+                }))
+                $(".content").on("mouseleave", ".mover" , (e)=>{
+                    const $target =e.target.closest(".mover")
+                    $($target).css("z-index" , "0");
+                })
+                $(".allSelectBefore").on("click", ()=>{
+                    flowerNames = [];
+                    flowerNumbers = [];
+                    flowersView();
+                })
+                $(".modalAllSelectArea").on("click",".decrease" ,(e)=>{
+                    let flowerPrice = 0;
+
+                    const flowerNumber = e.target.dataset.number
+                    $.each(this.flowerDataArr, (i, r)=>{
+                        if(this.flowerDataArr[i].flowerNumber == flowerNumber) {
+                            flowerPrice = this.flowerDataArr[i].floristProductPrice;
+                        }
+                    })
+                    const count = parseInt($(`#flowerCount${flowerNumber}`).text());
+                    if(count == 1 ){
+                        alert("최소 수량은 1개 입니다.");
+                    }else{
+                        $(`#flowerCount${flowerNumber}`).text(count-1);
+                        $(`#price${flowerNumber}`).text(flowerPrice *(count-1));
+                        let totalCost = parseInt($(".selectAlltotalCost").text());
+                        console.log(totalCost);
+                        totalCost -= flowerPrice;
+                        $(".selectAlltotalCost").text(totalCost);
+                    }
+
+                })
+                $(".modalAllSelectArea").on("click", ".increase", (e)=>{
+                    let flowerPrice = 0 ;
+                    const flowerNumber = e.target.dataset.number
+                    $.each(this.flowerDataArr, (i, r)=>{
+                        if(this.flowerDataArr[i].flowerNumber == flowerNumber) {
+                            flowerPrice = this.flowerDataArr[i].floristProductPrice;
+                        }
+                    })
+                    const count = parseInt($(`#flowerCount${flowerNumber}`).text());
+                    $(`#flowerCount${flowerNumber}`).text(count+1);
+                    $(`#price${flowerNumber}`).text(flowerPrice * (count+1));
+                    let totalCost = parseInt($(".selectAlltotalCost").text());
+                    console.log(totalCost);
+                    totalCost += flowerPrice;
+                    $(".selectAlltotalCost").text(totalCost);
+                })
+
+
             }
         })
 
@@ -1449,52 +1652,6 @@ document.querySelector('#resetBtn').addEventListener('click', () => {
 
         })
     }
-    //
-    createFloristModal() {
-        const florisDataBox = document.createElement('div');
-        florisDataBox.setAttribute('class', 'floristDataBox');
-        const last = data.userEmail.slice(3, 9).replace(/./g, "*");
-            const boxHtml = `
-          <li class="reviewBox">
-            <div class="reviewBoxLeft"> 
-              <span class="reviewScore">⭐${data.floristReviewScore}</span>
-              <span class="userEmail">${three + last}</span>
-              <span class="reviewRegDate">${data.floristReviewRegDate}</span>
-            </div>
-              <div class="reviewContentBox">
-                <p class="reviewContent">${data.floristReviewContent}</p>
-              </div>
-                <div class="reviewImgBox">
-                  ${
-                data.floristReviewImage == null
-                    ? ""
-                    : `<img class="reviewImg" src="/image/upload/${data.floristReviewImage}" alt="" />`
-            }
-              </div>
-            </li>
-          `;
-            floristReviewBox.innerHTML = boxHtml;
-            reviewContainer.append(floristReviewBox);
-        });
-        document.querySelector(".content").append(this.reviewContainer);
-    }
-
-    createFloristReviewFooter(response) {
-        const floristReviewBtnBox = document.createElement('div');
-        floristReviewBtnBox.setAttribute('class','footerBtnBox');
-        // 버튼 만드는 로직 res에 totalPages만큼 버튼 만들기
-        for (let i = 0; i < response.totalPages; i++) {
-            const btnBox = document.createElement('button');
-            btnBox.setAttribute('class', 'btn btn-outline-dark');
-            btnBox.setAttribute('data-no',i);
-            btnBox.textContent = i;
-            btnBox.addEventListener('click',(e) => {
-                this.getReviewToFetch(btnBox.dataset.no);
-            })
-            floristReviewBtnBox.append(btnBox);
-        }
-        this.reviewContainer.append(floristReviewBtnBox);
-    }
 }
 
 const lat = document.querySelector('#lat');
@@ -1514,7 +1671,6 @@ document.querySelector('#resetBtn').addEventListener('click', () => {
     }
 })
 
-// flowerName 있는 경우라면 해당하는 꽃집 가져오고 아니라면 전체 긁어옴
 // flowerName 있는 경우라면 해당하는 꽃집 가져오고 아니라면 전체 긁어옴
 function getList() {
     if (flowerName) {
@@ -1622,6 +1778,14 @@ function transFormList(obj1, obj2) {
 function removeSpinnerBox() {
     document.querySelector(".spinnerBox").remove();
 }
-
-const searchInput = document.querySelector('#searchInput');
-//console.log(searchInput)
+const colorReset = ()=>{
+    $("#selectColorName").val("");
+    $("#selectRgb").val("");
+    $(".colorNameBox").css("font-weight", "400")
+    $(".customColorBox").css("background-color", "#ffffff");
+    $(".selectColor").text(" ");
+}
+function comma(str) {
+    str = String(str);
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
