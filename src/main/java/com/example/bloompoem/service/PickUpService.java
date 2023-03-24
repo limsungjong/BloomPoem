@@ -2,6 +2,7 @@ package com.example.bloompoem.service;
 
 import com.example.bloompoem.domain.dto.PickUpCartRequest;
 import com.example.bloompoem.domain.dto.ResponseCode;
+import com.example.bloompoem.entity.BouquetEntity;
 import com.example.bloompoem.entity.PickUpCartEntity;
 import com.example.bloompoem.entity.PickUpOrderDetailEntity;
 import com.example.bloompoem.exception.CustomException;
@@ -39,19 +40,35 @@ public class PickUpService {
     @Transactional
     public void pickUpCartInsert(PickUpCartRequest request, String userEmail) {
         PickUpCartEntity optionalPickUpCart = pickUpCartRepository.findByUserEmailAndFlowerNumberAndFloristNumber(userEmail, request.getFlowerNumber(), request.getFloristNumber()).orElse(null);
+        BouquetEntity bouquet = new BouquetEntity();
         if (optionalPickUpCart != null) {
-            optionalPickUpCart.setFloristNumber(request.getFloristNumber());
-            optionalPickUpCart.setFlowerNumber(request.getFlowerNumber());
-            optionalPickUpCart.setFlowerCount(request.getFlowerCount());
-            optionalPickUpCart.setUserEmail(userEmail);
-            pickUpCartRepository.save(optionalPickUpCart);
-            return;
+            if(optionalPickUpCart.getFlowerNumber() == 99999){
+                optionalPickUpCart.setFloristNumber(request.getFloristNumber());
+                optionalPickUpCart.setFlowerNumber(request.getFlowerNumber());
+                optionalPickUpCart.setFlowerCount(request.getFlowerCount());
+                optionalPickUpCart.setUserEmail(userEmail);
+                pickUpCartRepository.save(optionalPickUpCart);
+                return;
+            }else{
+                optionalPickUpCart.setFloristNumber(request.getFloristNumber());
+                optionalPickUpCart.setFlowerNumber(request.getFlowerNumber());
+                optionalPickUpCart.setFlowerCount(request.getFlowerCount());
+                optionalPickUpCart.setUserEmail(userEmail);
+                bouquet.setBouquetNumber(request.getBouquetNumber());
+                optionalPickUpCart.setBouquet(bouquet);
+                pickUpCartRepository.save(optionalPickUpCart);
+            }
         }
+
         PickUpCartEntity pickUpCartEntity = new PickUpCartEntity();
         pickUpCartEntity.setFloristNumber(request.getFloristNumber());
         pickUpCartEntity.setFlowerNumber(request.getFlowerNumber());
         pickUpCartEntity.setFlowerCount(request.getFlowerCount());
         pickUpCartEntity.setUserEmail(userEmail);
+        if(request.getFloristNumber()==99999){
+            bouquet.setBouquetNumber(request.getBouquetNumber());
+            pickUpCartEntity.setBouquet(bouquet);
+        }
         pickUpCartRepository.save(pickUpCartEntity);
     }
 
