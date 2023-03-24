@@ -135,7 +135,7 @@ menu {
     font-weight: 400;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     font-size: 1.5rem;
 }
 nav span {
@@ -162,7 +162,6 @@ nav .fromLeft:after {
     transform-origin: 0% 50%;
 }
 footer {
-    height: 100px;
     width: 100vw;
     font-weight: 400;
     background-color: #000;
@@ -232,4 +231,9 @@ footer {
   width: 300px;
   display: flex;
   justify-content: space-evenly;
+}
+
+a {
+    text-decoration: none;
+    color: #000000;
 }
