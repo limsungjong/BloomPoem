@@ -144,6 +144,7 @@ class sideItemObj {
         this.tabContent = null;
         this.buyModalContainer = null;
         this.pickDateAndTime = null;
+        this.reviewContainer = null;
     }
 
     // 사이드 아이템 생성하고 추가
@@ -260,7 +261,7 @@ class sideItemObj {
                     navMenus.forEach((ele) => {
                         if (ele == e.target) {
                             if (document.querySelector('.content ul')) {
-                                document.querySelector('.content ul').remove();
+                                document.querySelectorAll('.content ul').forEach(e => e.remove());
                             }
                             switch (e.target.textContent) {
                                 case "아름다운 꽃":
@@ -502,6 +503,7 @@ class sideItemObj {
         bucketListTab.setAttribute("class", "bucketList");
 
         if (this.bucketDataArr.length === 0) {
+            console.log("empty")
             const empty = document.createElement('ul');
             const emptyBucketHtml = `
             <div class="emptyBucket">
@@ -1245,39 +1247,37 @@ class sideItemObj {
     }
 
     // 꽃집 리뷰 데이터 받아오기
-    getReviewToFetch() {
-        if (this.floristReview == null) {
-            console.log(this.floristData)
-            let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-            let urlencoded = new URLSearchParams();
-            urlencoded.append("floristNumber", this.floristData.floristNumber);
-
-            let requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: urlencoded,
-                redirect: 'follow'
-            };
-
-            fetch("http://localhost:9000/api/v1/florist/florist_review", requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    this.floristReview = result;
-                    this.createFloristReviewModal();
-                })
-                .catch(error => console.log('error', error));
-        } else {
-            this.createFloristReviewModal();
+    getReviewToFetch(page) {
+        if (document.querySelector('.content ul')) {
+            document.querySelectorAll('.content ul').forEach(e => e.remove());
         }
+        if(page == undefined) page = 0;
+        let settings = {
+            "url": "http://localhost:9000/api/v1/florist/florist_review",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            "data": {
+                "page": page,
+                "floristNumber": this.floristData.floristNumber
+            }
+        };
+
+        $.ajax(settings).done((response) => {
+            this.createFloristReviewModal(response);
+            this.createFloristReviewFooter(response);
+        });
     }
 
     // 꽃집 리뷰 모달 창 만들기
-    createFloristReviewModal() {
+    createFloristReviewModal(response) {
+        console.log(response)
         const reviewContainer = document.createElement("ul");
+        this.reviewContainer = reviewContainer;
         reviewContainer.setAttribute("class", "reviewContainer");
-        this.floristReview.forEach((data) => {
+        response.content.forEach((data) => {
             const floristReviewBox = document.createElement("div");
             floristReviewBox.setAttribute("class", "reviewBoxWrapper");
             const three = data.userEmail.slice(0, 3);
@@ -1304,7 +1304,24 @@ class sideItemObj {
             floristReviewBox.innerHTML = boxHtml;
             reviewContainer.append(floristReviewBox);
         });
-        document.querySelector(".content").append(reviewContainer);
+        document.querySelector(".content").append(this.reviewContainer);
+    }
+
+    createFloristReviewFooter(response) {
+        const floristReviewBtnBox = document.createElement('div');
+        floristReviewBtnBox.setAttribute('class','footerBtnBox');
+        // 버튼 만드는 로직 res에 totalPages만큼 버튼 만들기
+        for (let i = 0; i < response.totalPages; i++) {
+            const btnBox = document.createElement('button');
+            btnBox.setAttribute('class', 'btn btn-outline-dark');
+            btnBox.setAttribute('data-no',i);
+            btnBox.textContent = i;
+            btnBox.addEventListener('click',(e) => {
+                this.getReviewToFetch(btnBox.dataset.no);
+            })
+            floristReviewBtnBox.append(btnBox);
+        }
+        this.reviewContainer.append(floristReviewBtnBox);
     }
 }
 

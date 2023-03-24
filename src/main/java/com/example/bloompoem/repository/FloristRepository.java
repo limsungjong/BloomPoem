@@ -155,4 +155,31 @@ public interface FloristRepository extends JpaRepository<FloristEntity, Integer>
                     "    c.flower_color "
                     , nativeQuery = true)
     List<FloristAndReviewScoreAndFlowerName> getFloristListAndReviewScoreAndFlowerColor(@Param("flowerName") String flowerName);
+
+    @Query(value =
+            "select " +
+                    "    a.florist_number, " +
+                    "    a.florist_name, " +
+                    "    a.florist_address, " +
+                    "    a.florist_phone_number, " +
+                    "    a.florist_latitude, " +
+                    "    a.florist_longtitude, " +
+                    "    a.user_email, " +
+                    "    avg(b.florist_review_score) as florist_review_score, " +
+                    "    count(b.florist_number) as florist_review_count " +
+                    " from " +
+                    "    florist a, florist_review b " +
+                    " where a.florist_number = b.florist_number " +
+                    " group by      " +
+                    "    a.florist_number, " +
+                    "    a.florist_name, " +
+                    "    a.florist_address, " +
+                    "    a.florist_phone_number, " +
+                    "    a.florist_latitude, " +
+                    "    a.florist_longtitude, " +
+                    "    a.user_email, "+
+                    "    b.florist_number "+
+                    "    ORDER BY florist_review_score DESC " +
+                    "    FETCH FIRST 3 ROWS ONLY " , nativeQuery = true)
+    List<FloristAndReviewScore> getFloristListAndReviewScoreAndTopThree();
 }
