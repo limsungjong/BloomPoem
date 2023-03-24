@@ -13,6 +13,8 @@
   <title>문의 작성하기</title>
   <script>
 $(document).ready(function(){
+  const cookie = document.cookie.split("=")[1]
+
   $("#btnSave").on("click", function(){
     if($("#qnaTitle").val().length <= 0){
       alert("제목을 입력하세요.");
@@ -20,13 +22,11 @@ $(document).ready(function(){
       return;
     }
 
-    if($(#"qnaContent").val().length <= 0){
+    if($("#qnaContent").val().length <= 0){
       alert("내용을 입력하세요.");
       $("#qnaContent").focus();
       return;
     }
-
-    alert("문의가 정상적으로 등록되었습니다.");
 
   });
 })
