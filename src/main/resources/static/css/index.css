@@ -575,7 +575,7 @@ header {
   color: var(--color-black);
   font-weight: 400;
   justify-content: space-around;
-  grid-template-columns: 300px 1fr 240px;
+  grid-template-columns: 300px 1fr 320px;
   justify-items: center;
   box-sizing: content-box;
 }

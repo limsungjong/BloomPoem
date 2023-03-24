@@ -122,12 +122,11 @@ header {
     height: 100px;
     width: 100vw;
     font-weight: 400;
-    justify-items: center;
-    background-color: var(--color-true-white);
-    display: flex;
-    justify-content: space-around;
+    display: grid;
     align-items: center;
     background-color: #fff3d4;
+    grid-template-columns: 300px 1fr 274px 320px;
+    grid-template-rows: 100px;
 }
 
 .logoBox {
@@ -155,17 +154,17 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35%;
+    width: 43%;
 }
 
 .searchTerm {
-    width: 40vw;
+    width: 18vw;
     border-top: none;
     border-right: none;
     border-left: none;
     border-bottom: solid 3px var(--color-dark-gray);
     padding: 5px;
-    height: 55px;
+    height: 47px;
     color: #000000;
     font-size: 23px;
 }
@@ -176,7 +175,7 @@ nav {
 
 .searchButton {
     width: 40px;
-    height: 55px;
+    height: 48px;
     border-top: none;
     border-right: none;
     border-left: none;
@@ -976,7 +975,7 @@ a {
 }
 .resetBtnBox {
     width: 40px;
-    height: 55px;
+    height: 47px;
     border-top: none;
     border-right: none;
     border-left: none;
@@ -1443,4 +1442,34 @@ a {
 .buttonBox btn{
     width: 50px;
     height: 40px;
+}
+
+.navBox{
+    display: flex;
+    justify-content: space-around;
+}
+.logo{
+    width: 250px;
+    margin-left: 20px;
+}
+.menuBar{
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    top: -25px;
+    color: gray;
+}
+.menu1, .menu2{
+    padding-right:10px ;
+    border-right: 1px solid rgba(128, 128, 128, 0.58);
+}
+.menuBar a {
+    color :gray;
+}
+a {
+    text-decoration: none;
+}
+a:hover{
+    color: #191919;
 }

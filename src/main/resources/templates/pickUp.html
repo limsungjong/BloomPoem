@@ -22,37 +22,43 @@
   <title>Bloom Poem Pick-Up</title>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/onReady.css"/>
-  <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
   <link rel="stylesheet" type="text/css" href="/css/pickUp.css"/>
 
 </head>
 <body>
 <header>
-  <div id="loading"></div>
   <div class="logoBox">
     <a href="http://localhost:9000">
       <img src="/image/logo최종.png" alt="logo" class="logo"/>
     </a>
   </div>
-  <div class="searchBox">
-    <input
-            id="searchInput"
-            type="text"
-            class="searchTerm fromLeft"
-            placeholder="위치를 입력해주세요"
-    />
-    <button type="submit" class="searchButton">
-      <i class="fa fa-search"></i>
-    </button>
+  <div class="navBox">
+    <div class="searchBox">
+      <input
+              id="searchInput"
+              type="text"
+              class="searchTerm fromLeft"
+              placeholder="위치를 입력해주세요"
+      />
+      <button type="submit" class="searchButton">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    <div class="flowerChoiceBox">
+      <span type="text" id="flowerTargetName" placeholder="꽃 이름"></span>
+      <button class="resetBtnBox"><img id="resetBtn" src="/image/resetBtn.png" alt=""></button>
+    </div>
   </div>
-  <div class="flowerChoiceBox">
-    <span type="text" id="flowerTargetName" placeholder="꽃 이름"></span>
-    <button class="resetBtnBox"><img id="resetBtn" src="/image/resetBtn.png" alt=""></button>
+  <div class="menuBar">
+    <div class="menu1"><a href="/pick_up">Pick Up</a></div>
+    <div class="menu2"><a href="/shopping">Shopping</a></div>
+    <div class="menu3"><a href="/recommend">Recommend</a></div>
   </div>
   <nav class="userBox">
     <a href="http://localhost:9000/sign/sign_in"><span class="signin">SignIn</span></a>
     <a href="http://localhost:9000/sign/sign_up"><span class="signup">SignUp</span></a>
   </nav>
+  <div id="loading"></div>
 </header>
 <main>
   <div class="sideContainer">
