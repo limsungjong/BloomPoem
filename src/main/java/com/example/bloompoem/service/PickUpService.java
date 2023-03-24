@@ -42,7 +42,7 @@ public class PickUpService {
         PickUpCartEntity optionalPickUpCart = pickUpCartRepository.findByUserEmailAndFlowerNumberAndFloristNumber(userEmail, request.getFlowerNumber(), request.getFloristNumber()).orElse(null);
         BouquetEntity bouquet = new BouquetEntity();
         if (optionalPickUpCart != null) {
-            if(optionalPickUpCart.getFlowerNumber() == 99999){
+            if(optionalPickUpCart.getFlowerNumber() != 99999){
                 optionalPickUpCart.setFloristNumber(request.getFloristNumber());
                 optionalPickUpCart.setFlowerNumber(request.getFlowerNumber());
                 optionalPickUpCart.setFlowerCount(request.getFlowerCount());
@@ -65,7 +65,7 @@ public class PickUpService {
         pickUpCartEntity.setFlowerNumber(request.getFlowerNumber());
         pickUpCartEntity.setFlowerCount(request.getFlowerCount());
         pickUpCartEntity.setUserEmail(userEmail);
-        if(request.getFloristNumber()==99999){
+        if(request.getFlowerNumber()==99999){
             bouquet.setBouquetNumber(request.getBouquetNumber());
             pickUpCartEntity.setBouquet(bouquet);
         }

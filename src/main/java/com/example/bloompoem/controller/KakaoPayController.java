@@ -63,6 +63,7 @@ public class KakaoPayController {
                     .floristNumber(data.getFloristNumber())
                     .flowerNumber(data.getFlowerNumber())
                     .flowerCount(data.getFlowerCount())
+                    .bouquetNumber((data.getBouquetNumber()))
                     .build(), userEmail);
         });
 

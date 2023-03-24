@@ -88,7 +88,6 @@ public class RestPickUpController {
 
         pickUpService.pickUpCartDelete(userService.tokenToUserEntity(token).getUserEmail());
         pickUpCartRequestList.forEach(request -> {
-            System.out.println("boquetNumber : " + request.getBouquetNumber() );
             pickUpService.pickUpCartInsert(request, userService.tokenToUserEntity(token).getUserEmail());
         });
 
