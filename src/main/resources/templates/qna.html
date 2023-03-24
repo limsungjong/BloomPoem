@@ -11,13 +11,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/qna.css"/>
   <title>나의 문의 내역</title>
-  <script>
-  $(document).ready(function(){
-  const cookie= document.cookie.split("=")[1]
-
-    });
-  })
-  </script>
 </head>
 <body>
 <header class="header">
@@ -67,9 +60,12 @@
     </div>
   </div>
   <div class="paging">
-    <button class="btn btn-outline-dark">1</button>
-    <button class="btn btn-outline-dark">2</button>
-    <button class="btn btn-outline-dark">3</button>
+    <th:block th:each=" page : ${#numbers.sequence(startPage , endPage)}">
+      <a th:if="${page != nowPage}" th:href="@{/qna?page=} + ${page-1}" th:text="${page}"></a>
+      <strong th:if="${page == nowPage}" th:text="${page}"></strong>
+    </th:block>
+<!--    <button class="btn btn-outline-dark">1</button>-->
+<!--    <button class="btn btn-outline-dark">2</button>-->
   </div>
 </main>
 <footer>

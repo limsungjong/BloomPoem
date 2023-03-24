@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@DynamicUpdate
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,11 +29,8 @@ public class QnaEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_QNA_NUMBER")
     private Integer qnaNumber;
 
-    @Column(length = 40)
+    @JoinColumn(name = "userEmail")
     private String userEmail;
-
-//    @Column(length = 40, nullable = false)
-//    private Date qnaDate;
 
     @CreationTimestamp
     @Column
