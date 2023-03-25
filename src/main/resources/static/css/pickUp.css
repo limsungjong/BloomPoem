@@ -137,9 +137,9 @@ nav {
     width: 100%;
     font-size: 20px;
     display: flex;
-    justify-content: space-around;
     text-align: center;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 .signup:hover,
@@ -188,7 +188,7 @@ nav {
 }
 
 .userBox {
-    width: 15%;
+    width: 100%;
     min-width: 252px;
 }
 
@@ -1472,4 +1472,7 @@ a {
 }
 a:hover{
     color: #191919;
+}
+.menu2 ,.menu3{
+    margin-left: 5px;
 }

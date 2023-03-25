@@ -111,8 +111,7 @@ header {
     color: var(--color-black);
     font-weight: 400;
     justify-content: space-around;
-    grid-template-columns: 300px 1fr 340px;
-    justify-items: center;
+    grid-template-columns: 300px 1fr 274px 340px;
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
 }
@@ -261,6 +260,7 @@ main{
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 40px;
 }
 .mainBar{
     background-color: gray;
@@ -333,21 +333,21 @@ main{
 .subMenu .plant{
     display: none;
     position: absolute;
-    left: 279px;
+    left:15vw;
     border: 1px solid rgba(0, 0, 0, 0.2);
     z-index: 3;
 }
 .subMenu .wreath{
     display: none;
     position: absolute;
-    left: 552px;
+    left: 28.5vw;
     border: 1px solid rgba(0, 0, 0, 0.2);
     z-index: 3;
 }
 .subMenu .flowerBasket{
     display: none;
     position: absolute;
-    left: 840px;
+    left: 44vw;
     border: 1px solid rgba(0, 0, 0, 0.2);
     z-index: 3;
 }
@@ -537,4 +537,28 @@ a:hover{
 
     .next {
         right: 10px;
+    }
+    .menuBar{
+        font-size: 1.0rem;
+        display: flex;
+        justify-content: space-around;
+        position: relative;
+        top: -25px;
+        color: gray;
+    }
+    .menu1, .menu2{
+        padding-right:10px ;
+        border-right: 1px solid rgba(128, 128, 128, 0.58);
+    }
+    .menuBar a {
+        color :gray;
+    }
+    a {
+        text-decoration: none;
+    }
+    a:hover{
+        color: #191919;
+    }
+    .menu2 ,.menu3{
+        margin-left: 5px;
     }

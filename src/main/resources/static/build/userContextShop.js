@@ -47,6 +47,7 @@ let userContext = {};
                             navBox.innerHTML =
                                 `
                                 <span id="logOutBtn">Sign Out</span>
+                                <span class="cart"><a href='/shopping/cart'>Cart</a></span>
                                 <span id="MyPage"><a href="/my_page">My Page</a></span>
                                 `;
 
