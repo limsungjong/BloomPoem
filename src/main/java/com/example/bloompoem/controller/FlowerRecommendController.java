@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class FlowerRecommendController {
     private final FlowerService flowerService;
 
-
     @GetMapping("/recommend")
     public String recommendGo(Model model, @PageableDefault(size = 12)Pageable pageable, @RequestParam(required = false, defaultValue = "0") int page){
         Page<FlowerEntity> flower =flowerService.findFlowerAll(pageable);

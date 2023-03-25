@@ -41,7 +41,7 @@ public class ProductService {
     private final ShoppingCartRepository cartDao;
     private final ShoppingOrderRepository shoppingOrderDao;
     private final ShoppingOrderDetailRepository shoppingOrderDetailRepository;
-    private static Logger logger = LoggerFactory.getLogger(ProductService.class);
+    Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public Page<ProductEntity> categoryProductView (int category ,Pageable pageable){
         Page<ProductEntity> product = null;
