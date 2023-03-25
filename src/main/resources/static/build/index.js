@@ -296,8 +296,3 @@ var _a;
         document.querySelector('#postPickForm').submit();
     }
 }
-
-    // best Shop 가져오는 이벤트
-{
-
-}

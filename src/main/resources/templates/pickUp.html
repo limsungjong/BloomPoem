@@ -88,6 +88,14 @@
   <input id="flowerName" type="hidden" th:value="${flowerName}">
 </th:block>
 
+<!-- pickUp Post florist entity 받기-->
+<th:block th:if="${floristEntity}">
+  <input id="targetfloristName" type="hidden" th:value="${floristEntity.floristName}">
+  <input id="floristLatitude" type="hidden" th:value="${floristEntity.floristLatitude}">
+  <input id="floristLongtitude" type="hidden" th:value="${floristEntity.floristLongtitude}">
+  <input id="floristNumber" type="hidden" th:value="${floristEntity.floristNumber}">
+</th:block>
+
 <script src="/build/pickUp.js"></script>
 <script>
   function paymentSuccess(orderId){
