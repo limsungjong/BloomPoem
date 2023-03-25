@@ -23,7 +23,7 @@ public class WebSecurityConfigure {
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
                 .csrf().disable()
