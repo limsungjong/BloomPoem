@@ -24,7 +24,7 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 public class BouquetController {
-    private static Logger logger = LoggerFactory.getLogger(PickUpController.class);
+    Logger logger = LoggerFactory.getLogger(PickUpController.class);
     @Value("#{environment['custom.file']}")
     private String FILE_PATH;
     @Value("#{environment['jwt.secret']}")
