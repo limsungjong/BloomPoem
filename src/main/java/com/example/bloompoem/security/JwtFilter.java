@@ -24,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @PropertySource("classpath:app.properties")
 public class JwtFilter extends OncePerRequestFilter {
+
     private final SignService signService;
     @Value("#{environment['jwt.secret']}")
     private final String secretKey;

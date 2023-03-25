@@ -34,10 +34,10 @@ public class RestPickUpController {
     private final PickUpService pickUpService;
 
     private final FloristRepository floristRepository;
-    @Autowired
-    private  FlowerRepository flowerRepository;
-    @Autowired
-    private BouquetService bouquetService;
+
+    private final FlowerRepository flowerRepository;
+
+    private final BouquetService bouquetService;
 
     @GetMapping(value = "/get_pick_up_cart")
     public ResponseEntity<?> getPickUpCart(@CookieValue(value = "Authorization") String token) {

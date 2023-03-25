@@ -4,15 +4,13 @@ import com.example.bloompoem.domain.dto.FloristAndReviewAndFlowerNameResponse;
 import com.example.bloompoem.domain.dto.FloristAndReviewResponse;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.FloristEntity;
-import com.example.bloompoem.entity.FloristReviewEntity;
 import com.example.bloompoem.entity.Inter.FloristAndReviewScore;
 import com.example.bloompoem.entity.Inter.FloristAndReviewScoreAndFlowerName;
 import com.example.bloompoem.entity.Inter.FloristFlowerInterFace;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristRepository;
 import com.example.bloompoem.repository.FloristReviewRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
 @CrossOrigin("http://172.28.16.1:5500")
 @RequestMapping("/api/v1/florist")
+@RequiredArgsConstructor
 public class RestFloristController {
 
     private final FloristRepository floristRepository;

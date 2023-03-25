@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("#{environment['upload.path']}")
     private String uploadPath;
-    @Value("#{environment['florist.path']}")
+    @Value("#{environment['file.path']}")
     private String floristPath;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
