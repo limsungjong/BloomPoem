@@ -52,9 +52,12 @@
             </div>
         </div>
         <div class="buttons">
-            <button class="btn btn-outline-success" id="btnUpdate">수정</button>
-            <button class="btn btn-outline-danger" id="btnDelete">삭제</button>
+            <button class="btn btn-outline-success" id="btnUpdate">
+                <a th:href="@{/qna/update(qnaNumber=${qna.qnaNumber})}">수정</a></button>
+            <button class="btn btn-outline-danger" id="btnDelete">
+                <a th:href="@{/qna/delete(qnaNumber=${qna.qnaNumber})}">삭제</a></button>
             <button class="btn btn-outline-dark" onclick="location.href ='http://localhost:9000/qna'">목록</button>
+            <button class="btn btn-outline-dark">답글</button>
         </div>
     </div>
 

@@ -1,5 +1,6 @@
 package com.example.bloompoem.repository;
 
+import com.example.bloompoem.entity.Inter.OrderDetailBouquet;
 import com.example.bloompoem.entity.Inter.OrderDetailResponse;
 import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
 import com.example.bloompoem.entity.PickUpOrderEntity;
@@ -86,4 +87,36 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
             @Param("userEmail") String userEmail);
 
     Page<PickUpOrderEntity> findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc(LocalDate startDate, LocalDate endDate , Pageable pageable, String userEmail , int status);
+
+
+    @Query(value = "    select\n" +
+            "        a.pick_up_order_reservation_time,\n" +
+            "        a.pick_up_order_reservation_date,\n" +
+            "        a.user_email,\n" +
+            "        a.pick_up_order_date,\n" +
+            "        a.pick_up_order_real_price,\n" +
+            "        c.flower_name,\n" +
+            "        c.flower_number,\n" +
+            "        a.pick_up_order_number,\n" +
+            "        b.pick_up_order_detail_count,\n" +
+            "        b.florist_number,\n" +
+            "        d.bouquet_main_image,\n" +
+            "        e.florist_name\n," +
+            "        d.bouquet_price" +
+            "    from\n" +
+            "        pick_up_order a,\n" +
+            "        pick_up_order_detail b,\n" +
+            "        flower c,\n" +
+            "        bouquet d,\n" +
+            "        florist e\n" +
+            "    where\n" +
+            "        a.pick_up_order_number = b.pick_up_order_number  \n" +
+            "        and b.florist_number = d.florist_number\n" +
+            "        and e.florist_number = d.florist_number\n" +
+            "        and c.flower_number = b.flower_number\n" +
+            "        and d.bouquet_number = b.bouquet_number\n" +
+            "        and a.user_email = :userEmail\n" +
+            "        and a.pick_up_order_number = :pickUpOrderNumber "
+            , nativeQuery = true)
+    List<OrderDetailBouquet> pickUpOrderSuccessResponse(String userEmail, Integer pickUpOrderNumber);
 }

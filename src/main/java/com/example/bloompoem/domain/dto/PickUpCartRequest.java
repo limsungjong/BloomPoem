@@ -11,4 +11,5 @@ public class PickUpCartRequest {
     Integer flowerCount;
 
     Integer floristNumber;
+    Integer bouquetNumber;
 }

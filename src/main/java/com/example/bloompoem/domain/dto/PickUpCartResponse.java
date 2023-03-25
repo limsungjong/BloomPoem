@@ -23,4 +23,6 @@ public class PickUpCartResponse {
     Integer floristProductPrice;
 
     Integer pickUpCartNumber;
+
+    Integer bouquetNumber;
 }

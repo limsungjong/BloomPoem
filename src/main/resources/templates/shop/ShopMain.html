@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <title>Bloom Poem shopping</title>
   <link rel="stylesheet" href="/css/shopMain.css" />
+  <script src="/build/userContextShop.js" defer></script>
   <script>
     const imageRight = function (){
       $(".mainImgDiv").css("transform", "translateX(-100vw)");
@@ -177,6 +178,11 @@
       </button>
     </div>
   </menu>
+  <div class="menuBar">
+    <div class="menu1"><a href="/pick_up">Pick Up</a></div>
+    <div class="menu2"><a href="/shopping">Shopping</a></div>
+    <div class="menu3"><a href="/recommend">Recommend</a></div>
+  </div>
   <nav class="userBox">
 
   </nav>
@@ -201,15 +207,35 @@
     <input type="hidden" name="searchValue" id="searchValue" value="">
   </form>
   <br/>
-  <div class="mainImageBox">
-      <div class="mainImgDiv" >
-      <img src="/image/main/shopMain2.png" alter="mainImage" class="mainImage">
-      <img src="/image/main/shopMain1.png" alter="mainImage" class="mainImage">
-      <img src="/image/main/shopMain3.png" alter="mainImage" class="mainImage">
-      </div>
-      <span class="material-symbols-outlined left">chevron_left</span>
-      <span class="material-symbols-outlined right">chevron_right</span>
+<!--      <div class="mainImgDiv" >-->
+<!--        <div clas="slider">-->
+<!--          <img src="/image/main/shopMain2.png" alter="mainImage" class="mainImage">-->
+<!--          <img src="/image/main/shopMain1.png" alter="mainImage" class="mainImage">-->
+<!--          <img src="/image/main/shopMain3.png" alter="mainImage" class="mainImage">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <span class="material-symbols-outlined left">chevron_left</span>-->
+<!--      <span class="material-symbols-outlined right">chevron_right</span>-->
+  <div class="slider">
+    <div class="slide active">
+      <img src="/image/main/shopMain2.png" alt="Slide 1">
+    </div>
+    <div class="slide">
+      <img src="/image/main/shopMain1.png" alt="Slide 2">
+    </div>
+    <div class="slide">
+      <img src="/image/main/shopMain3.png" alt="Slide 3">
+    </div>
+    <a class="prev" onclick="prevSlide()">❮</a>
+    <a class="next" onclick="nextSlide()">❯</a>
   </div>
+
+  </div>
+
+
+      </div>
+    </div>
+
   <div class="mainText">
     많이 팔리는 상품들을 아래에서 확인해보세요.
   </div>
@@ -266,4 +292,29 @@
     </div>
   </div>
 </footer>
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll(".slide");
+
+  function showSlide(n) {
+    slides[currentSlide].classList.remove("active");
+    currentSlide = (n + slides.length) % slides.length;
+    slides[currentSlide].classList.add("active");
+  }
+
+  function prevSlide() {
+    showSlide(currentSlide - 1);
+  }
+
+  function nextSlide() {
+    showSlide(currentSlide + 1);
+  }
+
+  setInterval(() => {
+    nextSlide();
+  }, 5000);
+
+
+
+</script>
 </html>

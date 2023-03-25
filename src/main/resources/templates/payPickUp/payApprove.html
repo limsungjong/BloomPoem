@@ -21,6 +21,7 @@
   <link rel="stylesheet" type="text/css" href="/css/payCompleted.css" />
   <title>주문 내역</title>
   <style></style>
+  <script src="/build/userContext.js" defer></script>
   <script>
     $(document).ready( () => {
       const orderNumber = parseInt($(".orderNumber").val());
@@ -75,7 +76,12 @@
 <body>
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
-  <menu> </menu>
+  <menu>
+    <span><a href="/pick_up">PickUp</a></span>
+    <span><a href="/shopping">Shopping</a></span>
+    <span><a href="/recommend">Recommend</a></span>
+
+  </menu>
   <nav class="userBox"></nav>
 </header>
 <main>

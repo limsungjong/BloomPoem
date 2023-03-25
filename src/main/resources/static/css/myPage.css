@@ -103,8 +103,7 @@ header {
     color: var(--color-black);
     font-weight: 400;
     justify-content: space-around;
-    grid-template-columns: 300px 1fr 240px;
-    justify-items: center;
+    grid-template-columns: 300px 1fr 320px;
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
     background-color: #fff3d4;
@@ -205,7 +204,7 @@ main{
     font-weight: 100;
 }
 .mainBox{
-    width: 1300px;
+    width: 1260px;
     height: 600px;
     display: flex;
     flex-direction: column;
@@ -525,13 +524,13 @@ userInfoBox .form-control{
 }
 .userInfoDetailAddressBox{
     display: grid;
-    grid-template-columns: 200px 400px;
+    grid-template-columns: 200px 250px;
     align-items: center;
     padding: 30px;
 }
 .userInfoPhoneNumberBox{
     display: grid;
-    grid-template-columns: 200px 400px;
+    grid-template-columns: 200px 250px;
     align-items: center;
     padding: 30px;
 }
@@ -542,7 +541,7 @@ userInfoBox .form-control{
     padding: 30px;
 }
 .userInfoButtonBox button{
-    width: 50%;
+    width: 30%;
 }
 .userInfoArea{
     width: 100%;
@@ -556,4 +555,40 @@ userInfoBox .form-control{
 }
 .pickTotalBox {
     padding: 0;
+}
+menu {
+    font-weight: 400;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+menu span{
+    cursor: pointer;
+}
+.header span {
+    font-size: 1.5rem;
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+.header span:after {
+    margin-top: 5px;
+    display: block;
+    content: "";
+    border-bottom: solid 3px var(--color-dark-gray);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+.header span:hover:after {
+    transform: scaleX(1);
+}
+.header span.fromRight:after {
+    transform-origin: 100% 50%;
+}
+.header span.fromLeft:after {
+    transform-origin: 0% 50%;
+}
+body::-webkit-scrollbar{
+    display: none;
 }

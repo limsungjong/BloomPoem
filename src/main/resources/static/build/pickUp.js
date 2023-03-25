@@ -145,6 +145,7 @@ class sideItemObj {
         this.buyModalContainer = null;
         this.pickDateAndTime = null;
         this.reviewContainer = null;
+        this.bouquetNumber =null;
     }
 
     // 사이드 아이템 생성하고 추가
@@ -249,6 +250,7 @@ class sideItemObj {
                 this.createCheckModal();
             } else {
                 document.querySelector("body").removeChild(this.modalContainer);
+                colorReset()
             }
         });
 
@@ -427,6 +429,7 @@ class sideItemObj {
                         return;
                     }
                     console.log(flower)
+                    console.log("bouquetNumber : " +this.bouquetNumber);
                     const buyData = {
                         flowerName: flower.flowerName,
                         flowerCount: parseInt(flowerLiBox.querySelector('.flowerCount').value),
@@ -436,7 +439,8 @@ class sideItemObj {
                         floristNumber: this.floristData.floristNumber,
                         floristName: this.floristData.floristName,
                         floristProductTotalPrice: flower.floristProductPrice * flowerLiBox.querySelector('.flowerCount').value,
-                        floristMainImage: flower.floristMainImage
+                        floristMainImage: flower.floristMainImage,
+                        bouquetNumber : this.bouquetNumber
                     };
                     if (this.bucketDataArr.length == 0) {
                         alert("장바구니로 이동되었습니다.");
@@ -480,6 +484,7 @@ class sideItemObj {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+        console.log(this.bucketDataArr);
         const raw = JSON.stringify(this.bucketDataArr);
         const requestOptions = {
             method: "POST",
@@ -610,6 +615,7 @@ class sideItemObj {
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
                 console.log("장바구니 탭에서 단건 구매")
                 this.singleBuyDataArr = [];
+                console.log("bouquetNumber : " +this.bouquetNumber);
                 const buyData = {
                     flowerName: bucket.flowerName,
                     flowerCount: bucketLi.querySelector('.bucketCount').value,
@@ -619,7 +625,8 @@ class sideItemObj {
                     floristNumber: this.floristData.floristNumber,
                     floristName: this.floristData.floristName,
                     floristProductTotalPrice: bucket.floristProductPrice * bucketLi.querySelector('.bucketCount').value,
-                    floristMainImage: bucket.floristMainImage
+                    floristMainImage: flower.floristMainImage,
+                    bouquetNumber : this.bouquetNumber
                 };
                 this.singleBuyDataArr.push(buyData);
                 this.singleCreateBuyModal(buyData);
@@ -746,6 +753,7 @@ class sideItemObj {
                     this.modalContainer.querySelector('.bucketList').remove();
                 }
                 this.bucketDeleteFetch();
+                colorReset()
             }
         });
 
@@ -850,6 +858,7 @@ class sideItemObj {
             if (this.loginChecker() == false) return;
             console.log("꽃 탭에서 단건 구매")
             this.singleBuyDataArr = [];
+            console.log(this.bouquetNumber);
             const buyData = {
                 flowerName: flowerData.flowerName,
                 flowerCount: flowerLiBox.querySelector('.flowerCount').value,
@@ -858,7 +867,8 @@ class sideItemObj {
                 floristNumber: this.floristData.floristNumber,
                 floristName: this.floristData.floristName,
                 floristProductTotalPrice: flowerData.floristProductPrice * flowerLiBox.querySelector('.flowerCount').value,
-                floristMainImage: flowerData.floristMainImage
+                floristMainImage: flowerData.floristMainImage,
+                bouquetNumber : this.bouquetNumber
             }
             this.singleBuyDataArr.push(buyData);
             this.singleCreateBuyModal(buyData);
@@ -1112,9 +1122,9 @@ class sideItemObj {
         myHeaders.append("Content-Type", "application/json");
         const dateTime = this.outPutDateAndTime();
         console.log(dateTime)
-        console.log(this.bucketDataArr)
+         let data;
         console.log(this.singleBuyDataArr)
-        let data;
+        console.log(this.bucketDataArr)
         if (this.singleBuyDataArr.length > 0) {
             data = this.singleBuyDataArr;
         } else {
@@ -1615,6 +1625,7 @@ class sideItemObj {
                 data  : {totalCost, bouquetColorRgb, "floristNumber" : this.floristData.floristNumber ,"cookie" : cookie }
             }).then(r=>{
                 this.bouquetNumber = r;
+                console.log("bouquetNumber : " +this.bouquetNumber);
                 const floristNumber = this.floristData.floristNumber;
                 //이미지 서버로 전송
                 const capture = document.getElementById("allSelectBox");
@@ -1659,8 +1670,6 @@ const long = document.querySelector('#long');
 const floristLat = document.querySelector("#floristName");
 const floristLong = document.querySelector("#floristLatitude");
 const floristNumber = document.querySelector('#floristNumber');
-
-console.log()
 
 if (flowerName) {
     document.querySelector('#flowerTargetName').textContent =
