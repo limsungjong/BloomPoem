@@ -5,7 +5,7 @@ import com.example.bloompoem.entity.ShoppingOrder;
 import com.example.bloompoem.entity.ShoppingReview;
 import com.example.bloompoem.entity.UserEntity;
 import com.example.bloompoem.repository.ShoppingReviewRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ShoppingReviewService {
-    @Autowired
-    private ShoppingReviewRepository shoppingReviewDao;
+    private final ShoppingReviewRepository shoppingReviewDao;
     public int insertReview(ShoppingReview shoppingReview){
          return shoppingReviewDao.save(shoppingReview).getShoppingReviewNumber();
     }

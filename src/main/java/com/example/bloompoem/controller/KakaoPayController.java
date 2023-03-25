@@ -83,6 +83,38 @@ public class KakaoPayController {
         return ResponseEntity.ok(jsonObject);
     }
 
+    @PostMapping(value = "/kakao_pay/single/ready")
+    public @ResponseBody ResponseEntity<JSONObject> paySingleReady(
+            @RequestBody PickUpDateAndTImeRequest request,
+            @CookieValue(value = "Authorization") String token) {
+        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+
+        Integer totalAmount = 0;
+        // 물품 총액을 계산
+        for (PayOrderProduct product : request.getOrderList()) {
+            totalAmount += (product.getFloristProductPrice() * product.getFlowerCount());
+        }
+
+        // 오더 테이블과 디테일 모두 저장하고 난 후 seq를 가져온다.
+        Integer orderSeq = orderService.detailSaveOrder(request, userEmail, totalAmount);
+
+        // 여기에서 시작하여 내부 로직에 의해 전달이 되고 난 상태
+        PayReady payReady = kakaoPayService.payReady(request, totalAmount, orderSeq, userEmail);
+        logger.error("" + payReady);
+        // 이미 외부로 전달되어 있는 상태이다.
+
+        // 클라이언트로 전달하는데 json형태로 전달.
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userEmail", userEmail);
+        jsonObject.put("orderId", String.valueOf(orderSeq));
+        jsonObject.put("tId", payReady.getTid());
+        jsonObject.put("pcUrl", payReady.getNext_redirect_pc_url());
+
+        // 처음 호출한 곳인 모달 창으로 다시 내보낸다. pickUp.js
+        return ResponseEntity.ok(jsonObject);
+    }
+
+
     @PostMapping("/pick_up/order/pay/pop_up")
     // js 함수에 의해 실행되며 result에 담긴 3가지 변수를 받는다
     public String popUp(Model model, String pcUrl, String orderId, String tId, String userEmail) {

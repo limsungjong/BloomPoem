@@ -2,8 +2,6 @@ package com.example.bloompoem.security;
 
 import com.example.bloompoem.service.SignService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +22,6 @@ public class WebSecurityConfigure {
     private final SignService signService;
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
-    private final Logger log = LoggerFactory.getLogger(getClass());
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
         http
@@ -53,6 +50,6 @@ public class WebSecurityConfigure {
                 "/build/**",
                 "/favicon*/**",
                 "/image/**"
-                );
+        );
     }
 }

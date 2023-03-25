@@ -6,12 +6,9 @@ import com.example.bloompoem.dto.KakaoOrder;
 import com.example.bloompoem.dto.KakaoReady;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.repository.*;
-import jdk.jfr.Category;
-import org.hibernate.type.LocalDateTimeType;
-import org.hibernate.type.LocalDateType;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -38,15 +35,12 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
-    @Autowired
-    private ProductRepository productDao;
-    @Autowired
-    private ShoppingCartRepository cartDao;
-    @Autowired
-    private ShoppingOrderRepository shoppingOrderDao;
-    @Autowired
-    private ShoppingOrderDetailRepository shoppingOrderDetailRepository;
+    private final ProductRepository productDao;
+    private final ShoppingCartRepository cartDao;
+    private final ShoppingOrderRepository shoppingOrderDao;
+    private final ShoppingOrderDetailRepository shoppingOrderDetailRepository;
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public Page<ProductEntity> categoryProductView (int category ,Pageable pageable){
