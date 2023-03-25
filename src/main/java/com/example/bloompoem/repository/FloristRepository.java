@@ -21,7 +21,7 @@ public interface FloristRepository extends JpaRepository<FloristEntity, Integer>
 
     FloristEntity findFloristEntityByFloristName(String floristName);
 
-//    ProductEntity findByProductNumber(int productNumber);
+    boolean existsByFloristName(String floristName);
 
     @Query(value =
             "select * from florist " +

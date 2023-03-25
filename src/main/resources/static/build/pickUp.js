@@ -1667,7 +1667,11 @@ class sideItemObj {
 
 const lat = document.querySelector('#lat');
 const long = document.querySelector('#long');
-const flowerName = document.querySelector('#flowerName');
+const floristLat = document.querySelector("#floristName");
+const floristLong = document.querySelector("#floristLatitude");
+const floristNumber = document.querySelector('#floristNumber');
+
+console.log()
 
 if (flowerName) {
     document.querySelector('#flowerTargetName').textContent =
