@@ -124,7 +124,6 @@ document.querySelector("#searchInput").addEventListener('focus', () => {
     });
 });
 
-
 class sideItemObj {
     bucketDataArr = [];
     singleBuyDataArr = [];
@@ -1025,7 +1024,7 @@ class sideItemObj {
         this.modalContainer.append(buyModalContainer);
         this.buyModalContainer = buyModalContainer;
         this.createBuyProductBox(buyData);
-        this.buyModalHandler();
+        this.singleBuyModalHandler();
 
         const now_utc = Date.now() // 지금 날짜를 밀리초로
         // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
@@ -1036,7 +1035,7 @@ class sideItemObj {
         this.buyModalContainer.querySelector('#selectTime').addEventListener('change', () => {
             this.dateAndTimeController();
         })
-    }
+    }v
 
     // 구매 모달에서 구매 박스 만들기
     createBuyProductBox(buyData) {
@@ -1115,26 +1114,31 @@ class sideItemObj {
         })
     }
 
-    ////////////////// 카카오 페이 fetch /////////////
+    singleBuyModalHandler() {
+        const closeBtn = this.buyModalContainer.querySelector(".closeBtn");
+        closeBtn.addEventListener("click", () => {
+            console.log(this.bucketDataArr);
+            document.querySelector("#modal").removeChild(this.buyModalContainer);
+        });
 
-    bucketFetchToBuy(buyData) {
+        const kakaoPayBtn = this.buyModalContainer.querySelector('#kakaoPayBtn');
+        kakaoPayBtn.addEventListener('click', () => {
+            if (this.dateAndTimeController()) {
+                this.singleFetchToBuy();
+            }
+        })
+    }
+
+    ////////////////// 카카오 페이 fetch /////////////
+    bucketFetchToBuy() {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const dateTime = this.outPutDateAndTime();
         console.log(dateTime)
-         let data;
-        console.log(this.singleBuyDataArr)
-        console.log(this.bucketDataArr)
-        if (this.singleBuyDataArr.length > 0) {
-            data = this.singleBuyDataArr;
-        } else {
-            data = this.bucketDataArr;
-        }
-        console.log(data)
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
-            body: JSON.stringify({'date': dateTime.date, 'time': dateTime.time, 'orderList': data}),
+            body: JSON.stringify({'date': dateTime.date, 'time': dateTime.time, 'orderList': this.bucketDataArr}),
             redirect: "follow",
         };
         this.dateAndTimeController();
@@ -1148,7 +1152,7 @@ class sideItemObj {
 
                 if (result == undefined) return;
                 // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
-                // 밑에 있는 폼의 이름도 kakaoPopUp이다.
+                // 밑에 있는 html 폼의 이름도 kakaoPopUp이다.
                 window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
 
                 // html밑의 3개의 인풋에 result에 담긴 3개의 값을 할당한다.
@@ -1161,11 +1165,48 @@ class sideItemObj {
 
                 // html밑의 kakaoForm을 실행한다. 이 때에 action에 /pick_up/order/pay/pop_up으로 post요청이 들어간다.
                 $("#kakaoForm").submit();
-                console.log(this.buyBucketArr);
             });
     }
 
+    singleFetchToBuy() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const dateTime = this.outPutDateAndTime();
+        console.log(this.singleBuyDataArr);
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify({'date': dateTime.date, 'time': dateTime.time, 'orderList': this.singleBuyDataArr}),
+            redirect: "follow",
+        };
+        this.dateAndTimeController();
+        // 카카오 페이 가장 처음 시작이다.
+        fetch("http://localhost:9000/kakao_pay/single/ready", requestOptions)
+            .then((response) => {
+                return response.json();
+            })
+            .then((result) => {
+                this.createBuySpinner();
+
+                if (result == undefined) return;
+                // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
+                // 밑에 있는 html 폼의 이름도 kakaoPopUp이다.
+                window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
+
+                // html밑의 3개의 인풋에 result에 담긴 3개의 값을 할당한다.
+                $("#orderId").val(result.orderId);
+                $("#tId").val(result.tId);
+                $("#pcUrl").val(result.pcUrl);
+                console.log($("#orderId").val());
+                console.log($("#tId").val());
+                console.log($("#pcUrl").val());
+
+                // html밑의 kakaoForm을 실행한다. 이 때에 action에 /pick_up/order/pay/pop_up으로 post요청이 들어간다.
+                $("#kakaoForm").submit();
+            });
+    }
     ////////////////////////////////////////////////
+
     // 구매 모달창에 있는 시간 날짜 핸들링
     dateAndTimeController() {
         const selectTimeInput = this.buyModalContainer.querySelector('#selectTime');
@@ -1318,6 +1359,7 @@ class sideItemObj {
         document.querySelector(".content").append(this.reviewContainer);
     }
 
+    // 꽃립 리뷰 푸터 창 만들기
     createFloristReviewFooter(response) {
         const floristReviewBtnBox = document.createElement('div');
         floristReviewBtnBox.setAttribute('class','footerBtnBox');
@@ -1669,7 +1711,8 @@ const lat = document.querySelector('#lat');
 const long = document.querySelector('#long');
 const floristLat = document.querySelector("#floristName");
 const floristLong = document.querySelector("#floristLatitude");
-const floristNumber = document.querySelector('#floristNumber');
+const floristNumber = document.querySelector("#floristNumber");
+const flowerName = document.querySelector("#flowerName");
 
 console.log()
 
@@ -1793,6 +1836,7 @@ function transFormList(obj1, obj2) {
 function removeSpinnerBox() {
     document.querySelector(".spinnerBox").remove();
 }
+
 const colorReset = ()=>{
     $("#selectColorName").val("");
     $("#selectRgb").val("");
@@ -1800,6 +1844,7 @@ const colorReset = ()=>{
     $(".customColorBox").css("background-color", "#ffffff");
     $(".selectColor").text(" ");
 }
+
 function comma(str) {
     str = String(str);
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');

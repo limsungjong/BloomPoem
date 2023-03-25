@@ -4,19 +4,18 @@ import com.example.bloompoem.entity.BouquetColor;
 import com.example.bloompoem.entity.BouquetEntity;
 import com.example.bloompoem.repository.BouquetColorRepository;
 import com.example.bloompoem.repository.BouquetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BouquetService {
 
-    @Autowired
-    private BouquetRepository BouquetDao;
+    private final BouquetRepository BouquetDao;
 
-    @Autowired
-    BouquetColorRepository bouquetColorDao;
+    private final BouquetColorRepository bouquetColorDao;
 
     public List<BouquetColor> colorAllView(){
         return bouquetColorDao.findAll();

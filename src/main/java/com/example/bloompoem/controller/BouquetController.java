@@ -1,15 +1,13 @@
 package com.example.bloompoem.controller;
 
-import com.example.bloompoem.dto.FloristDTO;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.repository.PickUpCartRepository;
-import com.example.bloompoem.repository.ShoppingCartRepository;
 import com.example.bloompoem.service.BouquetService;
 import com.example.bloompoem.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,17 +22,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class BouquetController {
-
     private static Logger logger = LoggerFactory.getLogger(PickUpController.class);
     @Value("#{environment['custom.file']}")
     private String FILE_PATH;
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
-    @Autowired
-    private BouquetService bouquetService;
-    @Autowired
-    private PickUpCartRepository pickUpCartRepository;
+    private final BouquetService bouquetService;
+    private final PickUpCartRepository pickUpCartRepository;
 
     @GetMapping("/color/read")
     public ResponseEntity<List<BouquetColor>> colorListView(){
