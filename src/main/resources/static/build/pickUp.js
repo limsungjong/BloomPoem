@@ -209,7 +209,6 @@ class sideItemObj {
     setAddEvent() {
         this.sideFloristItem.addEventListener("click", (e) => {
             this.fetchToCreateModal(this.floristData);
-            this.fetchToBucket();
         });
     }
 
@@ -612,9 +611,10 @@ class sideItemObj {
             });
 
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
+                console.log(bucket)
                 console.log("장바구니 탭에서 단건 구매")
                 this.singleBuyDataArr = [];
-                console.log("bouquetNumber : " +this.bouquetNumber);
+                console.log("bouquetNumber : " +bucket.bouquetNumber);
                 const buyData = {
                     flowerName: bucket.flowerName,
                     flowerCount: bucketLi.querySelector('.bucketCount').value,
@@ -624,8 +624,8 @@ class sideItemObj {
                     floristNumber: this.floristData.floristNumber,
                     floristName: this.floristData.floristName,
                     floristProductTotalPrice: bucket.floristProductPrice * bucketLi.querySelector('.bucketCount').value,
-                    floristMainImage: flower.floristMainImage,
-                    bouquetNumber : this.bouquetNumber
+                    floristMainImage: bucket.floristMainImage,
+                    bouquetNumber : bucket.bouquetNumber
                 };
                 this.singleBuyDataArr.push(buyData);
                 this.singleCreateBuyModal(buyData);
@@ -681,6 +681,7 @@ class sideItemObj {
 
     // 서버에 있는 장바구니 받아옴
     fetchToBucket(first) {
+        console.log("asd")
         if (document.cookie == "") {
             return;
         }
@@ -700,12 +701,12 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
+                console.log(result)
                 if (result == undefined) return;
-                result.forEach(cart => {
-                    if (cart.floristNumber != this.floristData.floristNumber) {
-                        this.bucketDeleteFetch();
-                    }
-                })
+                    console.log(this.floristData)
+                if(result.find(cart => cart.floristNumber != this.floristData.floristNumber)) {
+                    this.bucketDeleteFetch();
+                }
                 this.bucketDataArr = result;
                 if (!first) this.createModalBucket();
             })
@@ -1035,7 +1036,7 @@ class sideItemObj {
         this.buyModalContainer.querySelector('#selectTime').addEventListener('change', () => {
             this.dateAndTimeController();
         })
-    }v
+    }
 
     // 구매 모달에서 구매 박스 만들기
     createBuyProductBox(buyData) {

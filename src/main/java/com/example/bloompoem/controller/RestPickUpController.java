@@ -15,12 +15,12 @@ import com.example.bloompoem.service.BouquetService;
 import com.example.bloompoem.service.PickUpService;
 import com.example.bloompoem.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping(value = "/api/v1/pick_up")
 @RequiredArgsConstructor
@@ -43,42 +43,44 @@ public class RestPickUpController {
     public ResponseEntity<?> getPickUpCart(@CookieValue(value = "Authorization") String token) {
         UserEntity user = userService.tokenToUserEntity(token);
         List<PickUpCartResponse> pickUpCartResponseList = new ArrayList<>();
-        List<PickUpCartEntity> pickUpCartEntities = pickUpCartRepository.findByUserEmail(user.getUserEmail());
+        Optional<List<PickUpCartEntity>> pickUpCartEntities = pickUpCartRepository.findAllByUserEmail(user.getUserEmail());
 
-        pickUpCartEntities.forEach(data -> {
-            if(data.getFlowerNumber() != 99999){
-                FloristFlowerInterFace detail = floristRepository.searchFloristFlowerDetail(data.getFloristNumber(), data.getFlowerNumber());
-                pickUpCartResponseList
-                        .add(
-                                PickUpCartResponse
-                                        .builder()
-                                        .userEmail(data.getUserEmail())
-                                        .flowerName(detail.getFlowerName())
-                                        .flowerNumber(data.getFlowerNumber())
-                                        .floristNumber(data.getFloristNumber())
-                                        .flowerCount(data.getFlowerCount())
-                                        .floristMainImage(detail.getFloristMainImage())
-                                        .floristProductPrice(detail.getFloristProductPrice())
-                                        .pickUpCartNumber(data.getPickUpCartNumber())
-                                        .build());
-            }else{
-                BouquetEntity bouquet = bouquetService.selelctBouquet(data.getBouquet().getBouquetNumber());
-                pickUpCartResponseList.add(
-                        PickUpCartResponse
-                                .builder()
-                                .userEmail(data.getUserEmail())
-                                .flowerName("나만의 꽃다발")
-                                .flowerNumber(data.getFlowerNumber())
-                                .floristNumber(data.getFloristNumber())
-                                .flowerCount(data.getFlowerCount())
-                                .floristMainImage(bouquet.getBouquetMainImage())
-                                .floristProductPrice(bouquet.getBouquetPrice())
-                                .pickUpCartNumber(data.getPickUpCartNumber())
-                                .bouquetNumber(data.getBouquet().getBouquetNumber())
-                                .build()
-                );
-            }
-        });
+        if (pickUpCartEntities.isPresent()) {
+            pickUpCartEntities.get().forEach(data -> {
+                if (data.getFlowerNumber() != 99999) {
+                    FloristFlowerInterFace detail = floristRepository.searchFloristFlowerDetail(data.getFloristNumber(), data.getFlowerNumber());
+                    pickUpCartResponseList
+                            .add(
+                                    PickUpCartResponse
+                                            .builder()
+                                            .userEmail(data.getUserEmail())
+                                            .flowerName(detail.getFlowerName())
+                                            .flowerNumber(data.getFlowerNumber())
+                                            .floristNumber(data.getFloristNumber())
+                                            .flowerCount(data.getFlowerCount())
+                                            .floristMainImage(detail.getFloristMainImage())
+                                            .floristProductPrice(detail.getFloristProductPrice())
+                                            .pickUpCartNumber(data.getPickUpCartNumber())
+                                            .build());
+                } else {
+                    BouquetEntity bouquet = bouquetService.selelctBouquet(data.getBouquet().getBouquetNumber());
+                    pickUpCartResponseList.add(
+                            PickUpCartResponse
+                                    .builder()
+                                    .userEmail(data.getUserEmail())
+                                    .flowerName("나만의 꽃다발")
+                                    .flowerNumber(data.getFlowerNumber())
+                                    .floristNumber(data.getFloristNumber())
+                                    .flowerCount(data.getFlowerCount())
+                                    .floristMainImage(bouquet.getBouquetMainImage())
+                                    .floristProductPrice(bouquet.getBouquetPrice())
+                                    .pickUpCartNumber(data.getPickUpCartNumber())
+                                    .bouquetNumber(data.getBouquet().getBouquetNumber())
+                                    .build()
+                    );
+                }
+            });
+        }
         return ResponseEntity.ok().body(pickUpCartResponseList);
     }
 
@@ -111,7 +113,7 @@ public class RestPickUpController {
 
     @PostMapping(value = "/pick_up_cart_update_target")
     public ResponseEntity<?> updateTargetCart(@CookieValue(value = "Authorization") String token, @RequestBody PickUpCartRequest request) {
-        pickUpService.pickUpCartInsert(request,userService.tokenToUserEntity(token).getUserEmail());
+        pickUpService.pickUpCartInsert(request, userService.tokenToUserEntity(token).getUserEmail());
         return ResponseEntity.ok().body("성공!");
     }
 }
