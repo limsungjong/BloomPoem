@@ -1,6 +1,5 @@
 package com.example.bloompoem.controller;
 
-import com.example.bloompoem.domain.dto.PickUpCartRequest;
 import com.example.bloompoem.domain.dto.PickUpDateAndTImeRequest;
 import com.example.bloompoem.domain.kakaoPay.PayOrderProduct;
 import com.example.bloompoem.domain.kakaoPay.PayReady;
@@ -55,17 +54,6 @@ public class KakaoPayController {
 
         // 오더 테이블과 디테일 모두 저장하고 난 후 seq를 가져온다.
         Integer orderSeq = orderService.detailSaveOrder(request, userEmail, totalAmount);
-
-        // 카트에 모두 추가한다.
-        request.getOrderList().forEach(data -> {
-            pickUpService.pickUpCartInsert(PickUpCartRequest
-                    .builder()
-                    .floristNumber(data.getFloristNumber())
-                    .flowerNumber(data.getFlowerNumber())
-                    .flowerCount(data.getFlowerCount())
-                    .bouquetNumber((data.getBouquetNumber()))
-                    .build(), userEmail);
-        });
 
         // 여기에서 시작하여 내부 로직에 의해 전달이 되고 난 상태
         PayReady payReady = kakaoPayService.payReady(request, totalAmount, orderSeq, userEmail);
