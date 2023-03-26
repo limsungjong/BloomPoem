@@ -59,8 +59,8 @@ public class QnaDTO {
         qnaDTO.setQnaParent(qnaEntity.getQnaParent());
         qnaDTO.setQnaOrder(qnaEntity.getQnaOrder());
         qnaDTO.setQnaImage1(qnaEntity.getQnaImage1());
-        qnaDTO.setQnaImage2(qnaEntity.getQnaImage2());
-        qnaDTO.setQnaImage3(qnaEntity.getQnaImage3());
+//        qnaDTO.setQnaImage2(qnaEntity.getQnaImage2());
+//        qnaDTO.setQnaImage3(qnaEntity.getQnaImage3());
         qnaDTO.setQnaContent(qnaEntity.getQnaContent());
         return qnaDTO;
     }

@@ -57,11 +57,11 @@ public class QnaEntity {
     @Column(length = 50)
     private String qnaImage1;
 
-    @Column(length = 50)
-    private String qnaImage2;
-
-    @Column(length = 50)
-    private String qnaImage3;
+//    @Column(length = 50)
+//    private String qnaImage2;
+//
+//    @Column(length = 50)
+//    private String qnaImage3;
 
     @Column(length = 500)
     private String qnaContent;
@@ -89,8 +89,8 @@ public class QnaEntity {
         qnaEntity.setQnaParent(qnaDTO.getQnaParent());
         qnaEntity.setQnaOrder(qnaDTO.getQnaOrder());
         qnaEntity.setQnaImage1(qnaDTO.getQnaImage1());
-        qnaEntity.setQnaImage2(qnaDTO.getQnaImage2());
-        qnaEntity.setQnaImage3(qnaDTO.getQnaImage3());
+//        qnaEntity.setQnaImage2(qnaDTO.getQnaImage2());
+//        qnaEntity.setQnaImage3(qnaDTO.getQnaImage3());
         qnaEntity.setQnaContent(qnaDTO.getQnaContent());
         return toEntity(qnaDTO);
     }

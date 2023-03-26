@@ -78,8 +78,8 @@ public class QnaController {
         qnaEntity.setQnaParent(0);
         qnaEntity.setQnaOrder(0);
         qnaEntity.setQnaImage1("");
-        qnaEntity.setQnaImage2("");
-        qnaEntity.setQnaImage3("");
+//        qnaEntity.setQnaImage2("");
+//        qnaEntity.setQnaImage3("");
         System.out.println("QnaEntity = " + qnaEntity);
 
         qnaService.write(qnaEntity);
