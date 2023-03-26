@@ -308,7 +308,7 @@ class sideItemObj {
             <ul class="modal-nav">
               <li class="active">아름다운 꽃</li>
               <li>장바구니</li>
-              <li>매장 정보</li>
+              <li>꽃 다발 만들기</li>
               <li>리뷰</li>
             </ul>
             <div class="content">
@@ -612,13 +612,11 @@ class sideItemObj {
                 bucketLi.querySelector(".bucketTotalPrice").textContent =
                     numberAddComa(bucketInput.value * bucket.floristProductPrice);
                 this.createBucketFooter();
+                this.targetUpdateCart(bucket);
             });
 
             bucketLi.querySelector(".bucketBuy").addEventListener("click", () => {
-                console.log(bucket)
-                console.log("장바구니 탭에서 단건 구매")
                 this.singleBuyDataArr = [];
-                console.log("bouquetNumber : " +bucket.bouquetNumber);
                 const buyData = {
                     flowerName: bucket.flowerName,
                     flowerCount: bucketLi.querySelector('.bucketCount').value,
