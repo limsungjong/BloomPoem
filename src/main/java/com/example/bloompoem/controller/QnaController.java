@@ -142,8 +142,10 @@ public class QnaController {
     @PostMapping("/qna/reply")
     public String reply(@ModelAttribute QnaEntity qnaEntity, int beforeQnaNumber){
         QnaEntity qna = qnaService.findById(beforeQnaNumber);
-        qna.setQnaStatus('Y');
-        qnaService.update(qna);
+        if(qna.getQnaStatus() == 'N'){
+            qna.setQnaStatus('Y');
+            qnaService.update(qna);
+        }
         //기존 qnaStatus 변경
         qnaEntity.setQnaDate(LocalDateTime.now());
         qnaEntity.setQnaStatus('R');
