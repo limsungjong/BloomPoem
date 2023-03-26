@@ -164,94 +164,71 @@ nav .fromLeft:after {
 footer {
     width: 100vw;
     font-weight: 400;
-    background-color: #000;
     border-top: 2px solid var(--color-light-gray);
 }
 .navArea{
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
 }
 .navBox{
-  width: 1200px;
-  display: flex;
-  justify-content: space-around;
+    display: flex;
+    font-size: 2rem;
+    justify-content: center;
 }
 .mainArea{
-  width: 100vw;
-  height: 65vh;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
+    width: 100vw;
+    height: 69vh;
+    display: flex;
+
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: center;
 }
 .mainBox{
-  width: 1000px;
-  text-align: center;
+    width: 1000px;
+    border: 1px solid black;
 }
-.mainBox tr{
-  width: 100%;
-  border-bottom: 1px solid black;
-  height: 50px;
-  align-content: center;
+.titleBox1{
+    display: flex;
+    align-items: center;
+    height: 70px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.300);
+}
+.titleBox2{
+    display: flex;
+    align-items: center;
+    height: 70px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.300);
+}
+.title1{
+    width: 15%;
+    padding: 10px;
 
 }
-.qnaNumber{
-  width: 10%;
+.title2{
+    width: 35%;
+    padding: 10px;
+    border-right: 1px solid rgba(0, 0, 0, 0.300);
 }
-.qnaStatus{
-  width: 20%;
+.title3{
+    width: 15%;
+    padding: 10px;
 }
-.qnaTitle{
-  width: 50%;
+.title4{
+    width: 35%;
+    padding: 10px;
 }
-.qnaRegDate{
-  width: 20%;
+.content{
+    margin: 20px;
+    width: 96%;
+    height: 300px;
 }
-.th{
-  display: flex;
-  height: 60px;
-  align-items: center;
-  border-bottom: 1px solid black;
+.buttons{
+    margin-top: 30px;
 }
-.tr{
-  display: flex;
-  height: 60px;
-  align-items: center;
-  border-bottom: 1px solid black;
-}
-.paging{
-  display: flex;
-  justify-content: center;
-}
-.paging button{
-  margin: 10px;
-}
-.navButtonBox{
-  width: 1000px;
-  display: flex;
-    justify-content: flex-end;
-
-}
-
 a {
     text-decoration: none;
     color: #000000;
-}
-.navButtonArea{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-a:hover{
-    color: black;
-}
-.navButtonBox button{
-    margin-left: 40px;
-}
-.qnaTitle{
-    cursor: pointer;
-}
-.qnaTitle:hover{
-    color: #c9b2a6 ;
 }

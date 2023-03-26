@@ -173,7 +173,9 @@ footer {
   margin-top: 30px;
 }
 .navBox{
-  width: 1200px;
+    display: flex;
+    font-size: 2rem;
+    justify-content: center;
 }
 .mainArea{
   width: 100vw;
