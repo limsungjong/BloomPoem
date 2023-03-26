@@ -255,3 +255,7 @@ a:hover{
 .qnaTitle:hover{
     color: #c9b2a6 ;
 }
+.qnaStatus span{
+    position: relative;
+    right: 10px;
+}

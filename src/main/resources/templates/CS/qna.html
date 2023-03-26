@@ -11,6 +11,7 @@
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/qna.css"/>
   <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
+  <script src="/build/userContext.js" defer></script>
   <title>Bloom Poem 나의 문의 내역</title>
 </head>
 <script th:inline="javascript">
@@ -62,7 +63,7 @@
 
       <th:block th:if="${#strings.equals(qna.getQnaStatus(), 'R')}">
         <div class="qnaStatus">
-          <th:block th:each="num :${#numbers.sequence(1, qna.getQnaIndent())}" ><span style="width: 20px;">&nbsp</span></th:block><span class="material-symbols-outlined">subdirectory_arrow_right</span>
+          <th:block th:each="num :${#numbers.sequence(1, qna.getQnaIndent())}" ><span style="width: 30px;">&nbsp</span></th:block><span class="material-symbols-outlined">subdirectory_arrow_right</span>
         </div>
       </th:block>
       <th:block th:unless="${#strings.equals(qna.getQnaStatus(), 'R')}">
