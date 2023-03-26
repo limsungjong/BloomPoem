@@ -32,10 +32,6 @@ public class QnaDTO {
 
     private String qnaImage1;
 
-    private String qnaImage2;
-
-    private String qnaImage3;
-
     private String qnaContent;
 
     // 1:1 문의 목록에 띄울 문의번호, 상태, 제목, 등록일만 가져오기
@@ -59,8 +55,6 @@ public class QnaDTO {
         qnaDTO.setQnaParent(qnaEntity.getQnaParent());
         qnaDTO.setQnaOrder(qnaEntity.getQnaOrder());
         qnaDTO.setQnaImage1(qnaEntity.getQnaImage1());
-//        qnaDTO.setQnaImage2(qnaEntity.getQnaImage2());
-//        qnaDTO.setQnaImage3(qnaEntity.getQnaImage3());
         qnaDTO.setQnaContent(qnaEntity.getQnaContent());
         return qnaDTO;
     }
