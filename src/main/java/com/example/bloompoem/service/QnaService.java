@@ -20,7 +20,7 @@ public class QnaService {
 
     // Qna 리스트 가져오기
     public Page<QnaEntity> getQnaList(Pageable pageable, String userEmail){
-        Page<QnaEntity> qnaEntityPage = qnaRepository.findAllByUserEmailOrderByQnaOrderAsc(userEmail, pageable);
+        Page<QnaEntity> qnaEntityPage = qnaRepository.findAllByUserEmailOrderByQnaGroupDescQnaOrderAsc(userEmail, pageable);
         return qnaEntityPage;
     }
 

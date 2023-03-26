@@ -19,7 +19,7 @@ public interface QnaRepository extends JpaRepository<QnaEntity, Integer> {
 
     QnaEntity findByQnaTitleAndQnaContent(String qnaTitle, String qnaContent);
 
-    Page<QnaEntity> findAllByUserEmailOrderByQnaOrderAsc(String userEmail, Pageable pageable);
+    Page<QnaEntity> findAllByUserEmailOrderByQnaGroupDescQnaOrderAsc(String userEmail, Pageable pageable);
 
     @Transactional
     @Modifying
