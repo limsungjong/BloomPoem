@@ -5,7 +5,6 @@ import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.PickUpCartEntity;
 import com.example.bloompoem.entity.PickUpOrderDetailEntity;
 import com.example.bloompoem.exception.CustomException;
-import com.example.bloompoem.repository.FloristProductRepository;
 import com.example.bloompoem.repository.PickUpCartRepository;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
@@ -23,8 +22,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PickUpService {
-    private final FloristProductRepository floristProductRepository;
-
     private final PickUpCartRepository pickUpCartRepository;
 
     private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
@@ -41,7 +38,7 @@ public class PickUpService {
         logger.info("getFlowerNumber : "+request.getFlowerNumber());
         logger.info("getFlowerCount : "+request.getFlowerCount());
         logger.info("getBouquetNumber : "+request.getBouquetNumber());
-        if(request.getFlowerNumber() == 99999) {
+        if(request.getFlowerNumber().toString().equals("99999")) {
             Optional<PickUpCartEntity> optionalPickUpCart = pickUpCartRepository
                     .findByUserEmailAndFlowerNumberAndFloristNumberAndBouquetBouquetNumber
                             (
@@ -58,6 +55,7 @@ public class PickUpService {
                 optionalPickUpCart.get().setUserEmail(userEmail);
                 optionalPickUpCart.get().setBouquet(bouquetService.selelctBouquet(request.getBouquetNumber()));
                 pickUpCartRepository.save(optionalPickUpCart.get());
+                logger.error("부케인가?");
                 return;
             }
 
@@ -76,10 +74,11 @@ public class PickUpService {
                 optionalPickUpCart.get().setFlowerCount(request.getFlowerCount());
                 optionalPickUpCart.get().setUserEmail(userEmail);
                 pickUpCartRepository.save(optionalPickUpCart.get());
+                logger.error("여기인가?");
                 return;
             }
         }
-
+        logger.error("마지막?");
         pickUpCartRepository.save
                 (
                 PickUpCartEntity
@@ -126,6 +125,16 @@ public class PickUpService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void pickUpCartTargetDelete(PickUpCartRequest pick, String userEmail) {
-        pickUpCartRepository.deleteByUserEmailAndAndFlowerNumberAndFloristNumber(userEmail, pick.getFlowerNumber(), pick.getFloristNumber());
+        if(pick.getFlowerNumber() == 99999) {
+            pickUpCartRepository.deleteByUserEmailAndAndFlowerNumberAndFloristNumber(userEmail, pick.getFlowerNumber(), pick.getFloristNumber());
+        } else {
+            pickUpCartRepository.deleteByUserEmailAndAndFlowerNumberAndFloristNumberAndBouquet_BouquetNumber
+                    (
+                            userEmail,
+                            pick.getFlowerNumber(),
+                            pick.getFloristNumber(),
+                            pick.getBouquetNumber()
+                    );
+        }
     }
 }

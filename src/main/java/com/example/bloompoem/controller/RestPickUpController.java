@@ -15,6 +15,8 @@ import com.example.bloompoem.service.BouquetService;
 import com.example.bloompoem.service.PickUpService;
 import com.example.bloompoem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,8 @@ public class RestPickUpController {
     private final FlowerRepository flowerRepository;
 
     private final BouquetService bouquetService;
+
+    private final Logger logger = LoggerFactory.getLogger(RestPickUpController.class);
 
     @GetMapping(value = "/get_pick_up_cart")
     public ResponseEntity<?> getPickUpCart(@CookieValue(value = "Authorization") String token) {
@@ -87,8 +91,6 @@ public class RestPickUpController {
     @PostMapping(value = "/pick_up_cart_update")
     public ResponseEntity<?> updatePickUpCart(@CookieValue(value = "Authorization") String token, @RequestBody List<PickUpCartRequest> pickUpCartRequestList) {
         if (pickUpCartRequestList.isEmpty()) throw new CustomException(ResponseCode.INVALID_REQUEST);
-
-        pickUpService.pickUpCartDelete(userService.tokenToUserEntity(token).getUserEmail());
         pickUpCartRequestList.forEach(request -> {
             pickUpService.pickUpCartInsert(request, userService.tokenToUserEntity(token).getUserEmail());
         });

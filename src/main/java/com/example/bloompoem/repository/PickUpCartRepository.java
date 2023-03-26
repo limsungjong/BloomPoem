@@ -18,9 +18,31 @@ public interface PickUpCartRepository extends JpaRepository<PickUpCartEntity, In
                     int floristNumber,
                     int bouquetNumber
             );
-    Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFloristNumber(String userEmail, int flowerNumber, int floristNumber);
+    Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFloristNumber
+            (
+            String userEmail,
+            int flowerNumber,
+            int floristNumber
+            );
 
     Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFlowerCountAndFloristNumber
-            (String userEmail, int flowerNumber, int flowerCount, int floristNumber);
-    void deleteByUserEmailAndAndFlowerNumberAndFloristNumber(String userEmail, int flowerNumber, int floristNumber);
+            (
+                    String userEmail,
+                    int flowerNumber,
+                    int flowerCount,
+                    int floristNumber
+            );
+    void deleteByUserEmailAndAndFlowerNumberAndFloristNumber
+            (
+                    String userEmail,
+                    int flowerNumber,
+                    int floristNumber
+            );
+    void deleteByUserEmailAndAndFlowerNumberAndFloristNumberAndBouquet_BouquetNumber
+            (
+                    String userEmail,
+                    int flowerNumber,
+                    int floristNumber,
+                    int bouquetNumber
+            );
 }
