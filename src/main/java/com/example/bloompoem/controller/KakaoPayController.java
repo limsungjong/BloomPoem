@@ -8,7 +8,6 @@ import com.example.bloompoem.entity.Inter.PickUpOrderResponse;
 import com.example.bloompoem.repository.PickUpOrderRepository;
 import com.example.bloompoem.service.KakaoPayService;
 import com.example.bloompoem.service.OrderService;
-import com.example.bloompoem.service.PickUpService;
 import com.example.bloompoem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
@@ -33,8 +32,6 @@ public class KakaoPayController {
     private final UserService userService;
 
     private final OrderService orderService;
-
-    private final PickUpService pickUpService;
 
     private final PickUpOrderRepository pickUpOrderRepository;
 

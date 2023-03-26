@@ -89,33 +89,33 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
     Page<PickUpOrderEntity> findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc(LocalDate startDate, LocalDate endDate , Pageable pageable, String userEmail , int status);
 
 
-    @Query(value = "    select\n" +
-            "        a.pick_up_order_reservation_time,\n" +
-            "        a.pick_up_order_reservation_date,\n" +
-            "        a.user_email,\n" +
-            "        a.pick_up_order_date,\n" +
-            "        a.pick_up_order_real_price,\n" +
-            "        c.flower_name,\n" +
-            "        c.flower_number,\n" +
-            "        a.pick_up_order_number,\n" +
-            "        b.pick_up_order_detail_count,\n" +
-            "        b.florist_number,\n" +
-            "        d.bouquet_main_image,\n" +
-            "        e.florist_name\n," +
+    @Query(value = "    select " +
+            "        a.pick_up_order_reservation_time, " +
+            "        a.pick_up_order_reservation_date, " +
+            "        a.user_email, " +
+            "        a.pick_up_order_date, " +
+            "        a.pick_up_order_real_price, " +
+            "        c.flower_name, " +
+            "        c.flower_number, " +
+            "        a.pick_up_order_number, " +
+            "        b.pick_up_order_detail_count, " +
+            "        b.florist_number, " +
+            "        d.bouquet_main_image, " +
+            "        e.florist_name ," +
             "        d.bouquet_price" +
-            "    from\n" +
-            "        pick_up_order a,\n" +
-            "        pick_up_order_detail b,\n" +
-            "        flower c,\n" +
-            "        bouquet d,\n" +
-            "        florist e\n" +
-            "    where\n" +
-            "        a.pick_up_order_number = b.pick_up_order_number  \n" +
-            "        and b.florist_number = d.florist_number\n" +
-            "        and e.florist_number = d.florist_number\n" +
-            "        and c.flower_number = b.flower_number\n" +
-            "        and d.bouquet_number = b.bouquet_number\n" +
-            "        and a.user_email = :userEmail\n" +
+            "    from " +
+            "        pick_up_order a, " +
+            "        pick_up_order_detail b, " +
+            "        flower c, " +
+            "        bouquet d, " +
+            "        florist e " +
+            "    where " +
+            "        a.pick_up_order_number = b.pick_up_order_number   " +
+            "        and b.florist_number = d.florist_number " +
+            "        and e.florist_number = d.florist_number " +
+            "        and c.flower_number = b.flower_number " +
+            "        and d.bouquet_number = b.bouquet_number " +
+            "        and a.user_email = :userEmail " +
             "        and a.pick_up_order_number = :pickUpOrderNumber "
             , nativeQuery = true)
     List<OrderDetailBouquet> pickUpOrderSuccessResponse(String userEmail, Integer pickUpOrderNumber);
