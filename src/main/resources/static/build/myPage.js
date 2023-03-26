@@ -2,12 +2,13 @@
 let floristData = null;
 $(document).ready(() => {
     $.ajax({
-        url : "/api/v1/florist/florist_list",
-        method : "get",
+        url: "/api/v1/florist/florist_list",
+        method: "get",
     }).then(data => {
         floristData = data;
     })
 })
+
 class pickUpOrderHS {
     now = new Date();
     date = new Date()
@@ -79,6 +80,7 @@ class pickUpOrderHS {
                     method: "post",
                     data: {"orderNumber": p.pickUpOrderNumber}
                 }).then(r => {
+                    r = Object.values(r).flat();
                     if (i == 1) {
                         this.pickUpOrderDetail1 = r
                     } else {
@@ -107,12 +109,24 @@ class pickUpOrderHS {
                     })
                 })
             })
+
             if (r.totalPages > 1) {
-                const page = $("#page").val();
+                const page = parseInt(($("#page").val())) + 1;
                 $(".pagingButton").empty();
-                for (let i = 1; r.totalPages >= i; i++) {
-                    const msg = (page == i) ? `<button class="btn btn-outline-dark pickOrder" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark pickOrder">${i}</button>`
+
+                let start = Math.floor((page - 1) / 5) * 5 + 1; // 시작 페이지
+                let end = Math.min(start + 4, r.totalPages); // 끝 페이지
+                if (start > 1) {
+                    $(".pagingButton").append(`<button class="btn btn-outline-dark pickOrder" data-page="${start - 1}"><</button>`);
+                }
+
+                for (let i = start; i <= end; i++) {
+                    const msg = (page == i) ? `<button class="btn btn-outline-dark pickOrder" style="background-color: #dcf8e4; pointer-events: none";>${i}</button>` : `<button class="btn btn-outline-dark pickOrder" data-page="${i}">${i}</button>`;
                     $(".pagingButton").append(msg);
+                }
+
+                if (end < r.totalPages) {
+                    $(".pagingButton").append(`<button class="btn btn-outline-dark pickOrder" data-page="${end + 1}">></button>`);
                 }
             }
         })
@@ -120,8 +134,8 @@ class pickUpOrderHS {
 
         //page 넘기는 스크립트
         $(".pagingButton").on("click", ".pickOrder", (e) => {
-            const page = parseInt(e.target.textContent) - 1;
-            $("#page").val(e.target.textContent);
+            const page = parseInt(e.target.dataset.page) - 1;
+            $("#page").val(page);
             $.ajax({
                 url: "/myPage/get/reviewList",
                 method: "post",
@@ -171,6 +185,7 @@ class pickUpOrderHS {
                         method: "post",
                         data: {"orderNumber": p.pickUpOrderNumber}
                     }).then(r => {
+                        r = Object.values(r).flat();
                         if (i == 1) {
                             this.pickUpOrderDetail1 = r
                         } else {
@@ -203,18 +218,28 @@ class pickUpOrderHS {
                     })
                 })
                 if (r.totalPages > 1) {
-                    const page = $("#page").val();
+                    const page = parseInt(($("#page").val())) + 1;
                     $(".pagingButton").empty();
-                    for (let i = 1; r.totalPages >= i; i++) {
-                        const msg = (page == i) ? `<button class="btn btn-outline-dark pickOrder" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark pickOrder">${i}</button>`
+
+                    let start = Math.floor((page - 1) / 5) * 5 + 1; // 시작 페이지
+                    let end = Math.min(start + 4, r.totalPages); // 끝 페이지
+                    if (start > 1) {
+                        $(".pagingButton").append(`<button class="btn btn-outline-dark pickOrder" data-page="${start - 1}"><</button>`);
+                    }
+
+                    for (let i = start; i <= end; i++) {
+                        const msg = (page == i) ? `<button class="btn btn-outline-dark pickOrder" style="background-color: #dcf8e4; pointer-events: none";>${i}</button>` : `<button class="btn btn-outline-dark pickOrder" data-page="${i}">${i}</button>`;
                         $(".pagingButton").append(msg);
+                    }
+
+                    if (end < r.totalPages) {
+                        $(".pagingButton").append(`<button class="btn btn-outline-dark pickOrder" data-page="${end + 1}">></button>`);
                     }
                 }
                 // 위의 상품 띄어주는 함수 끝
             })
         })
         //page넘기는 스크립트 끝
-
         this.mainContainer = document.querySelector('.mainBox');
         this.pickUpContentHandler();
     }
@@ -223,16 +248,16 @@ class pickUpOrderHS {
         // 상품을 받았는지 체크하기 버튼 처리 시작
         $(".mainArea").on("click", "#pickUpOrderStatus", (e) => {
             const pickUpOrderNumber = e.target.dataset.no;
-            if(confirm("꽃 픽업 되셨나요?")) {
-            $.ajax({
-                url: "/myPage/pick_up/order_status_update",
-                method: "post",
-                data: {pickUpOrderNumber}
-            }).then(r => {
-                if(r == "success") {
-                    alert("완료처리되었습니다.")
-                }
-            })
+            if (confirm("꽃 픽업 되셨나요?")) {
+                $.ajax({
+                    url: "/myPage/pick_up/order_status_update",
+                    method: "post",
+                    data: {pickUpOrderNumber}
+                }).then(r => {
+                    if (r == "success") {
+                        alert("완료처리되었습니다.")
+                    }
+                })
             }
         })
         // 상품을 받았는지 체크하기 버튼 처리 끝
@@ -361,7 +386,7 @@ class pickUpOrderHS {
                     $("#pickUpReviewNumber").val(r);
                     console.log($("#pickUpReviewNumber").val())
                     console.log($("#pickInputFile").val())
-                    if ($("#pickInputFile").val().length> 1) {
+                    if ($("#pickInputFile").val().length > 1) {
                         const formData = new FormData($("#pickForm")[0])
 
                         $.ajax({
@@ -381,22 +406,23 @@ class pickUpOrderHS {
 
     clean() {
         $(".pagingButton").off('click');
-        $(".mainArea").off('click','#pickUpReviewButton');
-        $(".mainArea").off('click','#pickUpOrderStatus');
+        $(".mainArea").off('click', '#pickUpReviewButton');
+        $(".mainArea").off('click', '#pickUpOrderStatus');
 
     }
 }
 
 class pickUpOrderRv {
     manageOrderBox;
+
     constructor() {
     }
 
     openMainContainer() {
-        this.reviewView($("#page").val());
-        $(".pagingButton").on("click",".pickReviewPaging", (e) => {
-            const page = parseInt(e.target.textContent);
-            $("#page").val(e.target.textContent);
+        this.reviewView(1);
+        $(".pagingButton").on("click", ".pickReviewPaging", (e) => {
+            const page = parseInt(e.target.dataset.page);
+            // $("#page").val(page);
             this.reviewView(page);
         })
     }
@@ -413,22 +439,20 @@ class pickUpOrderRv {
     reviewView = (page) => {
         this.removeMainContainer();
         $.ajax({
-            url : "/pick_up/review/read",
-            method : "post",
-            data : {"userEmail" : userContext.userEmail, "page" :parseInt(page)-1}
-        }).then(r=>{
-            $.each(r.content , (i, p)=>{
-                const photo = (p.floristReviewImage ==null) ?"noImage.jpg" : `${p.floristReviewImage}`
+            url: "/pick_up/review/read",
+            method: "post",
+            data: {"userEmail": userContext.userEmail, "page": parseInt(page) - 1}
+        }).then(r => {
+            $.each(r.content, (i, p) => {
+                const photo = (p.floristReviewImage == null) ? "noImage.jpg" : `${p.floristReviewImage}`
                 let option;
-                for(let i = 5; i>= 1;i--){
-                    if(i == p.floristReviewScore){
-                        option = option+ `<option value='${i}' selected>${i}</option>`
-                    }
-                    else{
-                        option = option+ `<option value='${i}'>${i}</option>`
+                for (let i = 5; i >= 1; i--) {
+                    if (i == p.floristReviewScore) {
+                        option = option + `<option value='${i}' selected>${i}</option>`
+                    } else {
+                        option = option + `<option value='${i}'>${i}</option>`
                     }
                 }
-                console.log(p)
                 const floristNameIndex = floristData.findIndex(value => value.floristNumber == p.floristNumber);
                 const msg = `<div class="shoppingReviewOneBox">
                             <img src="/image/upload/${photo}" alt="" class="shoppingReviewImage" />
@@ -442,22 +466,35 @@ class pickUpOrderRv {
                         </div>`
                 $(".shoppingReviewArea").append(msg);
             })
-            if(r.totalPages>1) {
-                const page = $("#page").val();
+            if (r.totalPages > 1) {
+                console.log(page)
                 $(".pagingButton").empty();
-                for (let i = 1; r.totalPages >= i; i++) {
-                    const msg = (page == i) ? `<button class="btn btn-outline-dark pickReviewPaging" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark pickReviewPaging">${i}</button>`
+
+                let start = Math.floor((page - 1) / 5) * 5 + 1; // 시작 페이지
+                let end = Math.min(start + 4, r.totalPages); // 끝 페이지
+                console.log(start)
+                console.log(end)
+                if (start > 1) {
+                    $(".pagingButton").append(`<button class="btn btn-outline-dark pickReviewPaging" data-page="${start - 1}"><</button>`);
+                }
+
+                for (let i = start; i <= end; i++) {
+                    const msg = (page == i) ? `<button class="btn btn-outline-dark pickReviewPaging" style="background-color: #dcf8e4; pointer-events: none";>${i}</button>` : `<button class="btn btn-outline-dark pickReviewPaging" data-page="${i}">${i}</button>`;
                     $(".pagingButton").append(msg);
                 }
+
+                if (end < r.totalPages) {
+                    $(".pagingButton").append(`<button class="btn btn-outline-dark pickReviewPaging" data-page="${end + 1}">></button>`);
+                }
             }
-        }).catch(err=> console.log(err))
+        }).catch(err => console.log(err))
     }
 
     orderModifyHandle() {
-        $(".mainBox").on("click", ".orderReviewModify" ,(e)=>{
+        $(".mainBox").on("click", ".orderReviewModify", (e) => {
             const page = $("#page").val()
-            const target =e.target.dataset.no;
-            const content =$(`#content${target}`).val();
+            const target = e.target.dataset.no;
+            const content = $(`#content${target}`).val();
             const score = $(`#score${target}`).val();
 
 
@@ -466,10 +503,10 @@ class pickUpOrderRv {
             console.log(content)
             console.log(score)
             $.ajax({
-                url : "/pick_up/review/update",
-                method : "post",
-                data : {"orderReviewNumber": target , "pickUpOrderContent" : content, "pickUpOrderScore" : score }
-            }).then(r=>{
+                url: "/pick_up/review/update",
+                method: "post",
+                data: {"orderReviewNumber": target, "pickUpOrderContent": content, "pickUpOrderScore": score}
+            }).then(r => {
                 alert("수정이 완료되었습니다.")
                 this.reviewView(page);
             })
@@ -477,18 +514,18 @@ class pickUpOrderRv {
     }
 
     orderReviewHandle() {
-        $(".mainBox").on("click", ".orderReviewDelete", (e)=>{
+        $(".mainBox").on("click", ".orderReviewDelete", (e) => {
             const page = $("#page").val()
             console.log(page);
             const orderReviewNumber = e.target.dataset.no;
 
-            if(confirm("리뷰를 삭제하시겠습니까?")){
+            if (confirm("리뷰를 삭제하시겠습니까?")) {
                 $.ajax({
-                    url : "/pick_up/review/delete",
-                    method :"delete",
-                    data : {orderReviewNumber}
-                }).then(r=>{
-                    if(r == "success"){
+                    url: "/pick_up/review/delete",
+                    method: "delete",
+                    data: {orderReviewNumber}
+                }).then(r => {
+                    if (r == "success") {
                         alert("리뷰가 삭제되었습니다.");
                         this.reviewView(page);
                     }
@@ -499,8 +536,8 @@ class pickUpOrderRv {
 
     clean() {
         $(".pagingButton").off('click');
-        $(".mainBox").off('click','.orderReviewModify');
-        $(".mainBox").off('click','.orderReviewDelete');
+        $(".mainBox").off('click', '.orderReviewModify');
+        $(".mainBox").off('click', '.orderReviewDelete');
     }
 }
 
