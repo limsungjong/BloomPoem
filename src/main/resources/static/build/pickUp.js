@@ -145,6 +145,7 @@ class sideItemObj {
         this.pickDateAndTime = null;
         this.reviewContainer = null;
         this.bouquetNumber =null;
+        this.currentPage = 0;
     }
 
     // 사이드 아이템 생성하고 추가
@@ -270,7 +271,7 @@ class sideItemObj {
                                 case "장바구니":
                                     this.fetchToBucket();
                                     break;
-                                case "매장 정보":
+                                case "꽃 다발 만들기":
                                     this.createBouquet();
                                     break;
                                 case "리뷰":
@@ -426,8 +427,6 @@ class sideItemObj {
                     if (0 > parseInt(flowerCntInput.value) > 101) {
                         return;
                     }
-                    console.log(flower)
-                    console.log("bouquetNumber : " +this.bouquetNumber);
                     const buyData = {
                         flowerName: flower.flowerName,
                         flowerCount: parseInt(flowerLiBox.querySelector('.flowerCount').value),
@@ -438,12 +437,12 @@ class sideItemObj {
                         floristName: this.floristData.floristName,
                         floristProductTotalPrice: flower.floristProductPrice * flowerLiBox.querySelector('.flowerCount').value,
                         floristMainImage: flower.floristMainImage,
-                        bouquetNumber : this.bouquetNumber
                     };
                     if (this.bucketDataArr.length == 0) {
                         alert("장바구니로 이동되었습니다.");
                         this.bucketDataArr.push(buyData);
                         this.bucketToFetch();
+                        console.log(this.bucketDataArr)
                         return;
                     }
 
@@ -463,6 +462,12 @@ class sideItemObj {
 
                     console.log(duplicateFlowerNumber);
                     if (duplicateFlowerNumber == 0 || duplicateFlowerNumber > 0) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '장바구니에 추가되었습니다.',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
                         this.bucketDataArr[duplicateFlowerNumber].flowerCount =
                             this.bucketDataArr[duplicateFlowerNumber].flowerCount +
                             buyData.flowerCount;
@@ -507,7 +512,6 @@ class sideItemObj {
         bucketListTab.setAttribute("class", "bucketList");
 
         if (this.bucketDataArr.length === 0) {
-            console.log("empty")
             const empty = document.createElement('ul');
             const emptyBucketHtml = `
             <div class="emptyBucket">
@@ -681,7 +685,6 @@ class sideItemObj {
 
     // 서버에 있는 장바구니 받아옴
     fetchToBucket(first) {
-        console.log("asd")
         if (document.cookie == "") {
             return;
         }
@@ -701,7 +704,6 @@ class sideItemObj {
                 return response.json();
             })
             .then((result) => {
-                console.log(result)
                 if (result == undefined) return;
                     console.log(this.floristData)
                 if(result.find(cart => cart.floristNumber != this.floristData.floristNumber)) {
@@ -713,7 +715,7 @@ class sideItemObj {
     }
 
     // 확인용 모달 만들기
-    createCheckModal(text) {
+    createCheckModal() {
         const checkModal = document.createElement("div");
         checkModal.innerHTML = `
     <div id="checkModal" class="modal-overlay" xmlns="http://www.w3.org/1999/html">
@@ -975,7 +977,7 @@ class sideItemObj {
         })
     }
 
-    // 단일 구매
+    // 단일 구매 모달
     singleCreateBuyModal(buyData) {
         if (document.querySelector("#buyModal")) {
             document.removeChild(document.querySelector("#buyModal"));
@@ -1143,30 +1145,7 @@ class sideItemObj {
             redirect: "follow",
         };
         this.dateAndTimeController();
-        // 카카오 페이 가장 처음 시작이다.
-        fetch("http://localhost:9000/kakao_pay/ready", requestOptions)
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                this.createBuySpinner();
-
-                if (result == undefined) return;
-                // 팝업을 띄운다. 여기 해당하는 팝업창의 이름을 kakaoPopUp으로 하고
-                // 밑에 있는 html 폼의 이름도 kakaoPopUp이다.
-                window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100');
-
-                // html밑의 3개의 인풋에 result에 담긴 3개의 값을 할당한다.
-                $("#orderId").val(result.orderId);
-                $("#tId").val(result.tId);
-                $("#pcUrl").val(result.pcUrl);
-                console.log($("#orderId").val());
-                console.log($("#tId").val());
-                console.log($("#pcUrl").val());
-
-                // html밑의 kakaoForm을 실행한다. 이 때에 action에 /pick_up/order/pay/pop_up으로 post요청이 들어간다.
-                $("#kakaoForm").submit();
-            });
+        this.BuyFetch(requestOptions);
     }
 
     singleFetchToBuy() {
@@ -1181,6 +1160,10 @@ class sideItemObj {
             redirect: "follow",
         };
         this.dateAndTimeController();
+        this.BuyFetch(requestOptions);
+    }
+
+    BuyFetch(requestOptions) {
         // 카카오 페이 가장 처음 시작이다.
         fetch("http://localhost:9000/kakao_pay/single/ready", requestOptions)
             .then((response) => {
@@ -1326,7 +1309,6 @@ class sideItemObj {
 
     // 꽃집 리뷰 모달 창 만들기
     createFloristReviewModal(response) {
-        console.log(response)
         const reviewContainer = document.createElement("ul");
         this.reviewContainer = reviewContainer;
         reviewContainer.setAttribute("class", "reviewContainer");
@@ -1360,24 +1342,57 @@ class sideItemObj {
         document.querySelector(".content").append(this.reviewContainer);
     }
 
-    // 꽃립 리뷰 푸터 창 만들기
+    // 꽃집 리뷰 푸터
     createFloristReviewFooter(response) {
         const floristReviewBtnBox = document.createElement('div');
-        floristReviewBtnBox.setAttribute('class','footerBtnBox');
-        // 버튼 만드는 로직 res에 totalPages만큼 버튼 만들기
-        for (let i = 0; i < response.totalPages; i++) {
+        floristReviewBtnBox.setAttribute('class', 'footerBtnBox');
+
+        const totalPages = response.totalPages; // 전체 페이지 수
+        const currentPage = this.currentPage; // 현재 페이지 번호
+        const displayBtnCount = 5; // 보여줄 페이지 버튼 개수
+        const startPage = Math.max(currentPage - 2, 0); // 시작 페이지 번호
+        const endPage = Math.min(startPage + displayBtnCount - 1, totalPages - 1); // 끝 페이지 번호
+
+        // 이전 버튼 생성
+        const prevBtn = document.createElement('button');
+        prevBtn.setAttribute('class', 'btn btn-outline-dark');
+        prevBtn.textContent = '<';
+        prevBtn.disabled = (currentPage == 0); // 첫 페이지면 비활성화
+        prevBtn.addEventListener('click', (e) => {
+            this.currentPage--;
+            this.getReviewToFetch(this.currentPage);
+        });
+        floristReviewBtnBox.append(prevBtn);
+
+        // 페이지 버튼 생성
+        for (let i = startPage; i <= endPage; i++) {
             const btnBox = document.createElement('button');
             btnBox.setAttribute('class', 'btn btn-outline-dark');
-            btnBox.setAttribute('data-no',i);
-            btnBox.textContent = i;
-            btnBox.addEventListener('click',(e) => {
-                this.getReviewToFetch(btnBox.dataset.no);
-            })
+            btnBox.setAttribute('data-no', i);
+            btnBox.textContent = i + 1;
+            btnBox.addEventListener('click', (e) => {
+                const pageNo = Number(e.target.getAttribute('data-no'));
+                this.currentPage = pageNo;
+                this.getReviewToFetch(this.currentPage);
+            });
             floristReviewBtnBox.append(btnBox);
         }
+
+        // 다음 버튼 생성
+        const nextBtn = document.createElement('button');
+        nextBtn.setAttribute('class', 'btn btn-outline-dark');
+        nextBtn.textContent = '>';
+        nextBtn.disabled = (currentPage == totalPages - 1); // 마지막 페이지면 비활성화
+        nextBtn.addEventListener('click', (e) => {
+            this.currentPage++;
+            this.getReviewToFetch(this.currentPage);
+        });
+        floristReviewBtnBox.append(nextBtn);
+
         this.reviewContainer.append(floristReviewBtnBox);
     }
 
+    // 부케 모달창 만들기
     createBouquet(){
         $(".content").off();
         let flowerNumbers = [];
@@ -1389,7 +1404,6 @@ class sideItemObj {
                 color = " ";
             }
             const rgb = $("#selectRgb").val();
-            console.log(rgb);
             color = $("#selectColorName").val()
 
             $(".content").append(bouquetTab);
