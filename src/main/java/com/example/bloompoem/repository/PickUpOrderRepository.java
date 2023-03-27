@@ -88,6 +88,8 @@ public interface PickUpOrderRepository extends JpaRepository<PickUpOrderEntity,I
 
     Page<PickUpOrderEntity> findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc(LocalDate startDate, LocalDate endDate , Pageable pageable, String userEmail , int status);
 
+    List<PickUpOrderEntity> findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc(LocalDate startDate, LocalDate endDate ,String userEmail , int status);
+
 
     @Query(value = "    select " +
             "        a.pick_up_order_reservation_time, " +
