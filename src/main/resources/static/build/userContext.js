@@ -46,8 +46,8 @@ let userContext = {};
                         } else {
                             navBox.innerHTML =
                                 `
-                                <span id="MyPage"><a href="/my_page">My Page</a></span>
                                 <span id="logOutBtn">Sign Out</span>
+                                <span id="MyPage"><a href="/my_page">My Page</a></span>
                                 `;
 
                             navBox.querySelector('#logOutBtn')

@@ -1,10 +1,7 @@
 package com.example.bloompoem.entity;
 
 import com.example.bloompoem.dto.FloristDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -22,7 +19,7 @@ import java.math.BigDecimal;
         allocationSize = 1
 )
 public class FloristEntity {
-
+    @Setter
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,

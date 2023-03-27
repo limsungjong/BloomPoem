@@ -128,42 +128,19 @@
       <div class="main-content-3">
         <div class="main-con-row">
           <div class="main-con-row-title">
-            <span>Best Shop</span>
+            <span style="font-size: 2rem">Best Shop</span>
           </div>
           <div class="con-item-list">
             <div class="con-item-Box">
-              <div class="main-con-item">
-                <div>floRistName</div>
-                <div>floRistAddress</div>
-                <div>floRistPhoneNumber</div>
-                <div>⭐<span>4.6</span>/5(<span>5</span>)</div>
-                <div>reviewContent</div>
-              </div>
-              <div class="main-con-item">
-                <div>floRistName</div>
-                <div>floRistAddress</div>
-                <div>floRistPhoneNumber</div>
-                <div>⭐<span>4.6</span>/5(<span>5</span>)</div>
-                <div>reviewContent</div>
-              </div>
-              <div class="main-con-item">
-                <div>floRistName</div>
-                <div>floRistAddress</div>
-                <div>floRistPhoneNumber</div>
-                <div>⭐<span>4.6</span>/5(<span>5</span>)</div>
-                <div>reviewContent</div>
-              </div>
             </div>
           </div>
         </div>
         <div class="main-con-row">
           <div class="main-con-row-title">
-            <span>Best Product</span>
+            <span style="font-size: 2rem">Best Product</span>
           </div>
           <div class="con-item-list">
-            <div  class="con-item-Box" id="productBox">
-
-
+            <div class="con-item-Box" id="productBox">
             </div>
           </div>
         </div>
@@ -172,8 +149,8 @@
         <div class="footerWrapper">
           <div class="footerTop">
             <ul class="footerListText">
-              <li class="footerText">고객센터</li>
-              <li class="footerText">개인정보처리방침</li>
+              <li class="footerText"><a href="/FAQ">고객센터</a></li>
+              <li class="footerText"><a href="/privacy">개인정보처리방침</a></li>
             </ul>
           </div>
           <div class="footerCenter">
@@ -195,6 +172,38 @@
     </main>
 
   </body>
+  <script>
+    {
+      let myHeaders = new Headers();
+      let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      };
+      fetch("http://localhost:9000/api/v1/florist/bestFlorist", requestOptions)
+              .then(response => response.json())
+              .then(result => {
+                const boxWrapper = document.querySelector('.con-item-Box');
+                result.forEach(florist => {
+                  const box = document.createElement('div');
+                  box.setAttribute('class','main-con-item');
+                  box.innerHTML =
+                          `
+                            <div class="floristName">${florist.floristName}</div>
+                            <div class="floristAddress">${florist.floristAddress}</div>
+                            <div>${florist.floristPhoneNumber}</div>
+                            <div>⭐<span>${florist.floristReviewScore}</span>/5(<span>${florist.floristReviewCount}</span>)</div>
+                          `;
+                  boxWrapper.append(box);
+                  box.addEventListener('click', () => {
+                    
+                  });
+                })
+                document.querySelector('.con-item-list').append(boxWrapper);
+              })
+              .catch(error => console.log('error', error));
+    }
+  </script>
   <!-- pickUp Post 보내기 -->
   <form name="postPickUp" id="postPickForm" action="/searchPlace/pickUp" method="post">
     <input name="query" id="target" type="hidden">

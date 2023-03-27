@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <title>Bloom Poem 꽃 추천</title>
   <link rel="stylesheet" href="/css/flowerRecommend.css" />
-
+  <script src="/build/userContext.js" defer></script>
   <link rel="stylesheet" type="text/css" href="/css/footer.css" />
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 
@@ -135,8 +135,9 @@
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
   <menu>
-    <div>PickUp</div>
-    <div>Shopping</div>
+    <div><a href="/pick_up">PickUp</a></div>
+    <div><a href="/shopping">Shopping</a></div>
+    <div><a href="/recommend">Recommend</a></div>
   </menu>
   <nav class="userBox">
     <!-- signIn signOut 자바스크립트로 들어 올 예정 -->
@@ -172,8 +173,8 @@
   <div class="footerWrapper">
     <div class="footerTop">
       <ul class="footerListText">
-        <li class="footerText">고객센터</li>
-        <li class="footerText">개인정보처리방침</li>
+        <li class="footerText"><a href="/FAQ">고객센터</a></li>
+        <li class="footerText"><a href="/privacy">개인정보처리방침</a></li>
       </ul>
     </div>
     <div class="footerCenter">

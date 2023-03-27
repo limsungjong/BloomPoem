@@ -103,7 +103,7 @@ header {
     color: var(--color-black);
     font-weight: 400;
     justify-content: space-around;
-    grid-template-columns: 300px 1fr 240px;
+    grid-template-columns: 300px 1fr 320px;
     justify-items: center;
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
@@ -135,7 +135,8 @@ menu {
     font-weight: 400;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly
+
 }
 nav span {
     color: #000;
@@ -179,6 +180,7 @@ footer {
 
 .oneProductArea{
     display: flex;
+
 }
 .result{
     font-size: 2rem;
@@ -201,6 +203,7 @@ footer {
     width: 60vw;
     height: 45vh;
     overflow-y: scroll;
+    background-color: whitesmoke;
 }
 a {
     text-decoration: none;
@@ -235,4 +238,31 @@ a:hover{
 }
 .btn{
     margin: 20px;
+}
+.header span {
+    font-size: 1.5rem;
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+.header span:after {
+    margin-top: 5px;
+    display: block;
+    content: "";
+    border-bottom: solid 3px var(--color-dark-gray);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+.header span:hover:after {
+    transform: scaleX(1);
+}
+.header span.fromRight:after {
+    transform-origin: 100% 50%;
+}
+.header span.fromLeft:after {
+    transform-origin: 0% 50%;
+}
+btn a:hover{
+    color: white;
 }

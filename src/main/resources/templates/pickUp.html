@@ -20,38 +20,46 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
   <title>Bloom Poem Pick-Up</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/onReady.css"/>
-  <link rel="stylesheet" type="text/css" href="/css/skel.css"/>
   <link rel="stylesheet" type="text/css" href="/css/pickUp.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
 <header>
-  <div id="loading"></div>
   <div class="logoBox">
     <a href="http://localhost:9000">
       <img src="/image/logo최종.png" alt="logo" class="logo"/>
     </a>
   </div>
-  <div class="searchBox">
-    <input
-            id="searchInput"
-            type="text"
-            class="searchTerm fromLeft"
-            placeholder="위치를 입력해주세요"
-    />
-    <button type="submit" class="searchButton">
-      <i class="fa fa-search"></i>
-    </button>
+  <div class="navBox">
+    <div class="searchBox">
+      <input
+              id="searchInput"
+              type="text"
+              class="searchTerm fromLeft"
+              placeholder="위치를 입력해주세요"
+      />
+      <button type="submit" class="searchButton">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    <div class="flowerChoiceBox">
+      <span type="text" id="flowerTargetName" placeholder="꽃 이름"></span>
+      <button class="resetBtnBox"><img id="resetBtn" src="/image/resetBtn.png" alt=""></button>
+    </div>
   </div>
-  <div class="flowerChoiceBox">
-    <span type="text" id="flowerTargetName" placeholder="꽃 이름"></span>
-    <button class="resetBtnBox"><img id="resetBtn" src="/image/resetBtn.png" alt=""></button>
+  <div class="menuBar">
+    <div class="menu1"><a href="/pick_up">Pick Up</a></div>
+    <div class="menu2"><a href="/shopping">Shopping</a></div>
+    <div class="menu3"><a href="/recommend">Recommend</a></div>
   </div>
   <nav class="userBox">
     <a href="http://localhost:9000/sign/sign_in"><span class="signin">SignIn</span></a>
     <a href="http://localhost:9000/sign/sign_up"><span class="signup">SignUp</span></a>
   </nav>
+  <div id="loading"></div>
 </header>
 <main>
   <div class="sideContainer">
@@ -71,7 +79,11 @@
   <input type="hidden" name="tId" id="tId" value="" />
   <input type="hidden" name="pcUrl" id="pcUrl" value="" />
 </form>
-
+<!-- 꽃 다발 커스텀 정보 -->
+<form>
+  <input type="hidedn" id="selectRgb">
+  <input type="hidedn" id="selectColorName">
+</form>
 <!--카카오 페이 끝난후 실행 될 폼 -->
 <form nema="paymentSuccess" id="paymentSuccess" action="/pick_up/order/pay/success" method ="post">
   <input type="hidden" name="orderId" class="orderId" value="">
@@ -88,7 +100,16 @@
   <input id="flowerName" type="hidden" th:value="${flowerName}">
 </th:block>
 
+<!-- pickUp Post florist entity 받기-->
+<th:block th:if="${floristEntity}">
+  <input id="targetfloristName" type="hidden" th:value="${floristEntity.floristName}">
+  <input id="floristLatitude" type="hidden" th:value="${floristEntity.floristLatitude}">
+  <input id="floristLongtitude" type="hidden" th:value="${floristEntity.floristLongtitude}">
+  <input id="floristNumber" type="hidden" th:value="${floristEntity.floristNumber}">
+</th:block>
+
 <script src="/build/pickUp.js"></script>
+<script src="/build/dragScript.js" defer></script>
 <script>
   function paymentSuccess(orderId){
     $(".orderId").val(orderId)

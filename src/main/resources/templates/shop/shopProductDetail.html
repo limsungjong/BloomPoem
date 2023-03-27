@@ -12,6 +12,7 @@
   <title>Bloom Poem 상세정보</title>
   <link rel="stylesheet" href="/css/shopProductDetail.css" />
   <link rel="stylesheet" href="/css/footer.css" />
+  <script src="/build/userContextShop.js" defer></script>
   <script>
     let userEmail;
     function comma(str) {
@@ -47,15 +48,15 @@
       }
       //쿠기가 있으면 header 변경 끝
       if(category == 1 || category == 2){
-        $(".plantMenu").css("backgroundColor" , "#afffba");
+        $(".plantMenu").css("backgroundColor" , "#c5b0d594");
       }else if(category == 3 || category == 4){
-        $(".wreathMenu").css("backgroundColor" , "#afffba");
+        $(".wreathMenu").css("backgroundColor" , "#c5b0d594");
       }else if(category == 5 || category == 6){
-        $(".flowerBasketMenu").css("backgroundColor" , "#afffba");
+        $(".flowerBasketMenu").css("backgroundColor" , "#c5b0d594");
       }else if(category == 7){
-        $(".soil").css("backgroundColor" , "#afffba");
+        $(".soil").css("backgroundColor" , "#c5b0d594");
       }else if(category == 8){
-        $(".vase").css("backgroundColor" , "#afffba");
+        $(".vase").css("backgroundColor" , "#c5b0d594");
       }
       $(".logo").on("click" ,()=>{
         location.href="/shopping"
@@ -362,6 +363,12 @@
       <div class="flowerBasket"><div class="bloomBasket">꽃 바구니</div><div class="bloomBox">꽃 상자</div></div>
     </div>
   </menu>
+  <div class="menuBar">
+    <div class="menu1"><a href="/pick_up">Pick Up</a></div>
+    <div class="menu2"><a href="/shopping">Shopping</a></div>
+    <div class="menu3"><a href="/recommend">Recommend</a></div>
+  </div>
+
   <nav class="userBox">
 
   </nav>
@@ -422,8 +429,8 @@
   <div class="footerWrapper">
     <div class="footerTop">
       <ul class="footerListText">
-        <li class="footerText">고객센터</li>
-        <li class="footerText">개인정보처리방침</li>
+        <li class="footerText"><a href="/FAQ">고객센터</a></li>
+        <li class="footerText"><a href="/privacy">개인정보처리방침</a></li>
       </ul>
     </div>
     <div class="footerCenter">

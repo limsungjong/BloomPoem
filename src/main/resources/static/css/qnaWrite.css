@@ -1,5 +1,4 @@
-
-    /*      Root         */
+/*      Root         */
 :root {
     /*    Color    */
     --color-true-black: #000000;
@@ -74,14 +73,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
     font-family: "나눔스퀘어 네오";
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 100px auto 100px;
-    overflow-x: hidden;
 
-}
-::-webkit-scrollbar {
-    display: none;
 }
 ol,
 ul {
@@ -115,6 +107,7 @@ header {
     justify-items: center;
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
+    background-color: #fff3d4;
 }
 .logo {
     height: 80px;
@@ -142,7 +135,8 @@ menu {
     font-weight: 400;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
 }
 nav span {
     color: #000;
@@ -167,142 +161,93 @@ nav .fromRight:after {
 nav .fromLeft:after {
     transform-origin: 0% 50%;
 }
-
 footer {
-    bottom: 0;
-    height: 100px;
     width: 100vw;
     font-weight: 400;
-    background-color: var(--color-true-white);
     border-top: 2px solid var(--color-light-gray);
-    background-color: #191919;
 }
-.searchBox {
-    width: 23.5vw;
-    height: 8vh;
-    position: relative;
-    display: flex;
-    padding: 15px 0 15px 0;
-    background-color: rgba(128, 128, 128, 0.302);
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    opacity: 85%;
-}
-main{
-    /* background-color: #3ea4f8; */
-}
-.searchButton {
-    width: 40px;
-    height: 45px;
-    border: 1px solid #ffffff;
-    background: #ffffff;
-    text-align: center;
-    color: #000000;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-    font-size: 25px;
-}
-.searchTerm {
-    width: 20vw;
-    border: 3px solid #ffffff;
-    border-right: none;
-    padding: 5px;
-    height: 45px;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-    color: #000000;
-    font-size: 15px;
-}
-
-.searchTerm:focus {
-    color: #000000;
-}
-.categoryBar {
+.navArea{
     width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.navBox{
+    width: 1200px;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+
+}
+.mainArea{
+    width: 100vw;
+    height: 69vh;
+    display: flex;
+
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: center;
+}
+.mainBox{
+    width: 1000px;
+    border: 1px solid black;
+}
+.titleBox1{
+    display: flex;
+    align-items: center;
     height: 70px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.300);
+}
+.titleBox2{
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
-    font-size: var(--font-regular);
-    background-color: #b9eeff;
+    height: 70px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.300);
 }
-.categoryBar ul{
-    width: 80vw;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-main{
-    height: 100%;
-}
-.categoryBar li{
+.title1{
+    width: 30%;
     padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.categoryBar li:hover{
-    background-color: pink;
-    font-weight: bold;
-}
-.mainImageBox{
-    display: flex;
-
-}
-.mainImg{
-    width : 300vw;
-    height: 60vh;
-    background-color: wheat;
-}
-.mainText{
-    width: 100vw;
     text-align: center;
 }
-.mainBar{
-    background-color: gray;
-    width: 100vw;
-    height: 40px;
+.title2{
+    width: 50%;
+    padding: 10px;
 }
-.mainBar1Product{
-    background-color: #dcf8e4;
-    display: grid;
-    width: 100vw;
-    grid-template-columns: 400px 400px 400px;
-    grid-template-rows: 250px 250px 250px;
-    grid-gap: 15px;
+.title3{
+    width: 15%;
+    padding: 10px;
+}
+.title4{
+    width: 35%;
+    padding: 10px;
+}
+.content{
+    margin: 20px;
+    width: 96%;
+    height: 300px;
+    display: flex;
     justify-content: center;
+    flex-direction: column;
 }
-.subArea{
-    background-color: #ffe062;
-    width: 100vw;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(6, 200px);
-    grid-template-rows: repeat(2, 250px);
+.buttons{
+    display: flex;
+    margin-top: 30px;
+    justify-content: flex-end;
 }
-.subArea2{
-    background-color: violet;
-    width: 100vw;
-    justify-content: center;
-
-    display: grid;
-    grid-template-columns: repeat(3,400px);
-    grid-template-rows: 500px;
-    grid-gap: 30px;
+a {
+    text-decoration: none;
+    color: #000000;
 }
-.material-symbols-outlined{
-    position: relative;
-    cursor: pointer;
-    font-size: 40px;
-    opacity: 70%;
+textarea{
+    width: 100%;
+    height: 100%;
 }
-.left{
-    bottom: 300px;
+.buttons button{
+    margin-left: 40px;
 }
-.right{
-    left: 95vw;
-    bottom: 300px;
-
+.fileBox{
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1.2rem;
 }
