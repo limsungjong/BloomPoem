@@ -6,6 +6,7 @@ import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.FloristReviewRepository;
 import com.example.bloompoem.repository.PickUpOrderDetailRepository;
 import com.example.bloompoem.repository.PickUpOrderRepository;
+import com.example.bloompoem.repository.ShoppingOrderRepository;
 import com.example.bloompoem.service.*;
 import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class MyPageController {
     private final FloristReviewService floristReviewService;
     private final FloristReviewRepository floristReviewRepository;
     private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
+    private final ShoppingOrderRepository shoppingOrderRepository;
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
     @Value("#{environment['file.path']}")
@@ -240,7 +242,7 @@ public class MyPageController {
     public ResponseEntity<?> myPageIndexInfo(@CookieValue(value = "Authorization") String token) {
         String userEmail = userService.tokenToUserEntity(token).getUserEmail();
 
-        HashMap<String, String> HashMap;
+        HashMap<String, List> HashMap = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONDAY, -1);
         Date startDate = calendar.getTime();
@@ -249,7 +251,7 @@ public class MyPageController {
         LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        List<PickUpOrderEntity> list = pickUpOrderRepository
+        List<PickUpOrderEntity> pickUpList = pickUpOrderRepository
                 .findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc
                         (
                                 localStartDate,
@@ -257,8 +259,18 @@ public class MyPageController {
                                 userEmail,
                                 3
                         );
+        List<ShoppingOrder> shoppingList = shoppingOrderRepository
+                .findAllByShoppingOrderDateBetweenAndUserEmailAndShoppingOrderStatusGreaterThanEqualOrderByShoppingOrderNumberDesc
+                        (
+                                localStartDate,
+                                localEndDate,
+                                userEmail,
+                                3
+                        );
+        HashMap.put("pickUp", pickUpList);
+        HashMap.put("shopping", shoppingList);
 
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(HashMap);
     }
     //나래 시작
 }
