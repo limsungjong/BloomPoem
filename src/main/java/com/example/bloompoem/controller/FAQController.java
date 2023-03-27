@@ -31,5 +31,4 @@ public class FAQController {
         model.addAttribute("FAQList", faqEntityPage);
         return "/faq";
     }
-
 }
