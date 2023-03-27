@@ -138,13 +138,13 @@ menu {
     justify-content: space-evenly;
     font-size: 1.5rem;
 }
-nav span {
+header span {
     color: #000;
     display: inline-block;
     margin: 0;
     text-transform: uppercase;
 }
-nav span:after {
+header span:after {
     margin-top: 5px;
     display: block;
     content: "";
@@ -152,13 +152,13 @@ nav span:after {
     transform: scaleX(0);
     transition: transform 250ms ease-in-out;
 }
-nav span:hover:after {
+header span:hover:after {
     transform: scaleX(1);
 }
-nav .fromRight:after {
+header .fromRight:after {
     transform-origin: 100% 50%;
 }
-nav .fromLeft:after {
+header .fromLeft:after {
     transform-origin: 0% 50%;
 }
 footer {
