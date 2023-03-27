@@ -67,7 +67,11 @@ document.querySelector("#searchInput").addEventListener('focus', () => {
                 map.panTo(coords);
             })
             .catch((error) => {
-                alert("지역을 다시 검색해주세요.");
+            Swal.fire({
+                    icon: 'error',
+                    text: '지역을 다시 검색해주세요.',
+                    confirmButtonText: '확인'
+                    })
             });
     });
     document.querySelector("#searchInput").addEventListener("keyup", (e) => {
@@ -118,7 +122,11 @@ document.querySelector("#searchInput").addEventListener('focus', () => {
                     map.panTo(coords);
                 })
                 .catch((error) => {
-                    alert("지역을 다시 검색해주세요.");
+                Swal.fire({
+                        icon: 'error',
+                        text: '지역을 다시 검색해주세요.',
+                        confirmButtonText:'확인'
+                        })
                 });
         }
     });
@@ -381,7 +389,11 @@ class sideItemObj {
                     e.target.value = 1;
                 }
                 if (flowerCntInput.value > 101) {
-                    alert("최대 갯수는 100개입니다.");
+                    Swal.fire({
+                        icon: 'warning',
+                        text: '최대 구매 수량은 100송이 입니다.',
+                        confirmButtonText:'확인'
+                        })
                     e.target.value = 100;
                 }
             });
@@ -390,7 +402,11 @@ class sideItemObj {
                 .querySelector(".flowerCntInc")
                 .addEventListener("click", (e) => {
                     if (flowerCntInput.value > 99) {
-                        alert("최대 갯수는 100개입니다.");
+                        Swal.fire({
+                            icon: 'warning',
+                            text: '최대 구매 수량은 100송이 입니다.',
+                            confirmButtonText:'확인'
+                            })
                         e.target.value = 100;
                         return;
                     }
@@ -410,7 +426,11 @@ class sideItemObj {
                 .querySelector(".flowerCntIncTen")
                 .addEventListener("click", (e) => {
                     if (flowerCntInput.value > 99) {
-                        alert("최대 갯수는 100개입니다.");
+                        Swal.fire({
+                            icon: 'warning',
+                            text: '최대 구매 수량은 100송이 입니다.',
+                            confirmButtonText:'확인'
+                            })
                         flowerCntInput.value = 100;
                         return;
                     }
@@ -439,7 +459,12 @@ class sideItemObj {
                         floristMainImage: flower.floristMainImage,
                     };
                     if (this.bucketDataArr.length == 0) {
-                        alert("장바구니로 이동되었습니다.");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '장바구니로 이동되었습니다.',
+                            showConfirmButton: false,
+                            timer: 1000
+                            })
                         this.bucketDataArr.push(buyData);
                         this.bucketToFetch();
                         console.log(this.bucketDataArr)
@@ -451,7 +476,12 @@ class sideItemObj {
                             (v) => v.flowerNumber == buyData.flowerNumber
                         )
                     ) {
-                        alert("장바구니로 이동되었습니다.");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '장바구니로 이동되었습니다.',
+                            showConfirmButton: false,
+                            timer: 1000
+                            })
                         this.bucketDataArr.push(buyData);
                         this.bucketToFetch();
                         return;
@@ -593,7 +623,11 @@ class sideItemObj {
                     this.createBucketFooter();
                 }
                 if (e.target.value > 100) {
-                    alert("최대 구매 수령은 100송이 입니다.");
+                    Swal.fire({
+                        icon: 'warning',
+                        text: '최대 구매 수량은 100송이 입니다.',
+                        confirmButtonText:'확인'
+                        })
                     e.target.value = 100;
                     this.bucketDataArr.map((v) => {
                         if (v.flowerNumber == bucket.flowerNumber) {
@@ -635,7 +669,11 @@ class sideItemObj {
 
             bucketLi.querySelector(".bucketCntInc").addEventListener("click", (e) => {
                 if (bucketInput.value > 99) {
-                    alert("최대 갯수는 100개입니다.");
+                    Swal.fire({
+                        icon: 'warning',
+                        text: '최대 구매 수량은 100송이 입니다.',
+                        confirmButtonText:'확인'
+                        })
                     e.target.value = 100;
                     this.bucketDataArr.map((v) => {
                         if (v.flowerNumber == bucket.flowerNumber) {
@@ -787,15 +825,24 @@ class sideItemObj {
 
         let check = false;
         if (cookie == "") {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                text: '로그인이 필요합니다.',
+                confirmButtonText: '확인'
+                })
             location.href = "http://localhost:9000/sign/sign_in";
         }
         if (cookie == undefined) {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                text: '로그인이 필요합니다.',
+                confirmButtonText: '확인'
+                })
             location.href = "http://localhost:9000/sign/sign_in";
         }
         if (cookie == null) {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                text: '로그인이 필요합니다.',
+                confirmButtonText: '확인'
+                })
             location.href = "http://localhost:9000/sign/sign_in";
         }
 
@@ -1195,26 +1242,40 @@ class sideItemObj {
         const selectDateInput = this.buyModalContainer.querySelector('#selectDate');
         const timeArr = selectTimeInput.value.split(":") // ['시간','분']
         let bool = true;
+
+        if (selectDateInput.value == "") {
+            Swal.fire({
+            icon: 'warning',
+            text: '날짜를 입력해주세요.',
+            confirmButtonText:'확인'
+            })
+            selectDateInput.focus();
+            bool = false;
+            return bool;
+        }
+
         // 시간 막기
         if (timeArr[0] < 9) {
-            alert("시간은 오전 9시부터 가능합니다.");
+            Swal.fire({
+                icon: 'warning',
+                text: '시간은 오전 9시부터 가능합니다.',
+                confirmButtonText:'확인'
+                })
             selectTimeInput.value = "09:00";
             bool = false;
             return bool;
         }
         if (timeArr[0] > 17) {
-            alert("시간은 오후 5시까지 가능합니다.");
+            Swal.fire({
+                icon: 'warning',
+                text: '시간은 오후 5시까지 가능합니다.',
+                confirmButtonText:'확인'
+                })
             selectTimeInput.value = "09:00";
             bool = false;
             return bool;
         }
 
-        if (selectDateInput.value == "") {
-            alert("날짜를 입력해주세요.");
-            selectDateInput.focus();
-            bool = false;
-            return bool;
-        }
         return bool;
     }
 
@@ -1519,7 +1580,11 @@ class sideItemObj {
             const color = $("#selectColorName").val();
             console.log(color)
             if(color == undefined || color == ""){
-                alert("색을 선택해주세요")
+                Swal.fire({
+                    icon: 'warning',
+                    text: '색상을 선택해주세요.',
+                    confirmButtonText:'확인'
+                    })
                 return;
             }else{
                 flowersView();
@@ -1543,7 +1608,10 @@ class sideItemObj {
                 }
             }
             if(flowerNumbers[0] == null){
-                alert("꽃을 선택해주세요.");
+                Swal.fire({
+                    text: '꽃을 선택해주세요.',
+                    confirmButtonText:'확인'
+                    })
             }else{
                 $(".bouquet").empty();
                 $(".bouquet").append("<div class='modalAllSelectArea'></div>")
@@ -1616,7 +1684,11 @@ class sideItemObj {
                     })
                     const count = parseInt($(`#flowerCount${flowerNumber}`).text());
                     if(count == 1 ){
-                        alert("최소 수량은 1개 입니다.");
+                        Swal.fire({
+                            icon: 'warning',
+                            text: '최소 수량은 1개 입니다.',
+                            confirmButtonText:'확인'
+                            })
                     }else{
                         $(`#flowerCount${flowerNumber}`).text(count-1);
                         $(`#price${flowerNumber}`).text(flowerPrice *(count-1));
@@ -1664,7 +1736,10 @@ class sideItemObj {
         $(".content").on("click", ".allSelectBasket", (e)=>{
             const cookie= document.cookie.split("=")[1]
             if(cookie == null){
-                alert("로그인이 필요합니다.");
+                Swal.fire({
+                    text: '로그인이 필요합니다.',
+                    confirmButtonText: '확인'
+                    })
                 location.href="/sign/sign_in"
                 return
             }
@@ -1710,8 +1785,12 @@ class sideItemObj {
                     method : "post",
                     data  : {"cookie" : cookie, "floristNumber" :floristNumber, "bouquetNumber" : r }
                 }).then(r=>{
-                    alert("장바구니에 담겼습니다.")
-
+                    Swal.fire({
+                        icon: 'success',
+                        title: '장바구니에 추가되었습니다.',
+                        showConfirmButton: false,
+                        timer: 1000
+                        })
                 })
 
             })
