@@ -261,7 +261,9 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: var(--color-sun-gray);
 }
+
 .header span {
     font-size: 1.5rem;
     color: #000;
