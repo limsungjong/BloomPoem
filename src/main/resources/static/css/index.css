@@ -595,6 +595,7 @@ header {
   width: 254px;
   height: 84px;
   margin-left: 20px;
+  cursor: pointer;
 }
 nav {
   width: 100%;

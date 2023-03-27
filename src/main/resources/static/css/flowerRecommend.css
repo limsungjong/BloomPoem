@@ -113,6 +113,7 @@ header {
     height: 80px;
     width: 254px;
     margin-left: 20px;
+    cursor: pointer;
 }
 .logoBox {
     width: 15%;
@@ -179,7 +180,7 @@ footer {
     margin-top: 40px;
     width: 100vw;
     height: 10vh;
-    background-color: burlywood;
+    background-color: rgba(128, 128, 128, 0.32);
 }
 .flowerArea{
     margin-top: 40px;
