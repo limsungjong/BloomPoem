@@ -103,7 +103,7 @@ header {
     color: var(--color-black);
     font-weight: 400;
     justify-content: space-around;
-    grid-template-columns: 300px 1fr 240px;
+    grid-template-columns: 300px 1fr 320px;
     justify-items: center;
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
@@ -163,7 +163,6 @@ nav .fromLeft:after {
 }
 
 footer {
-    height: 100px;
     width: 100vw;
     font-weight: 400;
     background-color: #000;
@@ -254,4 +253,25 @@ footer {
 .flowerTagDiv span{
     font-size: 1.2rem;
     cursor: pointer;
+}
+.selectTagBox {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tagDelete {
+    margin: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: #000000;
+}
+.userBox {
+    width: 100%;
+    min-width: 252px;
+}
+a:hover{
+    color: #191919;
 }

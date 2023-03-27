@@ -3,8 +3,6 @@ package com.example.bloompoem.service;
 import com.example.bloompoem.domain.dto.PickUpDateAndTImeRequest;
 import com.example.bloompoem.domain.kakaoPay.PayReady;
 import com.example.bloompoem.dto.KakaoApprovar;
-import com.example.bloompoem.repository.FlowerRepository;
-import com.example.bloompoem.repository.PickUpCartRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +32,6 @@ public class KakaoPayService {
     private String adminKey;
 
     Logger logger = LoggerFactory.getLogger(KakaoPayService.class);
-
-    private final PickUpCartRepository pickUpCartRepository;
-
-    private final FlowerRepository flowerRepository;
 
     private final PickUpService pickUpService;
 

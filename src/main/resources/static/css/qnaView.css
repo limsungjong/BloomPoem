@@ -135,7 +135,7 @@ menu {
     font-weight: 400;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     font-size: 1.5rem;
 }
 nav span {
@@ -162,7 +162,6 @@ nav .fromLeft:after {
     transform-origin: 0% 50%;
 }
 footer {
-    height: 100px;
     width: 100vw;
     font-weight: 400;
     border-top: 2px solid var(--color-light-gray);
@@ -174,7 +173,9 @@ footer {
   margin-top: 30px;
 }
 .navBox{
-  width: 1200px;
+    display: flex;
+    font-size: 2rem;
+    justify-content: center;
 }
 .mainArea{
   width: 100vw;
@@ -226,4 +227,8 @@ footer {
 }
 .buttons{
   margin-top: 30px;
+}
+a {
+    text-decoration: none;
+    color: #000000;
 }

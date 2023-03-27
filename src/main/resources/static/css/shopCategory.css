@@ -101,8 +101,7 @@ header {
     align-items: center;
     color: var(--color-black);
     font-weight: 400;
-    justify-content: space-around;
-    grid-template-columns: 300px 1fr 340px;
+    grid-template-columns: 300px 1fr  274px 340px;
     justify-items: center;
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
@@ -160,7 +159,6 @@ nav .fromLeft:after {
 }
 
 footer {
-    height: 100px;
     width: 100vw;
     font-weight: 400;
     background-color: var(--color-true-white);
@@ -208,14 +206,14 @@ footer{
     background-color: #000000;
 
 }
-.menuBar{
+.subMenuBar{
     height: 70px;
     width: 100%;
     margin-top : 20px;
-    background-color: rgba(112, 128, 144, 0.42);
+    background-color: rgba(106, 125, 138, 0.5)
 
 }
-.menuBar ul{
+.subMenuBar ul{
     display: flex;
     justify-content: space-around;
     height: 100%;
@@ -333,11 +331,11 @@ main{
     border: 1px solid rgba(0, 0, 0, 0.2);
     bottom: -33px;
 }
-.menuBar li:hover{
+.subMenuBar li:hover{
     background-color: pink;
     font-weight: bold;
 }
-.menuBar li{
+.subMenuBar li{
     cursor: pointer;
     padding: 10px;
     border-radius: 10px;
@@ -348,6 +346,24 @@ main{
 a {
     text-decoration: none;
     color: #191919;
+}
+.menuBar{
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    top: -25px;
+    color: gray;
+}
+.menuBar a {
+    color :gray;
+}
+.menu1, .menu2{
+    padding-right:10px ;
+    border-right: 1px solid rgba(128, 128, 128, 0.58);
+}
+.menu2 ,.menu3{
+    margin-left: 5px;
 }
 a:hover{
     color: #191919;

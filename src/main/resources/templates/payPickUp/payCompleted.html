@@ -34,10 +34,11 @@
                 method: "post",
                 data: { orderNumber: orderNumber },
             }).then((r) => {
+                r = Object.values(r).flat();
                 // 주문 시간 표시
                 document.querySelector(".orderDate").textContent = `
             주문 시간 :
-            ${new Date(r[0].pickUpOrderDate).toLocaleString()}
+            ${new Date(r[0].pickUpOrderDate).toLocaleDateString()}
             `;
 
                 document.querySelector(".pickUpOrderReservationDate").textContent = `
@@ -45,7 +46,6 @@
             `;
 
                 document.querySelector(".pickUpOrderReservationTime").textContent = `
-
             ${r[0].pickUpOrderReservationTime}
             `;
 
@@ -58,7 +58,7 @@
               alt=""
             />
             <div class="flowerInfoBox">
-              <span class="flowerName">${r[0].flowerName} 외 ${r.length - 1}건</span>
+              <span class="flowerName">${r[0].flowerName} ${r.length > 1 ? `외 ${r.length - 1}건` : ""}</span>
             </div>
             `;
                 box.innerHTML = boxHtml;

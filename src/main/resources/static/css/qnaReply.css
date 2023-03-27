@@ -1,0 +1,234 @@
+/*      Root         */
+:root {
+    /*    Color    */
+    --color-true-black: #000000;
+    --color-black: #181818;
+    --color-light-gray: #6d6d6d;
+    --color-gray: #565656;
+    --color-dark-gray: #424242;
+    --color-white: #f5f5f5;
+    --color-true-white: #ffffff;
+    --color-red: #ea3323;
+    --color-blue: #3ea4f8;
+    --color-sky-blue: #5ca4f8;
+    --color-sun-gray: #d6d6d6;
+    --color-cream-melon: #dcf8e4;
+    --color-light-sky-blue: #b9eeff;
+    --color-banana: #ffe062;
+    --color-ivory: #fff3d4;
+    --color-light-purple: #cc94c4;
+    --color-violet: #a8b3d8;
+    --color-light-white: #ebebeb;
+    --color-cherry-blossom: #f8d1d1;
+
+    /*  Size    */
+    --size-border-radius: 4px;
+    /*    Font  Size     */
+    --font-large: 48px;
+    --font-medium: 28px;
+    --font-regular: 18px;
+    --font-small: 16px;
+    --font-micro: 14px;
+    /*    Font Weight    */
+    --weight-bold: 700;
+    --weight-semi-bold: 600;
+    --weight-regular: 400;
+    /*    Animation    */
+    --animation-duration: 300ms;
+}
+
+/* reset.css */
+html, body, div, span, applet, object, iframe, /**/
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, /**/
+a, abbr, acronym, address, big, cite, code, /**/
+del, dfn, em, img, ins, kbd, q, s, samp, /**/
+small, strike, strong, sub, sup, tt, var, /**/
+b, u, i, center, /**/
+dl, dt, dd, ol, ul, li, /**/
+fieldset, form, label, legend, /**/
+table, caption, tbody, tfoot, thead, tr, th, td, /**/
+article, aside, canvas, details, embed, /**/
+figure, figcaption, footer, header, hgroup, /**/
+menu, nav, output, ruby, section, summary, /**/
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, /**/
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+/* page css */
+* {
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    user-select: none;
+}
+body {
+    line-height: 1;
+    font-family: "나눔스퀘어 네오";
+
+}
+ol,
+ul {
+    list-style: none;
+}
+blockquote,
+q {
+    quotes: none;
+}
+blockquote:before, blockquote:after, /**/
+q:before, q:after {
+    content: "";
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* style css start */
+header {
+    background-color: var(--color-true-white);
+    height: 100px;
+    width: 100vw;
+    display: grid;
+    align-items: center;
+    color: var(--color-black);
+    font-weight: 400;
+    justify-content: space-around;
+    grid-template-columns: 300px 1fr 240px;
+    justify-items: center;
+    border-bottom: 2px solid var(--color-light-gray);
+    box-sizing: content-box;
+    background-color: #fff3d4;
+}
+.logo {
+    height: 80px;
+    width: 254px;
+    margin-left: 20px;
+}
+.logoBox {
+    width: 15%;
+}
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+}
+span {
+    font-size: 1.5rem;
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+menu {
+    font-weight: 400;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
+}
+nav span {
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+nav span:after {
+    margin-top: 5px;
+    display: block;
+    content: "";
+    border-bottom: solid 3px var(--color-dark-gray);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+nav span:hover:after {
+    transform: scaleX(1);
+}
+nav .fromRight:after {
+    transform-origin: 100% 50%;
+}
+nav .fromLeft:after {
+    transform-origin: 0% 50%;
+}
+footer {
+    width: 100vw;
+    font-weight: 400;
+    border-top: 2px solid var(--color-light-gray);
+}
+.navArea{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.navBox{
+    display: flex;
+    font-size: 2rem;
+    justify-content: center;
+}
+.mainArea{
+    width: 100vw;
+    height: 69vh;
+    display: flex;
+
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: center;
+}
+.mainBox{
+    width: 1000px;
+    border: 1px solid black;
+}
+.titleBox1{
+    display: flex;
+    align-items: center;
+    height: 70px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.300);
+}
+.titleBox2{
+    display: flex;
+    align-items: center;
+    height: 70px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.300);
+}
+.title1{
+    width: 15%;
+    padding: 10px;
+
+}
+.title2{
+    width: 35%;
+    padding: 10px;
+    border-right: 1px solid rgba(0, 0, 0, 0.300);
+}
+.title3{
+    width: 15%;
+    padding: 10px;
+}
+.title4{
+    width: 35%;
+    padding: 10px;
+}
+.content{
+    margin: 20px;
+    width: 96%;
+    height: 300px;
+}
+.buttons{
+    margin-top: 30px;
+}
+a {
+    text-decoration: none;
+    color: #000000;
+}

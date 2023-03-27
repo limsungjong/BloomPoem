@@ -9,10 +9,40 @@ import java.util.Optional;
 
 @Repository
 public interface PickUpCartRepository extends JpaRepository<PickUpCartEntity, Integer> {
-    List<PickUpCartEntity> findByUserEmail(String userEmail);
-    Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFloristNumber(String userEmail, int flowerNumber, int floristNumber);
+    Optional<List<PickUpCartEntity>> findAllByUserEmail(String userEmail);
+    Optional<PickUpCartEntity> findByUserEmail(String userEmail);
+    Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFloristNumberAndBouquetBouquetNumber
+            (
+                    String userEmail,
+                    int flowerNumber,
+                    int floristNumber,
+                    int bouquetNumber
+            );
+    Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFloristNumber
+            (
+            String userEmail,
+            int flowerNumber,
+            int floristNumber
+            );
 
     Optional<PickUpCartEntity> findByUserEmailAndFlowerNumberAndFlowerCountAndFloristNumber
-            (String userEmail, int flowerNumber, int flowerCount, int floristNumber);
-    void deleteByUserEmailAndAndFlowerNumberAndFloristNumber(String userEmail, int flowerNumber, int floristNumber);
+            (
+                    String userEmail,
+                    int flowerNumber,
+                    int flowerCount,
+                    int floristNumber
+            );
+    void deleteByUserEmailAndAndFlowerNumberAndFloristNumber
+            (
+                    String userEmail,
+                    int flowerNumber,
+                    int floristNumber
+            );
+    void deleteByUserEmailAndAndFlowerNumberAndFloristNumberAndBouquet_BouquetNumber
+            (
+                    String userEmail,
+                    int flowerNumber,
+                    int floristNumber,
+                    int bouquetNumber
+            );
 }

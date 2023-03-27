@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,8 +19,8 @@ public class QnaService {
     private final QnaRepository qnaRepository;
 
     // Qna 리스트 가져오기
-    public Page<QnaEntity> getQnaList(Pageable pageable){
-        Page<QnaEntity> qnaEntityPage = qnaRepository.findAll(pageable);
+    public Page<QnaEntity> getQnaList(Pageable pageable, String userEmail){
+        Page<QnaEntity> qnaEntityPage = qnaRepository.findAllByUserEmailOrderByQnaGroupDescQnaOrderAsc(userEmail, pageable);
         return qnaEntityPage;
     }
 
@@ -42,8 +43,13 @@ public class QnaService {
 
     // 게시글 수정
     public void update(QnaEntity qnaEntity){
-
+        qnaRepository.save(qnaEntity);
+    }
+    public void qnaOrder(int qnaGroup, int qnaOrder){
+        qnaRepository.qnaOrderUpdate(qnaGroup, qnaOrder);
     }
 
-
+    public void qnaReply(QnaEntity qna){
+        qnaRepository.save(qna);
+    }
 }

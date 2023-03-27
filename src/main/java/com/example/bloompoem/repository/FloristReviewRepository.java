@@ -13,5 +13,7 @@ public interface FloristReviewRepository extends JpaRepository<FloristReviewEnti
     boolean existsByPickUpOrderNumber(int pickUpOrderNumber);
     Page<FloristReviewEntity> findByUserEmailOrderByFloristReviewRegDateDesc(String userEmail , Pageable pageable);
 
+    Page<FloristReviewEntity> findByFloristNumber(Integer floristNumber , Pageable pageable);
+
     List<FloristReviewEntity> findAllByFloristNumber(int floristNumber);
 }
