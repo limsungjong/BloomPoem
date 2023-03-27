@@ -24,8 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Date;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -233,6 +234,31 @@ public class MyPageController {
             floristReviewService.floristReviewUpdate(orderReviewNumber, pickUpOrderContent, pickUpOrderScore);
         } else throw new CustomException(ResponseCode.INVALID_REQUEST);
         return ResponseEntity.ok().body("성공");
+    }
+
+    @GetMapping("/myPage/index/Info")
+    public ResponseEntity<?> myPageIndexInfo(@CookieValue(value = "Authorization") String token) {
+        String userEmail = userService.tokenToUserEntity(token).getUserEmail();
+
+        HashMap<String, String> HashMap;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONDAY, -1);
+        Date startDate = calendar.getTime();
+        Date endDate = new Date();
+
+        LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        List<PickUpOrderEntity> list = pickUpOrderRepository
+                .findAllByPickUpOrderDateBetweenAndUserEmailAndPickUpOrderStatusGreaterThanEqualOrderByPickUpOrderNumberDesc
+                        (
+                                localStartDate,
+                                localEndDate,
+                                userEmail,
+                                3
+                        );
+
+        return ResponseEntity.ok().body(list);
     }
     //나래 시작
 }
