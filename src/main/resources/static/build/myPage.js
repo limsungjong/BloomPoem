@@ -1,13 +1,5 @@
 'use strict'
 let floristData = null;
-$(document).ready(() => {
-    $.ajax({
-        url: "/api/v1/florist/florist_list",
-        method: "get",
-    }).then(data => {
-        floristData = data;
-    })
-})
 
 class pickUpOrderHS {
     now = new Date();
@@ -586,4 +578,44 @@ pickUpOrderRvBtn.addEventListener('click', () => {
     manageBox.openMainContainer();
     manageBox.orderModifyHandle();
     manageBox.orderReviewHandle();
+})
+
+class myPageMain {
+    now = new Date();
+    date = new Date()
+    periodEndDate = new Intl.DateTimeFormat("ko-KR").format(this.now)
+    threeMonth = new Date(this.date.setMonth(this.date.getMonth() - 3));
+    periodStartDate = new Intl.DateTimeFormat("ko-KR").format(this.threeMonth);
+
+    constructor() {
+    }
+
+    openStartPage() {
+
+    }
+
+    getPickUpOder() {
+        const page = 10;
+        $.ajax({
+            url: "/myPage/index/Info",
+            method: "get",
+        }).then(r => {
+            console.log(r)
+        });
+    }
+
+    getShoppingOrder() {
+
+    }
+}
+
+$(document).ready(() => {
+    $.ajax({
+        url: "/api/v1/florist/florist_list",
+        method: "get",
+    }).then(data => {
+        floristData = data;
+    })
+    const myPage = new myPageMain();
+    myPage.getPickUpOder();
 })
