@@ -180,7 +180,8 @@ footer {
     margin-top: 40px;
     width: 100vw;
     height: 10vh;
-    background-color: rgba(128, 128, 128, 0.32);
+    display: flex;
+    justify-content: center;
 }
 .flowerArea{
     margin-top: 40px;
@@ -257,9 +258,11 @@ footer {
 }
 .selectTagBox {
     height: 100%;
+    width: 1400px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(128, 128, 128, 0.32);
 }
 .tagDelete {
     margin: 10px;
