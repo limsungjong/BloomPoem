@@ -19,7 +19,11 @@
     const event = (e) => {
         {
             if (mailInput.value.trim().length == 0) {
-                alert("이메일을 입력해주세요.");
+                Swal.fire({
+                    icon: 'warning',
+                    text: '이메일을 입력해주세요.',
+                    confirmButtonText:'확인'
+                    })
                 mailInput.value = "";
                 mailInput.focus();
                 return;
@@ -45,7 +49,11 @@
                 .then((data) => data.json())
                 .then((data) => {
                     if (data.status == 404) {
-                        alert(data.message);
+                        Swal.fire({
+                        icon: 'warning',
+                        text: data.message,
+                        confirmButtonText:'확인'
+                        })
                         return;
                     }
                     if (data.status == 200) {
@@ -132,9 +140,18 @@
                             fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
                                 .then(res => res.text())
                                 .then((data) => {
-                                    alert("인증 번호를 다시 보내드렸습니다.");
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '인증 번호를 다시 보내드렸습니다.',
+                                        showConfirmButton: false,
+                                        timer: 1000
+                                        })
                                 }).catch(err => {
-                                alert("로그인 중에 오류가 발생하였습니다. 다시 진행해주세요.");
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: '로그인 중에 오류가 발생하였습니다. 다시 진행해주세요.',
+                                    confirmButtonText: '확인'
+                                    })
                                 location.href = "http://localhost:9000/sign_in";
                             })
                         });
@@ -168,13 +185,22 @@
                                                 console.log(data);
                                                 otp = "";
                                                 if (data.status == 200) {
-                                                    alert("로그인에 성공하였습니다.");
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: '로그인에 성공하였습니다.',
+                                                        showConfirmButton: false,
+                                                        timer: 1000
+                                                        })
                                                     history.back();
                                                     console.log(data.headers);
                                                 } else {
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                     ioBox.style.display = "flex";
-                                                    alert("인증 번호를 다시 확인해주세요.");
+                                                    Swal.fire({
+                                                        icon: 'warning',
+                                                        text: '인증 번호를 다시 확인해주세요.',
+                                                        confirmButtonText:'확인'
+                                                        })
                                                 }
                                             })
                                             .catch((err) => {

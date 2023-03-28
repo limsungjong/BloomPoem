@@ -53,7 +53,7 @@ const reg = new RegExp(emailTest);
         if (userEmail.value.length <= 0) {
             Swal.fire({
                 icon: 'warning',
-                text: '이메일을 입력하세요.',
+                text: '이메일을 입력해주세요.',
                 confirmButtonText:'확인'
                 })
             userEmail.focus();
@@ -62,7 +62,7 @@ const reg = new RegExp(emailTest);
         if (userName.value.length <= 0) {
             Swal.fire({
                 icon: 'warning',
-                text: '이름을 입력하세요.',
+                text: '이름을 입력해주세요.',
                 confirmButtonText:'확인'
                 })
             userName.focus();
@@ -72,7 +72,7 @@ const reg = new RegExp(emailTest);
             console.log(userAddress.value.length);
             Swal.fire({
                 icon: 'warning',
-                text: '주소를 입력하세요.',
+                text: '주소를 입력해주세요.',
                 confirmButtonText:'확인'
                 })
             userAddress.focus();
@@ -82,7 +82,7 @@ const reg = new RegExp(emailTest);
             console.log(userAddress.value.length);
             Swal.fire({
                 icon: 'warning',
-                text: '상세 주소를 입력하세요.',
+                text: '상세 주소를 입력해주세요.',
                 confirmButtonText:'확인'
                 })
             userAddressDetail.focus();
@@ -93,7 +93,7 @@ const reg = new RegExp(emailTest);
             p3Num.value.length <= 0) {
             Swal.fire({
                 icon: 'warning',
-                text: '연락처를 입력하세요.',
+                text: '연락처를 입력해주세요.',
                 confirmButtonText:'확인'
                 })
             p1Num.focus();
@@ -102,7 +102,7 @@ const reg = new RegExp(emailTest);
         if (userName.value.length < 0) {
             Swal.fire({
                 icon: 'warning',
-                text: '이메일을 입력하세요.',
+                text: '이메일을 입력해주세요.',
                 confirmButtonText:'확인'
                 })
             userName.focus();

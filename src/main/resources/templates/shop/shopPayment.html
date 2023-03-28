@@ -152,7 +152,11 @@
         }).then( r=>{
           if(shoppingCartNumber< 1){
             console.log(shoppingCartNumber)
-            alert("결제 할 상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
+            Swal.fire({
+              icon: 'warning',
+              text: '결제 할 상품이 없어 쇼핑몰 페이지로 돌아갑니다.',
+              confirmButtonText:'확인'
+              })
             location.href = "/shopping";
           }
           $.ajax({
@@ -162,7 +166,11 @@
           }).then(r=>{
             console.log(r)
             if(r == 0){
-              alert("상품이 없어 쇼핑몰 페이지로 돌아갑니다.")
+              Swal.fire({
+                icon: 'warning',
+                text: '상품이 없어 쇼핑몰 페이지로 돌아갑니다.',
+                confirmButtonText:'확인'
+                })
               location.href="/shopping"
             }else{
               location.reload();

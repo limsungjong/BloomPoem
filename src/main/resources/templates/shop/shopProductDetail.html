@@ -9,6 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Bloom Poem 상세정보</title>
   <link rel="stylesheet" href="/css/shopProductDetail.css" />
   <link rel="stylesheet" href="/css/footer.css" />
@@ -82,7 +83,12 @@
             method : "delete",
             data : {shoppingReviewNumber}
           }).then(r=> {
-            alert("댓글이 삭제되었습니다.")
+            Swal.fire({
+              icon: 'success',
+              title: '댓글이 삭제되었습니다.',
+              showConfirmButton: false,
+              timer: 1000
+              })
             location.reload();
           })
         }
@@ -254,7 +260,12 @@
         }).then(r =>{
           if(r.productQuantity < selectQuantity){
             $(".quantitySelect").val("");
-            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);
+            Swal.fire({
+              icon: 'warning',
+              text: '수량이 부족합니다. 남은 갯수는 ' + ${r.productQuantity} + '개 입니다.',
+              confirmButtonText:'확인'
+              })
+<!--            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);-->
             return;
           }else{
             $("#totalPrice").text(comma(selectQuantity*r.productPrice));
@@ -291,7 +302,11 @@
           const count = $(".quantitySelect").val();
           console.log(count);
           if(cookie == null){
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+              icon: 'warning',
+              text: '로그인이 필요합니다.',
+              confirmButtonText:'확인'
+              })
             location.href="/sign/sign_in"
             return
           }
@@ -312,14 +327,26 @@
                     method : "put",
                     data : {"cookie" : cookie, "productNumber" : productNumber, "count" : count}
                   }).then(r=> {
-                    alert("장바구니에 담겼습니다.")
+                    icon: 'success',
+                      title: '장바구니에 추가되었습니다.',
+                      showConfirmButton: false,
+                      timer: 1000
+                      })
                   }).catch(err => console.log(err));
                 }else{
-                  alert("장바구니에는 물건을 5개까지 담을 수 있습니다.")
+                  Swal.fire({
+                    icon: 'warning',
+                    text: '장바구니에는 물건을 5개까지 담을 수 있습니다.',
+                    confirmButtonText:'확인'
+                    })
                 }
               }).catch(err=> console.log(err))
             }else if(r== "alreadyProduct"){
-              alert("장바구니안에 이미 상품이 존재합니다.");
+              Swal.fire({
+              icon: 'warning',
+              text: '장바구니안에 이미 상품이 존재합니다.',
+              confirmButtonText:'확인'
+              })
               return
             }
           }).catch(err => console.log(err))
