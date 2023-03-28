@@ -255,7 +255,12 @@ class pickUpOrderHS {
                     data: {pickUpOrderNumber}
                 }).then(r => {
                     if (r == "success") {
-                        alert("완료처리되었습니다.")
+                        Swal.fire({
+                             icon: 'success',
+                             title: '완료 처리되었습니다.',
+                             showConfirmButton: false,
+                             timer: 1000
+                             })
                     }
                 })
             }
@@ -281,7 +286,11 @@ class pickUpOrderHS {
                 data: {"pickUpOrderNumber": pickUpOrderNumber}
             }).then(r => {
                 if (r) {
-                    alert("이미 작성된 리뷰가 있습니다.")
+                    Swal.fire({
+                         icon: 'warning',
+                         text: '이미 작성된 리뷰가 있습니다.',
+                         confirmButtonText:'확인'
+                         })
                 } else {
                     for (let i = 0; this.pickUpOrderDetail0.length > i; i++) {
                         if (pickUpOrderNumber == this.pickUpOrderDetail0[i].pickUpOrderNumber) {
@@ -367,7 +376,11 @@ class pickUpOrderHS {
                 const pickUpOrderNumber = parseInt(this.modalContainer.querySelector("#pickUpOrderNumber").value);
 
                 if ($.trim(this.modalContainer.querySelector(".pickUpInputText").value) <= 0) {
-                    alert("리뷰 내용이 비어있습니다.")
+                    Swal.fire({
+                         icon: 'warning',
+                         text: '리뷰 내용이 비어있습니다.',
+                         confirmButtonText:'확인'
+                         })
                     return;
                 }
                 $.ajax({
@@ -398,7 +411,12 @@ class pickUpOrderHS {
                             cache: false
                         })
                     }
-                    alert("리뷰가 작성되었습니다.")
+                    Swal.fire({
+                         icon: 'success',
+                         title: '리뷰가 작성되었습니다.',
+                         showConfirmButton: false,
+                         timer: 1000
+                         })
                     this.removeModal();
                 }).catch(err => console.log(err))
             })
@@ -507,7 +525,12 @@ class pickUpOrderRv {
                 method: "post",
                 data: {"orderReviewNumber": target, "pickUpOrderContent": content, "pickUpOrderScore": score}
             }).then(r => {
-                alert("수정이 완료되었습니다.")
+                Swal.fire({
+                    icon: 'success',
+                    title: '수정이 완료되었습니다.',
+                    showConfirmButton: false,
+                    timer: 1000
+                    })
                 this.reviewView(page);
             })
         })
@@ -526,7 +549,12 @@ class pickUpOrderRv {
                     data: {orderReviewNumber}
                 }).then(r => {
                     if (r == "success") {
-                        alert("리뷰가 삭제되었습니다.");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '리뷰가 삭제되었습니다.',
+                            showConfirmButton: false,
+                            timer: 1000
+                            })
                         this.reviewView(page);
                     }
                 })
