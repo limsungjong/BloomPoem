@@ -268,11 +268,11 @@ class sideItemObj {
                                 case "아름다운 꽃":
                                     this.createModalFlower();
                                     break;
-                                case "장바구니":
-                                    this.fetchToBucket();
-                                    break;
                                 case "꽃 다발 만들기":
                                     this.createBouquet();
+                                    break;
+                                case "장바구니":
+                                    this.fetchToBucket();
                                     break;
                                 case "리뷰":
                                     this.getReviewToFetch();
@@ -307,8 +307,8 @@ class sideItemObj {
             </div>
             <ul class="modal-nav">
               <li class="active">아름다운 꽃</li>
-              <li>장바구니</li>
               <li>꽃 다발 만들기</li>
+              <li>장바구니</li>
               <li>리뷰</li>
             </ul>
             <div class="content">
@@ -703,7 +703,6 @@ class sideItemObj {
             })
             .then((result) => {
                 if (result == undefined) return;
-                    console.log(this.floristData)
                 if(result.find(cart => cart.floristNumber != this.floristData.floristNumber)) {
                     this.bucketDeleteFetch();
                 }
@@ -1195,6 +1194,15 @@ class sideItemObj {
         const selectDateInput = this.buyModalContainer.querySelector('#selectDate');
         const timeArr = selectTimeInput.value.split(":") // ['시간','분']
         let bool = true;
+
+        // 날짜 막기
+        if (selectDateInput.value == "") {
+            alert("날짜를 입력해주세요.");
+            selectDateInput.focus();
+            bool = false;
+            return bool;
+        }
+
         // 시간 막기
         if (timeArr[0] < 9) {
             alert("시간은 오전 9시부터 가능합니다.");
@@ -1205,13 +1213,6 @@ class sideItemObj {
         if (timeArr[0] > 17) {
             alert("시간은 오후 5시까지 가능합니다.");
             selectTimeInput.value = "09:00";
-            bool = false;
-            return bool;
-        }
-
-        if (selectDateInput.value == "") {
-            alert("날짜를 입력해주세요.");
-            selectDateInput.focus();
             bool = false;
             return bool;
         }
@@ -1639,7 +1640,6 @@ class sideItemObj {
                     $(`#flowerCount${flowerNumber}`).text(count+1);
                     $(`#price${flowerNumber}`).text(flowerPrice * (count+1));
                     let totalCost = parseInt($(".selectAlltotalCost").text());
-                    console.log(totalCost);
                     totalCost += flowerPrice;
                     $(".selectAlltotalCost").text(totalCost);
                 })

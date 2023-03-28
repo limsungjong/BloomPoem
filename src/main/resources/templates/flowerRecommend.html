@@ -79,6 +79,7 @@
           }
 
         })
+        addEvent();
       })
       //태그 삭제시 이벤트 시작
       $(".selectTagBox").on("click", ".tagDelete" ,(e)=>{
@@ -123,6 +124,7 @@
             const msg = (page == i) ? `<button class="btn btn-outline-dark flowerRecommendTagPaging" style="background-color: #cc94c4; data-tag="${tag}"  cursor: none">${i}</button>` : `<button class="btn btn-outline-dark flowerRecommendTagPaging" data-tag="${tag}">${i}</button>`
           $(".paging").append(msg);
           }
+          addEvent();
         })
 
       })

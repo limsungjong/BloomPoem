@@ -279,8 +279,6 @@ public class ShoppingController {
         logger.error("" + orderDetail.getUserEmail());
         orderDetail.setShoppingOrder(order);
 
-
-
         productService.orderDetailInsert(orderDetail);
         productService.cartDelete(cart.getShoppingCartNumber());
 

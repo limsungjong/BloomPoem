@@ -26,8 +26,7 @@
     <script src="/build/util.js" defer></script>
     <script>
         $(document).ready(() => {
-            const flowerBox = (arr, priceArr) => {
-                arr.forEach((element) => {
+            const flowerBox = (element, priceArr) => {
                     const box = document.createElement("div");
                     box.setAttribute("class", "orderDetailBox");
                     const boxHtml =
@@ -49,7 +48,6 @@
                     box.innerHTML = boxHtml;
                     priceArr.push(element.floristProductPrice * parseInt(element.pickUpOrderDetailCount));
                     document.querySelector(".productArea").append(box);
-                });
             }
             const orderNumber = parseInt($(".orderNumber").val());
 
@@ -62,30 +60,21 @@
                 method: "post",
                 data: {orderNumber: orderNumber},
             }).then((r) => {
-                let time;
                 const priceArr = [];
-                Object.keys(r).forEach(key => {
-                    time = key;
-                    if (key === "bouquet") {
-                        Array(r["bouquet"]).forEach(data => {
-                            flowerBox(data, priceArr);
-                        })
-                    } else if (key === "flower") {
-                        Array(r["flower"]).forEach(data => {
-                            flowerBox(data, priceArr);
-                        })
-                    }
-                })
+                r = Object.values(r).flat();
+                r.forEach(data => {
+                    flowerBox(data,priceArr);
+                });
                 // 주문 시간 표시
                 document.querySelector(".orderDate").textContent = `
             주문 날짜 :
-            ${new Date(r[time][0].pickUpOrderDate).toLocaleDateString()}
+            ${new Date(r[0].pickUpOrderDate).toLocaleDateString()}
             `;
                 document.querySelector(".pickUpOrderReservationDate").textContent = `
-            ${r[time][0].pickUpOrderReservationDate}
+            ${r[0].pickUpOrderReservationDate}
             `;
                 document.querySelector(".pickUpOrderReservationTime").textContent = `
-            ${r[time][0].pickUpOrderReservationTime}
+            ${r[0].pickUpOrderReservationTime}
             `;
                 document.querySelector(".orderAllPriceSpan").textContent = `총 가격 : ${numberAddComa(priceArr.reduce((pre, cur) => pre + cur), 0)}`;
             });

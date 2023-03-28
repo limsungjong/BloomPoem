@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface ShoppingReviewRepository extends JpaRepository<ShoppingReview, Integer> {
@@ -18,6 +20,8 @@ public interface ShoppingReviewRepository extends JpaRepository<ShoppingReview, 
     boolean existsByShoppingOrderAndProduct(ShoppingOrder shoppingOrder, ProductEntity product);
 
     Page<ShoppingReview> findByUserOrderByShoppingReviewRegDateDesc(UserEntity user , Pageable pageable);
+
+    Integer countAllByShoppingReviewRegDateBetweenAndUser(Date startDate, Date endDate , UserEntity user);
 
     List<ShoppingReview> findByProduct(ProductEntity product);
 

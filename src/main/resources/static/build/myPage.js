@@ -12,6 +12,7 @@ class pickUpOrderHS {
     pickUpOrderDetail1 = null;
     modalContainer = null;
     mainContainer = null;
+    orderContainer = null;
 
     constructor() {
     }
@@ -90,8 +91,7 @@ class pickUpOrderHS {
                     $(`.fp${r[0].pickUpOrderNumber}`).prepend(orderReviewBtn);
 
                     $.each(r, (i, t) => {
-                        const products =
-                            `<div class="oneProductArea ${t.pickUpOrderNumber}">
+                        const products = `<div class="oneProductArea ${t.pickUpOrderNumber}">
                   <img src ="/image/florist_product/${t.floristMainImage}" alt="productImage" class="oneProductImage" />
                   <div class="oneProductName">${t.flowerName}</div>
                   <div>수량 : <span class="oneProductQuantity">${t.pickUpOrderDetailCount}</span> 송이</div>
@@ -122,7 +122,6 @@ class pickUpOrderHS {
                 }
             }
         })
-
 
         //page 넘기는 스크립트
         $(".pagingButton").on("click", ".pickOrder", (e) => {
@@ -197,8 +196,7 @@ class pickUpOrderHS {
 
                         $.each(r, (i, t) => {
                             $(`.f${p.pickUpOrderNumber}`).text("꽃 집 : " + t.floristName);
-                            const products =
-                                `<div class="oneProductArea ${t.pickUpOrderNumber}">
+                            const products = `<div class="oneProductArea ${t.pickUpOrderNumber}">
                   <img src ="/image/florist_product/${t.floristMainImage}" alt="productImage" class="oneProductImage" />
                   <div class="oneProductName">${t.flowerName}</div>
                   <div>수량 : <span class="oneProductQuantity">${t.pickUpOrderDetailCount}</span> 송이</div>
@@ -242,16 +240,15 @@ class pickUpOrderHS {
             const pickUpOrderNumber = e.target.dataset.no;
             if (confirm("꽃 픽업 되셨나요?")) {
                 $.ajax({
-                    url: "/myPage/pick_up/order_status_update",
-                    method: "post",
-                    data: {pickUpOrderNumber}
+                    url: "/myPage/pick_up/order_status_update", method: "post", data: {pickUpOrderNumber}
                 }).then(r => {
                     if (r == "success") {
-                        alert("완료처리되었습니다.")
-                    }
-                })
-            }
-        })
+                        alert("완료처리되었습니다.");
+                        console.log(this.mainContainer)
+                    };
+                });
+            };
+        });
         // 상품을 받았는지 체크하기 버튼 처리 끝
         // modal 시작
 
@@ -268,9 +265,7 @@ class pickUpOrderHS {
             let productName;
 
             $.ajax({
-                url: "/review/check_review",
-                method: "post",
-                data: {"pickUpOrderNumber": pickUpOrderNumber}
+                url: "/review/check_review", method: "post", data: {"pickUpOrderNumber": pickUpOrderNumber}
             }).then(r => {
                 if (r) {
                     alert("이미 작성된 리뷰가 있습니다.")
@@ -308,8 +303,7 @@ class pickUpOrderHS {
         modalBox.setAttribute('class', 'modalArea');
         modalBox.setAttribute('id', 'pickUpModal');
         modalBox.classList.add('modal');
-        const modalHtml =
-            `
+        const modalHtml = `
             <div class="modalBox modal-content" id="reviewWriteModal">
                 <div class="modalHeader">
                   <div><span style="font-size: 1.5rem;" id="productName">${data[0].floristName}</span> </div>
@@ -363,9 +357,7 @@ class pickUpOrderHS {
                     return;
                 }
                 $.ajax({
-                    url: "/review/pick_up/write",
-                    method: "post",
-                    data: {
+                    url: "/review/pick_up/write", method: "post", data: {
                         "floristNumber": floristNumber,
                         "userEmail": userContext.userEmail,
                         "pickUpOrderNumber": pickUpOrderNumber,
@@ -513,9 +505,7 @@ class pickUpOrderRv {
 
             if (confirm("리뷰를 삭제하시겠습니까?")) {
                 $.ajax({
-                    url: "/pick_up/review/delete",
-                    method: "delete",
-                    data: {orderReviewNumber}
+                    url: "/pick_up/review/delete", method: "delete", data: {orderReviewNumber}
                 }).then(r => {
                     if (r == "success") {
                         alert("리뷰가 삭제되었습니다.");
@@ -562,32 +552,101 @@ class myPageMain {
     constructor() {
     }
 
-    openStartPage() {
-
-    }
-
-    getPickUpOder() {
-        const page = 10;
+    // root
+    // fetchToGetInfo
+    getMainInfo() {
         $.ajax({
-            url: "/myPage/index/Info",
-            method: "get",
+            url: "/myPage/index/Info", method: "get",
         }).then(r => {
             console.log(r)
+            const keys = Object.keys(r);
+            keys.forEach(key => {
+                if (key === "pickUp") {
+                    this.createPickUpComponent(r["pickUp"],r["pickUpReviewCount"]);
+                } else if (key === "shopping") {
+                    this.createShoppingComponent(r["shopping"],r["shoppingReviewCount"]);
+                }
+            })
         });
     }
 
-    getShoppingOrder() {
+    createClassBox(kind) {
+        const box = document.createElement("div");
+        box.setAttribute("class", kind);
+        return box;
+    }
 
+    createPickUpComponent(pickUpData,reviewCount) {
+        const pickUpBox = this.createClassBox("pickUpBox");
+        let pickUpReady = 0;
+        let pickUpCompleted = 0;
+        let pickUpReview = 0;
+        pickUpData.forEach(data => {
+            if (data["pickUpOrderStatus"] === 3) pickUpReady += 1;
+            if (data["pickUpOrderStatus"] === 4) pickUpCompleted += 1;
+            if (data["pickUpOrderStatus"] === 5) pickUpReview += 1;
+        })
+
+        pickUpBox.innerHTML = `
+                <div class="component ready">
+                  <span class="mediumText">픽업 예정</span>
+                  <i class="fas fa-walking"></i>
+                  <span class="largeText">${pickUpReady}건</span>
+                </div>
+                <div class="component complete">
+                  <span class="mediumText">픽업 완료</span>
+                  <i class="fas fa-user-check"></i>
+                  <span class="largeText">${pickUpReview}건</span>
+                </div>
+                <div class="component review">
+                  <span class="mediumText">픽업 후기</span>
+                  <i class="fas fa-star"></i>
+                  <span class="largeText">${reviewCount}건</span>
+                </div>
+            `;
+        document.querySelector(".pickUpArea").append(pickUpBox);
+        pickUpBox.querySelector(".ready").addEventListener("click", () => {
+
+        })
+    }
+
+    createShoppingComponent(shoppingData,reviewCount) {
+        const shoppingBox = this.createClassBox("shoppingBox");
+        let shoppingReady = 0;
+        let shoppingCompleted = 0;
+        let shoppingReview = 0;
+        shoppingData.forEach(data => {
+            if (data["shoppingOrderStatus"] === 3) shoppingReady += 1;
+            if (data["shoppingOrderStatus"] === 4) shoppingCompleted += 1;
+            if (data["shoppingOrderStatus"] === 5) shoppingReview += 1;
+        })
+        shoppingBox.innerHTML = `
+                <div class="component">
+                  <span class="mediumText">주문 접수</span>
+                  <i class="fas fa-box"></i>
+                  <span class="largeText">${shoppingReady}건</span>
+                </div>
+                <div class="component">
+                  <span class="mediumText">배송 완료</span>
+                  <i class="fas fa-truck"></i>
+                  <span class="largeText">${shoppingReview}건</span>
+                </div>
+                <div class="component">
+                  <span class="mediumText">주문 후기</span>
+                  <i class="fas fa-star"></i>
+                  <span class="largeText">${reviewCount}건</span>
+                </div>
+            `;
+        document.querySelector(".shoppingArea").append(shoppingBox);
     }
 }
 
 $(document).ready(() => {
     $.ajax({
-        url: "/api/v1/florist/florist_list",
-        method: "get",
+        url: "/api/v1/florist/florist_list", method: "get",
     }).then(data => {
         floristData = data;
     })
     const myPage = new myPageMain();
-    myPage.getPickUpOder();
+    myPage.getMainInfo();
 })

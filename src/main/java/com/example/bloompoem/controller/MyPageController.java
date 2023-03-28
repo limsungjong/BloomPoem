@@ -3,10 +3,7 @@ package com.example.bloompoem.controller;
 import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.exception.CustomException;
-import com.example.bloompoem.repository.FloristReviewRepository;
-import com.example.bloompoem.repository.PickUpOrderDetailRepository;
-import com.example.bloompoem.repository.PickUpOrderRepository;
-import com.example.bloompoem.repository.ShoppingOrderRepository;
+import com.example.bloompoem.repository.*;
 import com.example.bloompoem.service.*;
 import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +40,8 @@ public class MyPageController {
     private final OrderService orderService;
     private final FloristReviewService floristReviewService;
     private final FloristReviewRepository floristReviewRepository;
-    private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
     private final ShoppingOrderRepository shoppingOrderRepository;
+    private final ShoppingReviewRepository shoppingReviewRepository;
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
     @Value("#{environment['file.path']}")
@@ -184,11 +181,7 @@ public class MyPageController {
             String pickUpOrderContent,
             char pickUpOrderScore) {
 
-        logger.info("floristNumber : " + floristNumber);
-        logger.info("userEmail : " + userEmail);
-        logger.info("pickUpOrderNumber : " + pickUpOrderNumber);
-        logger.info("pickUpOrderContent : " + pickUpOrderContent);
-        logger.info("pickUpOrderScore : " + pickUpOrderScore);
+
         FloristReviewEntity reviewEntity = floristReviewService.saveOrderReview(
                 floristNumber,
                 userEmail,
@@ -240,9 +233,10 @@ public class MyPageController {
 
     @GetMapping("/myPage/index/Info")
     public ResponseEntity<?> myPageIndexInfo(@CookieValue(value = "Authorization") String token) {
+        UserEntity user = userService.tokenToUserEntity(token);
         String userEmail = userService.tokenToUserEntity(token).getUserEmail();
 
-        HashMap<String, List> HashMap = new HashMap<>();
+        HashMap<String, Object> HashMap = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONDAY, -1);
         Date startDate = calendar.getTime();
@@ -267,8 +261,22 @@ public class MyPageController {
                                 userEmail,
                                 3
                         );
+        Integer pickUpReviewCount = floristReviewRepository
+                .countAllByFloristReviewRegDateBetweenAndUserEmail(
+                        localStartDate,
+                        localEndDate,
+                        userEmail
+                );
+        Integer shoppingReviewCount = shoppingReviewRepository.countAllByShoppingReviewRegDateBetweenAndUser
+                (
+                        startDate,
+                        endDate,
+                        user
+                );
         HashMap.put("pickUp", pickUpList);
+        HashMap.put("pickUpReviewCount", pickUpReviewCount);
         HashMap.put("shopping", shoppingList);
+        HashMap.put("shoppingReviewCount", shoppingReviewCount);
 
         return ResponseEntity.ok().body(HashMap);
     }

@@ -122,7 +122,7 @@ nav {
     justify-content: space-around;
     text-align: center;
     align-items: center;
-}
+}   s3
 span {
     font-size: 1.5rem;
     color: #000;
@@ -593,3 +593,29 @@ body::-webkit-scrollbar{
     display: none;
 }
 
+.pickUpBox,
+.shoppingBox {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.mediumText {
+    font-size: 25px;
+}
+.smallText {
+    font-size: 18px;
+    color: var(--color-light-gray);
+}
+.largeText {
+    font-size: 40px;
+}
+.component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.component i {
+    font-size: 100px;
+    padding: 30px;
+}
