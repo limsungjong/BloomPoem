@@ -22,10 +22,10 @@ $(document).ready(function(){
   $("#btnQnaList").on("click", function(){
     if(cookie == null){
       Swal.fire({
-                text: '로그인이 필요합니다.',
-                confirmButtonText: '확인'
-                })
-      alert("로그인이 필요합니다.");
+        icon: 'warning',
+        text: '로그인이 필요합니다.',
+        confirmButtonText: '확인'
+        })
       location.href="/sign/sign_in";
     }
     else{
@@ -35,7 +35,11 @@ $(document).ready(function(){
 
   $("#btnQnaWrite").on("click", function(){
     if(cookie == null){
-      alert("로그인이 필요합니다.");
+      Swal.fire({
+        icon: 'warning',
+        text: '로그인이 필요합니다.',
+        confirmButtonText: '확인'
+        })
       location.href="/sign/sign_in";
     }
     else{

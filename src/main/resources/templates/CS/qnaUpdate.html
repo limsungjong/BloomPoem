@@ -17,12 +17,14 @@
 $(document).ready(function(){
   $("#btnSave").on("click", function(){
     if($("#qnaTitle").val().length <= 0){
+      icon: 'warning',
       alert("제목을 입력하세요.");
       $("#qnaTitle").focus();
       return;
     }
 
     if($("#qnaContent").val().length <= 0){
+      icon: 'warning',
       alert("내용을 입력하세요.");
       $("#qnaContent").focus();
       return;

@@ -262,10 +262,9 @@
             $(".quantitySelect").val("");
             Swal.fire({
               icon: 'warning',
-              text: '수량이 부족합니다. 남은 갯수는 ' + ${r.productQuantity} + '개 입니다.',
+              text: `수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`,
               confirmButtonText:'확인'
               })
-<!--            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);-->
             return;
           }else{
             $("#totalPrice").text(comma(selectQuantity*r.productPrice));
@@ -284,7 +283,11 @@
         }).then(r =>{
           if(r.productQuantity < selectQuantity){
             $(".quantitySelect").val("");
-            alert(`수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`);
+            Swal.fire({
+              icon: 'warning',
+              text: `수량이 부족합니다. 남은 갯수는 ${r.productQuantity}개 입니다.`,
+              confirmButtonText:'확인'
+              })
             return;
           }else{
             $(".sideTotalPrice").text(comma(selectQuantity*r.productPrice));
@@ -327,7 +330,8 @@
                     method : "put",
                     data : {"cookie" : cookie, "productNumber" : productNumber, "count" : count}
                   }).then(r=> {
-                    icon: 'success',
+                    Swal.fire({
+                      icon: 'success',
                       title: '장바구니에 추가되었습니다.',
                       showConfirmButton: false,
                       timer: 1000

@@ -229,8 +229,7 @@ const reg = new RegExp(emailTest);
                                     Swal.fire({
                                         icon: 'success',
                                         title: '인증 번호를 다시 보내드렸습니다.',
-                                        showConfirmButton: false,
-                                        timer: 1000
+                                        confirmButtonText:'확인'
                                         })
                                 }).catch(err => {
                                     Swal.fire({
@@ -271,8 +270,7 @@ const reg = new RegExp(emailTest);
                                                     Swal.fire({
                                                         icon: 'success',
                                                         title: '회원가입에 성공하였습니다.',
-                                                        showConfirmButton: false,
-                                                        timer: 1000
+                                                        confirmButtonText:'확인'
                                                         })
                                                     history.back();
                                                 }

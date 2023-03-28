@@ -143,8 +143,7 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: '인증 번호를 다시 보내드렸습니다.',
-                                        showConfirmButton: false,
-                                        timer: 1000
+                                        confirmButtonText:'확인'
                                         })
                                 }).catch(err => {
                                 Swal.fire({
@@ -188,8 +187,7 @@
                                                     Swal.fire({
                                                         icon: 'success',
                                                         title: '로그인에 성공하였습니다.',
-                                                        showConfirmButton: false,
-                                                        timer: 1000
+                                                        confirmButtonText:'확인'
                                                         })
                                                     history.back();
                                                     console.log(data.headers);

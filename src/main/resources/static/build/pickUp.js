@@ -68,7 +68,7 @@ document.querySelector("#searchInput").addEventListener('focus', () => {
             })
             .catch((error) => {
             Swal.fire({
-                    icon: 'error',
+                    icon: 'warning',
                     text: '지역을 다시 검색해주세요.',
                     confirmButtonText: '확인'
                     })
@@ -123,7 +123,7 @@ document.querySelector("#searchInput").addEventListener('focus', () => {
                 })
                 .catch((error) => {
                 Swal.fire({
-                        icon: 'error',
+                        icon: 'warning',
                         text: '지역을 다시 검색해주세요.',
                         confirmButtonText:'확인'
                         })
@@ -826,6 +826,7 @@ class sideItemObj {
         let check = false;
         if (cookie == "") {
             Swal.fire({
+                icon: 'warning',
                 text: '로그인이 필요합니다.',
                 confirmButtonText: '확인'
                 })
@@ -833,6 +834,7 @@ class sideItemObj {
         }
         if (cookie == undefined) {
             Swal.fire({
+                icon: 'warning',
                 text: '로그인이 필요합니다.',
                 confirmButtonText: '확인'
                 })
@@ -840,6 +842,7 @@ class sideItemObj {
         }
         if (cookie == null) {
             Swal.fire({
+                icon: 'warning',
                 text: '로그인이 필요합니다.',
                 confirmButtonText: '확인'
                 })
@@ -1737,6 +1740,7 @@ class sideItemObj {
             const cookie= document.cookie.split("=")[1]
             if(cookie == null){
                 Swal.fire({
+                    icon: 'warning',
                     text: '로그인이 필요합니다.',
                     confirmButtonText: '확인'
                     })
