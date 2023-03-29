@@ -521,7 +521,8 @@ main {
   display: flex;
   align-items: center;
   font-size: 2vh;
-  padding-left: 3vh;
+  padding-right: 3vh;
+  flex-direction: row-reverse;
 }
 .content {
   width: 100%;

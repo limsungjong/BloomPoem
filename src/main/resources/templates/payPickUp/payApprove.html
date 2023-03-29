@@ -62,6 +62,7 @@
             }).then((r) => {
                 const priceArr = [];
                 r = Object.values(r).flat();
+                console.log(r)
                 r.forEach(data => {
                     flowerBox(data,priceArr);
                 });
@@ -103,73 +104,6 @@
     <style></style>
     <script src="/build/userContext.js" defer></script>
     <script src="/build/util.js" defer></script>
-    <script>
-        $(document).ready(() => {
-            const flowerBox = (arr, priceArr) => {
-                arr.forEach((element) => {
-                    const box = document.createElement("div");
-                    box.setAttribute("class", "orderDetailBox");
-                    const boxHtml =
-                        `
-                        <img
-                          class="flowerImg"
-                          src="http://localhost:9000/image/florist_product/${element.floristMainImage}"
-                          alt=""
-                        />
-                        <div class="flowerInfoBox">
-                          <span class="flowerName">${element.flowerName}</span>
-                          <br>
-                          <span class="flowerCount">${element.pickUpOrderDetailCount} 송이</span>
-                          <span class="flowerPrice">가격 : ${numberAddComa(element.floristProductPrice)}</span>
-                          <br>
-                          <span class="flowerFullPrice">총 가격 : ${numberAddComa(element.floristProductPrice * parseInt(element.pickUpOrderDetailCount))}</span>
-                        </div>
-                        `;
-                    box.innerHTML = boxHtml;
-                    priceArr.push(element.floristProductPrice * parseInt(element.pickUpOrderDetailCount));
-                    document.querySelector(".productArea").append(box);
-                });
-            }
-            const orderNumber = parseInt($(".orderNumber").val());
-
-            $(".close").on("click", () => {
-                window.close();
-            });
-
-            $.ajax({
-                url: "http://localhost:9000/api/v1/pick_up_order/success/orderDetail",
-                method: "post",
-                data: {orderNumber: orderNumber},
-            }).then((r) => {
-                let time;
-                const priceArr = [];
-                Object.keys(r).forEach(key => {
-                    time = key;
-                    if (key === "bouquet") {
-                        Array(r["bouquet"]).forEach(data => {
-                            flowerBox(data, priceArr);
-                        })
-                    } else if (key === "flower") {
-                        Array(r["flower"]).forEach(data => {
-                            flowerBox(data, priceArr);
-                        })
-                    }
-                })
-                // 주문 시간 표시
-                document.querySelector(".orderDate").textContent = `
-            주문 날짜 :
-            ${new Date(r[time][0].pickUpOrderDate).toLocaleDateString()}
-            `;
-                document.querySelector(".pickUpOrderReservationDate").textContent = `
-            ${r[time][0].pickUpOrderReservationDate}
-            `;
-                document.querySelector(".pickUpOrderReservationTime").textContent = `
-            ${r[time][0].pickUpOrderReservationTime}
-            `;
-                document.querySelector(".orderAllPriceSpan").textContent = `총 가격 : ${numberAddComa(priceArr.reduce((pre, cur) => pre + cur), 0)}`;
-            });
-        });
-    </script>
 </head>
 <body>
 <header class="header">

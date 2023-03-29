@@ -65,7 +65,7 @@
             const msg =` <div class="oneFlower">
             <div class="flowerImageDiv"><img src="/image/flower/${f.flowerImage}" alt="flowerImage" class="flowerImage"></div>
             <div class="flowerNameDiv">${f.flowerName}</div>
-            <div class="flowerColorDiv">(<span>${f.flowerColor}</span>)</div>
+            <div class="flowerColorDiv">${f.flowerColor ? `<span>${f.flowerColor}</span>` : ""}</div>
             <div class="flowerTagDiv">${tag}</div>
             <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">buy</button></div>
             <div class="flowerLanguageDiv" >${f.flowerLanguage}</div>
@@ -108,11 +108,10 @@
             for(let i =1;i<f.flowerTag.split("#").length ; i++){
                 tag = tag+`<span class="tag"> #${f.flowerTag.split("#")[i]}</span>`
             }
-
           const msg =` <div class="oneFlower">
             <div class="flowerImageDiv"><img src="/image/flower/${f.flowerImage}" alt="flowerImage" class="flowerImage"></div>
             <div class="flowerNameDiv">${f.flowerName}</div>
-            <div class="flowerColorDiv">(<span>${f.flowerColor}</span>)</div>
+            <div class="flowerColorDiv">${f.flowerColor ? `<span>${f.flowerColor}</span>` : ""}</div>
             <div class="flowerTagDiv">${tag}</div>
             <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">buy</button></div>
             <div class="flowerLanguageDiv" >${f.flowerLanguage}</div>
@@ -138,9 +137,9 @@
 <header class="header">
   <img src="/image/logo최종.png" alt="logo" class="logo" />
   <menu>
-    <div><a href="/pick_up">PickUp</a></div>
-    <div><a href="/shopping">Shopping</a></div>
-    <div><a href="/recommend">Recommend</a></div>
+    <span><a href="/pick_up">Pick Up</a></span>
+    <span><a href="/shopping">Shopping</a></span>
+    <span><a href="/recommend">Recommend</a></span>
   </menu>
   <nav class="userBox">
     <!-- signIn signOut 자바스크립트로 들어 올 예정 -->

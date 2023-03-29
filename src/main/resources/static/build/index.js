@@ -269,7 +269,7 @@ var _a;
     folderScroll.preLoad([
         "./image/flowerGift.jpg",
         "./image/flowerDelivery.jpg",
-        "./image/flowerRecom.jpg",
+        "./image/flowerRecommend.png",
         "./image/flowerCommunity.jpg",
     ]);
 }

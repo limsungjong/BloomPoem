@@ -163,6 +163,30 @@ nav .fromLeft:after {
     transform-origin: 0% 50%;
 }
 
+menu span {
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    text-transform: uppercase;
+}
+menu span:after {
+    margin-top: 5px;
+    display: block;
+    content: "";
+    border-bottom: solid 3px var(--color-dark-gray);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+menu span:hover:after {
+    transform: scaleX(1);
+}
+menu .fromRight:after {
+    transform-origin: 100% 50%;
+}
+menu .fromLeft:after {
+    transform-origin: 0% 50%;
+}
+
 footer {
     width: 100vw;
     font-weight: 400;

@@ -188,6 +188,7 @@ class sideItemObj {
         kakao.maps.event.addListener(marker, "click", () => {
             // 마커 위에 인포윈도우를 표시합니다
             this.fetchToCreateModal(this.floristData);
+            map.panTo(markerPosition);
         });
     }
 
@@ -195,6 +196,8 @@ class sideItemObj {
     setAddEvent() {
         this.sideFloristItem.addEventListener("click", (e) => {
             this.fetchToCreateModal(this.floristData);
+            const markerPosition = new kakao.maps.LatLng(this.florist_longitude, this.florist_latitude);
+            map.panTo(markerPosition);
         });
     }
 
@@ -424,7 +427,6 @@ class sideItemObj {
                         alert("장바구니로 이동되었습니다.");
                         this.bucketDataArr.push(buyData);
                         this.bucketToFetch();
-                        console.log(this.bucketDataArr)
                         return;
                     }
 
@@ -458,7 +460,6 @@ class sideItemObj {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        console.log(this.bucketDataArr);
         const raw = JSON.stringify(this.bucketDataArr);
         const requestOptions = {
             method: "POST", headers: myHeaders, body: raw, redirect: "follow",
@@ -655,8 +656,7 @@ class sideItemObj {
             })
             .then((result) => {
                 if (result == undefined) return;
-                    console.log(this.floristData)
-                if(result.find(cart => cart.floristNumber != this.floristData.floristNumber)) {
+                if (result.find(cart => cart.floristNumber != this.floristData.floristNumber)) {
                     this.bucketDeleteFetch();
                 }
                 this.bucketDataArr = result;
@@ -1133,6 +1133,7 @@ class sideItemObj {
                 $("#kakaoForm").submit();
             });
     }
+
     ////////////////////////////////////////////////
 
     // 구매 모달창에 있는 시간 날짜 핸들링
@@ -1382,7 +1383,6 @@ class sideItemObj {
             $(".modalFlowerSelectArea").append(selectFlowerBox);
             const rgb = $("#selectRgb").val();
             $(".customFlowerBox").css("background-color", `${rgb}`)
-            console.log(this.flowerDataArr);
             $(".customFlowerBox").empty();
             $.each(this.flowerDataArr, (i, r) => {
                 const flowers = `<div class="oneFlowerBox">
@@ -1447,15 +1447,11 @@ class sideItemObj {
         //color에서 다음 버튼을 눌렀을때 시작하는 이벤트 시작
         $(".bouquet").on("click", ".colorNextButton", (e) => {
             const color = $("#selectColorName").val();
-            console.log(color)
             if (color == undefined || color == "") {
                 alert("색을 선택해주세요")
-
             } else {
                 flowersView();
                 //flower 이미지 클릭 시 이벤트 시작
-
-
             }
         })
         //color에서 다음 버튼을 눌렀을때 시작하는 이벤트 끝
@@ -1584,7 +1580,6 @@ class sideItemObj {
         //color에서 초기화 버튼 끝
         //이전버튼 누를시 color로 돌아가는 버튼 시작
         $(".bouquet").on("click", ".backButton", (e) => {
-            console.log('작동');
             const color = $("#selectColorName").val();
             viewColor(color);
         })
@@ -1653,8 +1648,6 @@ const floristLat = document.querySelector("#floristName");
 const floristLong = document.querySelector("#floristLatitude");
 const floristNumber = document.querySelector("#floristNumber");
 const flowerName = document.querySelector("#flowerName");
-
-console.log()
 
 if (flowerName) {
     document.querySelector('#flowerTargetName').textContent = `${flowerName.value}`;
