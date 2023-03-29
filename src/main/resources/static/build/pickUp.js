@@ -46,32 +46,37 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
                 urlencoded.append("x", result.documents[0].x);
                 urlencoded.append("y", result.documents[0].y);
 
-                const requestOptions = {
-                    method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow",
-                };
-                fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
-                    .then((response) => response.json())
-                    .then((result) => rootFloristListPrint(result))
-                    .catch((error) => console.log("error", error));
-            }
-            removeMarker();
-            const data = result.documents[0];
-            const coords = new kakao.maps.LatLng(data.y, data.x);
-            map.panTo(coords);
-        })
-        .catch((error) => {
-            console.log("asd")
-            alert("지역을 다시 검색해주세요.");
-        });
-});
-
-document.querySelector("#searchInput").addEventListener("keyup", (e) => {
-    if (e.keyCode === 13) {
-        const queryInput = document.querySelector(".searchTerm");
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-        myHeaders.append("Cookie", "kd_lang=ko");
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: urlencoded,
+                        redirect: "follow",
+                    };
+                    fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => rootFloristListPrint(result))
+                        .catch((error) => console.log("error", error));
+                }
+                removeMarker();
+                const data = result.documents[0];
+                const coords = new kakao.maps.LatLng(data.y, data.x);
+                map.panTo(coords);
+            })
+            .catch((error) => {
+            Swal.fire({
+                    icon: 'warning',
+                    text: '지역을 다시 검색해주세요.',
+                    confirmButtonText: '확인'
+                    })
+            });
+    });
+    document.querySelector("#searchInput").addEventListener("keyup", (e) => {
+        if (e.keyCode === 13) {
+            const queryInput = document.querySelector(".searchTerm");
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", "KakaoAK 7367f4f59192633ced366e0cd2cce9fa");
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            myHeaders.append("Cookie", "kd_lang=ko");
 
         const urlencoded = new URLSearchParams();
         urlencoded.append("query", `${queryInput.value}`);
@@ -93,24 +98,31 @@ document.querySelector("#searchInput").addEventListener("keyup", (e) => {
                     urlencoded.append("x", result.documents[0].x);
                     urlencoded.append("y", result.documents[0].y);
 
-                    const requestOptions = {
-                        method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow",
-                    };
-                    fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
-                        .then((response) => response.json())
-                        .then((result) => rootFloristListPrint(result))
-                        .catch((error) => console.log("error", error));
-                }
-                removeMarker();
-                const data = result.documents[0];
-                const coords = new kakao.maps.LatLng(data.y, data.x);
-                map.panTo(coords);
-            })
-            .catch((error) => {
-                console.log("zxc")
-                alert("지역을 다시 검색해주세요.");
-            });
-    }
+                        const requestOptions = {
+                            method: "POST",
+                            headers: myHeaders,
+                            body: urlencoded,
+                            redirect: "follow",
+                        };
+                        fetch("http://localhost:9000/api/v1/florist/florist_list_query_x_y", requestOptions)
+                            .then((response) => response.json())
+                            .then((result) => rootFloristListPrint(result))
+                            .catch((error) => console.log("error", error));
+                    }
+                    removeMarker();
+                    const data = result.documents[0];
+                    const coords = new kakao.maps.LatLng(data.y, data.x);
+                    map.panTo(coords);
+                })
+                .catch((error) => {
+                Swal.fire({
+                        icon: 'warning',
+                        text: '지역을 다시 검색해주세요.',
+                        confirmButtonText:'확인'
+                        })
+                });
+        }
+    });
 });
 
 class sideItemObj {
@@ -366,7 +378,11 @@ class sideItemObj {
                     e.target.value = 1;
                 }
                 if (flowerCntInput.value > 101) {
-                    alert("최대 갯수는 100개입니다.");
+                    Swal.fire({
+                        icon: 'warning',
+                        text: '최대 구매 수량은 100송이 입니다.',
+                        confirmButtonText:'확인'
+                        })
                     e.target.value = 100;
                 }
             });
@@ -375,7 +391,11 @@ class sideItemObj {
                 .querySelector(".flowerCntInc")
                 .addEventListener("click", (e) => {
                     if (flowerCntInput.value > 99) {
-                        alert("최대 갯수는 100개입니다.");
+                        Swal.fire({
+                            icon: 'warning',
+                            text: '최대 구매 수량은 100송이 입니다.',
+                            confirmButtonText:'확인'
+                            })
                         e.target.value = 100;
                         return;
                     }
@@ -395,7 +415,11 @@ class sideItemObj {
                 .querySelector(".flowerCntIncTen")
                 .addEventListener("click", (e) => {
                     if (flowerCntInput.value > 99) {
-                        alert("최대 갯수는 100개입니다.");
+                        Swal.fire({
+                            icon: 'warning',
+                            text: '최대 구매 수량은 100송이 입니다.',
+                            confirmButtonText:'확인'
+                            })
                         flowerCntInput.value = 100;
                         return;
                     }
@@ -424,14 +448,28 @@ class sideItemObj {
                         floristMainImage: flower.floristMainImage,
                     };
                     if (this.bucketDataArr.length == 0) {
-                        alert("장바구니로 이동되었습니다.");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '장바구니로 이동되었습니다.',
+                            showConfirmButton: false,
+                            timer: 1000
+                            })
                         this.bucketDataArr.push(buyData);
                         this.bucketToFetch();
                         return;
                     }
 
-                    if (!this.bucketDataArr.find((v) => v.flowerNumber == buyData.flowerNumber)) {
-                        alert("장바구니로 이동되었습니다.");
+                    if (
+                        !this.bucketDataArr.find(
+                            (v) => v.flowerNumber == buyData.flowerNumber
+                        )
+                    ) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '장바구니로 이동되었습니다.',
+                            showConfirmButton: false,
+                            timer: 1000
+                            })
                         this.bucketDataArr.push(buyData);
                         this.bucketToFetch();
                         return;
@@ -556,7 +594,11 @@ class sideItemObj {
                     this.createBucketFooter();
                 }
                 if (e.target.value > 100) {
-                    alert("최대 구매 수령은 100송이 입니다.");
+                    Swal.fire({
+                        icon: 'warning',
+                        text: '최대 구매 수량은 100송이 입니다.',
+                        confirmButtonText:'확인'
+                        })
                     e.target.value = 100;
                     this.bucketDataArr.map((v) => {
                         if (v.flowerNumber == bucket.flowerNumber) {
@@ -596,7 +638,11 @@ class sideItemObj {
 
             bucketLi.querySelector(".bucketCntInc").addEventListener("click", (e) => {
                 if (bucketInput.value > 99) {
-                    alert("최대 갯수는 100개입니다.");
+                    Swal.fire({
+                        icon: 'warning',
+                        text: '최대 구매 수량은 100송이 입니다.',
+                        confirmButtonText:'확인'
+                        })
                     e.target.value = 100;
                     this.bucketDataArr.map((v) => {
                         if (v.flowerNumber == bucket.flowerNumber) {
@@ -737,15 +783,27 @@ class sideItemObj {
 
         let check = false;
         if (cookie == "") {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                icon: 'warning',
+                text: '로그인이 필요합니다.',
+                confirmButtonText: '확인'
+                })
             location.href = "http://localhost:9000/sign/sign_in";
         }
         if (cookie == undefined) {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                icon: 'warning',
+                text: '로그인이 필요합니다.',
+                confirmButtonText: '확인'
+                })
             location.href = "http://localhost:9000/sign/sign_in";
         }
         if (cookie == null) {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                icon: 'warning',
+                text: '로그인이 필요합니다.',
+                confirmButtonText: '확인'
+                })
             location.href = "http://localhost:9000/sign/sign_in";
         }
 
@@ -1143,9 +1201,12 @@ class sideItemObj {
         const timeArr = selectTimeInput.value.split(":") // ['시간','분']
         let bool = true;
 
-        // 날짜 막기
         if (selectDateInput.value == "") {
-            alert("날짜를 입력해주세요.");
+            Swal.fire({
+            icon: 'warning',
+            text: '날짜를 입력해주세요.',
+            confirmButtonText:'확인'
+            })
             selectDateInput.focus();
             bool = false;
             return bool;
@@ -1153,13 +1214,21 @@ class sideItemObj {
 
         // 시간 막기
         if (timeArr[0] < 9) {
-            alert("시간은 오전 9시부터 가능합니다.");
+            Swal.fire({
+                icon: 'warning',
+                text: '시간은 오전 9시부터 가능합니다.',
+                confirmButtonText:'확인'
+                })
             selectTimeInput.value = "09:00";
             bool = false;
             return bool;
         }
         if (timeArr[0] > 17) {
-            alert("시간은 오후 5시까지 가능합니다.");
+            Swal.fire({
+                icon: 'warning',
+                text: '시간은 오후 5시까지 가능합니다.',
+                confirmButtonText:'확인'
+                })
             selectTimeInput.value = "09:00";
             bool = false;
             return bool;
@@ -1447,9 +1516,14 @@ class sideItemObj {
         //color에서 다음 버튼을 눌렀을때 시작하는 이벤트 시작
         $(".bouquet").on("click", ".colorNextButton", (e) => {
             const color = $("#selectColorName").val();
-            if (color == undefined || color == "") {
-                alert("색을 선택해주세요")
-            } else {
+            if(color == undefined || color == ""){
+                Swal.fire({
+                    icon: 'warning',
+                    text: '색상을 선택해주세요.',
+                    confirmButtonText:'확인'
+                    })
+                return;
+            }else{
                 flowersView();
                 //flower 이미지 클릭 시 이벤트 시작
             }
@@ -1468,9 +1542,12 @@ class sideItemObj {
                     }
                 }
             }
-            if (flowerNumbers[0] == null) {
-                alert("꽃을 선택해주세요.");
-            } else {
+            if(flowerNumbers[0] == null){
+                Swal.fire({
+                    text: '꽃을 선택해주세요.',
+                    confirmButtonText:'확인'
+                    })
+            }else{
                 $(".bouquet").empty();
                 $(".bouquet").append("<div class='modalAllSelectArea'></div>")
                 const allSelectPage = `       <div class="customMainText">꽃 다발 커스텀하기(3/3)</div>
@@ -1541,11 +1618,15 @@ class sideItemObj {
                         }
                     })
                     const count = parseInt($(`#flowerCount${flowerNumber}`).text());
-                    if (count == 1) {
-                        alert("최소 수량은 1개 입니다.");
-                    } else {
-                        $(`#flowerCount${flowerNumber}`).text(count - 1);
-                        $(`#price${flowerNumber}`).text(flowerPrice * (count - 1));
+                    if(count == 1 ){
+                        Swal.fire({
+                            icon: 'warning',
+                            text: '최소 수량은 1개 입니다.',
+                            confirmButtonText:'확인'
+                            })
+                    }else{
+                        $(`#flowerCount${flowerNumber}`).text(count-1);
+                        $(`#price${flowerNumber}`).text(flowerPrice *(count-1));
                         let totalCost = parseInt($(".selectAlltotalCost").text());
                         console.log(totalCost);
                         totalCost -= flowerPrice;
@@ -1585,11 +1666,15 @@ class sideItemObj {
         })
         //이전버튼 누를시 color로 돌아가는 버튼 끝
         //장바구니 클릭시 이벤트 시작
-        $(".content").on("click", ".allSelectBasket", (e) => {
-            const cookie = document.cookie.split("=")[1]
-            if (cookie == null) {
-                alert("로그인이 필요합니다.");
-                location.href = "/sign/sign_in"
+        $(".content").on("click", ".allSelectBasket", (e)=>{
+            const cookie= document.cookie.split("=")[1]
+            if(cookie == null){
+                Swal.fire({
+                    icon: 'warning',
+                    text: '로그인이 필요합니다.',
+                    confirmButtonText: '확인'
+                    })
+                location.href="/sign/sign_in"
                 return
             }
             // bouquet save
@@ -1624,12 +1709,16 @@ class sideItemObj {
                 });
                 //장바구니에 추가
                 $.ajax({
-                    url: "/pickup/cart/insert",
-                    method: "post",
-                    data: {"cookie": cookie, "floristNumber": floristNumber, "bouquetNumber": r}
-                }).then(r => {
-                    alert("장바구니에 담겼습니다.")
-
+                    url : "/pickup/cart/insert",
+                    method : "post",
+                    data  : {"cookie" : cookie, "floristNumber" :floristNumber, "bouquetNumber" : r }
+                }).then(r=>{
+                    Swal.fire({
+                        icon: 'success',
+                        title: '장바구니에 추가되었습니다.',
+                        showConfirmButton: false,
+                        timer: 1000
+                        })
                 })
 
             })

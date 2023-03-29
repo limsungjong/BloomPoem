@@ -51,36 +51,60 @@ const reg = new RegExp(emailTest);
         p3Num.value.trim();
         userName.value.trim();
         if (userEmail.value.length <= 0) {
-            alert("이메일을 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                text: '이메일을 입력해주세요.',
+                confirmButtonText:'확인'
+                })
             userEmail.focus();
             return;
         }
         if (userName.value.length <= 0) {
-            alert("이름을 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                text: '이름을 입력해주세요.',
+                confirmButtonText:'확인'
+                })
             userName.focus();
             return;
         }
         if (userAddress.value.length <= 0) {
             console.log(userAddress.value.length);
-            alert("주소를 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                text: '주소를 입력해주세요.',
+                confirmButtonText:'확인'
+                })
             userAddress.focus();
             return;
         }
         if (userAddressDetail.value.length <= 0) {
             console.log(userAddress.value.length);
-            alert("상세 주소를 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                text: '상세 주소를 입력해주세요.',
+                confirmButtonText:'확인'
+                })
             userAddressDetail.focus();
             return;
         }
         if (p1Num.value.length <= 0 ||
             p2Num.value.length <= 0 ||
             p3Num.value.length <= 0) {
-            alert("연락처를 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                text: '연락처를 입력해주세요.',
+                confirmButtonText:'확인'
+                })
             p1Num.focus();
             return;
         }
         if (userName.value.length < 0) {
-            alert("이메일을 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                text: '이메일을 입력해주세요.',
+                confirmButtonText:'확인'
+                })
             userName.focus();
             return;
         }
@@ -109,7 +133,11 @@ const reg = new RegExp(emailTest);
             .then((res) => {
                 console.log(res)
                 if(res.status == 400) {
-                    alert("입력 형식을 다시 확인해주세요.")
+                    Swal.fire({
+                        icon: 'warning',
+                        text: '입력 형식을 다시 확인해주세요.',
+                        confirmButtonText:'확인'
+                        })
                     return;
                 }
                 return res.json();
@@ -198,9 +226,17 @@ const reg = new RegExp(emailTest);
                             fetch("http://localhost:9000/api/v1/sign/otp_check", requestOptions)
                                 .then(res => res.text())
                                 .then((data) => {
-                                    alert("인증 번호를 다시 보내드렸습니다.");
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '인증 번호를 다시 보내드렸습니다.',
+                                        confirmButtonText:'확인'
+                                        })
                                 }).catch(err => {
-                                    alert("회원 가입중에 오류가 발생하였습니다. 다시 진행해주세요.");
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: '회원 가입중에 오류가 발생하였습니다. 다시 진행해주세요.',
+                                        confirmButtonText: '확인'
+                                        })
                                     location.href = "http://localhost:9000/sign_up";
                             })
 
@@ -231,13 +267,21 @@ const reg = new RegExp(emailTest);
                                             .then((data) => {
                                                 var _a;
                                                 if (data.status == 200) {
-                                                    alert("회원가입에 성공하였습니다.");
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: '회원가입에 성공하였습니다.',
+                                                        confirmButtonText:'확인'
+                                                        })
                                                     history.back();
                                                 }
                                                 else {
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                     ioBox.style.display = "flex";
-                                                    alert("인증 번호를 다시 확인해주세요.");
+                                                    Swal.fire({
+                                                        icon: 'warning',
+                                                        text: '인증 번호를 다시 확인해주세요.',
+                                                        confirmButtonText:'확인'
+                                                        })
                                                 }
                                             })
                                             .catch((err) => {
@@ -252,11 +296,21 @@ const reg = new RegExp(emailTest);
                         return;
                     }
                     else if (data.status == 400) {
-                        alert(data.message);
+                        Swal.fire({
+                            icon: 'warning',
+                            text: data.message,
+                            confirmButtonText:'확인'
+                            })
+//                        alert(data.message);
                         return;
                     }
                     else if (data.status == 409) {
-                        alert(data.message);
+                        Swal.fire({
+                            icon: 'warning',
+                            text: data.message,
+                            confirmButtonText:'확인'
+                            })
+//                        alert(data.message);
                         return;
                     }
                     submitBtn.disabled = false;

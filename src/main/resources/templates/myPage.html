@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script src="/build/onRealdy.js" defer></script>
-    <script src="/build/userContext.js" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="https://kit.fontawesome.com/8e31ecfd50.js" crossorigin="anonymous"></script>
-    <title>Bloom Poem 내 정보</title>
-    <link rel="stylesheet" href="/css/onReady.css"/>
-    <link rel="stylesheet" href="/css/myPage.css"/>
-    <link rel="stylesheet" href="/css/footer.css"/>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/build/userContext.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>Bloom Poem 내 정보</title>
+  <link rel="stylesheet" href="/css/myPage.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
 
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 
@@ -82,55 +79,75 @@
             }).catch(err => console.log(err))
         }
 
-        $(document).ready(() => {
-            const cookie = document.cookie.split("=")[1]
-            $(".logo").on("click", () => {
-                location.href = "/"
+    $(document).ready(()=>{
+      const cookie= document.cookie.split("=")[1]
+      $(".logo").on("click" ,()=>{
+        location.href="/"
+      })
+      //회원 탈퇴 이벤트 시작
+      $("#withdraw").on("click", (e)=>{
+        console.log(e.target)
+        if(confirm("정말로 탈퇴하시겠습니까 ?")){
+          $.ajax({
+            url : "/user/withdraw",
+            method : "post",
+            data : {cookie}
+          }).then(r=>{
+            Swal.fire({
+              icon: 'success',
+              title: '회원탈퇴가 완료되었습니다.',
+              })
+            // document.cookie = "Authorization" +'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            // location.href="/";
+          }).catch(err=>console.log(err))
+        }
+      })
+      // 회원 탈퇴 이벤트 끝
+      // 회원 정보 수정 이벤트 시작
+      $(".mainBox").on("click", ".userInfoChange" , (e)=>{
+        const userEmail = user.userEmail;
+        const userAddress =$(".userInfoAddress").val()
+        const userAddressDetail = $(".userInfoDetailAddress").val();
+        const userPhoneNumber = $(".userInfoPhoneNumber").val();
+        if(userAddress.length <=0){
+          Swal.fire({
+            icon: 'warning',
+            text: '주소가 비어있습니다.',
+            confirmButtonText:'확인'
             })
-            //회원 탈퇴 이벤트 시작
-            $("#withdraw").on("click", (e) => {
-                console.log(e.target)
-                if (confirm("정말로 탈퇴하시겠습니까 ?")) {
-                    $.ajax({
-                        url: "/user/withdraw",
-                        method: "post",
-                        data: {cookie}
-                    }).then(r => {
-                        alert("회원탈퇴가 완료되었습니다.")
-                        // document.cookie = "Authorization" +'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        // location.href="/";
-                    }).catch(err => console.log(err))
-                }
+          $(".userInfoAddress").focus();
+          return
+        } else if(userAddressDetail.length<=0){
+          Swal.fire({
+            icon: 'warning',
+            text: '상세주소가 비어있습니다.',
+            confirmButtonText:'확인'
             })
-            // 회원 탈퇴 이벤트 끝
-            // 회원 정보 수정 이벤트 시작
-            $(".mainBox").on("click", ".userInfoChange", (e) => {
-                const userEmail = user.userEmail;
-                const userAddress = $(".userInfoAddress").val()
-                const userAddressDetail = $(".userInfoDetailAddress").val();
-                const userPhoneNumber = $(".userInfoPhoneNumber").val();
-                if (userAddress.length <= 0) {
-                    alert("주소가 비어있습니다.")
-                    $(".userInfoAddress").focus();
-
-                } else if (userAddressDetail.length <= 0) {
-                    alert("상세주소가 비어있습니다.")
-                    $(".userInfoDetailAddress").focus();
-
-                } else if (userPhoneNumber <= 12) {
-                    alert("핸드폰 번호를 확인하세요.")
-                    $(".userInfoPhoneNumber").focus();
-
-                } else {
-                    $.ajax({
-                        url: "/user/info_change",
-                        method: "post",
-                        data: {userEmail, userAddress, userAddressDetail, userPhoneNumber, cookie}
-                    }).then(r => {
-                        user = r;
-                        alert("회원정보가 수정되었습니다.");
-                        $(".mainBox").empty();
-                        const msg = `<div class="userInfoArea">
+          $(".userInfoDetailAddress").focus();
+          return;
+        } else if(userPhoneNumber<=12){
+          Swal.fire({
+            icon: 'warning',
+            text: '핸드폰 번호를 확인하세요.',
+            confirmButtonText:'확인'
+            })
+          $(".userInfoPhoneNumber").focus();
+          return;
+        }else{
+          $.ajax({
+            url : "/user/info_change",
+            method : "post",
+            data : {userEmail, userAddress, userAddressDetail,userPhoneNumber, cookie}
+          }).then(r=>{
+            user = r;
+            Swal.fire({
+              icon: 'success',
+              title: '회원정보가 수정되었습니다.',
+              showConfirmButton: false,
+              timer: 1000
+              })
+            $(".mainBox").empty();
+            const msg = `<div class="userInfoArea">
                         <div class="userInfoBox">
                           <div class="userInfoRegDateBox"><span>가입일 : </span><span class='userInfoRegDate'>${r.userRegDate.split("T")[0]}</span></div>
                           <div class='userInfoNamBox'>이름 : <span class="userInfoName">${r.userName}</span></div>
@@ -222,56 +239,62 @@
                             <div class="shoppingReviewModify"><button class=" btn btn-outline-primary ReviewModify" data-no="${p.shoppingReviewNumber}">수정</button></div>
                             <div class="shoppingReviewDelete"><button class="btn btn-outline-danger ReviewDelete" data-no="${p.shoppingReviewNumber}">X</button></div>
                         </dvi>`
-                            $(".shoppingReviewArea").append(msg);
-                        })
-                        if (r.totalPages > 1) {
-                            const page = $("#page").val();
-                            $(".pagingButton").empty();
-                            for (let i = 1; r.totalPages >= i; i++) {
-                                const msg = (page == i) ? `<button class="btn btn-outline-dark shoppingReviewPaging" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingReviewPaging">${i}</button>`
-                                $(".pagingButton").append(msg);
-                            }
-                        }
-                    })
-                })
+              $(".shoppingReviewArea").append(msg);
             })
-            //리뷰 수정 클릭시 발동 이벤트
-            $(".mainBox").on("click", ".ReviewModify", (e) => {
-                const page = $("#page").val()
-                const target = e.target.dataset.no;
-                const content = $(`#content${target}`).val();
-                const score = $(`#score${target}`).val();
-                $.ajax({
-                    url: "/review/update",
-                    method: "post",
-                    data: {
-                        "shoppingReviewNumber": target,
-                        "shoppingReviewContent": content,
-                        "shoppingReviewScore": score
-                    }
-                }).then(r => {
-                    alert("수정이 완료되었습니다.")
-                    reviewView(page)
-                })
+            if(r.totalPages>1) {
+              const page = $("#page").val();
+              $(".pagingButton").empty();
+              for (let i = 1; r.totalPages >= i; i++) {
+                const msg = (page == i) ? `<button class="btn btn-outline-dark shoppingReviewPaging" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingReviewPaging">${i}</button>`
+                $(".pagingButton").append(msg);
+              }
+            }
+          })
+        })
+      })
+      //리뷰 수정 클릭시 발동 이벤트
+      $(".mainBox").on("click", ".ReviewModify" ,(e)=>{
+        const page = $("#page").val()
+        const target =e.target.dataset.no;
+        const content =$(`#content${target}`).val();
+        const score = $(`#score${target}`).val();
+        $.ajax({
+          url : "/review/update",
+          method : "post",
+          data : {"shoppingReviewNumber": target , "shoppingReviewContent" : content, "shoppingReviewScore" : score }
+        }).then(r=>{
+          Swal.fire({
+            icon: 'success',
+            title: '수정이 완료되었습니다.',
+            showConfirmButton: false,
+            timer: 1000
             })
-            //리뷰 삭제 클릭시 발동 이벤트
-            $(".mainBox").on("click", ".ReviewDelete", (e) => {
-                const page = $("#page").val()
-                console.log(page);
-                const shoppingReviewNumber = e.target.dataset.no;
-                if (confirm("리뷰를 삭제하시겠습니까?")) {
-                    $.ajax({
-                        url: "/review/delete",
-                        method: "delete",
-                        data: {shoppingReviewNumber}
-                    }).then(r => {
-                        if (r == "success") {
-                            alert("리뷰가 삭제되었습니다.")
-                            reviewView(page)
-                        }
-                    })
-                }
+          reviewView(page)
+        })
+      })
+      //리뷰 삭제 클릭시 발동 이벤트
+      $(".mainBox").on("click", ".ReviewDelete", (e)=>{
+        const page = $("#page").val()
+        console.log(page);
+        const shoppingReviewNumber = e.target.dataset.no;
+        if(confirm("리뷰를 삭제하시겠습니까?")){
+            $.ajax({
+              url : "/review/delete",
+              method :"delete",
+              data : {shoppingReviewNumber}
+            }).then(r=>{
+              if(r == "success"){
+                Swal.fire({
+                  icon: 'success',
+                  title: '리뷰가 삭제되었습니다.',
+                  showConfirmButton: false,
+                  timer: 1000
+                  })
+                reviewView(page)
+              }
             })
+        }
+      })
 
 // 쇼핑 구매내역 클릭시 발동 이벤트
             $(".shoppingOrderHistory").on("click", () => {
@@ -437,53 +460,62 @@
                 </div>`
                                     $(`.p${t.shoppingOrder.shoppingOrderNumber}`).append(products);
 
-                                })
-                            })
-                        })
-                        if (r.totalPages > 1) {
-                            const page = $("#page").val();
-                            $(".pagingButton").empty();
-                            for (let i = 1; r.totalPages >= i; i++) {
-                                const msg = (page == i) ? `<button class="btn btn-outline-dark shoppingOrder" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingOrder">${i}</button>`
-                                $(".pagingButton").append(msg);
-                            }
-                        }
-                        // 위의 상품 띄어주는 함수 끝
-                    })
                 })
-                //page넘기는 스크립트 끝
+              })
             })
-            // 상품을 받았는지 체크하기 버튼 처리 시작
-            $(".mainArea").on("click", "#orderStatus", (e) => {
-                const shoppingOrderNumber = e.target.dataset.no;
-                console.log(shoppingOrderNumber);
-                $.ajax({
-                    url: "/my_page/order_status_update",
-                    method: "post",
-                    data: {shoppingOrderNumber}
-                }).then(r => {
-                    alert("상태가 변경되었습니다.")
-                })
+            if(r.totalPages>1){
+              const page = $("#page").val();
+              $(".pagingButton").empty();
+              for(let i=1;r.totalPages>=i; i++){
+                const msg = (page==i) ?`<button class="btn btn-outline-dark shoppingOrder" style="background-color: #dcf8e4; cursor: none">${i}</button>` : `<button class="btn btn-outline-dark shoppingOrder">${i}</button>`
+                $(".pagingButton").append(msg);
+              }
+            }
+            // 위의 상품 띄어주는 함수 끝
+          })
+        })
+        //page넘기는 스크립트 끝
+      })
+      // 상품을 받았는지 체크하기 버튼 처리 시작
+      $(".mainArea").on("click", "#orderStatus" , (e)=>{
+        const shoppingOrderNumber = e.target.dataset.no;
+        console.log(shoppingOrderNumber);
+        $.ajax({
+          url : "/my_page/order_status_update",
+          method : "post",
+          data : {shoppingOrderNumber}
+        }).then(r=>{
+          Swal.fire({
+            icon: 'success',
+            title: '상태가 변경되었습니다.',
+            showConfirmButton: false,
+            timer: 1000
             })
-            // 상품을 받았는지 체크하기 버튼 처리 끝
-            // modal 시작
-            $(".mainArea").on("click", ".reviewButton", (e) => {
-                const targetNo = e.target.dataset.no
-                const target = e.target
-                const shoppingOrderNumber = e.target.dataset.number;
-                const targetLeft = parseInt(target.getBoundingClientRect().left + 60);
-                const targetTop = parseInt(target.getBoundingClientRect().top - 10);
-                let productName;
+        })
+      })
+      // 상품을 받았는지 체크하기 버튼 처리 끝
+      // modal 시작
+      $(".mainArea").on("click",".reviewButton", (e)=>{
+        const targetNo = e.target.dataset.no
+        const target = e.target
+        const shoppingOrderNumber = e.target.dataset.number;
+        const targetLeft = parseInt(target.getBoundingClientRect().left +60);
+        const targetTop = parseInt(target.getBoundingClientRect().top -10);
+        let productName;
 
-                $.ajax({
-                    url: "/review/exsist_review",
-                    method: "post",
-                    data: {"shoppingOrderNumber": shoppingOrderNumber, "productNumber": targetNo}
-                }).then(r => {
-                    if (r) {
-                        alert("이미 작성된 리뷰가 있습니다.")
-
-                    } else {
+        $.ajax({
+          url : "/review/exsist_review",
+          method : "post",
+          data : {"shoppingOrderNumber" : shoppingOrderNumber, "productNumber" : targetNo}
+        }).then(r=>{
+          if(r){
+            Swal.fire({
+              icon: 'warning',
+              text: '이미 작성된 리뷰가 있습니다.',
+              confirmButtonText:'확인'
+              })
+            return;
+          }else{
 
                         $(".modal-content").css("left", `${targetLeft}px`)
                         $(".modal-content").css("top", `${targetTop}px`)
@@ -513,27 +545,35 @@
                 })
 
 
+      })
+      $(".close").on("click", ()=>close_pop())
+      $(document).keydown((e)=>{
+        if(e.keyCode == 27){
+          close_pop();
+        }
+      })
+      //modal 끝
+      // review 등록
+      $(".write").on("click", ()=>{
+        const productNumber = parseInt($("#productNumber").val());
+        const shoppingOrderNumber = parseInt($("#shoppingOrderNumber").val());
+        if($.trim($(".inputText").val())<= 0){
+          Swal.fire({
+            icon: 'warning',
+            text: '리뷰 내용이 비어있습니다.',
+            confirmButtonText:'확인'
             })
-            $(".close").on("click", () => close_pop())
-            $(document).keydown((e) => {
-                if (e.keyCode == 27) {
-                    close_pop();
-                }
+          return;
+        }
+          console.log($.trim($(".inputText").val()))
+        if($(".inputText").val().length>= 100){
+          Swal.fire({
+            icon: 'warning',
+            text: '리뷰는 100자까지 작성가능합니다.',
+            confirmButtonText:'확인'
             })
-            //modal 끝
-            // review 등록
-            $(".write").on("click", () => {
-                const productNumber = parseInt($("#productNumber").val());
-                const shoppingOrderNumber = parseInt($("#shoppingOrderNumber").val());
-                if ($.trim($(".inputText").val()) <= 0) {
-                    alert("리뷰 내용이 비어있습니다.")
-                    return;
-                }
-                console.log($.trim($(".inputText").val()))
-                if ($(".inputText").val().length >= 100) {
-                    alert("리뷰는 100자까지 가능합니다.");
-                    return;
-                }
+          return;
+        }
 
                 $.ajax({
                     url: "/review/write",
@@ -551,21 +591,24 @@
                     if ($("#inputFile").val().length > 1) {
                         const formData = new FormData($("#form")[0])
 
-                        $.ajax({
-                            url: "/review/save_photo",
-                            method: "post",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            cache: false
-                        })
-                    }
+            $.ajax({
+              url : "/review/save_photo",
+              method : "post",
+              data : formData,
+              processData : false,
+              contentType : false,
+              cache : false
+            })
+          }
+            Swal.fire({
+              icon: 'success',
+              title: '리뷰가 작성되었습니다.',
+              showConfirmButton: false,
+              timer: 1000
+              })
+            close_pop();
 
-                    alert("리뷰가 작성되었습니다.")
-                    close_pop();
-
-
-                }).catch(err => console.log(err))
+        }).catch(err => console.log(err))
 
             })
         })

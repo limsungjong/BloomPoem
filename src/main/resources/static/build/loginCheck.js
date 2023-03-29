@@ -17,7 +17,11 @@
         fetch("http://localhost:9000/api/v1/user/get_user", requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                alert("로그인 되어 있는 사용자입니다.");
+                Swal.fire({
+                    icon: 'warning',
+                    text: '로그인 되어 있는 사용자입니다.',
+                    confirmButtonText:'확인'
+                    })
                 location.href="http://localhost:9000/"
             })
             .catch((error) => console.log("error", error));

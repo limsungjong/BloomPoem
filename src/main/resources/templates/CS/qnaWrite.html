@@ -11,17 +11,26 @@
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/qnaWrite.css"/>
   <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/build/userContext.js" defer></script>
   <title>Bloom Poem 문의 작성하기</title>
   <script>
 $(document).ready(function(){
   $("#btnSave").on("click", function(){
     if($("#qnaTitle").val().length <= 0){
-      alert("제목을 입력하세요.");
+      Swal.fire({
+        icon: 'warning',
+        text: '제목을 입력해주세요.',
+        confirmButtonText:'확인'
+        })
       $("#qnaTitle").focus();
       return;
     }else if($("#qnaContent").val().length <= 0) {
-      alert("내용을 입력하세요.");
+      Swal.fire({
+        icon: 'warning',
+        text: '내용을 입력해주세요.',
+        confirmButtonText:'확인'
+        })
       $("#qnaContent").focus();
       return;
     }else{
