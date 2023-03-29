@@ -67,7 +67,7 @@ public class KakaoMapApiService {
                 .queryParam("query", query)
                 .queryParam("page",1)
                 .queryParam("size",1)
-                .queryParam("category_group_code","PO3")
+                .queryParam("category_group_code","SW8")
                 .build()
                 .encode()
                 .toUri();
