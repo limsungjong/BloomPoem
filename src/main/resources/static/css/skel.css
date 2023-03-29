@@ -94,7 +94,7 @@ table {
 
 /* style css start */
 header {
-  background-color: var(--color-true-white);
+  background-color: #fff3d4;
   height: 100px;
   width: 100vw;
   display: grid;
@@ -110,6 +110,7 @@ header {
 .logo {
   height: 80px;
   width: 254px;
+  cursor: pointer;
 }
 .logoBox {
 
@@ -294,4 +295,10 @@ footer {
   color: red;
   text-transform: math-auto;
   display: none;
+}
+a {
+  text-decoration: none;
+}
+a:hover{
+  color: #191919;
 }

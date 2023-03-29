@@ -1,6 +1,13 @@
 'use strict'
 let floristData = null;
-
+$(document).ready(() => {
+    $.ajax({
+        url: "/api/v1/florist/florist_list",
+        method: "get",
+    }).then(data => {
+        floristData = data;
+    })
+})
 class pickUpOrderHS {
     now = new Date();
     date = new Date()

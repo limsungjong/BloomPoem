@@ -113,6 +113,7 @@ header {
     height: 80px;
     width: 254px;
     margin-left: 20px;
+    cursor: pointer;
 }
 .logoBox {
     width: 15%;
@@ -254,4 +255,8 @@ a:hover{
 }
 .qnaTitle:hover{
     color: #c9b2a6 ;
+}
+.qnaStatus span{
+    position: relative;
+    right: 10px;
 }

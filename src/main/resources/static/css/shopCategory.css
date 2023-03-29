@@ -332,7 +332,7 @@ main{
     bottom: -33px;
 }
 .subMenuBar li:hover{
-    background-color: pink;
+    background-color: #fff3d4;
     font-weight: bold;
 }
 .subMenuBar li{

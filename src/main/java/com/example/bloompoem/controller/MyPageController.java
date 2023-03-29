@@ -4,6 +4,9 @@ import com.example.bloompoem.domain.dto.ResponseCode;
 import com.example.bloompoem.entity.*;
 import com.example.bloompoem.exception.CustomException;
 import com.example.bloompoem.repository.*;
+import com.example.bloompoem.repository.FloristReviewRepository;
+import com.example.bloompoem.repository.PickUpOrderDetailRepository;
+import com.example.bloompoem.repository.PickUpOrderRepository;
 import com.example.bloompoem.service.*;
 import com.example.bloompoem.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +43,7 @@ public class MyPageController {
     private final OrderService orderService;
     private final FloristReviewService floristReviewService;
     private final FloristReviewRepository floristReviewRepository;
+    private final PickUpOrderDetailRepository pickUpOrderDetailRepository;
     private final ShoppingOrderRepository shoppingOrderRepository;
     private final ShoppingReviewRepository shoppingReviewRepository;
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);

@@ -113,7 +113,6 @@ document.querySelector("#searchInput").addEventListener("keyup", (e) => {
     }
 });
 
-
 class sideItemObj {
     bucketDataArr = [];
     singleBuyDataArr = [];
@@ -656,7 +655,8 @@ class sideItemObj {
             })
             .then((result) => {
                 if (result == undefined) return;
-                if (result.find(cart => cart.floristNumber != this.floristData.floristNumber)) {
+                    console.log(this.floristData)
+                if(result.find(cart => cart.floristNumber != this.floristData.floristNumber)) {
                     this.bucketDeleteFetch();
                 }
                 this.bucketDataArr = result;
@@ -1133,7 +1133,6 @@ class sideItemObj {
                 $("#kakaoForm").submit();
             });
     }
-
     ////////////////////////////////////////////////
 
     // 구매 모달창에 있는 시간 날짜 핸들링
@@ -1654,6 +1653,8 @@ const floristLat = document.querySelector("#floristName");
 const floristLong = document.querySelector("#floristLatitude");
 const floristNumber = document.querySelector("#floristNumber");
 const flowerName = document.querySelector("#flowerName");
+
+console.log()
 
 if (flowerName) {
     document.querySelector('#flowerTargetName').textContent = `${flowerName.value}`;

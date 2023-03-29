@@ -1454,6 +1454,7 @@ a {
 .logo{
     width: 250px;
     margin-left: 20px;
+    cursor: pointer;
 }
 .menuBar{
     font-size: 1.1rem;
