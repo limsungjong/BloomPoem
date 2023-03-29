@@ -140,6 +140,7 @@ menu {
     font-size: 1.5rem;
 }
 nav span {
+    cursor: pointer;
     color: #000;
     display: inline-block;
     margin: 0;
@@ -164,6 +165,7 @@ nav .fromLeft:after {
 }
 
 menu span {
+    cursor: pointer;
     color: #000;
     display: inline-block;
     margin: 0;

@@ -140,6 +140,7 @@ menu {
     font-size: 1.5rem;
 }
 header span {
+    cursor: pointer;
     color: #000;
     display: inline-block;
     margin: 0;

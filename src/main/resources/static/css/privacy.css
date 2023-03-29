@@ -49,3 +49,13 @@ section {
 .header {
     position: relative;
 }
+.priContainer .title {
+    border-top: 1px solid #191919;
+    background-color: #fff;
+    height: 6vh;
+    display: flex;
+    align-items: center;
+    font-size: 2vh;
+    padding-left: 3vh;
+    flex-direction: row;
+}

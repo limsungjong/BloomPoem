@@ -145,6 +145,7 @@ menu {
     justify-content: space-between;
 }
 nav span {
+    cursor: pointer;
     color: #000;
     display: inline-block;
     margin: 0;

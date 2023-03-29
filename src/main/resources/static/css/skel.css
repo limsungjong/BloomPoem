@@ -135,13 +135,13 @@ menu {
   display: flex;
   justify-content: space-between;
 }
-nav span {
+menu span {
   color: #000;
   display: inline-block;
   margin: 0;
   text-transform: uppercase;
 }
-nav span:after {
+menu span:after {
   margin-top: 5px;
   display: block;
   content: "";
@@ -149,13 +149,13 @@ nav span:after {
   transform: scaleX(0);
   transition: transform 250ms ease-in-out;
 }
-nav span:hover:after {
+menu span:hover:after {
   transform: scaleX(1);
 }
-nav .fromRight:after {
+menu .fromRight:after {
   transform-origin: 100% 50%;
 }
-nav .fromLeft:after {
+menu .fromLeft:after {
   transform-origin: 0% 50%;
 }
 
@@ -297,6 +297,7 @@ footer {
   display: none;
 }
 a {
+  color: #191919;
   text-decoration: none;
 }
 a:hover{
