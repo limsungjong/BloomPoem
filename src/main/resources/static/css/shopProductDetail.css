@@ -123,8 +123,10 @@ nav {
     text-align: center;
     align-items: center;
 }
-span {
+nav span {
     font-size: 1.5rem;
+}
+span {
     color: #000;
     display: inline-block;
     margin: 0;

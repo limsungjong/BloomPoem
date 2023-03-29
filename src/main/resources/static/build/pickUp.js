@@ -70,7 +70,7 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
                     })
             });
     });
-    document.querySelector("#searchInput").addEventListener("keyup", (e) => {
+document.querySelector("#searchInput").addEventListener("keyup", (e) => {
         if (e.keyCode === 13) {
             const queryInput = document.querySelector(".searchTerm");
             const myHeaders = new Headers();
@@ -122,7 +122,6 @@ document.querySelector(".searchButton").addEventListener("click", (e) => {
                         })
                 });
         }
-    });
 });
 
 class sideItemObj {

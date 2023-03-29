@@ -106,6 +106,9 @@ header {
     border-bottom: 2px solid var(--color-light-gray);
     box-sizing: content-box;
 }
+header span {
+    font-size: 1.5rem;
+}
 .logo {
     height: 80px;
     width: 254px;
@@ -122,7 +125,6 @@ nav {
     align-items: center;
 }
 span {
-    font-size: 1.5rem;
     color: #000;
     display: inline-block;
     margin: 0;
@@ -283,6 +285,7 @@ main{
     flex-direction: column;
 }
 .productView span{
+    font-size: 1.5rem;
     font-size: medium;
 }
 .text{
