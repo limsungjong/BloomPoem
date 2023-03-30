@@ -1115,13 +1115,13 @@ a {
     border-left: none;
     border-bottom: solid 3px var(--color-dark-gray);
     padding: 5px;
-    height: 55px;
+    height: 47px;
     color: #000000;
     font-size: 19px;
 }
 .resetBtnBox {
     width: 40px;
-    height: 55px;
+    height: 47px;
     border-top: none;
     border-right: none;
     border-left: none;

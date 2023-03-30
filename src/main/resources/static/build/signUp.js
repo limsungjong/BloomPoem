@@ -178,36 +178,42 @@ const reg = new RegExp(emailTest);
                 id="inpit1"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit2"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit3"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit4"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit5"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
               <input
                 class="inputOtp"
                 id="inpit6"
                 type="text"
                 maxlength="1"
+                autocomplete="off"
               />
             </div>
           </div>

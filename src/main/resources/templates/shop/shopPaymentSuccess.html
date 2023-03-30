@@ -72,7 +72,7 @@
       <div>이름 : <span class="productName" th:text="${kakaoApprovar.item_name}"></span></div>
       <div>가격 : <span th:text="${kakaoApprovar.amount.total}"></span></div>
     </div>
-    <button class="btn btn-outline-dark close">닫기</button>
+    <button class="btn btn-outline-success close">닫기</button>
     <input type="hidden" id="orderId" th:value="${kakaoApprovar.partner_order_id}">
     <input type="hidden" id="productName" th:value="${kakaoApprovar.item_name}">
 

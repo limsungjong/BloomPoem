@@ -192,7 +192,7 @@
                             <div class="floristName">${florist.floristName}</div>
                             <div class="floristAddress">${florist.floristAddress}</div>
                             <div>${florist.floristPhoneNumber}</div>
-                            <div>⭐<span>${florist.floristReviewScore}</span>/5(<span>${florist.floristReviewCount}</span>)</div>
+                            <div>⭐<span>${(florist.floristReviewScore).toFixed(1)}</span>/5(<span>${florist.floristReviewCount}</span>)</div>
                           `;
                   boxWrapper.append(box);
                   box.addEventListener('click', () => {

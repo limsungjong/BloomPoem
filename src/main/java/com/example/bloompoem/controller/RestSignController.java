@@ -42,6 +42,7 @@ public class RestSignController {
     @PostMapping("/sign_up")
     public ResponseEntity<UserSignResponse> singUp(@RequestBody @Valid UserSignUpRequest request) {
         userService.createUser(request);
+
         return UserSignResponse.toResponseEntity(ResponseCode.CREATE);
     }
 

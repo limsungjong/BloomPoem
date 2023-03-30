@@ -1121,7 +1121,6 @@ class sideItemObj {
     singleBuyModalHandler() {
         const closeBtn = this.buyModalContainer.querySelector(".closeBtn");
         closeBtn.addEventListener("click", () => {
-            console.log(this.bucketDataArr);
             document.querySelector("#modal").removeChild(this.buyModalContainer);
         });
 
@@ -1153,7 +1152,6 @@ class sideItemObj {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const dateTime = this.outPutDateAndTime();
-        console.log(this.singleBuyDataArr);
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -1182,9 +1180,6 @@ class sideItemObj {
                 $("#orderId").val(result.orderId);
                 $("#tId").val(result.tId);
                 $("#pcUrl").val(result.pcUrl);
-                console.log($("#orderId").val());
-                console.log($("#tId").val());
-                console.log($("#pcUrl").val());
 
                 // html밑의 kakaoForm을 실행한다. 이 때에 action에 /pick_up/order/pay/pop_up으로 post요청이 들어간다.
                 $("#kakaoForm").submit();

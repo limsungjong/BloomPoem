@@ -20,6 +20,8 @@ class pickUpOrderHS {
     modalContainer = null;
     mainContainer = null;
     orderContainer = null;
+    reload1 = this.clean;
+    reload2 = this.orderReviewView;
 
     constructor() {
     }
@@ -69,7 +71,9 @@ class pickUpOrderHS {
                 <div class="orderTotalBox pickTotalBox">
                   <div>총 물품 : <span class="t${p.pickUpOrderNumber}"></span>개</div>
                   <div>총 가격 : <span>${comma(p.pickUpOrderTotalPrice)}</span>원</div>
-                  <div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>
+                  ${p.pickUpOrderStatus == 3 ?
+                    `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>`
+                    : `<div class="question">픽업 완료</div>`}
                 </div>
               </div>
             `
@@ -95,7 +99,9 @@ class pickUpOrderHS {
                     orderReviewBtn.className = `btn btn-outline-primary pickUpReviewButton`;
                     orderReviewBtn.setAttribute('data-number', r[0].pickUpOrderNumber);
                     orderReviewBtn.textContent = "리뷰 쓰기";
-                    $(`.fp${r[0].pickUpOrderNumber}`).prepend(orderReviewBtn);
+                    if(p.pickUpOrderStatus === 5) {
+                        $(`.fp${r[0].pickUpOrderNumber}`).prepend(orderReviewBtn);
+                    }
 
                     $.each(r, (i, t) => {
                         const products = `<div class="oneProductArea ${t.pickUpOrderNumber}">
@@ -172,7 +178,9 @@ class pickUpOrderHS {
                 <div class="orderTotalBox pickTotalBox">
                   <div>총 물품 : <span class="t${p.pickUpOrderNumber}"></span>개</div>
                   <div>총 가격 : <span>${comma(p.pickUpOrderTotalPrice)}</span>원</div>
-                  <div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>
+                  ${p.pickUpOrderStatus == 3 ? 
+                        `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>`
+                        : `<div class="question">픽업 완료</div>`}
                 </div>
               </div>
             `
@@ -199,8 +207,9 @@ class pickUpOrderHS {
                         orderReviewBtn.className = `btn btn-outline-primary pickUpReviewButton`;
                         orderReviewBtn.setAttribute('data-number', r[0].pickUpOrderNumber);
                         orderReviewBtn.textContent = "리뷰 쓰기";
-                        $(`.fp${r[0].pickUpOrderNumber}`).prepend(orderReviewBtn);
-
+                        if(p.pickUpOrderStatus === 5) {
+                            $(`.fp${r[0].pickUpOrderNumber}`).prepend(orderReviewBtn);
+                        }
                         $.each(r, (i, t) => {
                             $(`.f${p.pickUpOrderNumber}`).text("꽃 집 : " + t.floristName);
                             const products = `<div class="oneProductArea ${t.pickUpOrderNumber}">
@@ -256,6 +265,8 @@ class pickUpOrderHS {
                              showConfirmButton: false,
                              timer: 1000
                              })
+                        this.reload1();
+                        this.reload2();
                     }
                 })
             }
@@ -384,11 +395,7 @@ class pickUpOrderHS {
                         "pickUpOrderScore": this.modalContainer.querySelector(".shoppingReviewScore").value,
                     }
                 }).then(r => {
-                    console.log(r)
-                    console.log($("#pickUpReviewNumber"))
                     $("#pickUpReviewNumber").val(r);
-                    console.log($("#pickUpReviewNumber").val())
-                    console.log($("#pickInputFile").val())
                     if ($("#pickInputFile").val().length > 1) {
                         const formData = new FormData($("#pickForm")[0])
 
