@@ -619,3 +619,6 @@ body::-webkit-scrollbar{
     font-size: 100px;
     padding: 30px;
 }
+.orderInfoBox * {
+    font-size: 1.5rem;
+}

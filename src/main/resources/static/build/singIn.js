@@ -184,13 +184,13 @@
                                                 console.log(data);
                                                 otp = "";
                                                 if (data.status == 200) {
-                                                    Swal.fire({
-                                                        icon: 'success',
-                                                        title: '로그인에 성공하였습니다.',
-                                                        confirmButtonText:'확인'
-                                                        })
+                                                    // Swal.fire({
+                                                    //     icon: 'success',
+                                                    //     title: '로그인에 성공하였습니다.',
+                                                    //     confirmButtonText:'확인'
+                                                    //     })
+                                                    alert("로그인에 성공하였습니다.");
                                                     history.back();
-                                                    console.log(data.headers);
                                                 } else {
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                     ioBox.style.display = "flex";

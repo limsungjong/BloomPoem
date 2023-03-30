@@ -129,6 +129,7 @@ const reg = new RegExp(emailTest);
             console.log("error");
             return;
         }
+        document.querySelector("#submit").disabled = true;
         fetch("http://localhost:9000/api/v1/sign/sign_up", requestOptions)
             .then((res) => {
                 console.log(res)
@@ -139,18 +140,19 @@ const reg = new RegExp(emailTest);
                         confirmButtonText:'확인'
                         })
                     return;
+                    document.querySelector("#submit").disabled = false;
                 }
                 return res.json();
             })
             .then((data) => {
                 submitBtn.disabled = false;
 
-                console.log(data);
                 if(data == undefined) {
                     return;
                 }
                 {
                     if (data.status == 201) {
+                        document.querySelector("#submit").disabled = false;
                         const modal = document.createElement("div");
                         const modalElement = `
         <div id="modal" class="modal-overlay">
@@ -267,11 +269,12 @@ const reg = new RegExp(emailTest);
                                             .then((data) => {
                                                 var _a;
                                                 if (data.status == 200) {
-                                                    Swal.fire({
-                                                        icon: 'success',
-                                                        title: '회원가입에 성공하였습니다.',
-                                                        confirmButtonText:'확인'
-                                                        })
+                                                    // Swal.fire({
+                                                    //     icon: 'success',
+                                                    //     title: '회원가입에 성공하였습니다.',
+                                                    //     confirmButtonText:'확인'
+                                                    //     })
+                                                    alert("회원가입에 성공하였습니다.");
                                                     history.back();
                                                 }
                                                 else {

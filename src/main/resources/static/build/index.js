@@ -267,7 +267,7 @@ var _a;
         folderScroll.init();
     });
     folderScroll.preLoad([
-        "./image/flowerGift.jpg",
+        "./image/pickUp.png",
         "./image/flowerDelivery.jpg",
         "./image/flowerRecommend.png",
         "./image/flowerCommunity.jpg",

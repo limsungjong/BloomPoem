@@ -66,7 +66,6 @@ footer, header, hgroup, menu, nav, section {
 /* page css */
 * {
   box-sizing: border-box;
-  font-size: 1.5rem;
   user-select: none;
 }
 body {

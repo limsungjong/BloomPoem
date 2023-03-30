@@ -30,7 +30,7 @@ class pickUpOrderHS {
         $(".mainBox").empty();
         $(".pagingButton").empty();
         $(".pageName").empty();
-        $(".pageName").append("픽업 구매 내역");
+        $(".pageName").append("픽업 주문 내역");
 
         $.ajax({
             url: "/myPage/get/reviewList",
@@ -592,7 +592,6 @@ class myPageMain {
         $.ajax({
             url: "/myPage/index/Info", method: "get",
         }).then(r => {
-            console.log(r)
             const keys = Object.keys(r);
             keys.forEach(key => {
                 if (key === "pickUp") {

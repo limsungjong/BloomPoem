@@ -39,11 +39,11 @@ let userContext = {};
                             const box = document.createElement("div");
                             const signInBox = `
                                 <a href="http://localhost:9000/sign/sign_in">
-                                <span class="signin">SignIn
+                                <span class="signin">Sign In
                                     </span>
                                 </a>
                                 <a href="http://localhost:9000/sign/sign_up">
-                                <span class="signup">SignUp
+                                <span class="signup">Sign Up
                                     </span>
                                 </a>`;
                             navBox.innerHTML = signInBox;
@@ -63,7 +63,7 @@ let userContext = {};
                                     };
                                     fetch("http://localhost:9000/api/v1/sign/sign_out", requestOptions)
                                         .then(response => {
-                                            history.back();
+                                            location.href = "/";
                                         })
                                         .catch(error => console.log('error', error));
                                 });
