@@ -1,5 +1,5 @@
 "use strict";
-let emailTest = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+let emailTest = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
 const userEmail = document.querySelector("#emailInput");
 const userAddress = document.querySelector("#addressInput");
 const userAddressDetail = document.querySelector("#addressDetailInput");
@@ -20,11 +20,33 @@ const reg = new RegExp(emailTest);
         const text = document.querySelector(".emailTestFail");
         if (!reg.test(this.value)) {
             text.style.display = "block";
-        }
-        else {
+        } else {
             text.style.display = "none";
         }
     });
+}
+
+{
+    userEmail.addEventListener("focusout", (e) => {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        let urlencoded = new URLSearchParams();
+        urlencoded.append("userEmail", e.target.value);
+
+        let requestOptions = {
+            method: 'POST', headers: myHeaders, body: urlencoded, redirect: 'follow'
+        };
+
+        fetch("http://localhost:9000/api/v1/sign/duplicate_email_check", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                Swal.fire({
+                    icon: 'warning', text: '중복되는 이메일입니다.', confirmButtonText: '확인'
+                });
+                return;
+            })
+    })
 }
 // 전화번호 다음으로 넘기기
 {
@@ -52,65 +74,50 @@ const reg = new RegExp(emailTest);
         userName.value.trim();
         if (userEmail.value.length <= 0) {
             Swal.fire({
-                icon: 'warning',
-                text: '이메일을 입력해주세요.',
-                confirmButtonText:'확인'
-                })
+                icon: 'warning', text: '이메일을 입력해주세요.', confirmButtonText: '확인'
+            })
             userEmail.focus();
             return;
         }
         if (userName.value.length <= 0) {
             Swal.fire({
-                icon: 'warning',
-                text: '이름을 입력해주세요.',
-                confirmButtonText:'확인'
-                })
+                icon: 'warning', text: '이름을 입력해주세요.', confirmButtonText: '확인'
+            })
             userName.focus();
             return;
         }
         if (userAddress.value.length <= 0) {
             console.log(userAddress.value.length);
             Swal.fire({
-                icon: 'warning',
-                text: '주소를 입력해주세요.',
-                confirmButtonText:'확인'
-                })
+                icon: 'warning', text: '주소를 입력해주세요.', confirmButtonText: '확인'
+            })
             userAddress.focus();
             return;
         }
         if (userAddressDetail.value.length <= 0) {
             console.log(userAddress.value.length);
             Swal.fire({
-                icon: 'warning',
-                text: '상세 주소를 입력해주세요.',
-                confirmButtonText:'확인'
-                })
+                icon: 'warning', text: '상세 주소를 입력해주세요.', confirmButtonText: '확인'
+            })
             userAddressDetail.focus();
             return;
         }
-        if (p1Num.value.length <= 0 ||
-            p2Num.value.length <= 0 ||
-            p3Num.value.length <= 0) {
+        if (p1Num.value.length <= 0 || p2Num.value.length <= 0 || p3Num.value.length <= 0) {
             Swal.fire({
-                icon: 'warning',
-                text: '연락처를 입력해주세요.',
-                confirmButtonText:'확인'
-                })
+                icon: 'warning', text: '연락처를 입력해주세요.', confirmButtonText: '확인'
+            })
             p1Num.focus();
             return;
         }
         if (userName.value.length < 0) {
             Swal.fire({
-                icon: 'warning',
-                text: '이메일을 입력해주세요.',
-                confirmButtonText:'확인'
-                })
+                icon: 'warning', text: '이메일을 입력해주세요.', confirmButtonText: '확인'
+            })
             userName.focus();
             return;
         }
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Cookie", "JSESSIONID=5D73E913A087AFB1C62CB113A06A13D2");
         const inputData = JSON.stringify({
             userEmail: userEmail.value,
             userAddress: userAddress.value,
@@ -119,26 +126,23 @@ const reg = new RegExp(emailTest);
             userName: userName.value,
         });
         const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: inputData,
-            redirect: "follow",
+            method: "POST", headers: myHeaders, body: inputData, redirect: "follow",
         };
         const reg = new RegExp(emailTest);
         if (!reg.test(userEmail.value)) {
-            console.log("error");
+            Swal.fire({
+                icon: 'warning', text: '이메일 입력 형식을 다시 확인해주세요.', confirmButtonText: '확인'
+            })
             return;
         }
         document.querySelector("#submit").disabled = true;
         fetch("http://localhost:9000/api/v1/sign/sign_up", requestOptions)
             .then((res) => {
                 console.log(res)
-                if(res.status == 400) {
+                if (res.status == 400) {
                     Swal.fire({
-                        icon: 'warning',
-                        text: '입력 형식을 다시 확인해주세요.',
-                        confirmButtonText:'확인'
-                        })
+                        icon: 'warning', text: '입력 형식을 다시 확인해주세요.', confirmButtonText: '확인'
+                    })
                     return;
                     document.querySelector("#submit").disabled = false;
                 }
@@ -147,7 +151,7 @@ const reg = new RegExp(emailTest);
             .then((data) => {
                 submitBtn.disabled = false;
 
-                if(data == undefined) {
+                if (data == undefined) {
                     return;
                 }
                 {
@@ -235,17 +239,13 @@ const reg = new RegExp(emailTest);
                                 .then(res => res.text())
                                 .then((data) => {
                                     Swal.fire({
-                                        icon: 'success',
-                                        title: '인증 번호를 다시 보내드렸습니다.',
-                                        confirmButtonText:'확인'
-                                        })
+                                        icon: 'success', title: '인증 번호를 다시 보내드렸습니다.', confirmButtonText: '확인'
+                                    })
                                 }).catch(err => {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: '회원 가입중에 오류가 발생하였습니다. 다시 진행해주세요.',
-                                        confirmButtonText: '확인'
-                                        })
-                                    location.href = "http://localhost:9000/sign_up";
+                                Swal.fire({
+                                    icon: 'error', text: '회원 가입중에 오류가 발생하였습니다. 다시 진행해주세요.', confirmButtonText: '확인'
+                                })
+                                location.href = "http://localhost:9000/sign_up";
                             })
 
                         });
@@ -261,14 +261,10 @@ const reg = new RegExp(emailTest);
                                         let otp = "";
                                         iList.forEach((v) => (otp += v.value));
                                         const body = JSON.stringify({
-                                            userEmail: userEmail.value,
-                                            userOtp: otp,
+                                            userEmail: userEmail.value, userOtp: otp,
                                         });
                                         const requestOptions = {
-                                            method: "POST",
-                                            headers: myHeaders,
-                                            body: body,
-                                            redirect: "follow",
+                                            method: "POST", headers: myHeaders, body: body, redirect: "follow",
                                         };
                                         fetch("http://localhost:9000/api/v1/sign/sign_in", requestOptions)
                                             .then((data) => data.json())
@@ -282,15 +278,14 @@ const reg = new RegExp(emailTest);
                                                     //     })
                                                     alert("회원가입에 성공하였습니다.");
                                                     history.back();
-                                                }
-                                                else {
+                                                } else {
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                     ioBox.style.display = "flex";
                                                     Swal.fire({
                                                         icon: 'warning',
                                                         text: '인증 번호를 다시 확인해주세요.',
-                                                        confirmButtonText:'확인'
-                                                        })
+                                                        confirmButtonText: '확인'
+                                                    })
                                                 }
                                             })
                                             .catch((err) => {
@@ -303,27 +298,21 @@ const reg = new RegExp(emailTest);
                             });
                         });
                         return;
-                    }
-                    else if (data.status == 400) {
+                    } else if (data.status == 400) {
                         Swal.fire({
-                            icon: 'warning',
-                            text: data.message,
-                            confirmButtonText:'확인'
-                            })
+                            icon: 'warning', text: data.message, confirmButtonText: '확인'
+                        })
 //                        alert(data.message);
                         return;
-                    }
-                    else if (data.status == 409) {
+                    } else if (data.status == 409) {
                         Swal.fire({
-                            icon: 'warning',
-                            text: data.message,
-                            confirmButtonText:'확인'
-                            })
+                            icon: 'warning', text: data.message, confirmButtonText: '확인'
+                        })
 //                        alert(data.message);
                         return;
                     }
                     submitBtn.disabled = false;
-                    return;
+
                 }
             })
             .catch((err) => {

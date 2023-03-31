@@ -40,7 +40,7 @@ public interface ShoppingReviewRepository extends JpaRepository<ShoppingReview, 
             "  GROUP BY PRODUCT_NUMBER\n" +
             "  ORDER BY AVG(SHOPPING_REVIEW_SCORE) DESC\n" +
             "  FETCH FIRST 3 ROWS ONLY\n" +
-            ")", nativeQuery = true)
+            ")FETCH FIRST 3 ROWS ONLY", nativeQuery = true)
     List<ShoppingReview> mainPage();
 
 }

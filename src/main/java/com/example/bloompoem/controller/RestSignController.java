@@ -53,7 +53,6 @@ public class RestSignController {
         return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 
-
     @PostMapping("/otp_check")
     public ResponseEntity<UserSignResponse> signUpOtpCheck(@RequestBody UserSignInRequest request) {
         UserEntity testUserEntity = userRepository
@@ -99,5 +98,11 @@ public class RestSignController {
         myCookie.setMaxAge(0);  // 남은 만료시간을 0으로 설정
         response.addCookie(myCookie);
         return response;
+    }
+
+    @PostMapping("/duplicate_email_check")
+    public ResponseEntity<?> emailCheck(String userEmail) {
+        if(!userRepository.existsById(userEmail)) return ResponseEntity.ok(userEmail);
+        throw new CustomException(ResponseCode.DUPLICATE_EMAIL);
     }
 }

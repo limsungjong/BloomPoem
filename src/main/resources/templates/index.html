@@ -1,211 +1,209 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="/css/onReady.css" />
-    <link rel="stylesheet" type="text/css" href="/css/index.css" />
-    <link rel="stylesheet" type="text/css" href="/css/footer.css" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="/css/onReady.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
     <script src="/build/userContext.js" defer></script>
     <script src="/build/onRealdy.js" defer></script>
 
     <title>Bloom Poem</title>
     <script src="/build/index.js" defer></script>
     <script
-      src="https://kit.fontawesome.com/8e31ecfd50.js"
-      crossorigin="anonymous"
+            src="https://kit.fontawesome.com/8e31ecfd50.js"
+            crossorigin="anonymous"
     ></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script>
-      function comma(str) {
-        str = String(str);
-        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-      }
-      $(document).ready(()=>{
-        $.ajax({
-          url : "/shoppping/review/rate_high",
-          method : "get",
-        }).then(r=>{
-          $("#productBox").empty();
-          $.each(r, (i, p) =>{
-            const msg = `<div class="main-con-item" id="oneProduct">
+        function comma(str) {
+            str = String(str);
+            return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+        }
+
+        $(document).ready(() => {
+            $.ajax({
+                url: "/shoppping/review/rate_high",
+                method: "get",
+            }).then(r => {
+                $("#productBox").empty();
+                $.each(r, (i, p) => {
+                    const msg = `<div class="main-con-item" id="oneProduct">
                       <div class="bestProductImageBox"><img src="/image/product/${p.product.productMainImage}" alt="productImage" class="bestProductImage"></div>
                       <div>${p.product.productName}</div>
                       <div>\\${comma(p.product.productPrice)}</div>
                       <div>⭐<span><span>${p.shoppingReviewScore}</span></span>/5(<span>5</span>)</div>
                       <div>${p.shoppingReviewContent}</div>
                     </div>`
-            $("#productBox").append(msg)
-          })
-          })
+                    $("#productBox").append(msg)
+                })
+            })
         })
 
     </script>
-  </head>
-  <body>
-  <div id="loading"></div>
-    <header class="header">
-      <img src="/image/logo최종.png" alt="logo" class="logo" />
-      <menu>
+</head>
+<body>
+<div id="loading"></div>
+<header class="header">
+    <img src="/image/logo최종.png" alt="logo" class="logo"/>
+    <menu>
         <span class="fromLeft"><a href="/pick_up">Pick Up</a></span>
         <span class="fromLeft"><a href="/shopping">Shop</a></span>
         <span class="fromLeft"><a href="/recommend">recommend</a></span>
-      </menu>
-      <nav class="userBox">
+    </menu>
+    <nav class="userBox">
         <a href="http://localhost:9000/sign/sign_in"><span class="signin">SignIn</span></a>
         <a href="http://localhost:9000/sign/sign_up"><span class="signup">SignUp</span></a>
-      </nav>
-    </header>
-    <main class="mainContainer">
-      <div class="backGroundImage"></div>
-      <div class="searchBox">
+    </nav>
+</header>
+<main class="mainContainer">
+    <div class="backGroundImage"></div>
+    <div class="searchBox">
         <input
-          type="text"
-          class="searchTerm"
-          placeholder="위치를 입력해주세요"
+                type="text"
+                class="searchTerm"
+                placeholder="위치를 입력해주세요"
         />
         <button type="button" class="searchButton">
-          <i class="fa fa-search"></i>
+            <i class="fa fa-search"></i>
         </button>
-      </div>
-      <div class="mainText">
-        사랑하는 사람에게 <br />꽃으로 <br/>마음을 전달해보세요
-      </div>
-      <div class="moreBtn"><button class="btn btn-outline-white"> More Information </button></div>
-      <div class="main-content-1">
+    </div>
+    <div class="mainText">
+        사랑하는 사람에게 <br/>꽃으로 <br/>마음을 전달해보세요
+    </div>
+    <div class="moreBtn">
+        <button class="btn btn-outline-white"> More Information</button>
+    </div>
+    <div class="main-content-1">
         <div class="sticky">
-          <div class="sticky-background">BLOOM FOEM</div>
-          <div class="card-frame">
-            <div class="card">
-              <div class="front spring"></div>
-              <div class="back">PickUp</div>
+            <div class="sticky-background">BLOOM FOEM</div>
+            <div class="card-frame">
+                <div class="card">
+                    <div class="front spring"></div>
+                    <div class="back">PickUp</div>
+                </div>
+                <div class="card">
+                    <div class="front summer"></div>
+                    <div class="back">SHOP</div>
+                </div>
+                <div class="card">
+                    <div class="front fall"></div>
+                    <div class="back">Recommend</div>
+                </div>
+                <div class="card">
+                    <div class="front winter"></div>
+                    <div class="back">And</div>
+                </div>
             </div>
-            <div class="card">
-              <div class="front summer"></div>
-              <div class="back">SHOP</div>
-            </div>
-            <div class="card">
-              <div class="front fall"></div>
-              <div class="back">Recommend</div>
-            </div>
-            <div class="card">
-              <div class="front winter"></div>
-              <div class="back">And</div>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="main-content-2">
+    </div>
+    <div class="main-content-2">
         <div class="sticky2">
-          <div class="sticky-background">BLOOM FOEM</div>
-          <div class="section">
-            <div class="title">PickUp</div>
-            <div class="contentWrap">
-              <div class="content"></div>
+            <div class="sticky-background">BLOOM FOEM</div>
+            <div class="section">
+                <div class="title">PickUp</div>
+                <div class="contentWrap">
+                    <div class="content"></div>
+                </div>
             </div>
-          </div>
-          <div class="section">
-            <div class="title">Shop</div>
-            <div class="contentWrap">
-              <div class="content"></div>
+            <div class="section">
+                <div class="title">Shop</div>
+                <div class="contentWrap">
+                    <div class="content"></div>
+                </div>
             </div>
-          </div>
-          <div class="section">
-            <div class="title">Recommend</div>
-            <div class="contentWrap">
-              <div class="content"></div>
+            <div class="section">
+                <div class="title">Recommend</div>
+                <div class="contentWrap">
+                    <div class="content"></div>
+                </div>
             </div>
-          </div>
-          <div class="section">
-            <div class="title">Community</div>
-            <div class="contentWrap">
-              <div class="content"></div>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="main-content-3">
+    </div>
+    <div class="main-content-3">
         <div class="main-con-row">
-          <div class="main-con-row-title">
-            <span style="font-size: 2rem">Best Shop</span>
-          </div>
-          <div class="con-item-list">
-            <div class="con-item-Box">
+            <div class="main-con-row-title">
+                <span style="font-size: 2rem">Best Shop</span>
             </div>
-          </div>
+            <div class="con-item-list">
+                <div class="con-item-Box">
+                </div>
+            </div>
         </div>
         <div class="main-con-row">
-          <div class="main-con-row-title">
-            <span style="font-size: 2rem">Best Product</span>
-          </div>
-          <div class="con-item-list">
-            <div class="con-item-Box" id="productBox">
+            <div class="main-con-row-title">
+                <span style="font-size: 2rem">Best Product</span>
             </div>
-          </div>
+            <div class="con-item-list">
+                <div class="con-item-Box" id="productBox">
+                </div>
+            </div>
         </div>
-      </div>
-      <footer>
+    </div>
+    <button id="go-top" class="upBtn"><i class="fas fa-arrow-up"></i></button>
+    <footer>
         <div class="footerWrapper">
-          <div class="footerTop">
-            <ul class="footerListText">
-              <li class="footerText"><a href="/FAQ">고객센터</a></li>
-              <li class="footerText"><a href="/privacy">개인정보처리방침</a></li>
-            </ul>
-          </div>
-          <div class="footerCenter">
-            <div class="line"></div>
-          </div>
-          <div class="footerBottom">
-            <ul class="footerListText">
-              <li class="footerText">사업자 명 : 블룸 포엠</li>
-              <li class="footerText">대표자 명 : 임성종</li>
-              <li class="footerText">
-                오시는 길 : 인천 미추홀구 매소홀로488번길 6-32 태승빌딩 5층(1층
-                홈플러스)
-              </li>
-              <li class="footerText">연락처 : 032-876-3332</li>
-            </ul>
-          </div>
+            <div class="footerTop">
+                <ul class="footerListText">
+                    <li class="footerText"><a href="/FAQ">고객센터</a></li>
+                    <li class="footerText"><a href="/privacy">개인정보처리방침</a></li>
+                </ul>
+            </div>
+            <div class="footerCenter">
+                <div class="line"></div>
+            </div>
+            <div class="footerBottom">
+                <ul class="footerListText">
+                    <li class="footerText">사업자 명 : 블룸 포엠</li>
+                    <li class="footerText">대표자 명 : 임성종</li>
+                    <li class="footerText">
+                        오시는 길 : 인천 미추홀구 매소홀로488번길 6-32 태승빌딩 5층(1층
+                        홈플러스)
+                    </li>
+                    <li class="footerText">연락처 : 032-876-3332</li>
+                </ul>
+            </div>
         </div>
-      </footer>
-    </main>
+    </footer>
+</main>
 
-  </body>
-  <script>
+</body>
+<script>
     {
-      let myHeaders = new Headers();
-      let requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-      };
-      fetch("http://localhost:9000/api/v1/florist/bestFlorist", requestOptions)
-              .then(response => response.json())
-              .then(result => {
+        let myHeaders = new Headers();
+        let requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        fetch("http://localhost:9000/api/v1/florist/bestFlorist", requestOptions)
+            .then(response => response.json())
+            .then(result => {
                 const boxWrapper = document.querySelector('.con-item-Box');
                 result.forEach(florist => {
-                  const box = document.createElement('div');
-                  box.setAttribute('class','main-con-item');
-                  box.innerHTML =
-                          `
+                    const box = document.createElement('div');
+                    box.setAttribute('class', 'main-con-item');
+                    box.innerHTML =
+                        `
                             <div class="floristName">${florist.floristName}</div>
                             <div class="floristAddress">${florist.floristAddress}</div>
                             <div>${florist.floristPhoneNumber}</div>
                             <div>⭐<span>${(florist.floristReviewScore).toFixed(1)}</span>/5(<span>${florist.floristReviewCount}</span>)</div>
                           `;
-                  boxWrapper.append(box);
-                  box.addEventListener('click', () => {
-                    
-                  });
+                    boxWrapper.append(box);
+                    box.addEventListener('click', () => {
+
+                    });
                 })
                 document.querySelector('.con-item-list').append(boxWrapper);
-              })
-              .catch(error => console.log('error', error));
+            })
+            .catch(error => console.log('error', error));
     }
-  </script>
-  <!-- pickUp Post 보내기 -->
-  <form name="postPickUp" id="postPickForm" action="/searchPlace/pickUp" method="post">
+</script>
+<!-- pickUp Post 보내기 -->
+<form name="postPickUp" id="postPickForm" action="/searchPlace/pickUp" method="post">
     <input name="query" id="target" type="hidden">
-  </form>
+</form>
 </html>

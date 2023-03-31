@@ -21,11 +21,7 @@ let userContext = {};
                 console.log(result);
                 userContext = result;
                 if (result.status == 500) {
-                    Swal.fire({
-                        icon: 'warning',
-                        text: '접속 시간 초과로 인해 로그아웃 되었습니다.',
-                        confirmButtonText:'확인'
-                        })
+                    alert("접속 시간 초과로 인해 로그아웃 되었습니다.");
                     document.cookie = "Authorization" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                     return;
                 }

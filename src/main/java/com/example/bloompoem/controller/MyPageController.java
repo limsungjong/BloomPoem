@@ -197,6 +197,12 @@ public class MyPageController {
         return ResponseEntity.ok().body(reviewEntity.getFloristReviewNumber());
     }
 
+    @DeleteMapping(value = "/pick_up/review/delete")
+    public ResponseEntity<String> pickUpReviewDelete(int orderReviewNumber) {
+        floristReviewService.floristReviewDelete(orderReviewNumber);
+        return ResponseEntity.ok("success");
+    }
+
     @PostMapping(value = "/review/pick_up/save_photo")
     public ResponseEntity<String> pickUpReviewSavePhoto(
             MultipartFile reviewImage, Integer reviewSeq) {

@@ -814,3 +814,13 @@ menu span{
   height: 100%;
   margin: 0 20px;
 }
+#go-top {
+  position: fixed;
+  display: none;
+  bottom: 50px;
+  right: 25px;
+  font-size: 4rem;
+  background-color: white;
+  border: 0;
+  border-radius: 50%;
+}

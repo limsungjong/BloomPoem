@@ -782,27 +782,15 @@ class sideItemObj {
 
         let check = false;
         if (cookie == "") {
-            Swal.fire({
-                icon: 'warning',
-                text: '로그인이 필요합니다.',
-                confirmButtonText: '확인'
-                })
+            alert("로그인이 필요합니다.");
             location.href = "http://localhost:9000/sign/sign_in";
         }
         if (cookie == undefined) {
-            Swal.fire({
-                icon: 'warning',
-                text: '로그인이 필요합니다.',
-                confirmButtonText: '확인'
-                })
+            alert("로그인이 필요합니다.");
             location.href = "http://localhost:9000/sign/sign_in";
         }
         if (cookie == null) {
-            Swal.fire({
-                icon: 'warning',
-                text: '로그인이 필요합니다.',
-                confirmButtonText: '확인'
-                })
+            alert("로그인이 필요합니다.");
             location.href = "http://localhost:9000/sign/sign_in";
         }
 

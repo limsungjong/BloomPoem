@@ -295,6 +295,14 @@ footer {
   text-transform: math-auto;
   display: none;
 }
+
+.emailDuplicate {
+  font-size: 0.8rem;
+  margin: 10px 0;
+  color: red;
+  text-transform: math-auto;
+  display: none;
+}
 a {
   color: #191919;
   text-decoration: none;
