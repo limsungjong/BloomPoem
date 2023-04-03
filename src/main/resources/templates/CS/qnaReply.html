@@ -11,9 +11,42 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/qnaWrite.css"/>
   <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/build/userContext.js" defer></script>
   <title>Bloom Poem 문의 작성하기</title>
+<script>
+  $(document).ready(function(){
+  $("#btnSave").on("click", function(){
+    Swal.fire({
+      icon: 'success',
+      title: '답글이 등록되었습니다.',
+      showConfirmButton: false,
+      timer: 1500
+      })
 
+    if($("#qnaTitle").val().length <= 0){
+      Swal.fire({
+        icon: 'warning',
+        text: '제목을 입력해주세요.',
+        confirmButtonText:'확인'
+        })
+      $("#qnaTitle").focus();
+      return;
+    }else if($("#qnaContent").val().length <= 0) {
+      Swal.fire({
+        icon: 'warning',
+        text: '내용을 입력해주세요.',
+        confirmButtonText:'확인'
+        })
+      $("#qnaContent").focus();
+      return;
+    }else{
+      document.QnaForm.submit();
+
+    }
+  });
+})
+</script>
 </head>
 <body>
 <header class="header">
@@ -55,7 +88,7 @@
       <input type="hidden" name="beforeQnaNumber" th:value="${qna.getQnaNumber()}">
       <input type="hidden" value="Y" name="qnaStatus">
       <div class="buttons">
-        <button class="btn btn-outline-success" type="submit">저장</button>
+        <button class="btn btn-outline-success" type="submit"id="btnSave" name="btnSave">저장</button>
         <button class="btn btn-outline-dark" onclick="location.href ='http://localhost:9000/CS/qna'">목록</button>
       </div>
     </form>
