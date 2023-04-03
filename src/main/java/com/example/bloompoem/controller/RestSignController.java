@@ -48,16 +48,14 @@ public class RestSignController {
 
     @GetMapping("/sign_check")
     public ResponseEntity<?> signCheck(@CookieValue(value = "Authorization") String token) {
-        String userEmail = JwtUtil.getUserName(token,secretKey);
-        if(!userRepository.findById(userEmail).isPresent()) throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
+        String userEmail = JwtUtil.getUserName(token, secretKey);
+        if (!userRepository.findById(userEmail).isPresent()) throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
         return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 
     @PostMapping("/otp_check")
     public ResponseEntity<UserSignResponse> signUpOtpCheck(@RequestBody UserSignInRequest request) {
-        UserEntity testUserEntity = userRepository
-                .findByUserEmail(request.getUserEmail())
-                .orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
+        UserEntity testUserEntity = userRepository.findByUserEmail(request.getUserEmail()).orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
 
 
         String userEmail = testUserEntity.getUserEmail();
@@ -70,14 +68,12 @@ public class RestSignController {
     }
 
     @PostMapping("/sign_in")
-    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request,HttpServletResponse res) {
+    public ResponseEntity<UserSignResponse> singIn(@RequestBody UserSignInRequest request, HttpServletResponse res) {
 
-        UserEntity userEntity = userRepository
-                .findByUserEmail(request.getUserEmail())
-                .orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
+        UserEntity userEntity = userRepository.findByUserEmail(request.getUserEmail()).orElseThrow(() -> new CustomException(ResponseCode.MEMBER_NOT_FOUND));
 
 
-        if("N".equals(userEntity.getUserStatus())) {
+        if ("N".equals(userEntity.getUserStatus())) {
             throw new CustomException(ResponseCode.MEMBER_NOT_FOUND);
         }
 
@@ -92,7 +88,7 @@ public class RestSignController {
         return UserSignResponse.toResponseEntity(ResponseCode.SUCCESSFUL);
     }
 
-    @GetMapping ("/sign_out")
+    @GetMapping("/sign_out")
     public HttpServletResponse signOut(HttpServletRequest request, HttpServletResponse response) {
         Cookie myCookie = new Cookie("Authorization", null);
         myCookie.setMaxAge(0);  // 남은 만료시간을 0으로 설정
@@ -102,7 +98,7 @@ public class RestSignController {
 
     @PostMapping("/duplicate_email_check")
     public ResponseEntity<?> emailCheck(String userEmail) {
-        if(!userRepository.existsById(userEmail)) return ResponseEntity.ok(userEmail);
-        throw new CustomException(ResponseCode.DUPLICATE_EMAIL);
+        if (userRepository.existsById(userEmail)) return ResponseEntity.ok("불가능");
+        return ResponseEntity.ok("가능");
     }
 }

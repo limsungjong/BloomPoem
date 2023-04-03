@@ -163,22 +163,22 @@ var _a;
             }
         }
     }
-    const mainContent1 = document.querySelector(".main-content-1");
-    const sticky = document.querySelector(".sticky");
-    const cardFlipOnScroll = new CardFlipOnScroll(mainContent1, sticky);
-    cardFlipOnScroll.init();
-    cardFlipOnScroll.preLoad([
-        "./image/pick.jpg",
-        "./image/Shop.jpg",
-        "./image/recommend.jpg",
-        "./image/logo.png",
-    ]);
-    window.addEventListener("scroll", () => {
-        cardFlipOnScroll.animate();
-    });
-    window.addEventListener("resize", () => {
-        cardFlipOnScroll.init();
-    });
+    // const mainContent1 = document.querySelector(".main-content-1");
+    // const sticky = document.querySelector(".sticky");
+    // const cardFlipOnScroll = new CardFlipOnScroll(mainContent1, sticky);
+    // cardFlipOnScroll.init();
+    // cardFlipOnScroll.preLoad([
+    //     "./image/pick.jpg",
+    //     "./image/Shop.jpg",
+    //     "./image/recommend.jpg",
+    //     "./image/logo.png",
+    // ]);
+    // window.addEventListener("scroll", () => {
+    //     cardFlipOnScroll.animate();
+    // });
+    // window.addEventListener("resize", () => {
+    //     cardFlipOnScroll.init();
+    // });
 }
 // button wave action
 {

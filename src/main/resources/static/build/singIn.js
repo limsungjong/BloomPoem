@@ -49,6 +49,7 @@
                 .then((data) => data.json())
                 .then((data) => {
                     if (data.status == 404) {
+                        mailSubmitBtn.disabled = false;
                         Swal.fire({
                         icon: 'warning',
                         text: data.message,
@@ -184,14 +185,15 @@
                                                 console.log(data);
                                                 otp = "";
                                                 if (data.status == 200) {
-                                                    // Swal.fire({
-                                                    //     icon: 'success',
-                                                    //     title: '로그인에 성공하였습니다.',
-                                                    //     confirmButtonText:'확인'
-                                                    //     })
-                                                    alert("로그인에 성공하였습니다.");
-                                                    history.back();
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: '로그인에 성공하였습니다.',
+                                                        confirmButtonText:'확인'
+                                                        }).then(() => {
+                                                        history.back();
+                                                    })
                                                 } else {
+                                                    mailSubmitBtn.disabled = false;
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                     ioBox.style.display = "flex";
                                                     Swal.fire({

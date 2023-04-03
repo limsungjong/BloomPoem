@@ -422,3 +422,15 @@ a:hover{
 .menuBar a {
     color :gray;
 }
+
+
+#go-top {
+    position: fixed;
+    display: none;
+    bottom: 50px;
+    right: 25px;
+    font-size: 4rem;
+    background-color: #fff3d4;
+    border: 0;
+    border-radius: 50%;
+}

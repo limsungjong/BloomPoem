@@ -9,45 +9,58 @@ const p3Num = document.querySelector("#phoneInput3");
 const userName = document.querySelector("#nameInput");
 const submitBtn = document.querySelector("#submit");
 const body = document.querySelector("body");
+const good = document.querySelector(".emailTestGood");
+const duplicate = document.querySelector(".emailDuplicate");
 const loadingSpinner = document.createElement("div");
 loadingSpinner.setAttribute("class", "spinner");
 const reg = new RegExp(emailTest);
 // 유저 입력 확인하기
 // 유저 이메일 regex 체크
 {
-    userEmail.addEventListener("change", function () {
+    userEmail.addEventListener("change", function (e) {
         this.value = this.value.trim();
+        duplicate.style.display = "none";
         const text = document.querySelector(".emailTestFail");
         if (!reg.test(this.value)) {
+            good.style.display = "none";
             text.style.display = "block";
+            submitBtn.disabled = true;
         } else {
             text.style.display = "none";
+            duplicate.style.display = "none";
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            let urlencoded = new URLSearchParams();
+            urlencoded.append("userEmail", e.target.value);
+
+            let requestOptions = {
+                method: 'POST', headers: myHeaders, body: urlencoded, redirect: 'follow'
+            };
+            fetch("http://localhost:9000/api/v1/sign/duplicate_email_check", requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    if (result === "가능") {
+                        duplicate.style.display = "none";
+                        good.style.display = "block";
+                        submitBtn.disabled = false;
+                        Swal.fire({
+                            icon: 'success', text: '사용가능한 이메일입니다.', confirmButtonText: '확인'
+                        })
+                    } else if(result === "불가능"){
+                        good.style.display = "none";
+                        duplicate.style.display = "block";
+                        submitBtn.disabled = true;
+                        Swal.fire({
+                            icon: 'warning', text: '해당하는 이메일은 중복되어 사용이 불가합니다.', confirmButtonText: '확인'
+                        })
+                    }
+                }).catch(err => {
+            })
         }
     });
 }
 
-{
-    userEmail.addEventListener("focusout", (e) => {
-        let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-        let urlencoded = new URLSearchParams();
-        urlencoded.append("userEmail", e.target.value);
-
-        let requestOptions = {
-            method: 'POST', headers: myHeaders, body: urlencoded, redirect: 'follow'
-        };
-
-        fetch("http://localhost:9000/api/v1/sign/duplicate_email_check", requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                Swal.fire({
-                    icon: 'warning', text: '중복되는 이메일입니다.', confirmButtonText: '확인'
-                });
-                return;
-            })
-    })
-}
 // 전화번호 다음으로 넘기기
 {
     p1Num.addEventListener("keyup", function () {
@@ -271,13 +284,13 @@ const reg = new RegExp(emailTest);
                                             .then((data) => {
                                                 var _a;
                                                 if (data.status == 200) {
-                                                    // Swal.fire({
-                                                    //     icon: 'success',
-                                                    //     title: '회원가입에 성공하였습니다.',
-                                                    //     confirmButtonText:'확인'
-                                                    //     })
-                                                    alert("회원가입에 성공하였습니다.");
-                                                    history.back();
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: '회원가입에 성공하였습니다.',
+                                                        confirmButtonText:'확인'
+                                                        }).then(reslut => {
+                                                        history.back();
+                                                    })
                                                 } else {
                                                     (_a = modal.querySelector(".spinner")) === null || _a === void 0 ? void 0 : _a.remove();
                                                     ioBox.style.display = "flex";

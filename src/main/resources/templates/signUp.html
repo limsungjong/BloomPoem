@@ -43,6 +43,12 @@
                 <span class="emailTestFail">
                     이메일 주소의 형식이 올바르지 않습니다. 예시) bloomPoem@naver.com
                 </span>
+                <span class="emailTestGood">
+                    사용 가능한 이메일 주소입니다.
+                </span>
+                <span class="emailDuplicate">
+                    해당하는 이메일은 중복되어 사용이 불가합니다.
+                </span>
                 <label for="nameInput" class="tag">이름</label>
                 <input
                         class="margin-2 inputWD"
@@ -98,7 +104,7 @@
                             autocomplete="off"
                     />
                 </div>
-                <button id="submit" class="btn margin-3">Submit</button>
+                <button id="submit" class="btn margin-3" disabled>Submit</button>
             </div>
         </div>
     </div>

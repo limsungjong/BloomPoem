@@ -122,7 +122,6 @@ nav {
   align-items: center;
 }
 span {
-  font-size: 1.5rem;
   color: #000;
   display: inline-block;
   margin: 0;
@@ -135,6 +134,7 @@ menu {
   justify-content: space-between;
 }
 menu span {
+  font-size: 1.5rem;
   color: #000;
   display: inline-block;
   margin: 0;
@@ -290,7 +290,15 @@ footer {
 
 .emailTestFail {
   font-size: 0.8rem;
-  margin: 10px 0;
+  margin-bottom: 10px;
+  color: red;
+  text-transform: math-auto;
+  display: none;
+}
+
+.emailTestGood {
+  font-size: 0.8rem;
+  margin-bottom: 10px;
   color: red;
   text-transform: math-auto;
   display: none;
@@ -298,7 +306,7 @@ footer {
 
 .emailDuplicate {
   font-size: 0.8rem;
-  margin: 10px 0;
+  margin-bottom: 10px;
   color: red;
   text-transform: math-auto;
   display: none;

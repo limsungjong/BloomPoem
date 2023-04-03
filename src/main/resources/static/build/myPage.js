@@ -2,12 +2,12 @@
 let floristData = null;
 $(document).ready(() => {
     $.ajax({
-        url: "/api/v1/florist/florist_list",
-        method: "get",
+        url: "/api/v1/florist/florist_list", method: "get",
     }).then(data => {
         floristData = data;
     })
 })
+
 class pickUpOrderHS {
     now = new Date();
     date = new Date()
@@ -71,9 +71,7 @@ class pickUpOrderHS {
                 <div class="orderTotalBox pickTotalBox">
                   <div>총 물품 : <span class="t${p.pickUpOrderNumber}"></span>개</div>
                   <div>총 가격 : <span>${comma(p.pickUpOrderTotalPrice)}</span>원</div>
-                  ${p.pickUpOrderStatus == 3 ?
-                    `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>`
-                    : `<div class="question">픽업 완료</div>`}
+                  ${p.pickUpOrderStatus == 3 ? `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>` : `<div class="question">픽업 완료</div>`}
                 </div>
               </div>
             `
@@ -99,7 +97,7 @@ class pickUpOrderHS {
                     orderReviewBtn.className = `btn btn-outline-primary pickUpReviewButton`;
                     orderReviewBtn.setAttribute('data-number', r[0].pickUpOrderNumber);
                     orderReviewBtn.textContent = "리뷰 쓰기";
-                    if(p.pickUpOrderStatus === 5) {
+                    if (p.pickUpOrderStatus === 5) {
                         $(`.fp${r[0].pickUpOrderNumber}`).prepend(orderReviewBtn);
                     }
 
@@ -178,9 +176,7 @@ class pickUpOrderHS {
                 <div class="orderTotalBox pickTotalBox">
                   <div>총 물품 : <span class="t${p.pickUpOrderNumber}"></span>개</div>
                   <div>총 가격 : <span>${comma(p.pickUpOrderTotalPrice)}</span>원</div>
-                  ${p.pickUpOrderStatus == 3 ? 
-                        `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>`
-                        : `<div class="question">픽업 완료</div>`}
+                  ${p.pickUpOrderStatus == 3 ? `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>` : `<div class="question">픽업 완료</div>`}
                 </div>
               </div>
             `
@@ -207,7 +203,7 @@ class pickUpOrderHS {
                         orderReviewBtn.className = `btn btn-outline-primary pickUpReviewButton`;
                         orderReviewBtn.setAttribute('data-number', r[0].pickUpOrderNumber);
                         orderReviewBtn.textContent = "리뷰 쓰기";
-                        if(p.pickUpOrderStatus === 5) {
+                        if (p.pickUpOrderStatus === 5) {
                             $(`.fp${r[0].pickUpOrderNumber}`).prepend(orderReviewBtn);
                         }
                         $.each(r, (i, t) => {
@@ -260,11 +256,8 @@ class pickUpOrderHS {
                 }).then(r => {
                     if (r == "success") {
                         Swal.fire({
-                             icon: 'success',
-                             title: '완료 처리되었습니다.',
-                             showConfirmButton: false,
-                             timer: 1000
-                             })
+                            icon: 'success', title: '완료 처리되었습니다.', showConfirmButton: false, timer: 1000
+                        })
                         this.reload1();
                         this.reload2();
                     }
@@ -291,10 +284,8 @@ class pickUpOrderHS {
             }).then(r => {
                 if (r) {
                     Swal.fire({
-                         icon: 'warning',
-                         text: '이미 작성된 리뷰가 있습니다.',
-                         confirmButtonText:'확인'
-                         })
+                        icon: 'warning', text: '이미 작성된 리뷰가 있습니다.', confirmButtonText: '확인'
+                    })
                 } else {
                     for (let i = 0; this.pickUpOrderDetail0.length > i; i++) {
                         if (pickUpOrderNumber == this.pickUpOrderDetail0[i].pickUpOrderNumber) {
@@ -342,7 +333,7 @@ class pickUpOrderHS {
                   <div><span class="material-symbols-outlined close">close</span></div>
                 </div>
                 <div class="modalBody">
-                  <div><input type="text" class="inputText form-control pickUpInputText" name="shoppingReviewContent" placeholder="리뷰를 입력하세요."></div>
+                  <div><input type="text" class="inputText form-control pickUpInputText" name="shoppingReviewContent" placeholder="리뷰를 입력하세요." autocomplete="off"></div>
                   <input type="hidden" name="pickUpOrderNumber" id="pickUpOrderNumber" value="${data[0].pickUpOrderNumber}">
                   <input type="hidden" name="floristNumber" id="floristNumber" value="${data[0].floristNumber}">
                   <div><button class="btn btn-outline-success pickUpWrite">작성하기</button></div>
@@ -380,10 +371,8 @@ class pickUpOrderHS {
 
                 if ($.trim(this.modalContainer.querySelector(".pickUpInputText").value) <= 0) {
                     Swal.fire({
-                         icon: 'warning',
-                         text: '리뷰 내용이 비어있습니다.',
-                         confirmButtonText:'확인'
-                         })
+                        icon: 'warning', text: '리뷰 내용이 비어있습니다.', confirmButtonText: '확인'
+                    })
                     return;
                 }
                 $.ajax({
@@ -409,11 +398,8 @@ class pickUpOrderHS {
                         })
                     }
                     Swal.fire({
-                         icon: 'success',
-                         title: '리뷰가 작성되었습니다.',
-                         showConfirmButton: false,
-                         timer: 1000
-                         })
+                        icon: 'success', title: '리뷰가 작성되었습니다.', showConfirmButton: false, timer: 1000
+                    })
                     this.removeModal();
                 }).catch(err => console.log(err))
             })
@@ -429,6 +415,7 @@ class pickUpOrderHS {
 
 class pickUpOrderRv {
     manageOrderBox;
+    page;
 
     constructor() {
     }
@@ -452,6 +439,7 @@ class pickUpOrderRv {
     }
 
     reviewView = (page) => {
+        this.page = page;
         this.removeMainContainer();
         $.ajax({
             url: "/pick_up/review/read",
@@ -482,13 +470,10 @@ class pickUpOrderRv {
                 $(".shoppingReviewArea").append(msg);
             })
             if (r.totalPages > 1) {
-                console.log(page)
                 $(".pagingButton").empty();
 
                 let start = Math.floor((page - 1) / 5) * 5 + 1; // 시작 페이지
                 let end = Math.min(start + 4, r.totalPages); // 끝 페이지
-                console.log(start)
-                console.log(end)
                 if (start > 1) {
                     $(".pagingButton").append(`<button class="btn btn-outline-dark pickReviewPaging" data-page="${start - 1}"><</button>`);
                 }
@@ -511,46 +496,31 @@ class pickUpOrderRv {
             const target = e.target.dataset.no;
             const content = $(`#content${target}`).val();
             const score = $(`#score${target}`).val();
-
-
-            console.log(page)
-            console.log(target)
-            console.log(content)
-            console.log(score)
             $.ajax({
                 url: "/pick_up/review/update",
                 method: "post",
                 data: {"orderReviewNumber": target, "pickUpOrderContent": content, "pickUpOrderScore": score}
             }).then(r => {
                 Swal.fire({
-                    icon: 'success',
-                    title: '수정이 완료되었습니다.',
-                    showConfirmButton: false,
-                    timer: 1000
-                    })
-                this.reviewView(page);
+                    icon: 'success', title: '수정이 완료되었습니다.', showConfirmButton: false, timer: 1000
+                })
+                this.reviewView(parseInt(page) + 1);
             })
         })
     }
 
     orderReviewHandle() {
         $(".mainBox").on("click", ".orderReviewDelete", (e) => {
-            const page = $("#page").val()
-            console.log(page);
             const orderReviewNumber = e.target.dataset.no;
-
             if (confirm("리뷰를 삭제하시겠습니까?")) {
                 $.ajax({
                     url: "/pick_up/review/delete", method: "delete", data: {orderReviewNumber}
                 }).then(r => {
                     if (r == "success") {
                         Swal.fire({
-                            icon: 'success',
-                            title: '리뷰가 삭제되었습니다.',
-                            showConfirmButton: false,
-                            timer: 1000
-                            })
-                        this.reviewView(page);
+                            icon: 'success', title: '리뷰가 삭제되었습니다.', showConfirmButton: false, timer: 1000
+                        })
+                        this.reviewView(this.page);
                     }
                 })
             }
@@ -602,9 +572,9 @@ class myPageMain {
             const keys = Object.keys(r);
             keys.forEach(key => {
                 if (key === "pickUp") {
-                    this.createPickUpComponent(r["pickUp"],r["pickUpReviewCount"]);
+                    this.createPickUpComponent(r["pickUp"], r["pickUpReviewCount"]);
                 } else if (key === "shopping") {
-                    this.createShoppingComponent(r["shopping"],r["shoppingReviewCount"]);
+                    this.createShoppingComponent(r["shopping"], r["shoppingReviewCount"]);
                 }
             })
         });
@@ -616,7 +586,7 @@ class myPageMain {
         return box;
     }
 
-    createPickUpComponent(pickUpData,reviewCount) {
+    createPickUpComponent(pickUpData, reviewCount) {
         const pickUpBox = this.createClassBox("pickUpBox");
         let pickUpReady = 0;
         let pickUpCompleted = 0;
@@ -650,7 +620,7 @@ class myPageMain {
         })
     }
 
-    createShoppingComponent(shoppingData,reviewCount) {
+    createShoppingComponent(shoppingData, reviewCount) {
         const shoppingBox = this.createClassBox("shoppingBox");
         let shoppingReady = 0;
         let shoppingCompleted = 0;
