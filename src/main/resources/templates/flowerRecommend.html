@@ -68,7 +68,7 @@
             <div class="flowerNameDiv">${f.flowerName}</div>
             <div class="flowerColorDiv">${f.flowerColor ? `<span>${f.flowerColor}</span>` : ""}</div>
             <div class="flowerTagDiv">${tag}</div>
-            <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">buy</button></div>
+            <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">구매</button></div>
             <div class="flowerLanguageDiv" >${f.flowerLanguage}</div>
           </div>`
             $(".flowerBox").append(msg)
@@ -114,7 +114,7 @@
             <div class="flowerNameDiv">${f.flowerName}</div>
             <div class="flowerColorDiv">${f.flowerColor ? `<span>${f.flowerColor}</span>` : ""}</div>
             <div class="flowerTagDiv">${tag}</div>
-            <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">buy</button></div>
+            <div class="flowerBuyDiv"><button class="btn btn-outline-primary" data-no="${f.flowerNumber}">구매</button></div>
             <div class="flowerLanguageDiv" >${f.flowerLanguage}</div>
           </div>`
           $(".flowerBox").append(msg)
@@ -158,7 +158,7 @@
         <div class="flowerNameDiv"th:text="${f.flowerName}"></div>
         <div class="flowerColorDiv">(<span th:text="${f.flowerColor}"></span>)</div>
         <div class="flowerTagDiv"  ><span class="tag" th:each="ff :${#strings.listSplit(f.flowerTag, '#')}" th:text="'  #'+${ff} "></span></div>
-        <div class="flowerBuyDiv"><button class="btn btn-outline-primary" th:data-no="${f.flowerNumber}">buy</button></div>
+        <div class="flowerBuyDiv"><button class="btn btn-outline-primary" th:data-no="${f.flowerNumber}">구매</button></div>
         <div class="flowerLanguageDiv" th:text="${f.flowerLanguage}"></div>
       </div>
     </div>

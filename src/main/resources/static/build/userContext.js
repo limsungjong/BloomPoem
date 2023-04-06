@@ -18,7 +18,6 @@ let userContext = {};
         fetch("http://localhost:9000/api/v1/user/get_user", requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 userContext = result;
                 if (result.status == 500) {
                     alert("접속 시간 초과로 인해 로그아웃 되었습니다.");

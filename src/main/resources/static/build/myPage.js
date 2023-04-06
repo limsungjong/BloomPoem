@@ -71,7 +71,7 @@ class pickUpOrderHS {
                 <div class="orderTotalBox pickTotalBox">
                   <div>총 물품 : <span class="t${p.pickUpOrderNumber}"></span>개</div>
                   <div>총 가격 : <span>${comma(p.pickUpOrderTotalPrice)}</span>원</div>
-                  ${p.pickUpOrderStatus == 3 ? `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>` : `<div class="question">픽업 완료</div>`}
+                  ${p.pickUpOrderStatus == 3 ? `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>` : ``}
                 </div>
               </div>
             `
@@ -176,7 +176,7 @@ class pickUpOrderHS {
                 <div class="orderTotalBox pickTotalBox">
                   <div>총 물품 : <span class="t${p.pickUpOrderNumber}"></span>개</div>
                   <div>총 가격 : <span>${comma(p.pickUpOrderTotalPrice)}</span>원</div>
-                  ${p.pickUpOrderStatus == 3 ? `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>` : `<div class="question">픽업 완료</div>`}
+                  ${p.pickUpOrderStatus == 3 ? `<div class="question">상품을 받으셨나요?<button class="btn btn-outline-dark" id="pickUpOrderStatus" data-no="${p.pickUpOrderNumber}">완료체크하기</button></div>` : ``}
                 </div>
               </div>
             `
