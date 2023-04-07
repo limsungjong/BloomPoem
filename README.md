@@ -9,4 +9,4 @@ Spring Boot DevTools
 Lombok \
 DB : Oracle Driver ,Spring Data JPA \
 Auth : Spring Security, Oauth2 client \
-View : Thymleaf \
+View : Thymleaf
