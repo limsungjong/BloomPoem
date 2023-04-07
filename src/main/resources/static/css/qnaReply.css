@@ -126,7 +126,6 @@ nav {
     align-items: center;
 }
 span {
-    font-size: 1.5rem;
     color: #000;
     display: inline-block;
     margin: 0;
@@ -140,6 +139,7 @@ menu {
     font-size: 1.5rem;
 }
 nav span {
+    font-size: 1.5rem;
     color: #000;
     display: inline-block;
     margin: 0;
@@ -235,4 +235,8 @@ a {
 }
 .inputImg {
     height: 100px;
+}
+
+a:hover {
+    color: black;
 }
