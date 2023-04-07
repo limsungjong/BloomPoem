@@ -539,7 +539,6 @@ const pickUpOrderRvBtn = document.querySelector('.pickUpReviewManagement');
 const contentBox = new pickUpOrderHS();
 const manageBox = new pickUpOrderRv();
 
-
 pickUpOrderHsBtn.addEventListener('click', () => {
     contentBox.clean();
     contentBox.orderReviewView();
