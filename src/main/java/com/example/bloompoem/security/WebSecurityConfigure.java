@@ -1,5 +1,7 @@
 package com.example.bloompoem.security;
 
+import com.example.bloompoem.repository.UserRepository;
+import com.example.bloompoem.service.CustomUserDetailService;
 import com.example.bloompoem.service.SignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,10 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @PropertySource("classpath:app.properties")
 public class WebSecurityConfigure {
-    private final SignService signService;
+    private final UserRepository userRepository;
     @Value("#{environment['jwt.secret']}")
     private String secretKey;
     @Bean
@@ -32,14 +36,22 @@ public class WebSecurityConfigure {
                 .antMatchers(HttpMethod.GET,"/api/v1/sign/sign_out").permitAll()
 //                .antMatchers("/","/shopping/**","/api/**","/sign/**").permitAll()
                 .antMatchers("/user").authenticated()
-//                .antMatchers("/pick_up").authenticated()
+                .antMatchers("/my_page").authenticated()
                 .antMatchers("/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(new JwtFilter(signService,secretKey), UsernamePasswordAuthenticationFilter.class);
+                .formLogin()
+                .loginPage("/loginTest")
+                .loginProcessingUrl("/loginTry")
+                .usernameParameter("userEmail")
+                .passwordParameter("pwd")
+                .failureForwardUrl("/loginTest")
+                .successForwardUrl("/")
+                .permitAll();
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .addFilterBefore(new JwtFilter(signService,secretKey), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

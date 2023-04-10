@@ -11,10 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -97,5 +94,14 @@ public class UserController {
         userService.userSave(userEntity);
 
         return ResponseEntity.ok(userEntity);
+    }
+    @GetMapping("/loginTest")
+    public String loginForm() {
+        return "/loginTest";
+    }
+
+    @PostMapping("/loginTest")
+    public String PostLoginForm() {
+        return "/loginTest";
     }
 }
