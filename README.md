@@ -1,15 +1,18 @@
 # BloomPoem 프로젝트입니다.
 
-spring 2.7.9  
-build : gradle
+<p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/ppt메인.PNG?raw=true"/></p>
 
-저희 ‘블룸 포엠’은 예약한 꽃을 픽업할 수 있는 ‘픽업’ 서비스와
-그 외에도 꽃과 관련된 다양한 서비스들을 제공하고 있습니다.
+인천일보 아카데미에서 진행한 팀 프로젝트입니다.
 
-library \
-Spring Web,
-Spring Boot DevTools,
-Lombok \
-DB : Oracle Driver, Spring Data JPA \
-Auth : Spring Security \
-View : Thymleaf
+<p>저희 ‘블룸 포엠’은 예약한 꽃을 픽업할 수 있는 ‘픽업’ 서비스와
+그 외에도 꽃과 관련된 다양한 서비스들을 제공하고 있습니다.<p>
+
+# Description
+
+- 개발 기간 : 2023.03.06 ~ 2023.03.31
+
+- 참여 인원 : 3명
+
+- 사용 기술
+
+- 
