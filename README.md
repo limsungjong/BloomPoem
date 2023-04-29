@@ -4,8 +4,8 @@
 
 인천일보 아카데미에서 진행한 팀 프로젝트입니다.
 
-<p>저희 ‘블룸 포엠’은 예약한 꽃을 픽업할 수 있는 ‘픽업’ 서비스와
-그 외에도 꽃과 관련된 다양한 서비스들을 제공하고 있습니다.<p>
+저희 ‘블룸 포엠’은 예약한 꽃을 픽업할 수 있는 ‘픽업’ 서비스와
+그 외에도 꽃과 관련된 다양한 서비스들을 제공하고 있습니다.
 
 # Description
 
@@ -15,4 +15,30 @@
 
 - 사용 기술
 
-- 
+<p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/ppt도구.PNG?raw=true"/></p>
+
+  - HTML, CSS, JavaScript, jQuery, Bootstrap
+  - Java, Spring Boot 2.7.9,  Spring Data JPA, Thymeleaf, Gradle
+  - Oracle 21c DataBase
+  - GitHub, Visual Studio Code, IntelliJ
+  - Kakao Api(Pay, Map, Local)
+
+# 프로젝트 일정 및 데이터베이스 ERD
+
+<p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/ppt일.PNG?raw=true"/></p>
+
+
+<p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pptERD.PNG?raw=true"/></p>
+
+- 담당 구현 파트
+
+  - 프로젝트 개발환경 구축, OracleDB로 데이터베이스 설계
+
+  - 로그인 페이지, 회원가입 페이지 구현(우편주소API, 이메일 메일전송 API)
+  - 픽업 페이지 SPA 형태로 구현
+    - Kakao MAP API 이용하여 사용자가 원하는 위치의 꽃집 확인 가능
+    - MAP에 있는 마커를 클릭하거나 왼쪽에 있는 꽃 집 리스트를 클릭하여 Modal Window로 확인 가능
+
+
+
+  - 문의 게시판 페이지 구현(작성, 수정 ,삭제, 페이징)
