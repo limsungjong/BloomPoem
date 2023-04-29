@@ -31,14 +31,8 @@
 <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pptERD.PNG?raw=true"/></p>
 
 - 담당 구현 파트
-
   - 프로젝트 개발환경 구축, OracleDB로 데이터베이스 설계
-
   - 로그인 페이지, 회원가입 페이지 구현(우편주소API, 이메일 메일전송 API)
-  - 픽업 페이지 SPA 형태로 구현
-    - Kakao MAP API 이용하여 사용자가 원하는 위치의 꽃집 확인 가능
-    - MAP에 있는 마커를 클릭하거나 왼쪽에 있는 꽃 집 리스트를 클릭하여 Modal Window로 확인 가능
-
-
-
-  - 문의 게시판 페이지 구현(작성, 수정 ,삭제, 페이징)
+  - 메인 페이지 구현(Kakao Loacl API를 이용한 위치 검색 기능 구현)
+  - 픽업 페이지 구현(Kakao MAP APi를 이용한 지도 기능 구현)
+  - 마이 페이지 구현(리뷰 작성, 수정, 삭제 기능 구현)
