@@ -25,7 +25,7 @@
 
 # 프로젝트 일정 및 데이터베이스 ERD
 
-<p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/ppt일.PNG?raw=true"/></p>
+<p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/ppt일정.PNG?raw=true"/></p>
 
 
 <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pptERD.PNG?raw=true"/></p>
