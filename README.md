@@ -43,13 +43,17 @@
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/mainPageMove.gif?raw=true"/></p>
   - 회원가입
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/signUpSuccess2.gif?raw=true"/></p>
-  
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/otp.png?raw=true"/></p>
-  
   - 로그인
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/signInpage.png?raw=true"/></p>
   
 - 픽업
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pickUpMove.gif?raw=true"/></p>
+  <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/payAll.gif?raw=true"/></p>
 - 쇼핑
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/shopping1.gif?raw=true"/></p>
+  <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/Shopping2.gif?raw=true"/></p>
+- 추천
+  <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/recomComple.gif?raw=true"/></p>
+- 마이
+  <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/myCom.gif?raw=true"/></p>
