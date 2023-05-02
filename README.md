@@ -57,3 +57,25 @@
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/recomComple.gif?raw=true"/></p>
 - 마이
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/myCom.gif?raw=true"/></p>
+  
+# Implementation
+
+- #### 픽업 페이지
+
+  - **지도 출력 **
+
+    1. Kakao MAP API를 이용하여 지도 구현하고 비동기로 DB에 있는 꽃집 정보를 가져와서 마커로 지도에 표현하여 드래그시에도 해당하는 위치의 정보를 가져와 표시.
+     
+    <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pickCC.gif?raw=true"/></p>
+    
+    2. Kakao LOCAL API를 이용하여 지도 키워드 검색 기능 구현.
+    
+    <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pickSearch.gif?raw=true"/></p>
+    
+    3. RestController를 이용하여 사용자가 원하는 위치의 꽃 집의 정보를 페이지 이동 없이 구현.
+    
+    <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pcikQQ.gif?raw=true"/></p>
+    
+    4. Kakao PAY API를 이용하여 결제 구현.
+    
+    <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pickBuyCom.gif?raw=true"/></p>
