@@ -39,36 +39,36 @@
 
 # Views
 
-- 메인
+- 메인 페이지
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/mainPageMove.gif?raw=true"/></p>
   
-  - 회원가입
+  - 회원가입 페이지
   
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/signUpSuccess2.gif?raw=true"/></p>
   
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/otp.png?raw=true"/></p>
   
-  - 로그인
+  - 로그인 페이지
   
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/signInpage.png?raw=true"/></p>
   
-- 픽업
+- 픽업 페이지
 
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pickUpMove.gif?raw=true"/></p>
   
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/payAll.gif?raw=true"/></p>
   
-- 쇼핑
+- 쇼핑 페이지
 
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/shopping1.gif?raw=true"/></p>
   
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/Shopping2.gif?raw=true"/></p>
   
-- 추천
+- 추천 페이지
 
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/recomComple.gif?raw=true"/></p>
   
-- 마이
+- 마이 페이지
 
   <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/myCom.gif?raw=true"/></p>
   
