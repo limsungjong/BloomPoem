@@ -12,17 +12,10 @@ import javax.persistence.*;
 @ToString
 @AllArgsConstructor
 @Setter
-@SequenceGenerator(
-        name = "SEQ_PICK_UP_CART_NUMBER",
-        sequenceName = "SEQ_PICK_UP_CART_NUMBER",
-        initialValue = 1,
-        allocationSize = 1
-)
 public class PickUpCartEntity {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_PICK_UP_CART_NUMBER"
+            strategy = GenerationType.IDENTITY
     )
     private int pickUpCartNumber;
     @Column

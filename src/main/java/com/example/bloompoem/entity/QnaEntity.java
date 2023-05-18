@@ -1,8 +1,6 @@
 package com.example.bloompoem.entity;
 
-import com.example.bloompoem.dto.QnaDTO;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -13,15 +11,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@SequenceGenerator(
-        name = "SEQ_QNA_NUMBER",
-        sequenceName = "SEQ_QNA_NUMBER",
-        initialValue = 2,
-        allocationSize = 1
-)
 public class QnaEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_QNA_NUMBER")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer qnaNumber;
 
     private String userEmail;

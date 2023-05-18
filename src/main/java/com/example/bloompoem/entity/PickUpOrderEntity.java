@@ -11,17 +11,10 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "SEQ_PICK_UP_ORDER_NUMBER",
-        sequenceName = "SEQ_PICK_UP_ORDER_NUMBER",
-        initialValue = 1,
-        allocationSize = 1
-)
 public class PickUpOrderEntity {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_PICK_UP_ORDER_NUMBER"
+            strategy = GenerationType.IDENTITY
     )
     private int pickUpOrderNumber;
     @Column

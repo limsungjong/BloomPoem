@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "PICK_UP_ORDER_DETAIL")
@@ -14,17 +13,10 @@ import java.util.Date;
 @Builder
 @Getter
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "SEQ_PICK_UP_ORDER_DETAIL_NUMBER",
-        sequenceName = "SEQ_PICK_UP_ORDER_DETAIL_NUMBER",
-        initialValue = 1,
-        allocationSize = 1
-)
 public class PickUpOrderDetailEntity {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_PICK_UP_ORDER_DETAIL_NUMBER"
+            strategy = GenerationType.IDENTITY
     )
     private int pickUpOrderDetailNumber;
 

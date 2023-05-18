@@ -10,17 +10,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Entity(name = "bouquet")
-@SequenceGenerator(
-        name = "SEQ_BOUQUET_NUMBER",
-        sequenceName = "SEQ_BOUQUET_NUMBER",
-        initialValue = 1,
-        allocationSize = 1
-)
 public class BouquetEntity {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_BOUQUET_NUMBER"
+            strategy = GenerationType.IDENTITY
     )
     private int bouquetNumber;
     @ManyToOne

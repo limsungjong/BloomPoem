@@ -12,18 +12,11 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "SEQ_FLORIST_NUMBER",
-        sequenceName = "SEQ_FLORIST_NUMBER",
-        initialValue = 62,
-        allocationSize = 1
-)
 public class FloristEntity {
     @Setter
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_FLORIST_NUMBER"
+            strategy = GenerationType.IDENTITY
     )
     private int floristNumber;
     @Column

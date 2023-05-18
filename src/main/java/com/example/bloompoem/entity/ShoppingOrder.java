@@ -8,22 +8,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "shoppingOrder")
-@SequenceGenerator(
-        name = "SEQ_SHOPPING_ORDER_NUMBER",
-        sequenceName = "SEQ_SHOPPING_ORDER_NUMBER",
-        initialValue = 1, //시작값
-        allocationSize = 1
-)
 public class ShoppingOrder {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SHOPPING_ORDER_NUMBER")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int shoppingOrderNumber ;
     private String userEmail;

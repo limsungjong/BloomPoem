@@ -10,14 +10,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@SequenceGenerator(
-        name = "SEQ_SHOPPING_ORDER_DETAIL_NUMBER",
-        sequenceName = "SEQ_SHOPPING_ORDER_DETAIL_NUMBER",
-        initialValue = 1, //시작값
-        allocationSize = 1
-)
 public class ShoppingOrderDetail {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SHOPPING_ORDER_DETAIL_NUMBER")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int shoppingOrderDetailNumber;
     private int shoppingOrderDetailCount;
