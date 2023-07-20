@@ -12,7 +12,7 @@ Youtube : https://www.youtube.com/watch?v=zAFSzJH9Br4&ab_channel=%EC%9D%B8%EC%B2
 
 # Description
 
-- 개발 기간 : 2023.03.06 ~ 2023.03.31
+- 개발 기간 : 2023.02.27 ~ 2023.03.31
 
 - 참여 인원 : 3명
 
