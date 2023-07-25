@@ -24,7 +24,7 @@ Youtube : https://www.youtube.com/watch?v=zAFSzJH9Br4&ab_channel=%EC%9D%B8%EC%B2
   - Java, Spring Boot 2.7.9,  Spring Data JPA, Thymeleaf, Gradle
   - Oracle 21c DataBase
   - GitHub, Visual Studio Code, IntelliJ
-  - Kakao Api(Pay, Map, Local)
+  - Kakao API (Pay, Map, Local)
 
 # 프로젝트 일정 및 데이터베이스 ERD
 
@@ -78,9 +78,6 @@ Youtube : https://www.youtube.com/watch?v=zAFSzJH9Br4&ab_channel=%EC%9D%B8%EC%B2
 # Implementation
 
 - #### 픽업 페이지
-
-  - 지도 출력
-
     1. Kakao MAP API를 이용하여 지도 구현하고 비동기 통신으로 DB에 있는 꽃집 정보를 가져와서 마커로 지도에 표현, 드래그시에도 해당하는 위치의 꽃집 정보를 가져와 표시.
      
     <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/pcikCompl.gif?raw=true"/></p>
