@@ -95,5 +95,5 @@ Youtube : https://www.youtube.com/watch?v=zAFSzJH9Br4&ab_channel=%EC%9D%B8%EC%B2
     
 - #### 마이 페이지
     1. 쇼핑과 꽃집 픽업 수령 여부 확인이 가능하며 수령 여부에 따라 해당하는 제품에 대해 리뷰를 작성할 수 있는 기능 구현
-    <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/myCom.gif?raw=true"/></p>
+    <p align="center"><img src="https://github.com/limsungjong/BloomPoem/blob/master/이미지파일/my_com.gif?raw=true"/></p>
     
